@@ -1,0 +1,658 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Rails many-to-many," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在 rails 中我们可以使用ActiveRecord的 has_many或has_and_belongs_to_many 在 model 中实现数据库表的多对多的关联关系.
+那么 has_many 和 has_and_belongs_to_many 有什么不同呢?在多对多关系中, 必须要有一个中间表.如果使用has_many, 我们必须要创建中间表所对应的model, 可以向中间表加入属性,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 中实现model的多对多关系映射">
+<meta property="og:url" content="http://yoursite.com/2015/02/10/many2many/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在 rails 中我们可以使用ActiveRecord的 has_many或has_and_belongs_to_many 在 model 中实现数据库表的多对多的关联关系.
+那么 has_many 和 has_and_belongs_to_many 有什么不同呢?在多对多关系中, 必须要有一个中间表.如果使用has_many, 我们必须要创建中间表所对应的model, 可以向中间表加入属性,">
+<meta property="og:image" content="http://i2.tietuku.com/87e05cf9a2501acc.png">
+<meta property="og:updated_time" content="2015-04-01T14:32:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 中实现model的多对多关系映射">
+<meta name="twitter:description" content="在 rails 中我们可以使用ActiveRecord的 has_many或has_and_belongs_to_many 在 model 中实现数据库表的多对多的关联关系.
+那么 has_many 和 has_and_belongs_to_many 有什么不同呢?在多对多关系中, 必须要有一个中间表.如果使用has_many, 我们必须要创建中间表所对应的model, 可以向中间表加入属性,">
+<meta name="twitter:image" content="http://i2.tietuku.com/87e05cf9a2501acc.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails 中实现model的多对多关系映射 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails 中实现model的多对多关系映射
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-10T13:16:34+08:00" content="2015-02-10">
+              2015-02-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>在 rails 中我们可以使用ActiveRecord的 <code>has_many</code>或<code>has_and_belongs_to_many</code> 在 model 中实现数据库表的多对多的关联关系.</p>
+<p>那么 <code>has_many</code> 和 <code>has_and_belongs_to_many</code> 有什么不同呢?<br>在多对多关系中, 必须要有一个中间表.<br>如果使用<code>has_many</code>, 我们必须要创建中间表所对应的model, 可以向中间表加入属性, 验证等等.<br>如果使用<code>has_and_belongs_to_many</code>, 这个中间表所对应的model创建与否都无所谓, 那么也就不能加入验证之类的来定制化这个表了.<br>综上, <code>has_many</code> 更加灵活一些, 因为你可以自定义一些属性和验证.</p>
+</blockquote>
+<h2 id="何谓多对多"><a href="#何谓多对多" class="headerlink" title="何谓多对多?"></a>何谓多对多?</h2><blockquote>
+<p>为了便于说明, 我们看一下下面的 ER 图:<br><img src="http://i2.tietuku.com/87e05cf9a2501acc.png" alt=""><br>[1] 个商品属于[多]个种类, 从”商品”的角度来看, 种类就是[多]<br>[1] 个”种类”可以有[多]个”商品”, 从”种类”来看, 商品就是[多]<br>此乃[多对多]. </p>
+</blockquote>
+<h2 id="移植到数据库"><a href="#移植到数据库" class="headerlink" title="移植到数据库"></a>移植到数据库</h2><blockquote>
+<p>我们先分别创建每个 model 对应的表, 最后使用前面两个表的 id 作为外键创建中间表.</p>
+</blockquote>
+<ul>
+<li><p>创建 Category model 和categories表.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails g model Category name:string</span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建Product model 和 products 表.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails g model Product name:string price:integer</span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>下面就有分情况讨论了:</p>
+</blockquote>
+<ul>
+<li><p>使用 has_many, 我们需要创建CategoryProduct model和categories_products 数据库表.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails g model CategoryProduct category_id:integer product_id:integer</span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用<code>has_and_belongs_to_many</code>, 我们只需要创建categories_products表, 这里为了区别上面的表, 我改成 categories_products2.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails g migration create_categories_products2 category_id:integer product_id:integer</span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="使用-has-many和-belongs-to-处理-model-的对应关系"><a href="#使用-has-many和-belongs-to-处理-model-的对应关系" class="headerlink" title="使用 has_many和 belongs_to 处理 model 的对应关系"></a>使用 has_many和 belongs_to 处理 model 的对应关系</h2><blockquote>
+<p>创建完数据库的表, 接下来就有处理 model 中的关联关系.</p>
+</blockquote>
+<ul>
+<li><p>使用<code>has_many</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># app/models/category.rb</span><br><span class="line"></span><br><span class="line">class Category &lt; ActiveRecord::Base</span><br><span class="line">  has_many :category_products</span><br><span class="line">  has_many :products, through: :category_products</span><br><span class="line"></span><br><span class="line">  # through 选项意思是Category 经过 category_products 可以访问到products</span><br><span class="line">  # 具体来说就是: category.products 获取某 category 的所有products</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/category_product.rb</span><br><span class="line"></span><br><span class="line">class CategoryProduct &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :category</span><br><span class="line">  belongs_to :products</span><br><span class="line"></span><br><span class="line">  # 这是&quot;中间人&quot;, 就是通过它, 才建立起了 Category 和Product 的关系.</span><br><span class="line">  # 它对两边都属于 1对多的关系</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/product.rb</span><br><span class="line"></span><br><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  has_many :categroy_products</span><br><span class="line">  has_many :categories, through: :category_products</span><br><span class="line"></span><br><span class="line">  # product.categories 获取某 product的所有所属种类</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>  <code>has_many</code> 方法有一些选项<code>class_name</code>, <code>foreign_key</code>, <code>dependent</code>, <code>delete_all</code>, <code>as</code>, <code>through</code> 这里就不细说了.</p>
+</li>
+<li><p>使用<code>has_and_belongs_to_many</code></p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># app/models/category.rb</span><br><span class="line"></span><br><span class="line">class Category &lt; ActiveRecord::Base</span><br><span class="line">  has_and_belongs_to_many :products</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/product.rb</span><br><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  has_and_belongs_to_many :categories</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="可以使用的方法"><a href="#可以使用的方法" class="headerlink" title="可以使用的方法"></a>可以使用的方法</h2><blockquote>
+<p>model 中这样设置以后, 我们就可以使用一些方法来对两只 model 互相操作. 同样, 我们还需要分组讨论:</p>
+</blockquote>
+<ul>
+<li><p><code>has_many</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 创建</span><br><span class="line"></span><br><span class="line">category1 = Category.create(name: &quot;Cate1&quot;) # 创建游离的Category 对象</span><br><span class="line">product1 = Product.create(name: &quot;Product1&quot;, price: 100) # 游离的 Product对象</span><br><span class="line"></span><br><span class="line">product2 = category1.products.create(name: &quot;Product2&quot;, price: 300) </span><br><span class="line"># 创建了与 category1 存在关系的 product2</span><br><span class="line"></span><br><span class="line"># 关系</span><br><span class="line">category1.products.count # =&gt; 2</span><br><span class="line">category1.products &lt;&lt; product1</span><br><span class="line">category1.products.count # =&gt; 3</span><br><span class="line"></span><br><span class="line">product1.categories # =&gt; product1 关联的 category的数组集合</span><br><span class="line"></span><br><span class="line"># 中间表</span><br><span class="line">CategoryProduct.all # 获取全部的 category_products记录.</span><br><span class="line"># 由于CategoryProduct model存在, 所以我们可以通过它向中间表中添加验证和属性</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>has_and_belongs_to_many</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 创建</span><br><span class="line"></span><br><span class="line">category1 = Category.create(name: &quot;Cate1&quot;) # 创建游离的Category 对象</span><br><span class="line">product1 = Product.create(name: &quot;Product1&quot;, price: 100) # 游离的 Product对象</span><br><span class="line"></span><br><span class="line">product2 = category1.products.create(name: &quot;Product2&quot;, price: 300) </span><br><span class="line"># 创建了与 category1 存在关系的 product2</span><br><span class="line"></span><br><span class="line"># 关系</span><br><span class="line">category1.products.count # =&gt; 2</span><br><span class="line">category1.products &lt;&lt; product1</span><br><span class="line">category1.products.count # =&gt; 3</span><br><span class="line"></span><br><span class="line">product1.categories # =&gt; product1 关联的 category的数组集合</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails-many-to-many/" rel="tag">#Rails many-to-many</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/09/one-to-many/" rel="next" title="Rails 中实现model的一对多关系映射">
+                <i class="fa fa-chevron-left"></i> Rails 中实现model的一对多关系映射
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/10/one-to-one/" rel="prev" title="Rails 中实现model的一对一关系映射">
+                Rails 中实现model的一对一关系映射 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#何谓多对多"><span class="nav-number">1.</span> <span class="nav-text">何谓多对多?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移植到数据库"><span class="nav-number">2.</span> <span class="nav-text">移植到数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-has-many和-belongs-to-处理-model-的对应关系"><span class="nav-number">3.</span> <span class="nav-text">使用 has_many和 belongs_to 处理 model 的对应关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可以使用的方法"><span class="nav-number">4.</span> <span class="nav-text">可以使用的方法</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

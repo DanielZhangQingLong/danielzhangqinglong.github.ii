@@ -1,0 +1,664 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="closure,functional programming,block,lambda," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="译文
+引用自 CLICK May 18, 2010  By Alan Skorkin
+有技术不错的程序员并不知道闭包的概念. 我没有在这个问题上进行统计, 只是根据经验凭直觉说的. 但是, 这种现象也是理所当然的, 因为目前最流行的语言比如 java, c++ 并不支持闭包. 一个程序员主要使用的语言不支持一个概念, 那么这个概念也不会被放大他日程优先级最高的位置, 甚至根本就不知道这个概念.我个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="closure_explanations 闭包--- 简明解释(使用 Ruby)">
+<meta property="og:url" content="http://yoursite.com/2015/01/10/closure-explanations/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="译文
+引用自 CLICK May 18, 2010  By Alan Skorkin
+有技术不错的程序员并不知道闭包的概念. 我没有在这个问题上进行统计, 只是根据经验凭直觉说的. 但是, 这种现象也是理所当然的, 因为目前最流行的语言比如 java, c++ 并不支持闭包. 一个程序员主要使用的语言不支持一个概念, 那么这个概念也不会被放大他日程优先级最高的位置, 甚至根本就不知道这个概念.我个">
+<meta property="og:updated_time" content="2015-02-13T14:02:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="closure_explanations 闭包--- 简明解释(使用 Ruby)">
+<meta name="twitter:description" content="译文
+引用自 CLICK May 18, 2010  By Alan Skorkin
+有技术不错的程序员并不知道闭包的概念. 我没有在这个问题上进行统计, 只是根据经验凭直觉说的. 但是, 这种现象也是理所当然的, 因为目前最流行的语言比如 java, c++ 并不支持闭包. 一个程序员主要使用的语言不支持一个概念, 那么这个概念也不会被放大他日程优先级最高的位置, 甚至根本就不知道这个概念.我个">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> closure_explanations 闭包--- 简明解释(使用 Ruby) | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                closure_explanations 闭包--- 简明解释(使用 Ruby)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-01-10T13:36:31+08:00" content="2015-01-10">
+              2015-01-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ruby/" itemprop="url" rel="index">
+                    <span itemprop="name">Ruby</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="译文"><a href="#译文" class="headerlink" title="译文"></a>译文</h3><blockquote>
+<p>引用自 <a href="http://www.skorks.com/2010/05/closures-a-simple-explanation-using-ruby/" target="_blank" rel="external">CLICK</a> May 18, 2010  By Alan Skorkin</p>
+<p>有技术不错的程序员并不知道闭包的概念. 我没有在这个问题上进行统计, 只是根据经验凭直觉说的. 但是, 这种现象也是理所当然的, 因为目前最流行的语言比如 java, c++ 并不支持闭包. 一个程序员主要使用的语言不支持一个概念, 那么这个概念也不会被放大他日程优先级最高的位置, 甚至根本就不知道这个概念.<br>我个人比较赞成优秀的开发者应该尽量去多了解几门语言, 也有很多语言支持闭包, 你也很有可能陷入某个问题上. 这体现了大多数开发者学习一门新的语言时, 完全走错了方向. 有时候你听到有人说他会一大堆语言时, 他很可能是在夸大事实.下面就来讨论一下闭包(个人觉得这里有点攻击性, 不友好, 不符合社会主义核心价值观 ^_^)</p>
+<p>你很可能上大学的时候就遇到过闭包, 但是你不记得了. 大概过去10年里, 软件相关的课程逐渐指出像闭包这样的概念不被强调, 它主要是一个函数的概念, 函数式编程语言已经过时, Java 成为主流. 他们试图让学位更加工业化结果导致了一代程序员成了”跛子”, 尽管这对他们来说没什么. 你自认为这种教育是正确的, 实际上你只有去信任, 因为你知道这种信任是错误的时候你也无能为力. 那我来说, 在我上学期间, 第一年学习 java, 第二年学习 C. 第一次接触函数式编程是学习人工智能的课程, 我学习了一下Lisp 语言以及一整套其他的概念. 不必说, 在这么课程中函数式编程不是被放在一个重要的位置上的. 许多人都很困惑. 我们当然或多或少地接触了一些闭包的知识, 但是谁有时间去仔细考虑呢? 好不容易花两年时间熟悉一门语言, 大多数人都不会去接收这种风格迥异语言. 参加工作以后, 闭包和其他一些函数式编程的概念早就忘在脑后了. 再次学习这些东西花了我很长的时间, 作为一个开发者,这些东西在我上大学受基础教育的适合就应该被掌握. 不过我那时没有学这些, 现在就要补回来了.</p>
+<p>讽刺的是 java 又要恢复函数式编程的风格了. 完全函数式编程语言( Clojure ) 和 交替性函数式编程语言( Scala ) 所以概念有开始变得有意义了. 但是过去这些年对这些概念的损害已经造成了影响并且这种影响还会继续. 学术界也不急于调整. 你不可能再对函数式概念毫不知情了, 即使是 javascript, 这种 web 2.0让我们深恶痛绝的语言–是函数式的杂交产物. 开发者开始热衷于这些概念, 好像他们的这些观点就可以代表这些概念:</p>
+<p>在计算机科学中, 闭包是first-class function ,并且 把自由的变量绑定到语法环境里. </p>
+<p>这里 first-class 我在维基百科上找了下面的一句解释:<br>supports passing functions as arguments to other functions, returning them as the values from other functions, and assigning them to variables or storing them in data structures.</p>
+<p>这到底是什么意思? 维基百科的解释还好些, 但是少了一些函数式的上下文, 还是很难说得通. 你也许听到这样的解释:</p>
+<blockquote>
+<p>闭包是一个函数, 据说是关闭的, 是自由变量. </p>
+</blockquote>
+<p>真的吗? closure 关闭, 为什么. 这么说直接跳过了问题. 一般下个问题一定是来争论使问题明朗. 但是想上面的解释还不如不解释, 它只会让别人觉得很时髦, 没有实际意义. 但是, 你想向某人解释什么事物时, 自己要明白, 而不是自欺欺人. 现在让我来解释一下吧. (这部分似乎用处不大, 而且很批判, 我不是很喜欢)</p>
+</blockquote>
+<h2 id="简单地解释概念"><a href="#简单地解释概念" class="headerlink" title="简单地解释概念"></a>简单地解释概念</h2><blockquote>
+<p>闭包基本是一个 函数/方法, 具有下列属性:</p>
+</blockquote>
+<ul>
+<li>你可以向传递对象那样传递它, 以后调用</li>
+<li>当这个函数创建的时候, 它记住了该环境下所有的变量的值. 被调用时, 它可以一直访问这些变量, 甚至这些变量已处于环境的外部.</li>
+</ul>
+<blockquote>
+<p>你可能猜到, 你不会免费得到闭包, 它需要被语言支持. 而且语言要支持 first-class functions. first-class function 指函数可以看成对象, 你可以把它存入集合, 也可以作为参数传递给其他函数. 正如我所说, 可以被传递是闭包的首要特性.</p>
+<p>一个普通的函数被定义在一个指定的环境中(比如说 class) , 但是它只能在这个 class 中被调用. 这个方法可以访问到这个 class 范围内定义的全部变量, 比如说这个函数可以接受一些参数, 或者函数内部可以使用类变量. 而闭包可以在一个 scope(如 class) 被定义, 而在完全不同的 scope 中被调用(因为在调用之前可以将其作为传递), 因此, 当闭包创建时, 它保留了scope 内的所有变量的值.  闭包 被调用时,就算是变量已经不在那个 scope 了, 但是在闭包内部这些变量依然还在. 换言之, 被定义时, 闭包保留了其语法环境内所有的东西(knowledge 不知道咋翻译).</p>
+</blockquote>
+<h2 id="使用-Ruby-举例说明"><a href="#使用-Ruby-举例说明" class="headerlink" title="使用 Ruby 举例说明"></a>使用 Ruby 举例说明</h2><blockquote>
+<p>没有例子就等于完全没有解释, 例子才能使这些逐渐被理解. 我要用 Ruby 语言, 因为它支持闭包.<br>在 Ruby 中, 闭包是通过 proc 和 lambda 支持的. 它们非常相似, 但是有一些微妙的区别. 我们来创建一个闭包来看看实现上面的两个属性的:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span></span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(value1)</span></span></span><br><span class="line">    @value1 = value1</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">value_printer</span><span class="params">(value2)</span></span></span><br><span class="line">    lambda &#123; puts <span class="string">"Value1: <span class="subst">#&#123;@value1&#125;</span>, Value2: <span class="subst">#&#123;value2&#125;</span>"</span> &#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">caller</span><span class="params">(some_closure)</span></span></span><br><span class="line">  some_closure.call</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">some_class = SomeClass.new(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">printer = some_class.value_printer(<span class="string">"some value"</span>)</span><br><span class="line"></span><br><span class="line">caller(printer)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p> 执行后输出了下面的内容:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="symbol">Value1:</span> <span class="number">5</span>, <span class="symbol">Value2:</span> some value</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>value_printer 创建了一个闭包, 通过使用 lambda 结构, 然后返回闭包. 然后把该闭包赋值给一个变量, 传给另外一个函数, 这个函数中调用了这个闭包. 这就满足了闭包的第一个属性–可传递.</p>
+<p>同时也需要注意调用闭包的时候, 打印出来了 “5”和”some value” , 在程序剩下的部分调用闭包的时候,  @value1 和 value2 都已经在 scope(class) 之外了, 在闭包的内部这些变量还在 scope 内的, 因为闭包在被定义的时候就保留了 scope 内所有变量的状态. 因此, lambda 满足闭包的第二个属性.</p>
+<p>当然, 我们可以再深入些, 当闭包被定义的时候, 它如何保留了 scope 内的变量? 这个必须要由语言支持, 有两只途径实现:</p>
+<ol>
+<li>闭包创建了它所需要的所有变量的一个备份, 因此是这些副本随着闭包传递.</li>
+<li>闭包 延长了它所需要的所有变量的生命周期. 没有复制变量, 而是保留了它们的引用, 而且变量本身不可以被垃圾回收器回收掉.</li>
+</ol>
+<p>如果语言支持第一种方式, 那么如果我们创建两个或者更多闭包来访问相同的变量, 每个闭包被调用时都有自己单独对变量的拷贝. 如果语言支持第二中方式, 所有的闭包都引用同一个变量, 它们实际上处理的就是同一变量. Ruby 就是这么做的.看下面的例子:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span></span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(value1)</span></span></span><br><span class="line">    @value1 = value1</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">value_incrementer</span></span></span><br><span class="line">    lambda &#123; @value1 += <span class="number">1</span> &#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">value_printer</span></span></span><br><span class="line">    lambda &#123; puts <span class="string">"value: <span class="subst">#&#123; @value1 &#125;</span>"</span>&#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">some_class = SomeClass.new(<span class="number">2</span>)</span><br><span class="line">incrementer_closure = some_class.value_incrementer</span><br><span class="line">printer_closure = some_class.value_printer</span><br><span class="line"><span class="number">3</span>.times <span class="keyword">do</span> </span><br><span class="line">  incrementer_closure.call</span><br><span class="line">  printer_closure.call</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">运行结果: </span><br><span class="line"> <span class="comment">#=&gt; </span></span><br><span class="line"><span class="symbol">value:</span> <span class="number">3</span></span><br><span class="line"><span class="symbol">value:</span> <span class="number">4</span></span><br><span class="line"><span class="symbol">value:</span> <span class="number">5</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这一次我们创建了两个闭包, 一个做增加 value 的 一个做打印.  我们运行3次闭包, 发现: 每一次迭代2个闭包操作的都是同一个变量, 因为值在增长. 如果 Ruby 要是用复制变量的方法来实现闭包的话,我们将会看到打印的结果都是2, 打印的闭包操作的变量是它单独的拷贝.</p>
+</blockquote>
+<h3 id="为什么闭包有用"><a href="#为什么闭包有用" class="headerlink" title="为什么闭包有用?"></a>为什么闭包有用?</h3><blockquote>
+<p>既然我们对于闭包的理解更好了一些, 那么闭包可以干什么呢? 嗯, 这要看你用的是什么语言了. 在函数式编程语言中它又很大的作用. 函数式编程语言内部是无状态的, 但是我们可以通过使用闭包来持久化一些状态,只要我们的闭包还在.(比如: 如果闭包改变了一个变量的值, 那么直到下次被调用时闭包会一直保持这个值). 我希望闭包的用途是不言而喻的. </p>
+<p>像闭包以及其他几种结构的存在, 让函数式编程语言在表达逻辑方面更加简明, 你可以写更少的代码做更多的事情.</p>
+<p>非函数式编程语言就显得没那么简明了. 表示状态是命令式编程语言的强项. 唯一让闭包引人注目的就是你可以用它们写出更加简明的代码而且还利用了命令式的风格. 闭包的存在就是可以使用像 Ruby 这样的语言用更少的代码做更多的事情, 而 java 就不能(不支持闭包).</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/closure/" rel="tag">#closure</a>
+          
+            <a href="/tags/functional-programming/" rel="tag">#functional programming</a>
+          
+            <a href="/tags/block/" rel="tag">#block</a>
+          
+            <a href="/tags/lambda/" rel="tag">#lambda</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/04/23/git-contribution/" rel="next" title="github的多人协作(转载)">
+                <i class="fa fa-chevron-left"></i> github的多人协作(转载)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/01/10/ruby-2-0-works-hard-so-you-can-be-lazy-tranlation/" rel="prev" title="Ruby 2.0 Works Hard So You Can Be Lazy">
+                Ruby 2.0 Works Hard So You Can Be Lazy <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#译文"><span class="nav-number">1.</span> <span class="nav-text">译文</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单地解释概念"><span class="nav-number"></span> <span class="nav-text">简单地解释概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Ruby-举例说明"><span class="nav-number"></span> <span class="nav-text">使用 Ruby 举例说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么闭包有用"><span class="nav-number">1.</span> <span class="nav-text">为什么闭包有用?</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

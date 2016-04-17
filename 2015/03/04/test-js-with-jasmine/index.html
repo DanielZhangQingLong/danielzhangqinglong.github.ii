@@ -1,0 +1,640 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Jasmine javascript test," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇文章讲解如何使用jasmine对javascript进行单元测试, 我们知道controller, Model都有相应的单元测试, jasmine就是针对javascript及其衍生的语言如coffeescript进行单元测试的. 在rails中, 添加jasmine-rails这个gem来使用jasmine.前一篇文章中不难发现, Rails中也提供了js测试的方案, 比如capybara">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails中使用Jasmine测试javascript">
+<meta property="og:url" content="http://yoursite.com/2015/03/04/test-js-with-jasmine/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本篇文章讲解如何使用jasmine对javascript进行单元测试, 我们知道controller, Model都有相应的单元测试, jasmine就是针对javascript及其衍生的语言如coffeescript进行单元测试的. 在rails中, 添加jasmine-rails这个gem来使用jasmine.前一篇文章中不难发现, Rails中也提供了js测试的方案, 比如capybara">
+<meta property="og:updated_time" content="2015-03-05T01:03:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails中使用Jasmine测试javascript">
+<meta name="twitter:description" content="本篇文章讲解如何使用jasmine对javascript进行单元测试, 我们知道controller, Model都有相应的单元测试, jasmine就是针对javascript及其衍生的语言如coffeescript进行单元测试的. 在rails中, 添加jasmine-rails这个gem来使用jasmine.前一篇文章中不难发现, Rails中也提供了js测试的方案, 比如capybara">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails中使用Jasmine测试javascript | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails中使用Jasmine测试javascript
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-04T21:09:31+08:00" content="2015-03-04">
+              2015-03-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本篇文章讲解如何使用jasmine对javascript进行单元测试, 我们知道controller, Model都有相应的单元测试, jasmine就是针对javascript及其衍生的语言如coffeescript进行单元测试的. 在rails中, 添加<code>jasmine-rails</code>这个gem来使用jasmine.<br>前一篇文章中不难发现, Rails中也提供了js测试的方案, 比如capybara-webkit, 但是capybara-webkit会启动虚拟的浏览器而占用时间, 所以使用这种针对js 单元测试的方法还是很有必要的</p>
+</blockquote>
+<h2 id="安装jasmine-rails"><a href="#安装jasmine-rails" class="headerlink" title="安装jasmine-rails"></a>安装jasmine-rails</h2><blockquote>
+<p>添加到Gemfile中:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line"></span><br><span class="line">group :development, :test do</span><br><span class="line">  gem &apos;jasmine-rails&apos;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>bundle install</p>
+<p>安装gem以后, 生成相关的文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ rails g jasmine_rails:install</span><br><span class="line">  identical  spec/javascripts/support/jasmine.yml</span><br><span class="line">         route  mount JasmineRails::Engine =&gt; &apos;/specs&apos; if defined?(JasmineRails)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上面的命令创建了 jasmine的设置文件spec/javascripts/support/jasmine.yml. 该文件描述了javascript(coffeescript)文件的路径, jasmine测试文件的路径等.</p>
+</blockquote>
+<h2 id="简单介绍jasmine的使用方法"><a href="#简单介绍jasmine的使用方法" class="headerlink" title="简单介绍jasmine的使用方法"></a>简单介绍jasmine的使用方法</h2><blockquote>
+<p>首先创建测试文件spec/javascripts/foo_spec.js.coffee. jasmine的语法和RSpec的语法类似:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">describe &quot;Foo&quot; -&gt;</span><br><span class="line">  beforeEach -&gt;</span><br><span class="line">    @foo = new Foo(&quot;Daniel&quot;)</span><br><span class="line"></span><br><span class="line">  it &quot;is first test&quot;, -&gt;</span><br><span class="line">    expect(@foo.greet()).toBe &quot;hello, Daniel&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>实现js代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class @Foo -&gt;</span><br><span class="line">  constructor: (name) -&gt;</span><br><span class="line">    @name = name</span><br><span class="line"></span><br><span class="line">  greet: -&gt;</span><br><span class="line">    &quot;hello, #&#123;@name&#125;&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>运行测试<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">RAILS_ENV=test bundle exec rake spec:javascript</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">Finished</span><br><span class="line">-----------------</span><br><span class="line">1 spec, 0 failures in 0.003s.</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="jasmine可以使用的matcher"><a href="#jasmine可以使用的matcher" class="headerlink" title="jasmine可以使用的matcher"></a>jasmine可以使用的matcher</h2><blockquote>
+<p>类似于RSpec, jasmine也提供了matcher, 具体内容请参见<a href="http://jasmine.github.io/2.0/introduction.html" target="_blank" rel="external">http://jasmine.github.io/2.0/introduction.html</a></p>
+</blockquote>
+<h2 id="jquery支持-TODO"><a href="#jquery支持-TODO" class="headerlink" title="jquery支持 #TODO"></a>jquery支持 #TODO</h2><blockquote>
+<p>jasmine-jquery为jasmine JavaScript测试框架扩展了下面的功能:</p>
+</blockquote>
+<ul>
+<li>为jquery提供了一些定制化的matcher</li>
+<li>提供了处理HTML, CSS和JSON的API</li>
+</ul>
+<blockquote>
+<p>具体方法请参见<a href="https://github.com/velesin/jasmine-jquery" target="_blank" rel="external">https://github.com/velesin/jasmine-jquery</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Jasmine-javascript-test/" rel="tag">#Jasmine javascript test</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/03/rspec-capybara-cheatsheet/" rel="next" title="RSpec Capybara 方法总结">
+                <i class="fa fa-chevron-left"></i> RSpec Capybara 方法总结
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/05/rspec-speedup/" rel="prev" title="RSpec测试提速方法总结">
+                RSpec测试提速方法总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装jasmine-rails"><span class="nav-number">1.</span> <span class="nav-text">安装jasmine-rails</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单介绍jasmine的使用方法"><span class="nav-number">2.</span> <span class="nav-text">简单介绍jasmine的使用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jasmine可以使用的matcher"><span class="nav-number">3.</span> <span class="nav-text">jasmine可以使用的matcher</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jquery支持-TODO"><span class="nav-number">4.</span> <span class="nav-text">jquery支持 #TODO</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

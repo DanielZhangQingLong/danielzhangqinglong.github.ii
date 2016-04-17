@@ -1,0 +1,651 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="timezone date," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Rails为了处理日期定义了Date类, 处理时刻定义了Time类. 为了更加容易处理时间日期等rails在ActiveSupport组件中扩展了timezone等功能, 接下来我就对Rails时间相关的处理进行总结.
+
+设定时区
+Rails中在application.rb设置时区:
+
+12345678# config/application.rb# 默认是UTC (0:00)# 北美时间# c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails中时间日期等处理的总结">
+<meta property="og:url" content="http://yoursite.com/2015/02/22/time-related/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Rails为了处理日期定义了Date类, 处理时刻定义了Time类. 为了更加容易处理时间日期等rails在ActiveSupport组件中扩展了timezone等功能, 接下来我就对Rails时间相关的处理进行总结.
+
+设定时区
+Rails中在application.rb设置时区:
+
+12345678# config/application.rb# 默认是UTC (0:00)# 北美时间# c">
+<meta property="og:updated_time" content="2015-02-22T08:09:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails中时间日期等处理的总结">
+<meta name="twitter:description" content="Rails为了处理日期定义了Date类, 处理时刻定义了Time类. 为了更加容易处理时间日期等rails在ActiveSupport组件中扩展了timezone等功能, 接下来我就对Rails时间相关的处理进行总结.
+
+设定时区
+Rails中在application.rb设置时区:
+
+12345678# config/application.rb# 默认是UTC (0:00)# 北美时间# c">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails中时间日期等处理的总结 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails中时间日期等处理的总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-22T08:39:28+08:00" content="2015-02-22">
+              2015-02-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Rails为了处理日期定义了<code>Date</code>类, 处理时刻定义了<code>Time</code>类. 为了更加容易处理时间日期等rails在ActiveSupport组件中扩展了timezone等功能, 接下来我就对Rails时间相关的处理进行总结.</p>
+</blockquote>
+<h2 id="设定时区"><a href="#设定时区" class="headerlink" title="设定时区"></a>设定时区</h2><blockquote>
+<p>Rails中在<code>application.rb</code>设置时区:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># config/application.rb</span><br><span class="line"># 默认是UTC (0:00)</span><br><span class="line"></span><br><span class="line"># 北美时间</span><br><span class="line"># config.time_zone = &apos;Central Time (US &amp; Canada)&apos;</span><br><span class="line"></span><br><span class="line"># 北京时间</span><br><span class="line"># config.time_zone = &apos;Beijing&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="时区一览"><a href="#时区一览" class="headerlink" title="时区一览"></a>时区一览</h2><h3 id="显示所有时区"><a href="#显示所有时区" class="headerlink" title="显示所有时区"></a>显示所有时区</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">rake time:zones:all</span><br><span class="line">* UTC -11:00 *</span><br><span class="line">* American Samoa</span><br><span class="line">* International Date Line West</span><br><span class="line">* Midway Island</span><br><span class="line">* Samoa</span><br><span class="line">*</span><br><span class="line">* * UTC -10:00 *</span><br><span class="line">* Hawaii</span><br><span class="line">*</span><br><span class="line">* * UTC -09:00 *</span><br><span class="line">* Alaska</span><br><span class="line">* ...</span><br></pre></td></tr></table></figure>
+<h3 id="操作系统所在时区"><a href="#操作系统所在时区" class="headerlink" title="操作系统所在时区"></a>操作系统所在时区</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">rake time:zones:local</span><br><span class="line">* UTC +08:00 *</span><br><span class="line">* Beijing</span><br><span class="line">* Chongqing</span><br><span class="line">* Hong Kong</span><br><span class="line">* Irkutsk</span><br><span class="line">* Kuala Lumpur</span><br><span class="line">* Perth</span><br><span class="line">* Singapore</span><br><span class="line">* Taipei</span><br><span class="line">* Ulaanbaatar</span><br></pre></td></tr></table></figure>
+<h2 id="获取当前日期"><a href="#获取当前日期" class="headerlink" title="获取当前日期"></a>获取当前日期</h2><blockquote>
+<p><code>Date.today</code> : 获取当前日期<br><code>Date.current</code> : 获取时区相关的当前日期, 相当于<code>Time.zone.today</code></p>
+</blockquote>
+<h2 id="获取当前时间"><a href="#获取当前时间" class="headerlink" title="获取当前时间"></a>获取当前时间</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># 获取现在时间(操作系统时间, 时区不相关)</span><br><span class="line">Time.now</span><br><span class="line"></span><br><span class="line"># 获取时区相关时间</span><br><span class="line">Time.zone.now</span><br><span class="line"></span><br><span class="line">Time.current # 如果设置了 config.time_zone 返回Time.zone.now, 否则返回Time.now</span><br><span class="line"></span><br><span class="line">Time.current</span><br><span class="line"> =&gt; Sun, 22 Feb 2015 15:02:24 CST +08:00</span><br><span class="line"></span><br><span class="line">Time.zone.now</span><br><span class="line"> =&gt; Sun, 22 Feb 2015 15:02:28 CST +08:00</span><br><span class="line"></span><br><span class="line"># 不设置config.time_zone, 返回的是UTC(协调世界时间)</span><br><span class="line">Time.current</span><br><span class="line"> =&gt; Sun, 22 Feb 2015 07:12:54 UTC +00:00</span><br><span class="line"></span><br><span class="line">Time.zone.now</span><br><span class="line"> =&gt; Sun, 22 Feb 2015 07:12:59 UTC +00:00</span><br></pre></td></tr></table></figure>
+<h2 id="生成指定的时间"><a href="#生成指定的时间" class="headerlink" title="生成指定的时间"></a>生成指定的时间</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Time.local # 获取指定的时间</span><br><span class="line"> Time.local(2014, 11, 29, 11, 22, 33)</span><br><span class="line">  =&gt; 2014-11-29 11:22:33 +0800</span><br><span class="line"></span><br><span class="line">Time.zone.local # 获取指定时区相关时间</span><br><span class="line">Time.zone.local(2014, 11, 29, 11, 22, 33)</span><br><span class="line"> =&gt; Sat, 29 Nov 2014 11:22:33 UTC +00:00</span><br></pre></td></tr></table></figure>
+<h2 id="昨天-明天"><a href="#昨天-明天" class="headerlink" title="昨天, 明天"></a>昨天, 明天</h2><blockquote>
+<p><code>Time#yesterday</code> : 昨天. <code>Time.tomorrow</code> : 明天.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">t = Time.local(2014, 11, 30)</span><br><span class="line">=&gt; 2014-11-30 00:00:00 +0800</span><br><span class="line"></span><br><span class="line">t.tomorrow</span><br><span class="line">=&gt; 2014-12-01 00:00:00 +0800</span><br><span class="line"></span><br><span class="line">t.yesterday</span><br><span class="line">=&gt; 2014-12-01 00:00:00 +0800</span><br><span class="line"></span><br><span class="line"># 时区相关</span><br><span class="line">t2 = Time.zone.local(2014, 11, 29)</span><br><span class="line"> =&gt; Sat, 29 Nov 2014 00:00:00 CST +08:00</span><br><span class="line"></span><br><span class="line">t2.yesterday</span><br><span class="line"> =&gt; Fri, 28 Nov 2014 00:00:00 CST +08:00</span><br><span class="line"></span><br><span class="line">t2.tomorrow</span><br><span class="line"> =&gt; Sun, 30 Nov 2014 00:00:00 CST +08:00</span><br></pre></td></tr></table></figure>
+<h2 id="前-后-1年-月-prev-xxx-next-xxx"><a href="#前-后-1年-月-prev-xxx-next-xxx" class="headerlink" title="前(后)1年(月) (prev_xxx, next_xxx)"></a>前(后)1年(月) (prev_xxx, next_xxx)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Time#prev_month, Date#prev_month</span><br><span class="line">Time#next_month, Date#next_month</span><br><span class="line">Time#prev_year, Date#prev_year</span><br><span class="line">Time#next_year, Date#next_year</span><br></pre></td></tr></table></figure>
+<h2 id="相对时间"><a href="#相对时间" class="headerlink" title="相对时间"></a>相对时间</h2><blockquote>
+<p>Numeric类与下列方法组合可表示相对时间:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">years(年)</span><br><span class="line">months (月)</span><br><span class="line">weeks (周)</span><br><span class="line">days (日)</span><br><span class="line">hours (小时)</span><br><span class="line">minutes (分)</span><br><span class="line">seconds (秒)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>继续调用下面表示时间前后的方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">后: from_now 或者 since</span><br><span class="line">前: until 或者 ago</span><br><span class="line"></span><br><span class="line">Time.current</span><br><span class="line"> =&gt; Sun, 22 Feb 2015 15:51:46 CST +08:00</span><br><span class="line"></span><br><span class="line"> # 默认时间就是当前时间</span><br><span class="line">1.weeks.ago</span><br><span class="line"> =&gt; Sun, 15 Feb 2015 15:52:08 CST +08:00</span><br><span class="line"></span><br><span class="line">1.days.since</span><br><span class="line"> =&gt; Mon, 23 Feb 2015 15:52:41 CST +08:00</span><br><span class="line"></span><br><span class="line"># 不使用当前时间作为默认时间</span><br><span class="line">t = Time.local(2014, 11, 1)</span><br><span class="line"> =&gt; 2014-11-01 00:00:00 +0800</span><br><span class="line"></span><br><span class="line">1.days.since t</span><br><span class="line"> =&gt; 2014-11-02 00:00:00 +0800</span><br></pre></td></tr></table></figure>
+<h2 id="获取开始和结束的时间点"><a href="#获取开始和结束的时间点" class="headerlink" title="获取开始和结束的时间点"></a>获取开始和结束的时间点</h2><blockquote>
+<p>我们可以获得某个时间以何为单位的开始和结束:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">now = Time.current</span><br><span class="line"> =&gt; Sun, 22 Feb 2015 15:58:21 CST +08:00</span><br><span class="line"></span><br><span class="line">now.beginning_of_hour</span><br><span class="line">=&gt; Sun, 22 Feb 2015 15:00:00 CST +08:00  # 从15:00:00开始</span><br><span class="line"></span><br><span class="line">now.beginning_of_month</span><br><span class="line">=&gt; Sun, 01 Feb 2015 00:00:00 CST +08:00 # 从01 Feb开始</span><br><span class="line"></span><br><span class="line"># 其他类似方法有</span><br><span class="line">beginning_of_hour, end_of_hour</span><br><span class="line">beginning_of_day, end_of_day</span><br><span class="line">beginning_of_week, end_of_week</span><br><span class="line">beginning_of_month, end_of_month</span><br><span class="line">beginning_of_quarter, end_of_quarter # 季度(3个月)</span><br><span class="line">beginning_of_year, end_of_year</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>获取一个月的订单记录:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">now = Time.current #=&gt; Sat, 29 Nov 2014 02:26:53 CST -06:00</span><br><span class="line">Order.where(order_at: now.beginning_of_month..now.end_of_month)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/timezone-date/" rel="tag">#timezone date</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/21/multi-form-submit/" rel="next" title="一个表单中配置多个Submit">
+                <i class="fa fa-chevron-left"></i> 一个表单中配置多个Submit
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/22/timecop/" rel="prev" title="Rails使用Timecop处理时间日期">
+                Rails使用Timecop处理时间日期 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#设定时区"><span class="nav-number">1.</span> <span class="nav-text">设定时区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时区一览"><span class="nav-number">2.</span> <span class="nav-text">时区一览</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#显示所有时区"><span class="nav-number">2.1.</span> <span class="nav-text">显示所有时区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作系统所在时区"><span class="nav-number">2.2.</span> <span class="nav-text">操作系统所在时区</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取当前日期"><span class="nav-number">3.</span> <span class="nav-text">获取当前日期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取当前时间"><span class="nav-number">4.</span> <span class="nav-text">获取当前时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成指定的时间"><span class="nav-number">5.</span> <span class="nav-text">生成指定的时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#昨天-明天"><span class="nav-number">6.</span> <span class="nav-text">昨天, 明天</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前-后-1年-月-prev-xxx-next-xxx"><span class="nav-number">7.</span> <span class="nav-text">前(后)1年(月) (prev_xxx, next_xxx)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相对时间"><span class="nav-number">8.</span> <span class="nav-text">相对时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取开始和结束的时间点"><span class="nav-number">9.</span> <span class="nav-text">获取开始和结束的时间点</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

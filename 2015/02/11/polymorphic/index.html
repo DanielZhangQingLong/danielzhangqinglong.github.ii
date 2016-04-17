@@ -1,0 +1,655 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Polymorphic," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="如果在 model 中使用has_many的 as 选项和belongs_to 的polymorphic 选项, 可以很简单地实现数据库的多态关系.
+
+何谓多态
+
+看这个 ER 图, Article和Event都可以有多个Comment. 也就是说, Comment 即属于Article, 又属于Event, comments 表即被article引用又被event 引用. 这种关系就是多态.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 实现多态(polymorphic) 关系">
+<meta property="og:url" content="http://yoursite.com/2015/02/11/polymorphic/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="如果在 model 中使用has_many的 as 选项和belongs_to 的polymorphic 选项, 可以很简单地实现数据库的多态关系.
+
+何谓多态
+
+看这个 ER 图, Article和Event都可以有多个Comment. 也就是说, Comment 即属于Article, 又属于Event, comments 表即被article引用又被event 引用. 这种关系就是多态.">
+<meta property="og:image" content="http://i2.tietuku.com/ba11da08a8701338.png">
+<meta property="og:updated_time" content="2015-02-13T14:02:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 实现多态(polymorphic) 关系">
+<meta name="twitter:description" content="如果在 model 中使用has_many的 as 选项和belongs_to 的polymorphic 选项, 可以很简单地实现数据库的多态关系.
+
+何谓多态
+
+看这个 ER 图, Article和Event都可以有多个Comment. 也就是说, Comment 即属于Article, 又属于Event, comments 表即被article引用又被event 引用. 这种关系就是多态.">
+<meta name="twitter:image" content="http://i2.tietuku.com/ba11da08a8701338.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails 实现多态(polymorphic) 关系 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails 实现多态(polymorphic) 关系
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-11T17:29:53+08:00" content="2015-02-11">
+              2015-02-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>如果在 model 中使用has_many的 <code>as</code> 选项和belongs_to 的<code>polymorphic</code> 选项, 可以很简单地实现数据库的多态关系.</p>
+</blockquote>
+<h2 id="何谓多态"><a href="#何谓多态" class="headerlink" title="何谓多态"></a>何谓多态</h2><p><img src="http://i2.tietuku.com/ba11da08a8701338.png" alt=""></p>
+<blockquote>
+<p>看这个 ER 图, Article和Event都可以有多个Comment. 也就是说, Comment 即属于Article, 又属于Event, comments 表即被article引用又被event 引用. 这种关系就是多态.</p>
+</blockquote>
+<h2 id="生成Polymorphic-类型的表"><a href="#生成Polymorphic-类型的表" class="headerlink" title="生成Polymorphic 类型的表"></a>生成Polymorphic 类型的表</h2><blockquote>
+<p>首先, 生成Event model 和表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rails g model event name:string content:text</span><br></pre></td></tr></table></figure></p>
+<p>然后, 生成Article model 和表</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rails g model article title:string body:text</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>最后, 生成 Comment model 和表.<br><strong><em> 非常重要: 需要加入两个列, 一个是引用外键id, 一个是引用的外部 model 的类型</em></strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rails g model comment content:text commentable_id:integer commentable_type:string</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>并且需要添加索引:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># db/migrate/yyyymmddhhMMss_create_comments.rb</span><br><span class="line"></span><br><span class="line">class CreateComments &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    create_table :comments do |t|</span><br><span class="line">    t.text :content</span><br><span class="line">    t.integer :commentable_id</span><br><span class="line">    t.string :commentable_type</span><br><span class="line"></span><br><span class="line">    t.timestamps</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  add_index :comments, [:commentable_id, :commentable_type]</span><br><span class="line"></span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>最后移植:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="向-model-中加入has-many-和-belongs-to-实现关联关系"><a href="#向-model-中加入has-many-和-belongs-to-实现关联关系" class="headerlink" title="向 model 中加入has_many 和 belongs_to 实现关联关系"></a>向 model 中加入has_many 和 belongs_to 实现关联关系</h2><blockquote>
+<p>在Comment 加上 belongs_to 方法, 并且需要注意参数应该是其对应的表的外键xxx_id 的 xxx, polymorphic 选项为 true<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># app/models/comment.rb</span><br><span class="line">class Comment &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :commentable, polymorphic: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>在Event 和 Article这一边加入 has_many 和 as option</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># app/models/event.rb</span><br><span class="line">class Event &lt; ActiveRecord::Base</span><br><span class="line">  has_many :comments, as: :commentable</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/article.rb</span><br><span class="line">class Article &lt; ActiveRecord::Base</span><br><span class="line">  has_many :comments, as: :commentable</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>设定完毕.</p>
+</blockquote>
+<h2 id="可以使用的方法"><a href="#可以使用的方法" class="headerlink" title="可以使用的方法"></a>可以使用的方法</h2><blockquote>
+<p>通过多态设定的comment 在被创建之后会自动设定<code>commentable_id</code> 和 <code>commentable_type</code>.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">event = Event.create name: &quot;event1&quot;</span><br><span class="line">event_comment = event.comments.create content: &quot;This event is awesome!&quot;</span><br><span class="line">event_comment</span><br><span class="line"># =&gt; &lt;Comment id: 1, content: &quot;This event is awesome!&quot;, commentable_id: 1, commentable_type: &quot;Event&quot;, created_at: ...&gt;</span><br><span class="line"></span><br><span class="line">article = Article.create title: &quot;article1&quot;</span><br><span class="line">article_comment = article.comments.create content: &quot;This article is great!&quot;</span><br><span class="line">article_comment</span><br><span class="line"># =&gt; &lt;Comment id: 2, content: &quot;This article is great!&quot;, commentable_id: 1, commentable_type: &quot;Article&quot;, created_at: ...&gt;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="CommentController-的实现"><a href="#CommentController-的实现" class="headerlink" title="CommentController 的实现"></a>CommentController 的实现</h2><blockquote>
+<p>接下来就看看我们在提交一条评论时, 这条评论是如何关联到相关对象上, 你在查看某个对象时, 相关的评论又是如何被查询出来的:</p>
+<p>首先在路由中配置好访问的 url.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># config/routes.rb</span><br><span class="line"></span><br><span class="line">resources :articles do</span><br><span class="line">  resources :comments</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">resources :events do</span><br><span class="line">  resources :comments</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p><code>load_commentable</code> 方法中, 从 URL 中判断请求的是Article的评论还是Event的评论.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">class CommentController &lt; ApplicationController</span><br><span class="line">  before_action :load_comments</span><br><span class="line"></span><br><span class="line">  def index</span><br><span class="line">    @comments = @commentable.comments</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def new</span><br><span class="line">    @comment = @commentable.comments.new</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def create</span><br><span class="line">    @commnet = @commentable.comments.new(comment_params)</span><br><span class="line">    if @comment.save</span><br><span class="line">      redirect_to @commentable, notice: &quot;评论成功&quot;</span><br><span class="line">    elsif</span><br><span class="line">      render :new</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">  private</span><br><span class="line"></span><br><span class="line">    def load_comments</span><br><span class="line">      # ex: /events/:id/comments</span><br><span class="line">      # ex: /articles/:id/comments</span><br><span class="line">      resource, id = request.fullpath.split(&apos;/&apos;)[1, 2]</span><br><span class="line">      @commentable = resource.singularize.classify.constantize.find(id)</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    def comment_params</span><br><span class="line">      params.require(:comment).permit(:content)</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>实际上Polimorphic很好理解, 就是一个表(A)与多个表(Bs)发生映射多对一的映射关系(Bs对A), 这时候就不能只拿id作为外键了, 既然要处理与多个表的映射关系, 还需要使用其他这些表的类型,也就是commentable_type, 结合刚才的例子, 我们可以拿到是某个对象的所有comment就是因为这个type.</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Polymorphic/" rel="tag">#Polymorphic</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/10/sti/" rel="next" title="Rails实现单一表继承STI(Single Table Inheritance)">
+                <i class="fa fa-chevron-left"></i> Rails实现单一表继承STI(Single Table Inheritance)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/12/accept-nested-attributes-for/" rel="prev" title="在表单中提交相关实体">
+                在表单中提交相关实体 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#何谓多态"><span class="nav-number">1.</span> <span class="nav-text">何谓多态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成Polymorphic-类型的表"><span class="nav-number">2.</span> <span class="nav-text">生成Polymorphic 类型的表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向-model-中加入has-many-和-belongs-to-实现关联关系"><span class="nav-number">3.</span> <span class="nav-text">向 model 中加入has_many 和 belongs_to 实现关联关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可以使用的方法"><span class="nav-number">4.</span> <span class="nav-text">可以使用的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CommentController-的实现"><span class="nav-number">5.</span> <span class="nav-text">CommentController 的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

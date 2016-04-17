@@ -1,0 +1,836 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Blocks," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Block 可以控制scope, 即: 哪些变量和方法对于哪几行代码是可见的.在本章你会发现这种对于scope的控制如何让block成为Ruby元编程的基础.
+Block仅仅是callable objects(可调用对象)这个大家族中的一员, 它还包括proc, lambda等. 本章将要向你展示这些callable objects的有利之处—比如: 存储block, 以后执行.
+Block概念">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ruby 元编程 第四章 Blocks">
+<meta property="og:url" content="http://yoursite.com/2015/03/26/ruby-metaprogramming-chpt4-blocks/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Block 可以控制scope, 即: 哪些变量和方法对于哪几行代码是可见的.在本章你会发现这种对于scope的控制如何让block成为Ruby元编程的基础.
+Block仅仅是callable objects(可调用对象)这个大家族中的一员, 它还包括proc, lambda等. 本章将要向你展示这些callable objects的有利之处—比如: 存储block, 以后执行.
+Block概念">
+<meta property="og:updated_time" content="2015-03-28T12:27:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ruby 元编程 第四章 Blocks">
+<meta name="twitter:description" content="Block 可以控制scope, 即: 哪些变量和方法对于哪几行代码是可见的.在本章你会发现这种对于scope的控制如何让block成为Ruby元编程的基础.
+Block仅仅是callable objects(可调用对象)这个大家族中的一员, 它还包括proc, lambda等. 本章将要向你展示这些callable objects的有利之处—比如: 存储block, 以后执行.
+Block概念">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Ruby 元编程 第四章 Blocks | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ruby 元编程 第四章 Blocks
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-26T10:53:25+08:00" content="2015-03-26">
+              2015-03-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ruby/" itemprop="url" rel="index">
+                    <span itemprop="name">Ruby</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Block 可以控制scope, 即: 哪些变量和方法对于哪几行代码是可见的.在本章你会发现这种对于scope的控制如何让block成为Ruby元编程的基础.</p>
+<p>Block仅仅是<code>callable objects</code>(可调用对象)这个大家族中的一员, 它还包括<code>proc</code>, <code>lambda</code>等. 本章将要向你展示这些<code>callable objects</code>的有利之处—比如: 存储block, 以后执行.</p>
+<p>Block概念可以追溯到函数式编程, 如LISP语言.</p>
+</blockquote>
+<h2 id="The-Basics-of-Blocks-Block的基础知识"><a href="#The-Basics-of-Blocks-Block的基础知识" class="headerlink" title="The Basics of Blocks(Block的基础知识)"></a>The Basics of Blocks(Block的基础知识)</h2><blockquote>
+<p>回忆一下block是怎么样工作的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def a_method(a, b)</span><br><span class="line">  a + yield(a, b)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">a_method(1, 2) &#123; |x, y| (x+y) * 3 &#125;</span><br><span class="line"></span><br><span class="line"># =&gt; 10</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>也可以使用<code>do end</code>, 其一般用来包裹多行代码.</p>
+<p>只有在你调用方法的时候才可以定义block, block直接被传给了方法, 方法可以通过yield关键字回调block.<br>block可以选择性地具有参数, 比如前面例子的<code>x</code>,<code>y</code>. 在方法中使用yield的时候, 可以通过yield为block的参数传值. 和方法的返回值一样, block的返回值也是它最后一行代码执行的结果.</p>
+<p>在方法中, 可以使用<code>Kernel#block_given?</code>判断该方法在被调用时是否带有一个block.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def a_method</span><br><span class="line">  return yield if block_given?</span><br><span class="line"></span><br><span class="line">  &quot;No Block&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a_method # =&gt; &quot;no block&quot;</span><br><span class="line">a_method &#123; &quot;here&apos;s a block!&quot;  &#125;  # =&gt; &quot;here&apos;s a block!&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="利用block来定义一个transaction方法"><a href="#利用block来定义一个transaction方法" class="headerlink" title="利用block来定义一个transaction方法"></a>利用block来定义一个transaction方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">module Kernel</span><br><span class="line">  def using(resource)</span><br><span class="line">    begin</span><br><span class="line">      yield</span><br><span class="line">    ensure</span><br><span class="line">      resource.close</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">r = Resource.new</span><br><span class="line">using(r) &#123;</span><br><span class="line">  raise Exception</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>即便是发生了异常, 资源r也会被正常关闭.</p>
+</blockquote>
+<h2 id="Blocks-Are-Closures-Block是闭包"><a href="#Blocks-Are-Closures-Block是闭包" class="headerlink" title="Blocks Are Closures (Block是闭包)"></a>Blocks Are Closures (Block是闭包)</h2><blockquote>
+<p>我们将会看到如何通过block跨越scope走私变量(smuggle variables across scopes)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def my_method</span><br><span class="line">  x = &quot;Goodbye&quot;</span><br><span class="line">  yield(&quot;cruel&quot;)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">x = &quot;Hello&quot;</span><br><span class="line"></span><br><span class="line">my_method &#123; |y| &quot;#&#123;x&#125;, #&#123;y&#125; world&quot; &#125;</span><br><span class="line"></span><br><span class="line"># =&gt; &quot;Hello, cruel world&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>结合上面的代码, 当你创建了一个block时, 你就已经捕获到了本地绑定, 比如: x, 值为”Hello” 然后你把block传给了一个方法, 该方法有它自己的独立的绑定, 它是值为”Goodbye”的x.但block不认这个方法中的x.<br>你也可以在block中定义一个附加的绑定, 但是block执行完就会消失:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">def just_yield</span><br><span class="line">  yield</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">top_level_variable = 1</span><br><span class="line"></span><br><span class="line">just_yield do</span><br><span class="line">  top_level_variable += 1</span><br><span class="line">  local_to_block = 1</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">puts top_level_variable </span><br><span class="line">puts local_to_block</span><br><span class="line"></span><br><span class="line">top_level_variable # =&gt; 2</span><br><span class="line">local_to_block # =&gt; Error!</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>block就是闭包(closure), 通俗理解, 闭包就是block捕捉本地绑定并持有这个本地绑定.<br>那么该如何将闭包应用于实际呢? 首先要搞清楚所有的绑定在哪里被记住了—scope. 你将会了解程序在哪里改变scope, 以及遇到改变了scope引发的特别的问题, 这个问题可以使用闭包来解决.</p>
+</blockquote>
+<h3 id="Scope-范围"><a href="#Scope-范围" class="headerlink" title="Scope (范围)"></a>Scope (范围)</h3><blockquote>
+<p>把自己想象成一个断点调试工具, 一点点地穿越整个Ruby程序, 从一个语句跳转到另一个语句, 直到到达断点, 你的周围就是scope.<br>你可以看到整个scope到处是scope, 向下看看你的脚, 你会看到一堆本地变量, 抬起头你发现你处于对象中, 有它自己的方法, 和实例变量, 这就是当前对象, 也就是<code>self</code>. 往远处看, 你看到有常量(constants)构成的树, 你可以在地图标记出你的位置, 再看远些, 你甚至会看到一堆全局变量($).<br>以上这段描绘一幅Ruby程序的画面</p>
+</blockquote>
+<h3 id="Changing-Scope"><a href="#Changing-Scope" class="headerlink" title="Changing Scope"></a>Changing Scope</h3><blockquote>
+<p>下面的例子展示了程序运行时scope是如何改变的, 使用<code>Kernel#local_variables</code>方法来追踪绑定名称:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">v1 = 1</span><br><span class="line">local_variables # =&gt; [:v1]</span><br><span class="line">class MyClass</span><br><span class="line">  v2 = 2</span><br><span class="line">  local_variables # =&gt; [:v2]</span><br><span class="line">  </span><br><span class="line">  def my_method</span><br><span class="line">    v3 = 3</span><br><span class="line">    local_variables</span><br><span class="line">  end</span><br><span class="line">  local_variables</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = MyClass.new</span><br><span class="line">obj.my_method # =&gt; [:v3]</span><br><span class="line">obj.my_method # =&gt; [:v3]</span><br><span class="line">local_variables # =&gt; [:v1, :obj]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>程序开始执行, 在top-level scope(main, 解释器提供的)中定义了v1, 然后程序进入了<code>MyClass</code>的定义中, v1就不可见了, 又定义了v2和一个方法, 但是方法中的代码还没有执行, 所以方法的scope在MyClass定义完成之前是永远不会打开的, 等到class的定义结束, 方法<code>my_method</code>的scope才会打开, 这时程序回到了top-level scope.</p>
+<p>调用my_method方法的时候, 程序打开一个新的scope, 然后定义了一个<code>local variables</code> v3, 然后程序退出方法, 退回到top-level, 第二次调用方法时, 有打开了一个新的scope, 定义了一个新的<code>local variables</code> v3, 和之前的v3不同, 因为之前的已经失效了.<br>最后程序程序又返回top-level, 所以<code>local variables</code>又是<code>v1</code> 和 <code>obj</code> 了.</p>
+<p>这个例子有一个要点: <strong><em>不管什么时候程序改变了scope, 一些绑定被新的所替代</em></strong>, 但不都是这样的, 同一个对象的一个方法去调用了另一个方法, 实例变量是不会失效, 一般来说, 当scope改变时, 绑定更加倾向于失效.尤其地, 每改变一次新的scope, 本地变量就会发生改变. 这也就是为什么它叫”本地”的原因了.</p>
+</blockquote>
+<h3 id="Scope-Gates-Scope-关口"><a href="#Scope-Gates-Scope-关口" class="headerlink" title="Scope Gates (Scope 关口)"></a>Scope Gates (Scope 关口)</h3><blockquote>
+<p>Scope Gate是程序离开前一个scope进入下一个的位置, 可以是下面的几个位置:</p>
+</blockquote>
+<ul>
+<li>Class definitions</li>
+<li>Module definitions</li>
+<li>Method definitions</li>
+</ul>
+<blockquote>
+<p>程序进入class, module, method 定义时, scope就会发生改变. 也可以说进入3个关键词—<code>class</code>, <code>module</code>, <code>def</code>. 每个关键词就扮演着<code>Scope Gate</code>的角色.<br>接下来就在前面的例子中标记出来这些Scope Gates:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">v1 = 1</span><br><span class="line">local_variables # =&gt; [:v1]</span><br><span class="line">class MyClass   # SCOPE GATE: entering class</span><br><span class="line">  v2 = 2</span><br><span class="line">  local_variables # =&gt; [:v2]</span><br><span class="line">  </span><br><span class="line">  def my_method # SCOPE GATE: entering def</span><br><span class="line">    v3 = 3</span><br><span class="line">    local_variables</span><br><span class="line">  end            # SCOPE GATE: leaving def</span><br><span class="line">  local_variables</span><br><span class="line">end               # SCOPE GATE: leaving class</span><br><span class="line"></span><br><span class="line">obj = MyClass.new</span><br><span class="line">obj.my_method # =&gt; [:v3]</span><br><span class="line">obj.my_method # =&gt; [:v3]</span><br><span class="line">local_variables # =&gt; [:v1, :obj]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>class</code>, <code>module</code> 和 <code>def</code> 还有一些微妙的区别: 在class 或者module的定义中的代码马上被执行.而方法是在方法被调用的时候里面的代码才会执行.</p>
+</blockquote>
+<h3 id="Flattening-the-Scope-摧毁Scope"><a href="#Flattening-the-Scope-摧毁Scope" class="headerlink" title="Flattening the Scope (摧毁Scope)"></a>Flattening the Scope (摧毁Scope)</h3><blockquote>
+<p>现在我们可以辨别出程序在哪里改变scope了, 但是该如何在他们直接传递变量呢? 这个问题需要再回过头来看block.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">my_var = &quot;Success&quot;</span><br><span class="line">class MyClass</span><br><span class="line">  # We want to print my_var here...</span><br><span class="line">  def my_method</span><br><span class="line">    # ..and here</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如何让<code>my_var</code>穿过这两个Scope Gates呢?<br>由于<code>class</code>是Gate, 所以需要想办法替换掉<code>class</code>关键字, 它就是<code>Class.new do ... #{my_var} ... end</code>这样的一个方法调用, 这样把<code>my_var</code>放到了闭包中:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">my_var = &quot;Success&quot;</span><br><span class="line">MyClass = Class.new do</span><br><span class="line">  puts &quot;#&#123;my_var&#125;&quot;</span><br><span class="line"></span><br><span class="line">  def my_method</span><br><span class="line">    # ...but how can we print it here?</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>同理, 若想在<code>my_method</code>也可以访问<code>my_var</code>, 就要想办法去掉关键字<code>def</code>, 那么只能使用动态方法定义了:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">my_var = &quot;Success&quot;</span><br><span class="line"></span><br><span class="line">MyClass = Class.new do</span><br><span class="line"></span><br><span class="line">  &quot;#&#123;my_var&#125; in the class definition&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  define_method :my_method do</span><br><span class="line">    &quot;#&#123;my_var&#125; in the method&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MyClass.new.my_method</span><br><span class="line">Success in the class definition</span><br><span class="line">Success in the class definition</span><br></pre></td></tr></table></figure>
+<h4 id="Sharing-the-Scope"><a href="#Sharing-the-Scope" class="headerlink" title="Sharing the Scope"></a>Sharing the Scope</h4><blockquote>
+<p>在几个方法之间共享变量, 并且不想让别人看到这个变量, 可以把这几个方法定义在同一个 Flat Scope中:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def define_methods</span><br><span class="line">  shared = 0</span><br><span class="line"></span><br><span class="line">  Kernel.send :define_method, :counter do</span><br><span class="line">    shared</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  Kernel.send :define_method, :inc do |v|</span><br><span class="line">    shared += v</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># irb</span><br><span class="line">load FIlENAME</span><br><span class="line"></span><br><span class="line">define_methods</span><br><span class="line">counter # =&gt; 0</span><br><span class="line"></span><br><span class="line">inc(4)</span><br><span class="line">counter # =&gt; 4</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>由于<code>define_methods</code> 作为Scope Gate, 其他方法访问不到 变量<code>shared</code>, 只有<code>counter</code>和<code>inc</code>可以访问到<code>shared</code>, 这种巧妙控制共享变量的方法就是”Shared Scope”</p>
+</blockquote>
+<h3 id="Closures-Wrap-Up"><a href="#Closures-Wrap-Up" class="headerlink" title="Closures Wrap-Up"></a>Closures Wrap-Up</h3><blockquote>
+<p>每个Ruby scope都包含许多绑定(local变量), 这些scope被Scope Gates(class, module, def)分开.<br>如果你想让绑定通过Scope Gate, 你可以使用block, block是一个闭包(closure): 你定义一个block时, 它会持有当前环境的绑定. 所以你可以将Scope Gate替换为方法调用的形式, 在闭包(block)中获取当前的绑定, 再把闭包传给方法.<br>你可以使用<code>Class.new</code>代替<code>class</code>关键字, <code>Module.new</code>代替<code>module</code>关键字, <code>Module#define_method</code>代替<code>def</code>关键字. 这就是<code>Flat Scope</code>, 基本的闭包相关处理方法.<br>如果你在一个Flat Scope 中定义了多个方法, 就可能被Scope Gate保护, 所有的这些方法可以共享绑定, 这就是<code>Shared Scope</code></p>
+</blockquote>
+<h2 id="instance-eval"><a href="#instance-eval" class="headerlink" title="instance_eval()"></a>instance_eval()</h2><blockquote>
+<p><code>instance_eval()</code> 是另一种让你把代码和绑定融合的方法.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  def initialize</span><br><span class="line">    @v = 1</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = MyClass.new</span><br><span class="line">obj.instance_eval do</span><br><span class="line">  self # =&gt; #&lt;MyClass:0x3340dc @v=1&gt;</span><br><span class="line">  @v # =&gt; 1</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>block会把接收者作为self, 所以它可以访问接收者的私有方法和实例变量, 比如@v.<br>我可以通过block修改对象的实例变量的值:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v = 2</span><br><span class="line">obj.instance_eval &#123; @v = v &#125;</span><br><span class="line">obj.instance_eval &#123; @v &#125; # =&gt; 2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们把传给 <code>instance_eval</code>的block叫做”Context Probe(环境探测), 因为它像是一段代码潜入对象内部.</p>
+</blockquote>
+<h3 id="instance-exec"><a href="#instance-exec" class="headerlink" title="instance_exec()"></a>instance_exec()</h3><blockquote>
+<p><code>instance_eval</code>还有一个同门师弟<code>instance_exec</code>, 它允许你给block传递参数:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class C</span><br><span class="line">  def initialize</span><br><span class="line">    @x = 1</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class D</span><br><span class="line">  def twisted_method</span><br><span class="line">    @y = 2</span><br><span class="line">    C.new.instance_eval &#123; puts &quot;@x: #&#123;@x&#125;, @y: #&#123;@y&#125;&quot; &#125;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">D.new.twisted_method # =&gt; @x: 1, @y:</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>现在使用的方法是<code>instance_eval</code>, 我们发现<code>@y</code>的值并没有获取到, 因为在<code>twisted_method</code>切换了receiver, 原本是D的实例, 现在变成了C的实例(C.new), 那么实例变量<code>@y</code>就脱离了原来的scope, block中的代码会把<code>@y</code>解释成C没有被初始化的实例变量, 也就是<code>nil</code>.<br>那么这时候就该使用<code>instance_exec</code>了, 它可以传递到C的scope中.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class C</span><br><span class="line">  def initialize</span><br><span class="line">    @x = 1</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class D</span><br><span class="line">  def twisted_method</span><br><span class="line">    @y = 2</span><br><span class="line">    C.new.instance_exec(@y) &#123; |y| puts &quot;@x: #&#123;@x&#125;, @y: #&#123;y&#125;&quot; &#125;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">D.new.twisted_method # =&gt; @x: 1, @y: 2</span><br></pre></td></tr></table></figure>
+<h3 id="Breaking-Encapsulation-打开包装"><a href="#Breaking-Encapsulation-打开包装" class="headerlink" title="Breaking Encapsulation (打开包装)"></a>Breaking Encapsulation (打开包装)</h3><blockquote>
+<p>那么我们为什么要内窥对象呢? 如, 有时候在irb中看看对象内部, 所以使用<code>instance_eval</code>是最快捷的方法.<br>还有一个原因修改一个已经存在的对象的属性, 而不是创建一个新的, 比如:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Padrino.logger.instance_eval&#123; @log_static = true &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Clean-Rooms"><a href="#Clean-Rooms" class="headerlink" title="Clean Rooms"></a>Clean Rooms</h3><blockquote>
+<p>有时候你创建对象只是为了运行其中的block. 这样的对象就是”Clean Room”:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class CleanRoom</span><br><span class="line">  def current_temperature</span><br><span class="line">  # ...</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">clean_room = CleanRoom.new</span><br><span class="line">clean_room.instance_eval do</span><br><span class="line">  if current_temperature &lt; 30</span><br><span class="line">    # ...</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>一个CleanRoom只是你运行你block的一个环境, 它暴露了一些有用的方法来给block调用, 比如说例子中的<code>current_temperature</code>, 但是一个理想的 Clean Room不应该有许多方法或者实例变量, 因为这些方法或者实例变量的名称可能会和block中的发生冲突. 正是因为如此, BasicObject的实例适合作为 Clean Rooms, 因为它是 Blank Slates, 几乎没有什么方法. 有意思的是,  BasicObject 比这还要干净, 连String都是out of scope, 如果要从BasicObject引用常量, 你必须使用绝对路径, `::String</p>
+</blockquote>
+<h2 id="Callable-Objects-可调用对象"><a href="#Callable-Objects-可调用对象" class="headerlink" title="Callable Objects (可调用对象)"></a>Callable Objects (可调用对象)</h2><blockquote>
+<p>可以将block的执行归纳为2步, 第一步: “先设置一段代码, 放在那里”, 第二步: “使用yield执行该代码”. 其实Ruby中还有几种对象支持这种机制. 你可以在以下对象中打包代码:</p>
+</blockquote>
+<ul>
+<li>proc, block被转换成对象的形式.</li>
+<li>lambda, proc的变种.</li>
+<li>method (方法)</li>
+</ul>
+<h3 id="Proc-Objects"><a href="#Proc-Objects" class="headerlink" title="Proc Objects"></a>Proc Objects</h3><blockquote>
+<p>Proc对象就是block转成object. Proc通过传给<code>Proc.new</code> 一个block的方法创建. 之后通过<code>Proc#call</code>调用这个转换的block.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">inc = Proc.new &#123; |x| x + 1 &#125;</span><br><span class="line">inc.call(3) # =&gt; 4</span><br><span class="line"></span><br><span class="line"># 或者</span><br><span class="line">inc = proc &#123; |x| x + 1 &#125;</span><br><span class="line">inc.call 3 # =&gt; 4</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这种技术称为 “Defferred Evaluation”(延期求值)</p>
+<p>你还可以使用<code>Module#lambda</code>来将block转换成<code>proc</code>:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dec = lambda &#123;|x| x - 1 &#125; </span><br><span class="line">dec.class # =&gt; Proc </span><br><span class="line">dec.call(2) # =&gt; 1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>你也可以使用<code>-&gt;</code> 代替<code>lambda</code>:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">p = -&gt;(x) &#123; x + 1 &#125;</span><br><span class="line"></span><br><span class="line"># 等价于</span><br><span class="line"></span><br><span class="line">p = lambda &#123; |x| x + 1 &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="The-amp-Operator"><a href="#The-amp-Operator" class="headerlink" title="The &amp; Operator"></a>The &amp; Operator</h3><blockquote>
+<p>对于一个方法来说, block 像是一个附加的匿名的参数. 在大多数情况下, 你可以通过在方法中使用<code>yield</code>执行block. 但是在下面的2个例子中, yield是不够的:</p>
+</blockquote>
+<ul>
+<li>你想把block传递给另一个方法或者block</li>
+<li>你想把block转换成Proc</li>
+</ul>
+<blockquote>
+<p>因为在这两种情况下, 需要指出block的名字.为了给block加上一个绑定, 可以给方法添加一个特别的参数来代表这个block, 这个参数必须是方法的最后一个参数并且添加一个<code>&amp;</code>符号作为前缀:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def math(a, b)</span><br><span class="line">  yield(a, b)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">def do_math(a, b, &amp;operation)</span><br><span class="line">  math(a, b, &amp;operation)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">do_math(2,3)&#123;|x,y|x*y&#125; #=&gt;6</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果你没有给<code>do_math</code>提供block, <code>&amp;operation</code>就为nil, yield就会调用失败, 因为没有提供block</p>
+<p>那么第二种情况把block转换成Proc呢? 其实上个例子中引用的<code>operation</code>就是Proc, <code>&amp;</code>符号的真正是”我想把block带到这个方法中, 把它转成Proc”, 去掉<code>&amp;</code>就是Proc的部分:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def my_method(&amp;the_proc)</span><br><span class="line">  the_proc</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">my_method &#123; |name| &quot;Hello, #&#123;name&#125;!&quot;  &#125;</span><br><span class="line">p.class # =&gt; Proc</span><br><span class="line">p.call(&quot;Bill&quot;) # =&gt; &quot;Hello, Bill!&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>那么如何将proc转成一个block? 还是使用<code>&amp;</code>:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def my_method(greeting)</span><br><span class="line">  &quot;#&#123;greeting&#125; #&#123;yield&#125;&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">my_proc = proc &#123; &quot;Bill&quot; &#125;</span><br><span class="line"></span><br><span class="line">my_method(&quot;Hello&quot;, &amp;my_proc)</span><br></pre></td></tr></table></figure>
+<h4 id="The-HighLine-Example"><a href="#The-HighLine-Example" class="headerlink" title="The HighLine Example"></a>The HighLine Example</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">require &apos;highline&apos;</span><br><span class="line">hl = HighLine.new</span><br><span class="line">friends = hl.ask(&quot;Friends?&quot;, lambda &#123;|s| s.split(&apos;,&apos;) &#125;)</span><br><span class="line">puts &quot;You&apos;re friends with: #&#123;friends.inspect&#125;&quot;</span><br><span class="line">❮ Friends?</span><br><span class="line">➾ Ivana, Roberto, Olaf # 输入</span><br><span class="line">❮ You&apos;re friends with: [&quot;Ivana&quot;, &quot; Roberto&quot;, &quot; Olaf&quot;]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>等用户输入完成以后, proc才会被调用.</p>
+</blockquote>
+<h3 id="Procs-vs-Lambdas"><a href="#Procs-vs-Lambdas" class="headerlink" title="Procs vs. Lambdas"></a>Procs vs. Lambdas</h3><blockquote>
+<p>到目前, 把block转换成proc的方法有: Proc.new, proc, lambda, &amp; 操作符. 结果都是Proc对象.</p>
+<p>但事实上, 由lambda方法创建的Proc(后面称lambdas) 和其他方法创建的Proc(后面称procs)还有有区别的. 判断一个Proc对象是不是lambda可以使用<code>Proc#lambda?</code></p>
+<p>下面就比较以下两种的区别:</p>
+</blockquote>
+<h4 id="Procs-Lambdas-and-return"><a href="#Procs-Lambdas-and-return" class="headerlink" title="Procs, Lambdas, and return"></a>Procs, Lambdas, and return</h4><blockquote>
+<p>Proc 和 Lambdas中return的意义不同, lambdas返回的只是lambdas内部的值, 它所被调用的方法的返回值依旧正常返回.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def test_lambda_return</span><br><span class="line">  l = lambda &#123; return 10 &#125;</span><br><span class="line">  l.call</span><br><span class="line">  return &quot;hello&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">test_lambda_return # =&gt; &quot;hello&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>而 proc的返回值, 就是代表整个scope(方法)的返回值了:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def test_proc_return</span><br><span class="line">  p = proc &#123; return 10 &#125;</span><br><span class="line">  p.call</span><br><span class="line">  return &quot;hello&quot; # =&gt; 执行不到这里</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">test_proc_return # =&gt; 10</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>proc返回值指的就是其被定义所在的scope的返回值, 使用时需要谨慎, 比如下面的例子的错误就是由于在top-level定义了scope, 却在一个方法这样的scope中返回, 引起了错误:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def double(callable_abject)</span><br><span class="line">  callable_abject.call * 2</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">p = Proc.new &#123; return 10 &#125;</span><br><span class="line">double(p) # =&gt; LocalJumpError</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>避免明确使用return:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p = Proc.new &#123; 10 &#125;</span><br><span class="line"></span><br><span class="line">double(p) # =&gt; 20</span><br></pre></td></tr></table></figure>
+<h4 id="Procs-Lambdas-and-Arity-参数数量"><a href="#Procs-Lambdas-and-Arity-参数数量" class="headerlink" title="Procs, Lambdas, and Arity (参数数量)"></a>Procs, Lambdas, and Arity (参数数量)</h4><blockquote>
+<p>Proc和Lambdas对于参数数量不匹配时的”容忍度”不同, Proc在参数数量不匹配的情况下, 不会报错, 如果参数个数不够, 它会使用nil代替, 如果参数个数过多, 它会去掉后面的参数, 只保留定义的参数数量, 而Lambdas只有参数数量不符合就会报错:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">p = Proc.new &#123;|a, b| [a, b]&#125;</span><br><span class="line">p.call(1, 2, 3) # =&gt; [1, 2]</span><br><span class="line">p.call(1)    # =&gt; [1, nil]</span><br><span class="line"></span><br><span class="line">l = lambda &#123; |a, b| [a, b] &#125;</span><br><span class="line"></span><br><span class="line">l.call (1, 2, 3)</span><br><span class="line"># =&gt;</span><br><span class="line">ArgumentError: wrong number of arguments (0 for 2)</span><br><span class="line">from (irb):25:in `block in irb_binding&apos;</span><br><span class="line">from (irb):31:in `call&apos;</span><br><span class="line">from (irb):31</span><br><span class="line">from /Users/daniel/.rvm/rubies/ruby-2.2.0/bin/irb:11:in `&lt;main&gt;&apos;&apos;`</span><br></pre></td></tr></table></figure>
+<h4 id="Procs-vs-Lambdas-The-Verdict-结论"><a href="#Procs-vs-Lambdas-The-Verdict-结论" class="headerlink" title="Procs vs. Lambdas: The Verdict (结论)"></a>Procs vs. Lambdas: The Verdict (结论)</h4><blockquote>
+<p>lambdas比proc更加敏感, 对参数严格, 使用return它就终止, 可见它更像是方法. 所以尽量使用lambda, 除非你真的需要procs的一些特性.</p>
+</blockquote>
+<h3 id="Method-Objects-方法对象"><a href="#Method-Objects-方法对象" class="headerlink" title="Method Objects (方法对象)"></a>Method Objects (方法对象)</h3><blockquote>
+<p>看看方法是如何打包代码, 以后使用的. 方法也是callable objects 中的一员:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  def initialize(value)</span><br><span class="line">    @x = value</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def my_mythod</span><br><span class="line">    @x</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">object = MyClass.new(1)</span><br><span class="line"></span><br><span class="line">m = object.method :my_mythod</span><br><span class="line">m.call # =&gt; 1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>通过调用了<code>Kernel#method</code>方法, 可以把方法本身变成一个<code>Method</code>对象, 以后调用.Ruby2.1以后, 可以通过<code>Kernel#singleton_method</code>方法把<code>Singleton Method</code>转换成Method 对象.<br>Method 对象和block, lambda相似. 可以通过<code>Method#to_proc</code>转换成proc对象, 也可以通过<code>define_method</code>把block转换成method对象.</p>
+<p>但是lambdas和method的一个很大的区别就在于scope, lambdas的在其被定义的scope内求值, 它是闭包的, 而Method是在它的对象scope内求值的.<br>Ruby还有一种方式表示方法: <code>Unbound Methods</code></p>
+</blockquote>
+<h4 id="Unbound-Methods"><a href="#Unbound-Methods" class="headerlink" title="Unbound Methods"></a>Unbound Methods</h4><blockquote>
+<p>Unbound Methods就是没有与具体的对象绑定到一起的方法. 你可以使用<code>Method#unbind</code>将一个Method对象转换成Unbound Method, 也可以使用<code>Module#instance_method</code>直接获得<code>UnboundMethod</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">module MyModule</span><br><span class="line">  def my_method</span><br><span class="line">    52</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">unbound = MyModule.instance_method(:my_method)</span><br><span class="line">unbound.class # # =&gt; UnboundMethod</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>UnboundMethod 不能被调用, 可以先让UnboundMethod与某个对象绑定, 再调用, 使用的方法是<code>UnboundMethod#unbound(:some_obj)</code>, 前提<code>some_obj</code>和UnboundMethod必须来自于同一个类, 或子类.<br>另外还可以通过<code>define_method</code>把UnboundMethod 绑定为一个类的方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String.class_eval do</span><br><span class="line">  define_method :another_method, unbound</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">&quot;abc&quot;.another_method # =&gt; 42</span><br></pre></td></tr></table></figure>
+<h4 id="The-Active-Support-Example"><a href="#The-Active-Support-Example" class="headerlink" title="The Active Support Example"></a>The Active Support Example</h4><blockquote>
+<p>对于某些特殊情况, 又想用回原来的<code>Kernel#load</code>方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">module Loadable</span><br><span class="line">  def load</span><br><span class="line">    #  覆盖掉Module#load方法</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  # 对于某些类来说, 还需使用Kernel#load方法</span><br><span class="line"></span><br><span class="line">  def self.exclude_from(base)</span><br><span class="line">    base.class_eval &#123; define_method :load, Kernel.instance_method(:load) &#125;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  [...]</span><br></pre></td></tr></table></figure>
+<h3 id="Callable-Objects-Wrap-Up"><a href="#Callable-Objects-Wrap-Up" class="headerlink" title="Callable Objects Wrap-Up"></a>Callable Objects Wrap-Up</h3><blockquote>
+<p>Callable objects是是代码片段, 你可以求它的值, 并且它还具有自己的scope.有以下几种:</p>
+</blockquote>
+<ul>
+<li>Block(并非真正意义的object, 但却是callable): 在自己所被定义的scope内被求值</li>
+<li>Proc: Proc的对象, 和block相同, 在自己所被定义的scope内被求值, return 代表所在是scope的返回值.</li>
+<li>Lambdas: 也是Proc的对象, 但是和规则的proc有微妙的区别, 它是闭包, 在自己所被定义的scope内被求值, return代表自己的返回值.</li>
+<li>Methods: 绑定到对象上, 在对象的scope被求值, 可以在一个scope中解除绑定, 到另外一个对象或者class上重新绑定.</li>
+</ul>
+<blockquote>
+<p>不同的callable 对象有着细微的差别: 在methods 和 lambdas中, <code>return</code>指的是从callable对象返回, 但是对于procs和blocks来说, <code>return</code>返回的是callable 对象原始的环境(所被定义的scope).<br>不同的callable对象对于参数数量是否准确做出的处理也是不同的, Methods 和 lambdas最为严格, procs和blocks比较宽容一些.<br>callable 对象之间可以互相转换, 比如: <code>Proc.new {}</code>, <code>Method#to_proc</code> 或者<code>&amp;</code>操作符.</p>
+</blockquote>
+<h2 id="Writing-a-Domain-Specific-Language-特定领域内的语言"><a href="#Writing-a-Domain-Specific-Language-特定领域内的语言" class="headerlink" title="Writing a Domain-Specific Language (特定领域内的语言)"></a>Writing a Domain-Specific Language (特定领域内的语言)</h2><h2 id="Wrap-Up"><a href="#Wrap-Up" class="headerlink" title="Wrap-Up"></a>Wrap-Up</h2><blockquote>
+<p>应该掌握的内容:</p>
+</blockquote>
+<ul>
+<li>Scope Gate是什么, Ruby如何管理scope</li>
+<li>如何使绑定在scope之间可见, 通过使用Flat Scopes 和 Shared Scopes</li>
+<li>如何在对象的scope中执行代码(使用<code>instance_eval</code> 和 <code>instance_exec</code>), 或者在Clean Room中.</li>
+<li>block和proc的互相转换</li>
+<li>如何将一个方法转换成Method对象或者UnboundMethod对象, 又怎么样转换回来</li>
+<li>不同callable 对象之间的不同(blocks, Procs, lambdas, and plain old methods)</li>
+<li>如何写DSL语言</li>
+</ul>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Blocks/" rel="tag">#Blocks</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/24/ruby-metaprogramming-chpt3-methods/" rel="next" title="Ruby 元编程 第三章 方法">
+                <i class="fa fa-chevron-left"></i> Ruby 元编程 第三章 方法
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/29/ruby-metaprogramming-chpt5-class-definitions/" rel="prev" title="Ruby 元编程 第五章 Class Definitions">
+                Ruby 元编程 第五章 Class Definitions <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Basics-of-Blocks-Block的基础知识"><span class="nav-number">1.</span> <span class="nav-text">The Basics of Blocks(Block的基础知识)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#利用block来定义一个transaction方法"><span class="nav-number">1.1.</span> <span class="nav-text">利用block来定义一个transaction方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Blocks-Are-Closures-Block是闭包"><span class="nav-number">2.</span> <span class="nav-text">Blocks Are Closures (Block是闭包)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Scope-范围"><span class="nav-number">2.1.</span> <span class="nav-text">Scope (范围)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Changing-Scope"><span class="nav-number">2.2.</span> <span class="nav-text">Changing Scope</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scope-Gates-Scope-关口"><span class="nav-number">2.3.</span> <span class="nav-text">Scope Gates (Scope 关口)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flattening-the-Scope-摧毁Scope"><span class="nav-number">2.4.</span> <span class="nav-text">Flattening the Scope (摧毁Scope)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Sharing-the-Scope"><span class="nav-number">2.4.1.</span> <span class="nav-text">Sharing the Scope</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Closures-Wrap-Up"><span class="nav-number">2.5.</span> <span class="nav-text">Closures Wrap-Up</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#instance-eval"><span class="nav-number">3.</span> <span class="nav-text">instance_eval()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#instance-exec"><span class="nav-number">3.1.</span> <span class="nav-text">instance_exec()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Breaking-Encapsulation-打开包装"><span class="nav-number">3.2.</span> <span class="nav-text">Breaking Encapsulation (打开包装)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Clean-Rooms"><span class="nav-number">3.3.</span> <span class="nav-text">Clean Rooms</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Callable-Objects-可调用对象"><span class="nav-number">4.</span> <span class="nav-text">Callable Objects (可调用对象)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Proc-Objects"><span class="nav-number">4.1.</span> <span class="nav-text">Proc Objects</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-amp-Operator"><span class="nav-number">4.2.</span> <span class="nav-text">The & Operator</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#The-HighLine-Example"><span class="nav-number">4.2.1.</span> <span class="nav-text">The HighLine Example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Procs-vs-Lambdas"><span class="nav-number">4.3.</span> <span class="nav-text">Procs vs. Lambdas</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Procs-Lambdas-and-return"><span class="nav-number">4.3.1.</span> <span class="nav-text">Procs, Lambdas, and return</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Procs-Lambdas-and-Arity-参数数量"><span class="nav-number">4.3.2.</span> <span class="nav-text">Procs, Lambdas, and Arity (参数数量)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Procs-vs-Lambdas-The-Verdict-结论"><span class="nav-number">4.3.3.</span> <span class="nav-text">Procs vs. Lambdas: The Verdict (结论)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Method-Objects-方法对象"><span class="nav-number">4.4.</span> <span class="nav-text">Method Objects (方法对象)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Unbound-Methods"><span class="nav-number">4.4.1.</span> <span class="nav-text">Unbound Methods</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Active-Support-Example"><span class="nav-number">4.4.2.</span> <span class="nav-text">The Active Support Example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Callable-Objects-Wrap-Up"><span class="nav-number">4.5.</span> <span class="nav-text">Callable Objects Wrap-Up</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Writing-a-Domain-Specific-Language-特定领域内的语言"><span class="nav-number">5.</span> <span class="nav-text">Writing a Domain-Specific Language (特定领域内的语言)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wrap-Up"><span class="nav-number">6.</span> <span class="nav-text">Wrap-Up</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

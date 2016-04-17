@@ -1,0 +1,693 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Rails Relation Model Mapping One-to-Many," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Rails 中, 通过在 model 中调用ActiveRecord 的has_many 和belongs_to 实现数据库表之间的一对多关系.
+
+何谓一对多关系?
+为了便于解释, 请看下方的 ER 图:
+
+
+
+1个顾客可以下多个订单, 从顾客的角度来看, 订单就是”多”. 再又, 一个订单只能属于一个顾客, 从订单的角度来看, 顾客就是 “1”
+故称作 “1对多”
+
+添加引用外键
+首先需要向[">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 中实现model的一对多关系映射">
+<meta property="og:url" content="http://yoursite.com/2015/02/09/one-to-many/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Rails 中, 通过在 model 中调用ActiveRecord 的has_many 和belongs_to 实现数据库表之间的一对多关系.
+
+何谓一对多关系?
+为了便于解释, 请看下方的 ER 图:
+
+
+
+1个顾客可以下多个订单, 从顾客的角度来看, 订单就是”多”. 再又, 一个订单只能属于一个顾客, 从订单的角度来看, 顾客就是 “1”
+故称作 “1对多”
+
+添加引用外键
+首先需要向[">
+<meta property="og:image" content="http://i2.tietuku.com/bf76de985b972c6e.png">
+<meta property="og:updated_time" content="2015-02-13T14:02:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 中实现model的一对多关系映射">
+<meta name="twitter:description" content="Rails 中, 通过在 model 中调用ActiveRecord 的has_many 和belongs_to 实现数据库表之间的一对多关系.
+
+何谓一对多关系?
+为了便于解释, 请看下方的 ER 图:
+
+
+
+1个顾客可以下多个订单, 从顾客的角度来看, 订单就是”多”. 再又, 一个订单只能属于一个顾客, 从订单的角度来看, 顾客就是 “1”
+故称作 “1对多”
+
+添加引用外键
+首先需要向[">
+<meta name="twitter:image" content="http://i2.tietuku.com/bf76de985b972c6e.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails 中实现model的一对多关系映射 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails 中实现model的一对多关系映射
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-09T21:19:58+08:00" content="2015-02-09">
+              2015-02-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Rails 中, 通过在 model 中调用ActiveRecord 的<code>has_many</code> 和<code>belongs_to</code> 实现数据库表之间的一对多关系.</p>
+</blockquote>
+<h2 id="何谓一对多关系"><a href="#何谓一对多关系" class="headerlink" title="何谓一对多关系?"></a>何谓一对多关系?</h2><blockquote>
+<p>为了便于解释, 请看下方的 ER 图:</p>
+</blockquote>
+<p><img src="http://i2.tietuku.com/bf76de985b972c6e.png" alt=""></p>
+<blockquote>
+<p>1个顾客可以下多个订单, 从顾客的角度来看, 订单就是”多”. 再又, 一个订单只能属于一个顾客, 从订单的角度来看, 顾客就是 “1”</p>
+<p>故称作 “1对多”</p>
+</blockquote>
+<h2 id="添加引用外键"><a href="#添加引用外键" class="headerlink" title="添加引用外键"></a>添加引用外键</h2><blockquote>
+<p>首先需要向[多] (这里是orders)添加xxx_id外键. 这里<code>xxx</code> 应该是引用外部的 model的名称, 这里就是Customer, 所以外键的名称是<code>customer_id</code>.</p>
+<p>生成 Customer model和customers 表(数据库)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rails g model Customer name:string</span><br><span class="line"></span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure></p>
+<p>生成Order model 和 orders 表</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails g model Order customer_id:integer order_date:date</span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果model 和对应的表已经存在, 我们可以使用 migration 向 orders中只加入外键customer_id.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails g migration add_customer_id_to_orders customer_id:integer</span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="使用-hash-many和-belongs-to-处理-model-的对应关系"><a href="#使用-hash-many和-belongs-to-处理-model-的对应关系" class="headerlink" title="使用 hash_many和 belongs_to 处理 model 的对应关系"></a>使用 hash_many和 belongs_to 处理 model 的对应关系</h2><blockquote>
+<p>我们还需要在相关的 model 中声明关联关系 </p>
+</blockquote>
+<ul>
+<li><p>[1]的一侧加入 <code>has_many</code>.<br>  并且在英文语法上也说得通”Customer has_many orders”, “顾客有多个订单”</p>
+<p>  我们还需要加入<code>dependent: :destroy</code>选项, 它的作用是”依赖删除”, 也就是说我们删除了某一条customer, 与之相关联的order 都会被删除.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Customer &lt; ActiveRecord::Base</span><br><span class="line">  has_many :orders, dependent: :destroy</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>   <code>has_many</code>方法的 option:</p>
+<ul>
+<li><code>class_name</code> 指定相关联的model类名, 本例不设定该选项会默认Order 类, 如果真正的类名是SpecialOrder, 那么就必须设定该选项了.</li>
+<li><code>foreign_key</code>指定引用的外键名称, 默认使用<code>引用model_id</code>, 如果你想要换成其他的字段可以通过该选项来指定.(<strong><em>本例中, Customer没有外键</em></strong>)</li>
+<li><code>dependent</code>选项指定当[1]被删除后, 与之相关联的[多]的一方该怎么处理. 我可以设置<code>destroy</code>或者<code>delete_all</code>(直接删除数据库记录)</li>
+<li><code>as</code>定义<code>polymorphic</code>(多态), 在多态关联中, 一个 model 可以属于多个model, 可以理解为多个不同的实体都引用了同一实体的同一属性, 比如员工和产品都引用了照片中的imageable</li>
+<li><code>through</code>可以经常用于多对多的关系中, 其被设定为中间model.</li>
+</ul>
+</blockquote>
+<ul>
+<li>[多]的一边使用<code>belongs_to</code>方法<br>  读作: “Order belongs_to customer”, “订单属于一个顾客”.  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Order &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :customer</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>同样, belongs_to 也可以指定一些option:</p>
+<ul>
+<li><code>class_name</code> 指定相关model 类名.</li>
+<li><code>foreign_key</code> 指定引用的外键的名称, 默认是<code>customer_id</code>.如果想换成别的字段, 通过该选项来指定</li>
+<li><code>dependent</code> 略</li>
+<li><code>polymorphic</code> 指定多态.</li>
+</ul>
+<p>比如说我们想把customer换成 user 就需要这样写:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Order &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :user, class_name: &quot;Customer&quot;, foreign_key: &quot;customer_id&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 如果想取出某订单的用户, 就要这样:</span><br><span class="line"></span><br><span class="line">order.user</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="可以使用的方法"><a href="#可以使用的方法" class="headerlink" title="可以使用的方法"></a>可以使用的方法</h2><blockquote>
+<p>像我们上面这样设定, 我们就可以使用下面这些方法了:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">## 新建对象</span><br><span class="line"></span><br><span class="line"># 删除顾客 customer_daniel, 存入数据库</span><br><span class="line">customer_daniel = Customer.create(name: &quot;Daniel&quot;)</span><br><span class="line"></span><br><span class="line"># 生成customer_daniel 顾客的订单 order1, 代替Order.new</span><br><span class="line">order1 = customer_daniel.orders.build(order_date: Time.now)</span><br><span class="line">order1.save # 存入数据库</span><br><span class="line"></span><br><span class="line"># 生成并保持到数据库</span><br><span class="line">order2 = customer_daniel.orders.create(order_date: Time.now)</span><br><span class="line"></span><br><span class="line">## 关系</span><br><span class="line"></span><br><span class="line">customer_daniel.orders # =&gt; 以一个数组形式返回 customer_daniel 的所有订单.</span><br><span class="line">customer_daniel.orders.exists? </span><br><span class="line">customer_daniel.orders.empty?</span><br><span class="line">order1.customer</span><br><span class="line"></span><br><span class="line">## 用户订单的查询</span><br><span class="line"></span><br><span class="line">customer_daniel.find()</span><br><span class="line">customer_daniel.find_by()</span><br><span class="line">customer_daniel.find_all()</span><br><span class="line">customer_daniel.where()</span><br><span class="line"></span><br><span class="line">## 删除</span><br><span class="line">Order.count # =&gt; 2</span><br><span class="line">customer_daniel.destroy()</span><br><span class="line">Order.count # =&gt; 0</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails-Relation-Model-Mapping-One-to-Many/" rel="tag">#Rails Relation Model Mapping One-to-Many</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/09/crud/" rel="next" title="Rails Model 增删改查常用方法总结">
+                <i class="fa fa-chevron-left"></i> Rails Model 增删改查常用方法总结
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/10/many2many/" rel="prev" title="Rails 中实现model的多对多关系映射">
+                Rails 中实现model的多对多关系映射 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#何谓一对多关系"><span class="nav-number">1.</span> <span class="nav-text">何谓一对多关系?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加引用外键"><span class="nav-number">2.</span> <span class="nav-text">添加引用外键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-hash-many和-belongs-to-处理-model-的对应关系"><span class="nav-number">3.</span> <span class="nav-text">使用 hash_many和 belongs_to 处理 model 的对应关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可以使用的方法"><span class="nav-number">4.</span> <span class="nav-text">可以使用的方法</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

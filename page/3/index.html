@@ -1,0 +1,2241 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/page/3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/22/ruby-metaprogramming-chpt2/" itemprop="url">
+                  Ruby 元编程 第二章 对象模型
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-22T12:01:35+08:00" content="2015-03-22">
+              2015-03-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ruby/" itemprop="url" rel="index">
+                    <span itemprop="name">Ruby</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Ruby语言中到处是对象这个东西还包含一种编程语言的其他结构, 如<code>class</code>, <code>module</code>和<code>instance variable</code>. 元编程操作的就是这些东西.</p>
+<p>首先需要清楚一个概念: 系统中的所有这些结构被称作是<code>object model</code>. 要是弄清楚了<code>object model</code>你就会找到很多问题的答案, 比如, 某个方法是来自于哪个类? 当我include一个module时发生了什么?<br>object model 就是ruby的核心, 掌握了它就掌握了ruby中很强大的技术, 同时也可以帮你避免很多陷阱.</p>
+</blockquote>
+<h2 id="Open-Classes-打开类"><a href="#Open-Classes-打开类" class="headerlink" title="Open Classes (打开类)"></a>Open Classes (打开类)</h2><blockquote>
+<p>在解释<code>Open Classes</code> 之前, 先看一个例子, 下面的方法的作用是去掉字符串所有的符号和空白:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># object_model/alphanumeric.rb</span><br><span class="line">def to_alphanumeric(s) </span><br><span class="line">  s.gsub(/[^\w\s]/, &apos;&apos;)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但是这个方法并不十分面向对象, 为什么不可以把这个方法给String类呢? 其实Ruby的设计者早就为我们想好了, Ruby允许你打开这个类, 为其添加方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class String</span><br><span class="line">  def to_alphanumeric</span><br><span class="line">    s.gsub(/[^\w\s]/, &apos;&apos;)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样我就可以这样直接调用: <code>&quot;some_str&quot;.to_alphanumeric</code></p>
+</blockquote>
+<h3 id="Inside-Class-Definitions-类定义的内部"><a href="#Inside-Class-Definitions-类定义的内部" class="headerlink" title="Inside Class Definitions (类定义的内部)"></a>Inside Class Definitions (类定义的内部)</h3><blockquote>
+<p>在Ruby中定义class的代码和其他代码是没有区别的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">3.times do</span><br><span class="line">  class C</span><br><span class="line">    puts &quot;Hello&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># =&gt;</span><br><span class="line">Hello</span><br><span class="line">Hello</span><br><span class="line">Hello</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Ruby在类中执行代码, 和在别的地方无异, 是不是定义了3次<code>class C</code>呢? 其实不是, 可以通过下面的小例子来鉴别:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class D</span><br><span class="line">  def x; &apos;x&apos;; end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class D</span><br><span class="line">  def y; &apos;y&apos;; end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = D.new</span><br><span class="line"></span><br><span class="line">obj.x # =&gt; &quot;x&quot;</span><br><span class="line">obj.y # =&gt; &quot;y&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>第一次正常定义<code>class D</code>, 因为这时候并没有定义<code>class D</code>, 而第二次Ruby发现<code>class D</code>已经被定义, 就会打开这个已经存在的D, 在里面定义一个y方法.<br>从某种意义上来讲, Ruby中的<code>class</code>关键字更像是一个域操作符而非类声明.<br>你甚至于可以打开Ruby标准库中的类比如<code>String</code>, <code>Array</code>. 来看看实际中, 这种技巧是如何使用的吧:</p>
+</blockquote>
+<h4 id="The-Money-Example"><a href="#The-Money-Example" class="headerlink" title="The Money Example"></a>The Money Example</h4><blockquote>
+<p>下面的例子介绍了如何把把一个<code>money</code>gem的方法扩展到Ruby的标准库<code>Numeric</code>中.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">require &quot;money&quot;</span><br><span class="line"></span><br><span class="line">class Numeric</span><br><span class="line">  def to_money(currency = nil)</span><br><span class="line">    Money.from_numeric(self, currency || Money.default_currency)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h4 id="The-Problem-with-Open-Classes-Open-Classes可能出现的问题"><a href="#The-Problem-with-Open-Classes-Open-Classes可能出现的问题" class="headerlink" title="The Problem with Open Classes (Open Classes可能出现的问题)"></a>The Problem with Open Classes (Open Classes可能出现的问题)</h4><blockquote>
+<p>需要注意: 我们新添加的方法, 如果如果要是与类中的方法同名, 那么新方法就会覆盖掉原来的方法, 所以, 要么确信自己的方法需要兼容原来的方法, 要么就另外起一个方法名.</p>
+</blockquote>
+<h5 id="查看实例方法集合"><a href="#查看实例方法集合" class="headerlink" title="查看实例方法集合"></a>查看实例方法集合</h5><blockquote>
+<p>在扩展一个class之前需要查看类的实例所有方法集合, 从而决定如何为方法命名避免冲突, 这里有个技巧, 比如要查看数组的实例是否有<code>replace</code>方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[].methods.grep /^re/ # =&gt; [:reverse_each, :reverse, ..., :replace, ...]</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line">Array.instance_methods.grep /^re/ # =&gt; [:reverse_each, :reverse, ..., :replace, ...]</span><br></pre></td></tr></table></figure>
+<h2 id="Inside-the-Object-Model-Object-Model的内部"><a href="#Inside-the-Object-Model-Object-Model的内部" class="headerlink" title="Inside the Object Model (Object Model的内部)"></a>Inside the Object Model (Object Model的内部)</h2><blockquote>
+<p>在Object Model中可以可以了解到<code>objects</code>, <code>classes</code> <code>constants</code>的原理. 除了<code>Open Classes</code>, 还有更多的东西有待于研究.</p>
+</blockquote>
+<h3 id="What’s-in-an-Object"><a href="#What’s-in-an-Object" class="headerlink" title="What’s in an Object"></a>What’s in an Object</h3><blockquote>
+<p>看下面的代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class MyClass </span><br><span class="line">  def my_method</span><br><span class="line">    @v = 1</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = MyClass.new</span><br><span class="line"></span><br><span class="line">obj.class</span><br><span class="line"># =&gt; MyClass</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>打开Ruby的解释器, 看看<code>obj</code>这个对象内部, 研究一下到底里面有什么:</p>
+</blockquote>
+<h4 id="Instance-Variables-实例变量"><a href="#Instance-Variables-实例变量" class="headerlink" title="Instance Variables (实例变量)"></a>Instance Variables (实例变量)</h4><blockquote>
+<p>我可以通过<code>Object#instance_variables</code>方法来获取这些实例变量:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">obj.my_method </span><br><span class="line">obj.instance_variables # =&gt; [:@v]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意在获取实例变量<code>[:@v]</code>之前, 对象<code>obj</code>首先调用了<code>my_method</code>, 这不同于Java等其他静态语言, Ruby中一个对象的类和它的实例变量直接是没有连接的, 只有在为实例变量赋值时, 对象才有这个变量, 你可以把实例变量的名字和值想象成hash的key和value. 如果没有调用<code>my_method</code>方法, 那么obj将永远不会有<code>@v</code>这个实例变量.</p>
+</blockquote>
+<h4 id="Methods-方法"><a href="#Methods-方法" class="headerlink" title="Methods (方法)"></a>Methods (方法)</h4><blockquote>
+<p>对象除了有实力变量以外还有方法. 可以使用<code>Object#methods</code>获取这些方法. 大多数的对象都会从父类<code>Object</code>继承一些方法. 所以这些方法的集合会有很多方法, 可以使用上一节的例子中的<code>grep</code>方法来过滤掉不想要的.<br>如果”劈开”Ruby的解释器观察<code>obj</code>你会发现这个对象没有真正的持有所有这些方法. 它包含一个实例变量<code>@v</code>和一个类的引用. 但是没有方法, 那么方法去了哪里?</p>
+<p>看这张示意图:<br><img src="http://i3.tietuku.com/1b1dc3bde3454359.png"></p>
+<p>实力变量存储于对象内部, 而方法则在类的内部:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String.instance_methods == &quot;abc&quot;.methods # =&gt; true </span><br><span class="line">String.methods == &quot;abc&quot;.methods # =&gt; false</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于类来说 <code>methods</code>和<code>instance_methods</code>是两码事.</p>
+</blockquote>
+<h3 id="The-Truth-About-Classes"><a href="#The-Truth-About-Classes" class="headerlink" title="The Truth About Classes"></a>The Truth About Classes</h3><blockquote>
+<p>classes什么都不是, 但是objects却很重要. 因为class本身就是object, 适用于object的也适用于class. class和object一样, 有它自己的class:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;hellw&quot;.class # =&gt; String</span><br><span class="line">String.class # =&gt; Class</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其他语言如Java中, Class的实例仅仅是一个class的只读描述, 而在Ruby中, 你可以在程序运行时来修改这些描述. 比如之前的Open Classes<br>像其他对象一样, Class的对象class也是有方法的. object的<code>methods</code> 也是其class的<code>instance_methods</code> :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># The &quot;false&quot; argument here means: ignore inherited methods</span><br><span class="line">Class.instance_methods(false) # =&gt; [:allocate, :new, :superclass]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>allocate</code>方法是在我们<code>new</code>对象的时候被Class对象来调用用以分配一块内存.<br>另外, <code>superclass</code>方法可以获取某个Class对象(如: Array, String)的父类:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Array.superclass # =&gt; Object</span><br><span class="line">Object.superclass # =&gt; BasicObject</span><br><span class="line">BasicObject.superclass # =&gt; nil</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>可以看出继承关系是: Array &lt; Object &lt; BasicObject, BasicObject是Ruby继承树的根.</p>
+</blockquote>
+<h4 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h4><blockquote>
+<p>来看看Class的父类是什么:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class.superclass # =&gt; Module</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>是Module, 同理, 每个class也是一个module, 严格来讲, <code>class</code>是<code>module</code> 在加上3个方法(new, allocate, and superclass). 允许你创建对象, 或者把类放进分类树中.<br>可见, class和module太像了, 那么怎么准确的使用它们呢? </p>
+<ul>
+<li>module用于组织代码结构, 你可以把一段代码包含进另外一段的时候使用module</li>
+<li>当你要继承或者实例化的时候使用class, 因为它有这几个额外的方法.</li>
+</ul>
+</blockquote>
+<h4 id="Putting-It-All-Together"><a href="#Putting-It-All-Together" class="headerlink" title="Putting It All Together"></a>Putting It All Together</h4><blockquote>
+<p>看这段代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyClass; end</span><br><span class="line">obj1 = MyClass.new</span><br><span class="line">obj2 = MyClass.new</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><img src="http://i3.tietuku.com/bf32a0d194bd8cac.png"></p>
+<p>这张图反映了上述继承关系, Class和通常对象相处的十分融洽.<br>我还可以使用一个变量引用一个类:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">my_class = MyClass</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这行代码的含义是<code>MyClass</code>和<code>my_class</code>都指向了<code>Class</code>的同一个实例, 唯一的不同是<code>my_class</code>是一个变量而<code>MyClass</code>是一个常量. 也就是说: <strong><em> class仅仅是object, class name仅仅是常量</em></strong></p>
+</blockquote>
+<h4 id="Constants-常量"><a href="#Constants-常量" class="headerlink" title="Constants (常量)"></a>Constants (常量)</h4><blockquote>
+<p>任何一个以大写字母开头, 包括类名和module名在内都可以被叫做常量(constants).<br>module把里面的class或者module以类似于文件系统的树状结构组织起来的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">module MyModule</span><br><span class="line">  MyConstant = &apos;Outer constant&apos;</span><br><span class="line"></span><br><span class="line">  class MyClass</span><br><span class="line">    MyConstant = &apos;Inner constant&apos;</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>MyModule的MyConstant和MyClass的MyConstant是不同的, 它们属于不同的scope:<br><img src="http://i3.tietuku.com/bfab05bdfdede2c6.png"></p>
+</blockquote>
+<h5 id="The-Paths-of-Constants-常量的获取路径"><a href="#The-Paths-of-Constants-常量的获取路径" class="headerlink" title="The Paths of Constants 常量的获取路径"></a>The Paths of Constants 常量的获取路径</h5><blockquote>
+<p>别忘记一点, module中的类其实也是常量. 刚刚说过, 常量像是嵌套的目录和文件, 那么一定有一种方法来定位这些路径和文件. Ruby使用双冒号来定位它们, 可以将其理解为每一个<code>::</code>相当于文件系统的<code>/</code>(Linux).</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">module M</span><br><span class="line">  class C</span><br><span class="line">    X = &apos;a constant&apos;</span><br><span class="line">  end</span><br><span class="line">  C::X # =&gt; &quot;a constant&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">M::C::X # =&gt; &quot;a constant&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果在一个很深的目录, 可以使用以<code>::</code>开头的形式获取根路径的绝对路径:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Y = &apos;a root-level constant&apos;</span><br><span class="line"></span><br><span class="line">module M</span><br><span class="line">  Y = &apos;a const in M&apos;</span><br><span class="line">  puts Y # =&gt; &quot;a constant in M&quot;</span><br><span class="line">  puts ::Y # =&gt;  &apos;a root-level constant&apos;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Module 类还提供了实例方法和类方法来获取常量, 有点让人困惑的是都叫做<code>constants</code>. 实例方法<code>Module#constants</code>在当前scope中返回所有的常量, 类似于文件系统的<code>ls</code>命令. 类方法<code>Module.constants</code>返回程序中所有的top-level的常量, 注意包含类名:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">M.constants # =&gt; [:C, :Y]</span><br><span class="line">Module.constants.include? :Object # =&gt; true</span><br><span class="line">Module.constants.include? :Module # =&gt; true</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class MyD</span><br><span class="line">  class MyC</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">Module.constants.include? :MyD #=&gt; true</span><br><span class="line">Module.constants.include? :MyC #=&gt; false</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>Module.nesting</code>获取当前的路径:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">module M</span><br><span class="line">  class C</span><br><span class="line">    module M2 </span><br><span class="line">      Module.nesting # =&gt; [M::C::M2, M::C, M]</span><br><span class="line">    end </span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h5 id="The-Rake-Example"><a href="#The-Rake-Example" class="headerlink" title="The Rake Example"></a>The Rake Example</h5><blockquote>
+<p>不管module也好, class也好, 它们声明的都是常量, 在最早的Rake中, 直接就使用了class来声明Task 和 FileTask, 这样就很容易发生命名冲突,  后来就在外面套了一层module:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">module Rake</span><br><span class="line">  class Task</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样就避免了发生冲突, 如果想要使用Task类需要这样定位<code>Rake::Task</code>, 像<code>Rake</code>这样的module, 存在的意义仅仅是常量的容器, 就把它称作命名空间(Namespace).<br>但是这样就出现了一个问题, 一些程序员的机器还在使用旧的版本的<code>rake</code>, 没有Rake这个命名空间, 所以Rake的作者给出的解决方案是提供命令行选项<code>classic-namespace</code>来加载一个ruby的源文件, 这个源文件吧新的更安全的常量名称赋给旧的不安全的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># gems/rake-0.9.2.2/lib/rake/classic_namespace.rb</span><br><span class="line">Task = Rake::Task</span><br><span class="line">FileTask = Rake::FileTask </span><br><span class="line">FileCreationTask = Rake::FileCreationTask # ...</span><br></pre></td></tr></table></figure>
+<h3 id="Objects-and-Classes-Wrap-up-对象和类的小结"><a href="#Objects-and-Classes-Wrap-up-对象和类的小结" class="headerlink" title="Objects and Classes Wrap-up (对象和类的小结)"></a>Objects and Classes Wrap-up (对象和类的小结)</h3><blockquote>
+<p>什么是object? 它就是一堆实例变量, 加上一个到class的链接. object的方法并不在object中, 而是在object的class中, 而在class中这些方法又被叫做instance 方法.<br>什么是class? 它是object(Class的实例), 加上一列实例方法和一个到父类的链接. <code>Class</code>是<code>Module</code>的子类, 所以<code>class</code>也是<code>module</code><br>和其他的object一样, <code>class</code>也有它自己的方法, 比如说<code>new</code>, 像其他object一样, <code>class</code>也要通过引用来访问, 这个引用就是class的名字, 它是一个常量(constant)</p>
+</blockquote>
+<h4 id="Loading-and-Requiring"><a href="#Loading-and-Requiring" class="headerlink" title="Loading and Requiring"></a>Loading and Requiring</h4><h5 id="load方法"><a href="#load方法" class="headerlink" title="load方法"></a>load方法</h5><blockquote>
+<p>如果要加载<code>motd.rb</code>这个文件你可能会这样写:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">load(&apos;motd.rb&apos;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样会引起一个问题, 加入<code>motd.rb</code>这样文件中存在class和variable, 变量在文件加载完毕后会消失, 但是文机制的类名(常量, 目录)可能会污染程序的结构. 那么添加一个参数<code>true</code>就会避免这种情况:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">load(&apos;motd.rb&apos;, true)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Ruby会创建一个匿名的module来包裹<code>motd.rb</code>定义的所有常量, 起到命名空间的作用, 执行完后再删除这个module. </p>
+</blockquote>
+<h5 id="require-方法"><a href="#require-方法" class="headerlink" title="require 方法"></a>require 方法</h5><blockquote>
+<p>require和load很相似, 但是, 它们的目的不同, <code>load</code>是用来导入执行的代码, 而<code>require</code>用来引入库.</p>
+</blockquote>
+<h2 id="What-Happens-When-You-Call-a-Method-当你调用一个方法时-发生了什么"><a href="#What-Happens-When-You-Call-a-Method-当你调用一个方法时-发生了什么" class="headerlink" title="What Happens When You Call a Method? (当你调用一个方法时, 发生了什么?)"></a>What Happens When You Call a Method? (当你调用一个方法时, 发生了什么?)</h2><blockquote>
+<p>当你在调用一个方法的时候, Ruby做了两件事情:</p>
+</blockquote>
+<ul>
+<li>它找到方法, 这个过程被叫做方法查找(method lookup)</li>
+<li>它执行方法, Ruby需要调用自己<code>self.</code></li>
+</ul>
+<blockquote>
+<p>这两个步骤在面向对象的语言中是必须要做的. 首先来看看方法查找(method lookup)</p>
+</blockquote>
+<h3 id="Method-Lookup-方法查找"><a href="#Method-Lookup-方法查找" class="headerlink" title="Method Lookup (方法查找)"></a>Method Lookup (方法查找)</h3><blockquote>
+<p>当你在一个对象上调用方法时, Ruby会窥视该对象查找调用的方法.<br>我们先来弄清楚2个概念: <code>receiver</code>和<code>ancestors chain</code>: 即接收者和祖先调用链:</p>
+<p>receiver 就是你所调用方法的对象, 比如<code>my_string.reverse()</code>, <code>my_string</code>就是receiver.<br><code>ancestors chain</code>就是 <code>receiver&#39;s Class -&gt; 父类 -&gt; 前者的父类 -&gt; ... -&gt; 直到Ruby的基类BasicObject</code>,这种继承关系就是了.</p>
+<p>那么现在就可以解释这个过程了: 一个方法在被调用时, Ruby会首先在当前类中查找有没有这个方法, 没有找父类, 以此类推, 直到找到位置, 如果已经查找到了<code>BasicObject</code>仍不见这个方法, 那么Ruby就会抛异常:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NoMethodError: undefined method ...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们可以通过<code>ancestors</code> 来获取所有的祖先类:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySubclass.ancestors # =&gt; [MySubclass, MyClass, Object, Kernel, BasicObject]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但是请注意这个Kernel在调用链中是做什么的呢?</p>
+</blockquote>
+<h4 id="Modules-and-Lookup"><a href="#Modules-and-Lookup" class="headerlink" title="Modules and Lookup"></a>Modules and Lookup</h4><blockquote>
+<p>我们发现在Object和BasicObject之间被插进去了Kernel 这个module, 首先要说明一点调用链是包含module的, 不仅仅指的是class.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">module M1</span><br><span class="line">  def my_method</span><br><span class="line">    &apos;M1#my_method()&apos;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class C</span><br><span class="line">  include M1</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class D &lt; C; end</span><br><span class="line"></span><br><span class="line">D.ancestors # =&gt; [D, C, M1, Object, Kernel, BasicObject]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>include</code> 方法是把mudule M1插入了方法调用链中, 它的特点是插入该类在调用链的后面位置, M1是C的祖先.<br>从Ruby2.0以后, 加入一个新的方法<code>prepend</code>, 它和<code>include</code>恰好相反, 其特点是插入该类在调用链的前面:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class C2</span><br><span class="line">  prepend M2</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class D2 &lt; C2; end</span><br><span class="line"></span><br><span class="line">D2.ancestors # =&gt; [D2, M2, C2, Object, Kernel, BasicObject]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>下面的图反映了<code>include</code>和<code>prepend</code>的不同之处:</p>
+<p><img src="http://i2.tietuku.com/40d72a7fbea95b59.png"></p>
+</blockquote>
+<h4 id="Multiple-Inclusions"><a href="#Multiple-Inclusions" class="headerlink" title="Multiple Inclusions"></a>Multiple Inclusions</h4><blockquote>
+<p>这里我觉得书上貌似有些小问题, 我对于这种多次包含关系是针对的是以哪个module为准, 这个module指的是所定义的那个module :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">module M1; end</span><br><span class="line"></span><br><span class="line">module M2 </span><br><span class="line">  include M1</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">module M3</span><br><span class="line">  prepend M1</span><br><span class="line">  include M2</span><br><span class="line">end</span><br><span class="line">M1.ancestors # =&gt; [M1]</span><br><span class="line">M2.ancestors # =&gt; [M2, M1]</span><br><span class="line">M3.ancestors # =&gt; [M1, M3, M2]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>并不像书上说的谁覆盖掉谁那样.</p>
+</blockquote>
+<h4 id="The-Kernel"><a href="#The-Kernel" class="headerlink" title="The Kernel"></a>The Kernel</h4><blockquote>
+<p>这个Kernel到底是做什么的, 为什么要放在Object 和 BasicObject之间呢? 下面就研究一下:<br>Ruby有一些方法比如<code>print</code>, <code>puts</code>你可以在任意地方使用, 好像每个对象都有<code>print</code>方法, 事实上像<code>print</code>这样方法就是这个<code>Kernel</code>的私有的实例方法(private instance method). </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Kernel.private_instance_methods.grep(/^pr/) # =&gt; [:printf, :print, :proc]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>而Kernel又包含了Object, Kernel就在几乎所有对象的调用链中了, 所以你可以在任意地方使用<code>print</code>方法, 仿佛<code>print</code>是关键字, 但事实上它是方法, 很酷!<br>你甚至可以利用该机制, 结合前面学习的<code>Open Classes</code>, 打开Kernel, 添加方法, 给所有对象使用. 比如说我们使用的一些gem就这么做了, 看接下来的例子:</p>
+</blockquote>
+<h5 id="The-Awesome-Print-Example"><a href="#The-Awesome-Print-Example" class="headerlink" title="The Awesome Print Example"></a>The Awesome Print Example</h5><blockquote>
+<p><code>awesome_print</code> gem 可以打印出带有缩进(indentation)的Ruby对象, 比如:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">require &quot;awesome_print&quot;</span><br><span class="line">local_time = &#123;:city =&gt; &quot;Rome&quot;, :now =&gt; Time.now &#125;</span><br><span class="line">ap local_time, :indent =&gt; 2</span><br><span class="line"></span><br><span class="line"># =&gt;</span><br><span class="line">&#123;</span><br><span class="line">  :city =&gt; &quot;Rome&quot;,</span><br><span class="line">  :now =&gt; 2013-11-30 12:51:03 +0100</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>ap</code>就是awesome_print gem提供的, 可以在任意地方使用, 原因就是它打开了Kernel, 添加了方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># gems/awesome_print-1.1.0/lib/awesome_print/core_ext/kernel.rb</span><br><span class="line">module Kernel</span><br><span class="line">  def ap(abject, options = &#123;&#125;)</span><br><span class="line">    ...</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="Method-Execution-方法执行"><a href="#Method-Execution-方法执行" class="headerlink" title="Method Execution(方法执行)"></a>Method Execution(方法执行)</h2><blockquote>
+<p>现在找到了方法, 那么就看看第二件事, 执行方法. 试想一下你是Ruby的解释器, 某个调用<code>my_method</code>这个方法, 你马上向右然后在继承关系链上向上查找该方法, 假设<code>my_method</code>方法是这样定义的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def my_method</span><br><span class="line">  temp = @x + 1</span><br><span class="line">  my_other_method(temp)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p> 要执行这个方法, 首先要弄清楚下面的2个问题: </p>
+</blockquote>
+<ul>
+<li>实例变量属于什么对象?</li>
+<li><code>my_other_method</code>应该在什么对象上调用?<blockquote>
+<p>答案都是<code>receiver</code>.</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="The-self-Keyword"><a href="#The-self-Keyword" class="headerlink" title="The self Keyword"></a>The self Keyword</h3><blockquote>
+<p>当前被执行的代码所在的Ruby对象, 也就是当前对象(current object), 使用<code>self</code>关键字表示.<br>在给定时间内只有一个对象可以充当<code>self</code>的角色, 没有什么对象可以一直地充当这个角色. 当你在调用执行方法时, <code>receiver</code>就是self. 从这一刻起, 所有的实例变量就是<code>self</code>的实例变量, 所有的没有指定接收者的方法就是在<code>self</code>上调用的方法. 只要你的代码在某个对象上调用方法, 那么这个方法就变成了<code>self</code>.<br>下面的例子巧妙地解释了<code>self</code>:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  def testing_self</span><br><span class="line">    @var = 10     # An instance variable of self</span><br><span class="line">    my_method()   # Same as self.my_method()</span><br><span class="line">    self</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def my_method</span><br><span class="line">    @var = @var + 1</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = MyClass.new</span><br><span class="line">obj.testing_self  # =&gt; #&lt;MyClass:0x007f93ab08a728 @var=11&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>testing_self</code>方法一旦被调用, 接收者obj变为<code>self</code>. 进而<code>@var</code>就是<code>obj</code>的实例变量, <code>my_method</code>方法也在<code>obj</code>对象上调用. 当<code>my_method</code>被执行的时候, <code>obj</code>还是<code>self</code>, 所以, <code>@var</code>还是<code>obj</code>的实例变量. 最后<code>testing_self</code>返回<code>self</code></p>
+<p>如果想要成为Ruby大师, 就应该时刻搞清楚哪个对象扮演<code>self</code>的角色. 大多数情况下很简单, 只需要弄清楚哪个对象是刚才方法的接收者. 但是需要知道下面的知识点:</p>
+</blockquote>
+<h4 id="The-Top-Level"><a href="#The-Top-Level" class="headerlink" title="The Top Level"></a>The Top Level</h4><blockquote>
+<p>我们知道每当在一个对象上调用方法时, 该对象就变成了<code>self</code>. 但是如果没有调用任何方法的话谁是<code>self</code>, 我在irb上做了这样的实验:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># irb</span><br><span class="line">self      #=&gt; main</span><br><span class="line">self.class # =&gt; Object</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当开始运行一段Ruby程序的时候, Ruby解释器会创建一个叫做main的对象, 我们的需要就运行其中. 这个对象有时候被称为<code>top-level context</code>(顶级上下文).因为这个对象是你程序调用栈的最上层.<br>注意: 这个main和Java和C中的main方法没有任何关系.</p>
+</blockquote>
+<h4 id="Class-Definitions-and-self"><a href="#Class-Definitions-and-self" class="headerlink" title="Class Definitions and self"></a>Class Definitions and self</h4><blockquote>
+<p>在class或者module定义中, <code>self</code>就是class和module本身:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  self #=&gt; MyClass</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>想想类方法的定义…</p>
+</blockquote>
+<h4 id="What-private-Really-Means"><a href="#What-private-Really-Means" class="headerlink" title="What private Really Means"></a>What private Really Means</h4><blockquote>
+<p>现在学习了<code>self</code>, 就应该对Ruby的private关键字有新的认识了. Private方法遵循一个原则: 你不能使用一个明确的接收者来调用private 方法. 也就是说你每次调用private 方法的时候, 它一定有一个隐含的接收者<code>self</code>.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class C</span><br><span class="line">  def public_method</span><br><span class="line">    self.private_method</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  private</span><br><span class="line"></span><br><span class="line">  def private_method; end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">C.new.public_method</span><br><span class="line"># =&gt; NoMethodError: private method ‘private_method’ called [...]</span><br></pre></td></tr></table></figure></p>
+<p>如果去掉<code>self</code>程序就会通过.<br>这个牵强的例子说明了私有方法的两个必要条件:</p>
+<ul>
+<li>当接收者不是你自己时, 必须要明确指定接收者</li>
+<li>私有方法需要在隐含接收者上被调用</li>
+</ul>
+<p>想想之前提到的<code>puts</code>和<code>print</code>, 它们是Module <code>Kernel</code>的私有方法, 我们使用这些方法是从来没有明确指定接收者.</p>
+<p>总而言之, 调用私有方法是永远不要指定接收者, 还有, 我们可以调用父类的私有方法.</p>
+</blockquote>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><blockquote>
+<p>到目前为止, 方法的执行可以总结为几句话: 你调用方法时, Ruby以<code>向右一步, 一直向上</code>的原则来查找方法, 然后把方法接收者作为self执行方法. 有一些特殊情况, 比如<code>include module</code>, 而且有一个意外情况!(Refinements)</p>
+</blockquote>
+<h3 id="Refinements-改进"><a href="#Refinements-改进" class="headerlink" title="Refinements(改进)"></a>Refinements(改进)</h3><blockquote>
+<p>我们在<code>Open Classes</code>时, 打开String 添加过一个方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># object_model/alphanumeric.rb</span><br><span class="line"></span><br><span class="line">class String</span><br><span class="line">  def to_alphanumeric</span><br><span class="line">    self.gsub(/[^\w\s]/, &apos;&apos;)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这么修改是全局的, 也就是说每个String都会发生变化.还说过如果方法名和原来的一样, 就会覆盖掉之前的方法, 这一节的知识就是为了解决这个问题.<br>Ruby2.0开始引入了Refinement, 它把我们要修改的类约束在了一个范围内:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># object_model/refinements_in_module.rb</span><br><span class="line">module StringExtensions</span><br><span class="line">  refine String do</span><br><span class="line">    def to_alphanumeric</span><br><span class="line">      self.gsub(/[^\w\s]/, &apos;&apos;)</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>调用时需要使用<code>using</code>指定这个范围:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">using StringExtensions</span><br><span class="line"></span><br><span class="line"><span class="string">"my *1st* refinement!"</span>.to_alphanumeric <span class="comment"># =&gt; "my 1st refinement"</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>从Ruby2.1开始, 可以在module的定义中使用<code>using</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">require_relative &apos;../test/assertions&apos;</span><br><span class="line"></span><br><span class="line">module StringExtensions</span><br><span class="line">  refine String do</span><br><span class="line">    def reverse</span><br><span class="line">      &quot;esrever&quot;</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">module StringStuff</span><br><span class="line">  using StringExtensions</span><br><span class="line">  &quot;my_string&quot;.reverse    # =&gt; &quot;esrever&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">&quot;my_string&quot;.reverse      # =&gt; &quot;gnirts_ym&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>可见, Refinements和Monkeypatches很接近, 但是不是全局的. 它只在两个地方是激活的, <code>refine</code>方法的block中, 还有调用<code>using</code>后面的代码.<br>Refinements和Monkeypatches的作用是一样的, 定义新方法, 改进已经存在的方法, include或者prepend modules. 他就像是给源代码打了一个补丁.<br>另一方面, Refinements不是全局的, 不会影响你程序剩余的部分.</p>
+</blockquote>
+<h5 id="Refinement-Gotchas-需要注意"><a href="#Refinement-Gotchas-需要注意" class="headerlink" title="Refinement Gotchas (需要注意)"></a>Refinement Gotchas (需要注意)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  def my_method</span><br><span class="line">    &quot;original my_method()&quot;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def another_method</span><br><span class="line">    my_method</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">module MyClassRefinement</span><br><span class="line">  refine MyClass do</span><br><span class="line">    def my_method</span><br><span class="line">      &quot;refined my_method()&quot;</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">using MyClassRefinement</span><br><span class="line">puts MyClass.new.my_method # =&gt; refined my_method()</span><br><span class="line">puts MyClass.new.another_method  # =&gt; original my_method()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里是一个特别的地方, <code>another_method</code>方法调用了<code>my_method</code>, 虽然也是在 using 后面, 它返回的还是原来方法的结果.</p>
+</blockquote>
+<h2 id="Quiz-Tangle-of-Modules-modules-混在一起"><a href="#Quiz-Tangle-of-Modules-modules-混在一起" class="headerlink" title="Quiz: Tangle of Modules (modules 混在一起)"></a>Quiz: Tangle of Modules (modules 混在一起)</h2><blockquote>
+<p>有这样一个例子:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">module Printable</span><br><span class="line">  def print</span><br><span class="line">    </span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def prepare_cover</span><br><span class="line">    </span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">module Document</span><br><span class="line">  def print_to_screen</span><br><span class="line">    prepare_cover</span><br><span class="line">    format_for_screen</span><br><span class="line">    print</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def format_for_screen</span><br><span class="line">    </span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def print</span><br><span class="line">    </span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class Book</span><br><span class="line">  include Document</span><br><span class="line">  include Printable</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">b = Book.new</span><br><span class="line">b.print_to_screen</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>请问: <code>print_to_screen</code>中的<code>print</code> 来自于哪个module? 是<code>Printable</code>还是<code>Document</code>还是<code>Kernel</code>?<br>答案是: Printable.<br>既然是在Book的对象b上调用的方法, 那么就看看Book的祖先类的调用链.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Book.ancestors # =&gt; [Book, Printable, Document, Object, Kernel, BasicObject]</span><br></pre></td></tr></table></figure></p>
+<p>由于Book中先执行<code>include Document</code>, 然后<code>include Printable</code>, 所以Printable被加到了Book的右侧, Document次之. 当你调用<code>b.print_to_screen</code>方法时, 对象的引用<code>b</code>被看作为<code>self</code>, 然后查找方法就开始了, Ruby发现<code>print_to_screen</code>在<code>Document</code>中, <code>print_to_screen</code>方法中还调用了别的方法, 包括<code>print</code>, 而且现在还没有指定接收者, 那么接收者还是<code>b</code>, 方法lookup还好从<code>Book</code>开始, 所以<code>print</code>当然是从<code>Printable</code>找到的了, 因为<code>Printable</code>在调用链上离<code>Book</code>最近.<br>如果现在希望使用Document的<code>print</code>方法, 应该在Book中先<code>include Printable</code>在<code>include Document</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Book</span><br><span class="line">  include Printable</span><br><span class="line">  include Document</span><br><span class="line">  ancestors # =&gt; [Book, Document, Printable, Object, Kernel, BasicObject]  </span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="Wrap-Up-总结"><a href="#Wrap-Up-总结" class="headerlink" title="Wrap-Up(总结)"></a>Wrap-Up(总结)</h2><blockquote>
+<p>这个列表总结了第二章的所有内容:</p>
+</blockquote>
+<ul>
+<li><p>对象是由一堆实例变量和一个class的链接组成的(引用)</p>
+</li>
+<li><p>对象的方法存于对象的类中</p>
+</li>
+<li><p>class 本身是<code>Class</code>的对象, class的名称仅仅是个常量</p>
+</li>
+<li><p>Class是Module的子类, module可以理解为方法的包(集合). class可以被实例化, 或者组织到继承关系中</p>
+</li>
+<li><p>Constants被组织成了类似于文件系统的树状结构, module或者类的名字是文件系统的目录, 普通的Constants则是文件.</p>
+</li>
+<li><p>每一个class都有一个祖先链, 从该class开始, 到<code>BasicObject</code>结束.</p>
+</li>
+<li><p>当你在一个对象身上调用方法的时候, Ruby先向右找到接收者(对象)所属的类, 然后一直验证祖先链向上查找这个方法. 直到在链子上找到方法为止.</p>
+</li>
+<li><p>当你在一个class中include一个module时,这个module会被插到该class的祖先链该class的正上方位置.<code>prepend</code>方法是插到正下方.</p>
+</li>
+<li><p>当你调用方法时, 接收者充当<code>self</code>的角色</p>
+</li>
+<li><p>当你定义module(或class)时, module充当<code>self</code>的角色</p>
+</li>
+<li><p>实例变量一直被作为<code>self</code>的实例变量</p>
+</li>
+<li><p>任何没有明确指定接收者的方法都会被认为是<code>self</code>的方法.</p>
+</li>
+<li><p>Refinements 像是class上的代码补丁, 它覆盖了普通的方法查找(lookup). 另外, Refinement仅仅在程序的限制区域内生效, 这个区域是<code>using XXX</code>到文件结尾或者module的定义结尾.</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/19/rails-cache/" itemprop="url">
+                  Fragment Caching
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-19T14:51:24+08:00" content="2015-03-19">
+              2015-03-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Rails4中废除了Action Caching和Page Caching. 重点是Fragment Caching.</p>
+<p>需要缓存最新创建的3个posts</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def show</span><br><span class="line">  # 首先查看缓存片段是否存在, 如果不存在, 再去执行数据库查询</span><br><span class="line">  unless fragment_exist? &apos;recent_post&apos;</span><br><span class="line">    Post.order(created_at: :desc).limit(3)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="使用cache-block包裹需要缓存的部分"><a href="#使用cache-block包裹需要缓存的部分" class="headerlink" title="使用cache block包裹需要缓存的部分:"></a>使用<code>cache</code> block包裹需要缓存的部分:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- cache(&apos;recent_post&apos;, skip_digest: true)</span><br><span class="line">  .recentPost</span><br><span class="line">    ul</span><br><span class="line">    - @recent_posts.each do |post|</span><br><span class="line">      li = link_to post.title, post</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong><em> 这里要尤其注意: <code>skip_digest: true</code> 指定了不使用rails为我们提供的digest作为key, 而是使用自定义的</em></strong></p>
+</blockquote>
+<h2 id="使缓存过期expire-fragment"><a href="#使缓存过期expire-fragment" class="headerlink" title="使缓存过期expire_fragment"></a>使缓存过期expire_fragment</h2><blockquote>
+<p>使用方法 <code>expire_fragment(key)</code>, 比如我想在某个action中让recent_post过期, 那么我可以这样写:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Post#update</span><br><span class="line"></span><br><span class="line">def update</span><br><span class="line">  [...]</span><br><span class="line">  expire_fragment(&apos;recent_post&apos;)</span><br><span class="line">  [...]</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="使用对象作为cache-key"><a href="#使用对象作为cache-key" class="headerlink" title="使用对象作为cache key"></a>使用对象作为cache key</h2><blockquote>
+<p>下面的代码会自动调用对象cache_key方法, 返回的值为<code>&quot;posts/1-20150319072533719235000&quot;</code>, 包含updated_at这个时间戳, 也就是说, 一旦对象发生变化, 这个缓存片段会自动过期, 非常酷<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- cache @post</span><br><span class="line">  # blah ...</span><br></pre></td></tr></table></figure></p>
+<p>需要注意, 使用对象作为cache key, 其内部有动态的部分发生了变化, 不会自动变化, 比如说@post内部又迭代了评论(comment)</p>
+<p>解决方法是在ActiveRecord(comment.rb) 的belongs_to: :post, 添加 <code>touch: true</code>, 其原理是,如果我修改了与post相关联的comment或者添加一个comment, 同时也会更新这个post的updated_at属性, 也就触发了cache_key.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Comment &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :post, touch: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="俄罗斯套娃缓存机制"><a href="#俄罗斯套娃缓存机制" class="headerlink" title="俄罗斯套娃缓存机制"></a>俄罗斯套娃缓存机制</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- cache(cache_key_for_products)</span><br><span class="line">  - Product.all.each  do |p|</span><br><span class="line">    - cache(p)</span><br><span class="line">      = link_to p.name, product_url(p)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>一个对象发生了变化, 不会影响其它对象的缓存, 其他对象还好从缓存中读取, 而变化的对象是从数据库中返回.</p>
+</blockquote>
+<h2 id="缓存是如何存储的"><a href="#缓存是如何存储的" class="headerlink" title="缓存是如何存储的"></a>缓存是如何存储的</h2><blockquote>
+<p>进入Rails Console <code>rails c</code>. 缓存是以键值对的形式存取的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># rails console</span><br><span class="line"></span><br><span class="line">Rails.cache.read(&apos;views/recent_post&apos;)</span><br><span class="line">=&gt; &quot;&lt;div class=\&quot;recentPost\&quot;&gt;\n  &lt;strong&gt; Recent Posts&lt;/strong&gt;\n  &lt;ul&gt;&lt;/ul&gt;\n  &lt;li&gt;\n    &lt;a href=\&quot;/posts/23\&quot;&gt;额  &lt;/a&gt;\n  &lt;/li&gt;\n  &lt;li&gt;\n    &lt;a href=\&quot;/posts/22\&quot;&gt;888一 4&lt;/a&gt;\n  &lt;/li&gt;\n  &lt;li&gt;\n    &lt;a href=\&quot;/posts/21\&quot;&gt;瞎忙活&lt;/a&gt;\n  &lt;/li&gt;\n  &lt;li&gt;\n    &lt;a href=\&quot;/posts/20\&quot;&gt;法拉利&lt;/a&gt;\n  &lt;/li&gt;\n  &lt;li&gt;\n    &lt;a href=\&quot;/posts/19\&quot;&gt;太阳额&lt;/a&gt;\n  &lt;/li&gt;\n&lt;/div&gt;&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>目前是存储于文件系统的</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Rails.cache.class</span><br><span class="line"># =&gt; ActiveSupport::Cache::FileStore</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果要使用memcached来存储, 需要修改配置文件 <code>config/environments/*.rb</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.cache_store = :mem_cache_store</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/19/rails-caching/" itemprop="url">
+                  Rails中使用memcached内存缓存技术
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-19T08:47:56+08:00" content="2015-03-19">
+              2015-03-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>介绍一下Rails如何使用memcached.<br>简单来说, 就是把<code>{}</code> 存入内存, 来获得更快的存取速度</p>
+</blockquote>
+<h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><blockquote>
+<p>在development.rb文件中添加如下配置信息:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># config/environments/development.rb</span><br><span class="line"></span><br><span class="line"># 打开缓存</span><br><span class="line">config.action_controller.perform_caching = true</span><br><span class="line"></span><br><span class="line"># 使用memcached 作为存储</span><br><span class="line">config.cache_store = :dalli_store</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Rails4中需要安装dalli gem, 作为<code>mem_cache_store</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line">gem &apos;dalli&apos;</span><br><span class="line"></span><br><span class="line">$ bundle install</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>安装完毕</p>
+</blockquote>
+<h2 id="memcached的一些方法"><a href="#memcached的一些方法" class="headerlink" title="memcached的一些方法"></a>memcached的一些方法</h2><blockquote>
+<p>接下来介绍memcached一些存取方法, 在console中操作</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ rails c</span><br><span class="line"></span><br><span class="line"># 存入</span><br><span class="line">Rails.cache.write(&apos;first&apos;, Post.first)</span><br><span class="line"></span><br><span class="line"># 取出</span><br><span class="line">Rails.cache.read(&apos;first&apos;)</span><br><span class="line"></span><br><span class="line"># 删除</span><br><span class="line">Rails.cache.delete(&apos;first&apos;)</span><br><span class="line"></span><br><span class="line"># 查看</span><br><span class="line">Rails.cache.exist?(&apos;first&apos;)</span><br><span class="line"></span><br><span class="line"># fetch: 检查key是否存在, 不存在, 把block里的结果作为value, 并返回结果. 如果存在, 就不去执行block的内容</span><br><span class="line"></span><br><span class="line">Rails.cache.fetch(&apos;last_post&apos;) &#123; Post.last &#125;</span><br><span class="line"># =&gt; blah</span><br><span class="line"></span><br><span class="line"># 还可以设定过期时间</span><br><span class="line">Rails.cache.fetch(&apos;time&apos;, expires_in: 4.seconds) &#123; Time.now &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="memcached的使用举例"><a href="#memcached的使用举例" class="headerlink" title="memcached的使用举例"></a>memcached的使用举例</h2><blockquote>
+<p>没经过30分钟查询一次数据库获取最新的10个posts, 然后放入memcached中</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def self.recent</span><br><span class="line">  Rails.cache.fetch(&apos;recent_posts&apos;, expires_in: 30.minutes) do</span><br><span class="line">    self.order(created_at: :desc).limit(10)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>页面的fragment每隔30分钟 被render一次</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- cache(:recent_posts, expires_in: 30.minutes)</span><br></pre></td></tr></table></figure>
+<h2 id="智能keys"><a href="#智能keys" class="headerlink" title="智能keys"></a>智能keys</h2><blockquote>
+<p><code>memcached</code>内部会计算出一些不常用的key, 然后删除, 类似于垃圾回收, 所以程序员不需要手动去清理:</p>
+<p>那么我可以使用对象来命名key, 比如:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- cache(post)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>rails约定其内部会调用对象的<code>cache_key</code>方法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">post.cache_key</span><br><span class="line"></span><br><span class="line"># =&gt; posts/1-20150319075048049376000&quot;&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于这些方法, rails也有同样的约定: <code>write_fragment(post)</code>, <code>read_fragment(post)</code>, <code>fragment_exist?(post)</code>, <code>expire_fragment(post)</code></p>
+<p>如果需要缓存符合对象比如: <code>cache([post, user])</code>, rails会将其分别调用cache_key方法, 然后拼凑起来:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">views/posts/1-20150319075048049376000/users/1-20150312111908608706000</span><br></pre></td></tr></table></figure>
+<h2 id="什么时候使用memcached"><a href="#什么时候使用memcached" class="headerlink" title="什么时候使用memcached"></a>什么时候使用memcached</h2><blockquote>
+<p>试想一个flickr图片网站, 用户可以在一个图片下添加评论, 如果评论增加或者删除, 就会触发key的变化:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- cache([photo, photo.version])</span><br><span class="line"></span><br><span class="line"># comment.rb</span><br><span class="line">class Comment &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :photo</span><br><span class="line"></span><br><span class="line">  after_save :increment_photo_version</span><br><span class="line">  after_destroy :increment_photo_version</span><br><span class="line"></span><br><span class="line">  def increment_photo_version</span><br><span class="line">    self.photo.increment(:version)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p><strong><em> 如上面的例子, 一些内容不经常改变, 为了避免访问数据库, 我一次查询出来, 放到memcached中.</em></strong></p>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/18/activejob-delayjob/" itemprop="url">
+                  Rails 中使用ActiveJob和DelayedJob进行后台处理
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-18T08:48:12+08:00" content="2015-03-18">
+              2015-03-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>在开发中, 往往需要涉及到发送邮件, 大量数据的导入导出, 这种耗时长的任务就需要进行后台处理. Rails中可以使用Sidekiq, Resque, Delayed Job 这些流行的gem来实现后台处理. Rails 4.2开始, 又加入了Active Job, 但需要和其他gem配合使用才可以进行后台任务处理.</p>
+<p>本文是我从项目中抽取出来, 做了简化处理, 说明如何在Rails中使用这些gem, 让它们配合来处理后台任务</p>
+</blockquote>
+<h2 id="Delayed-Job的安装和使用"><a href="#Delayed-Job的安装和使用" class="headerlink" title="Delayed Job的安装和使用"></a>Delayed Job的安装和使用</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><blockquote>
+<p>向Gemfile中加入如下的gem:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gem &apos;delayed_job_active_record&apos;</span><br><span class="line"></span><br><span class="line">$ bundle install</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后我使用scaffold来创建一个letter model, 我要以邮件发送为例, 来说明问题(我并不会真的发送邮件):</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rails g scaffold Letter title description delivered_at:time</span><br><span class="line">$ rake db:migrate</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>新建job管理表</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rails g delayed_job:active_record</span><br><span class="line">$ rake db:migrate</span><br></pre></td></tr></table></figure>
+<h3 id="创建job"><a href="#创建job" class="headerlink" title="创建job"></a>创建job</h3><blockquote>
+<p>通过使用<code>delay</code>方法, 可以实现后台处理:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 前台发送邮件</span><br><span class="line"></span><br><span class="line">@letter.deliver</span><br><span class="line"></span><br><span class="line"># 后台发送邮件</span><br><span class="line">@letter.delay.deliver</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>比如说, 我如果想下面这写代码, 那么就需要耗费用户不必要的等待时间:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/letters_controller.rb</span><br><span class="line">  def deliver</span><br><span class="line">    @letter = Letter.find(params[:id])</span><br><span class="line">    # 发送邮件</span><br><span class="line">    @letter.deliver</span><br><span class="line">    redirect_to letters_url, notice: &apos;Letter sent successfully!&apos;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line"># app/models/letter.rb</span><br><span class="line"></span><br><span class="line">class Letter &lt; ActiveRecord::Base</span><br><span class="line">  def deliver</span><br><span class="line">    # 让现场sleep 10秒钟, 模拟延迟</span><br><span class="line">    sleep(10)</span><br><span class="line">    update(deliver_at: Time.zone.now)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在页面上等待了10秒钟, 然后才执行完毕, 这对于用户来说体验是很不好的.<br><img src="http://i3.tietuku.com/9e424f6b8f41a9b8.png"><br><img src="http://i3.tietuku.com/5d9272720896edc6.png"></p>
+<p>但是如何使用<code>delay</code>方法, 页面马上就会跳转, 不会让用户等待, 发送的动作会交给另一个线程来做:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/letters_controller.rb</span><br><span class="line">@letter.delay.deliver</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>启动worker线程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rake jobs:work</span><br></pre></td></tr></table></figure></p>
+<p>然后点击<code>Deliver</code>, 马上重定向页面, 由于我设定的让线程sleep 10秒, 所以Delivered_at 的值还是空的, 过一会我再刷新页面, 发现其被设定了, 表示我的邮件被发出了:</p>
+<p><img src="http://i2.tietuku.com/852355042d0afb1b.png"><br><img src="http://i2.tietuku.com/e6a24317283d1c6a.png"></p>
+</blockquote>
+<h3 id="运行job-worker的启动-停止和重启"><a href="#运行job-worker的启动-停止和重启" class="headerlink" title="运行job(worker的启动, 停止和重启)"></a>运行job(worker的启动, 停止和重启)</h3><h4 id="开发模式"><a href="#开发模式" class="headerlink" title="开发模式"></a>开发模式</h4><blockquote>
+<p><code>rake jobs:work</code> , 退出 ctrl C</p>
+</blockquote>
+<h4 id="开发模式-1"><a href="#开发模式-1" class="headerlink" title="开发模式"></a>开发模式</h4><blockquote>
+<p>在开发模式下, 需要安装一个<code>daemons</code>的gem, 使用下面的命令:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 启动2个worker</span><br><span class="line">RAILS_ENV=production bin/delayed_job -n 2 start</span><br><span class="line"></span><br><span class="line"># 停止</span><br><span class="line">RAILS_ENV=production bin/delayed_job stop</span><br><span class="line"></span><br><span class="line"># 重启worker</span><br><span class="line">RAILS_ENV=production bin/delayed_job -n 2 restart</span><br></pre></td></tr></table></figure>
+<h2 id="和ActiveJob一起使用"><a href="#和ActiveJob一起使用" class="headerlink" title="和ActiveJob一起使用"></a>和ActiveJob一起使用</h2><blockquote>
+<p>ActiveJob的目的作于减少使用Sidekiq, Resque, Delayed Job这些gem的差异, 充当中间件的作用.</p>
+</blockquote>
+<h3 id="设定后台job适配器"><a href="#设定后台job适配器" class="headerlink" title="设定后台job适配器"></a>设定后台job适配器</h3><blockquote>
+<p>在<code>application.rb</code>中设定Sidekiq, Resque, Delayed Job各自的内容, 这里以delayed_job为例, 需要指定<code>:delayed_job</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># config/application.rb</span><br><span class="line"></span><br><span class="line">module DelayedJobTest</span><br><span class="line">  class Application &lt; Rails::Application</span><br><span class="line">    [...]</span><br><span class="line"></span><br><span class="line">    config.active_job.queue_adapter = :delayed_job</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="创建job-1"><a href="#创建job-1" class="headerlink" title="创建job"></a>创建job</h3><blockquote>
+<p>使用下面的命令来创建job</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rails g job news_deliver</span><br><span class="line">  invoke  test_unit</span><br><span class="line">  create    test/jobs/news_deliver_job_test.rb</span><br><span class="line">  create  app/jobs/news_deliver_job.rb</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>按照规定, job的配置文件需要在job目录下, 继承<code>ActiveJob::Base</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># app/jobs/news_deliver_job.rb</span><br><span class="line">class NewsDeliverJob &lt; ActiveJob::Base</span><br><span class="line">  queue_as :default</span><br><span class="line"></span><br><span class="line">  def perform(*args)</span><br><span class="line">    # Do something later</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>queue_as</code>指定运行哪个队列, <code>perform</code>方法来指定需要执行的job: 上一节的例子可以改写成这样:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class NewsDeliverJob &lt; ActiveJob::Base</span><br><span class="line">  queue_as :default</span><br><span class="line">  </span><br><span class="line">  def perform(letter_id)</span><br><span class="line">    Letter.find(letter_id).deliver</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># Controller的方法中</span><br><span class="line"></span><br><span class="line">class LettersController &lt; ApplicationController</span><br><span class="line">  [...]</span><br><span class="line">  </span><br><span class="line">  def deliver</span><br><span class="line">    NewsDeliverJob.perform_later(params[:id])</span><br><span class="line">    redirect_to letters_url, notice: &quot;Sent!&quot;</span><br><span class="line">  end</span><br><span class="line">  [...]</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 设定具体的执行时间</span><br><span class="line">NewsDeliverJob.set(wait_until: Date.tomorrow.noon).perform_later(params[:id])</span><br><span class="line">NewsDeliverJob.set(wait: 1.week).perform_later(params[:id])</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>启动: <code>rake jobs:work</code></p>
+</blockquote>
+<h3 id="ActiveJob异常的处理"><a href="#ActiveJob异常的处理" class="headerlink" title="ActiveJob异常的处理"></a>ActiveJob异常的处理</h3><blockquote>
+<p>job中发生了异常的话, 使用<code>rescue_from</code>处理:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class NewsDeliverJob &lt; ActiveJob::Base</span><br><span class="line">  queue_as :default</span><br><span class="line"></span><br><span class="line">  rescue_from(ActiveRecord::RecordNotFound) do |exception|</span><br><span class="line">    Rails.logger.error &quot;Letter Not FOUND&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/17/angular-examples/" itemprop="url">
+                  看例子学习angular
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-17T18:43:32+08:00" content="2015-03-17">
+              2015-03-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Angular/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="使用Angular-当input-text-改变时-模板也作出相应的改变"><a href="#使用Angular-当input-text-改变时-模板也作出相应的改变" class="headerlink" title="使用Angular, 当input text 改变时, 模板也作出相应的改变:"></a>使用Angular, 当input text 改变时, 模板也作出相应的改变:</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">ng-app</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>Angular.js Example<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">Name:<span class="tag">&lt;<span class="name">input</span> <span class="attr">ng-model</span>=<span class="string">"name"</span> <span class="attr">type</span>=<span class="string">"text"</span>/&gt;</span></span><br><span class="line">Hello &#123;&#123;name&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="多个text-input的数据绑定"><a href="#多个text-input的数据绑定" class="headerlink" title="多个text input的数据绑定"></a>多个text input的数据绑定</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;!doctype html&gt;</span><br><span class="line">&lt;html ng-app&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line"></span><br><span class="line">    &lt;title&gt;AngularJS&lt;/title&gt;</span><br><span class="line">    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">      Name: &lt;input type=&quot;text&quot; ng-model=&quot;name&quot; /&gt;</span><br><span class="line">      &lt;br /&gt;</span><br><span class="line">      Name: &lt;input type=&quot;text&quot; ng-model=&quot;name&quot; /&gt;</span><br><span class="line">      &lt;br /&gt;</span><br><span class="line">      &#123;&#123;name&#125;&#125;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/17/coffeescript/" itemprop="url">
+                  coffeescript入门教程
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-17T08:19:30+08:00" content="2015-03-17">
+              2015-03-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/CoffeeScript/" itemprop="url" rel="index">
+                    <span itemprop="name">CoffeeScript</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="什么是coffescript"><a href="#什么是coffescript" class="headerlink" title="什么是coffescript"></a>什么是coffescript</h2><blockquote>
+<p>coffeescript 是一种ruby/python风格的语言可以被编译成js, 相比于js来讲, 它使用更少的代码.而且可读性更好. <a href="http://coffeescript.org/" target="_blank" rel="external">http://coffeescript.org/</a> OVERVIEW 部分可以看出只相当于js的三分之二的代码.</p>
+</blockquote>
+<h2 id="安装coffeescript"><a href="#安装coffeescript" class="headerlink" title="安装coffeescript"></a>安装coffeescript</h2><blockquote>
+<p>前提需要安装nodejs环境, 然后执行下面的命令:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo npm install -g coffee-script</span><br></pre></td></tr></table></figure>
+<h2 id="编译coffeescript"><a href="#编译coffeescript" class="headerlink" title="编译coffeescript"></a>编译coffeescript</h2><blockquote>
+<p>新建一个script.coffee的文件, 使用 <code>--wantch --compile</code> 监视并编译该文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ coffeescript --watch --compile script.coffee</span><br></pre></td></tr></table></figure>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><h3 id="变量声明与赋值"><a href="#变量声明与赋值" class="headerlink" title="变量声明与赋值"></a>变量声明与赋值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># script.coffee</span><br><span class="line"></span><br><span class="line">name = &quot;Daniel&quot;</span><br><span class="line"></span><br><span class="line">person = true</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>编译成的js 代码</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(function() &#123;</span><br><span class="line">  var name, person;</span><br><span class="line">  name = &quot;Daniel&quot;;</span><br><span class="line">  person = true;</span><br><span class="line">&#125;).all(this)</span><br></pre></td></tr></table></figure>
+<h3 id="函数的定义"><a href="#函数的定义" class="headerlink" title="函数的定义"></a>函数的定义</h3><blockquote>
+<p>使用 <code>-&gt;</code> 来定义函数, 而且需要注意使用缩进:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># script.coffee</span><br><span class="line">yell = -&gt;</span><br><span class="line">  alert name</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yell = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> alert(name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="函数的调用"><a href="#函数的调用" class="headerlink" title="函数的调用"></a>函数的调用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yell()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意括号不可以省略.</p>
+</blockquote>
+<h3 id="向函数传递参数"><a href="#向函数传递参数" class="headerlink" title="向函数传递参数"></a>向函数传递参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yell = (a) -&gt;</span><br><span class="line">  age = a</span><br><span class="line">  alert name</span><br><span class="line">  alert a</span><br></pre></td></tr></table></figure>
+<h2 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">is            ===</span><br><span class="line">isnt          !==</span><br><span class="line">not           !</span><br><span class="line">and           &amp;&amp;</span><br><span class="line">or            ||</span><br><span class="line">true, yes, on true</span><br><span class="line">false, no, off                  false</span><br><span class="line">@, this                         this</span><br><span class="line">of                              in</span><br></pre></td></tr></table></figure>
+<h2 id="条件控制语句"><a href="#条件控制语句" class="headerlink" title="条件控制语句"></a>条件控制语句</h2><blockquote>
+<p>非常接近于ruby的语法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yell(22) if person is true</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(person === <span class="literal">true</span>) &#123;</span><br><span class="line">  yell(<span class="number">22</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">age = <span class="number">22</span></span><br><span class="line">yell(<span class="number">33</span>) unless age &lt; <span class="number">33</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight coffee"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> person <span class="keyword">isnt</span> <span class="literal">false</span> <span class="keyword">then</span> yell(<span class="string">"Daniel"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (person === <span class="literal">true</span> &amp;&amp; name !== <span class="string">"Daniel"</span>) &#123;</span><br><span class="line">  yell(<span class="string">"Daniel"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight coffee"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> name?</span><br><span class="line">  yell()</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (name != <span class="literal">null</span>)&#123;</span><br><span class="line">  yell(<span class="string">"Daniel"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># coffee</span><br><span class="line">if gender?</span><br><span class="line">  yell()</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line">if (typeof gender !== &quot;undefined&quot; &amp;&amp; gender !== null) &#123;</span><br><span class="line">  yell();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>检查是否为null, 如果是 就 : <code>?=</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># coffee</span><br><span class="line">gender = &quot;&quot;</span><br><span class="line">gender ?= &quot;Male&quot;</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line">if (gender == null)</span><br><span class="line">  gender = &quot;Male&quot;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="Array-和-Object"><a href="#Array-和-Object" class="headerlink" title="Array 和 Object"></a>Array 和 Object</h2><blockquote>
+<p>对于数组来讲, coffee 的形式和js形式是相同的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># coffeescript</span><br><span class="line">type = [&quot;Rice&quot;, &quot;Crab&quot;, &quot;Cumcumber&quot;]</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line">type = [&quot;Rice&quot;, &quot;Crab&quot;, &quot;Cumcumber&quot;]</span><br></pre></td></tr></table></figure></p>
+<p>Obejct的声明:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># coffee</span><br><span class="line">sushi =</span><br><span class="line">  kind: &quot;Roll&quot;</span><br><span class="line">  roll: -&gt;</span><br><span class="line">    &quot;Rolled&quot;</span><br><span class="line">  fish: &quot;Salmon&quot;</span><br><span class="line">  ing:</span><br><span class="line">    rice: &quot;White&quot;</span><br><span class="line">    veg: &quot;Green&quot;</span><br><span class="line"># js</span><br><span class="line">sushi = &#123;</span><br><span class="line">  kind: &quot;Roll&quot;,</span><br><span class="line">  roll: function() &#123;</span><br><span class="line">    return &quot;Rolled&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  fish: &quot;Salmon&quot;,</span><br><span class="line">  ing:</span><br><span class="line">    rice: &quot;White&quot;,</span><br><span class="line">    veg: &quot;Green&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果带有关键字, coffee会自动加上 “”</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># coffee</span><br><span class="line">sushi =</span><br><span class="line">  class: &quot;Yellow&quot;</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line">sushi = &#123;</span><br><span class="line">  &quot;class&quot;: &quot;Yellow&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="类似于ruby的字符串插入变量"><a href="#类似于ruby的字符串插入变量" class="headerlink" title="类似于ruby的字符串插入变量"></a>类似于ruby的字符串插入变量</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># coffee</span><br><span class="line"></span><br><span class="line">alert(&quot;hello #&#123;name&#125;&quot;)</span><br><span class="line"></span><br><span class="line">#js</span><br><span class="line"></span><br><span class="line">alert(&quot;hello &quot; + name)</span><br></pre></td></tr></table></figure>
+<h2 id="Block-comments"><a href="#Block-comments" class="headerlink" title="Block comments"></a>Block comments</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">###</span><br><span class="line">可以在coffee中写多行注释</span><br><span class="line">###</span><br><span class="line"></span><br><span class="line">js中会变成:</span><br><span class="line">/*</span><br><span class="line">可以在coffee中写多行注释</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># coffee</span><br><span class="line">for item in type</span><br><span class="line">  alert(item)</span><br><span class="line"># 还可以写成一行</span><br><span class="line">alert(item) for item in type</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line">for (i=0, len=type.length; i&lt;len; i++)</span><br><span class="line">  item = type[i]</span><br><span class="line">  alert(item)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意if和when的区别</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">alert(item) for item in type if item isnt &quot;Crab&quot;</span><br><span class="line"></span><br><span class="line">if (item !== &quot;Crab&quot;) &#123;</span><br><span class="line">  for(i = 0, len = type.length; i &lt; len; i++) &#123;</span><br><span class="line">    item = type[i]</span><br><span class="line">    alert(item)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># when 用在循环里面做判断:</span><br><span class="line"></span><br><span class="line">alert(item) for item in type when item isnt &quot;Crab&quot;</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line">for (i=0, len = type.length; i &lt; len; i++)</span><br><span class="line">  item = type[i] </span><br><span class="line">  if (item !== &quot;Crab&quot;) &#123;</span><br><span class="line">    alert(item)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Splats"><a href="#Splats" class="headerlink" title="Splats"></a>Splats</h2><blockquote>
+<p>基本和ruby的splats相同, splats参数最后赋值, 先去赋值明确的参数</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">letters = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;]</span><br><span class="line"></span><br><span class="line">iLike = (first, second, rest...) -&gt;</span><br><span class="line">  alert(first)</span><br><span class="line">  alert(second)</span><br><span class="line">  alert(rest)</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line"></span><br><span class="line">  letters = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;];</span><br><span class="line"></span><br><span class="line">  iLike = function() &#123;</span><br><span class="line">      var most, rest, second;</span><br><span class="line">      most = arguments[0], second = arguments[1], rest = 3 &lt;= arguments.length ? slice.call(arguments, 2) : [];</span><br><span class="line">      alert(most);</span><br><span class="line">      alert(second);</span><br><span class="line">      return alert(rest);</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="分割数组"><a href="#分割数组" class="headerlink" title="分割数组"></a>分割数组</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">first = letters[0..3]</span><br><span class="line">rest = letters[4..]</span><br><span class="line">copy = letters[..]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">first = letters.slice(0, 4);</span><br><span class="line">rest = letters.slice(4);</span><br><span class="line">copy = letters.slice(0);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>替换元素</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">letters[2..4] = [&quot;M&quot;, &quot;N&quot;, &quot;Q&quot;]</span><br><span class="line"></span><br><span class="line">[].splice.apply(letters, [2, 3].concat(ref = [&quot;M&quot;, &quot;N&quot;, &quot;Q&quot;])), ref;</span><br></pre></td></tr></table></figure>
+<h2 id="Switch-语句"><a href="#Switch-语句" class="headerlink" title="Switch 语句"></a>Switch 语句</h2><blockquote>
+<p>switch when then</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">switch colors</span><br><span class="line">  when &quot;Blue&quot; then &quot;Blue&quot;</span><br><span class="line">  when &quot;Green&quot; then name = &quot;Green&quot;</span><br><span class="line">  when &quot;Black&quot;, &quot;Brown&quot;</span><br><span class="line">    if colors == &quot;Black&quot;</span><br><span class="line">      alert &quot;Black&quot;</span><br><span class="line">    name = &quot;Brown/Black&quot;</span><br><span class="line">  else alert &quot;No Colors&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># js</span><br><span class="line">switch (colors) &#123;</span><br><span class="line">  case &quot;Blue&quot;:</span><br><span class="line">    &quot;Blue&quot;;</span><br><span class="line">    break;</span><br><span class="line">  case &quot;Green&quot;:</span><br><span class="line">    name = &quot;Green&quot;;</span><br><span class="line">    break;</span><br><span class="line">  case &quot;Black&quot;:</span><br><span class="line">  case &quot;Brown&quot;:</span><br><span class="line">    if (colors === &quot;Black&quot;) &#123;</span><br><span class="line">      alert(&quot;Black&quot;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    name = &quot;Brown/Black&quot;;</span><br><span class="line">    break;</span><br><span class="line">  default:</span><br><span class="line">  alert(&quot;No Colors&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/16/angularjs00/" itemprop="url">
+                  angularjs00
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-16T20:25:38+08:00" content="2015-03-16">
+              2015-03-16
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/16/resume/" itemprop="url">
+                  My Resume of English Version
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-16T14:43:38+08:00" content="2015-03-16">
+              2015-03-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Resume/" itemprop="url" rel="index">
+                    <span itemprop="name">Resume</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Daniel-Zhang"><a href="#Daniel-Zhang" class="headerlink" title="Daniel Zhang"></a>Daniel Zhang</h2><h3 id="Personal-Info"><a href="#Personal-Info" class="headerlink" title="Personal Info"></a>Personal Info</h3><ul>
+<li>Email: shangrenzhidao@126.com</li>
+<li>Tel: +8618654650142</li>
+</ul>
+<h3 id="Personal-Summary"><a href="#Personal-Summary" class="headerlink" title="Personal Summary"></a>Personal Summary</h3><blockquote>
+<p>Experienced Ruby on Rails Developer with extensive technical background, positive attitude and strong motivation, detail oriented, and results focused. Strong interest in learning new knowledge and skills. Seeking a challenging position in IT.</p>
+</blockquote>
+<h3 id="Work-Experience"><a href="#Work-Experience" class="headerlink" title="Work Experience"></a>Work Experience</h3><h4 id="Ruby-on-Rails-Developer"><a href="#Ruby-on-Rails-Developer" class="headerlink" title="Ruby on Rails Developer"></a>Ruby on Rails Developer</h4><blockquote>
+<p>Institute of Zoology of Chinese Academy of Science - China Beijing</p>
+<p>August 2013 to December 2014</p>
+<p>Responsibilities</p>
+<ul>
+<li><p>Participating in discussions with taxonomists about what they need in eolchina system version2.</p>
+</li>
+<li><p>Had working experiences with American team.</p>
+</li>
+<li><p>Used Ruby on Rails framework to display all the species.</p>
+</li>
+<li><p>Implemented pronunciation functionality which is that one can hear the Chinese name’s pronunciation when clicking the icon.</p>
+</li>
+<li><p>Used Redis to count the times of species that are visited.</p>
+</li>
+<li><p>Deployed application on Ubuntu Linux platform.</p>
+</li>
+<li><p>Developped a gem named <a href="https://github.com/DanielZhangQingLong/asian_character_image" target="_blank" rel="external">asian_character_image</a>, which can provide images for Chinese characters.</p>
+</li>
+</ul>
+<p>Accomplishments</p>
+<ul>
+<li><p>Was able to quickly iterate solutions to common web development problems. </p>
+</li>
+<li><p>Learned new skills quickly and was able to apply new knowledge effectively. </p>
+</li>
+<li><p>Learned programming best practices and agile software development methods. </p>
+</li>
+</ul>
+<p>Skills Used </p>
+<blockquote>
+<p>Ruby on Rails, Redis, HTML5, Git, RSpec, Unicorn, Nginx and etc.</p>
+</blockquote>
+</blockquote>
+<h3 id="Education"><a href="#Education" class="headerlink" title="Education"></a>Education</h3><h4 id="Harbin-University-of-Science-and-Technology"><a href="#Harbin-University-of-Science-and-Technology" class="headerlink" title="Harbin University of Science and Technology"></a>Harbin University of Science and Technology</h4><blockquote>
+<p>2009 – 2013</p>
+</blockquote>
+<h3 id="Additional-Information"><a href="#Additional-Information" class="headerlink" title="Additional Information"></a>Additional Information</h3><blockquote>
+<p>Skills</p>
+<blockquote>
+<p>Technologies: Ruby, Rails, HTML5, Linux, Java, Vim, MySQL and etc.</p>
+<p>Personal Project: <a href="https://infinite-island-7861.herokuapp.com/" target="_blank" rel="external">https://infinite-island-7861.herokuapp.com/</a> (Not done yet though…)</p>
+<p>Blog: <a href="http://danielzhangqinglong.github.io/" target="_blank" rel="external">http://danielzhangqinglong.github.io/</a></p>
+<p>Github: <a href="https://github.com/DanielZhangQingLong" target="_blank" rel="external">https://github.com/DanielZhangQingLong</a></p>
+</blockquote>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/15/rails-pdf1/" itemprop="url">
+                  Rails使用PDFKit和wkhtmltopdf将HTML转换成PDF
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-15T16:25:20+08:00" content="2015-03-15">
+              2015-03-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="准备项目"><a href="#准备项目" class="headerlink" title="准备项目"></a>准备项目</h2><blockquote>
+<p>新建一个rails项目, 并导入一些数据, 不详细阐述, 我将index的截图贴出了:</p>
+<p><img src="http://i3.tietuku.com/1b3fe58e7b61ac08.png"></p>
+</blockquote>
+<h2 id="安装PDFKit和wkhtmtopdf"><a href="#安装PDFKit和wkhtmtopdf" class="headerlink" title="安装PDFKit和wkhtmtopdf"></a>安装PDFKit和wkhtmtopdf</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line">gem &apos;pdfkit&apos;</span><br><span class="line">gem &apos;wkhtmltopdf&apos;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>$ bundle install</p>
+<p>wkhtmltopdf 是非常不错的工具, 我可以直接在终端中使用它把html转化为 pdf</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wkhtmltopdf http://www.baidu.com b.pdf</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>看看当前路径下是不是多了b.pdf 呢?</p>
+</blockquote>
+<h2 id="生成PDF格式"><a href="#生成PDF格式" class="headerlink" title="生成PDF格式"></a>生成PDF格式</h2><blockquote>
+<p>当浏览器的请求是以<code>.pdf</code>结尾时候, Rails端要做出相应的处理.<br>首先在在show页面添加一个pdf格式的超链接:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># views/products/show.html.erb</span><br><span class="line">[...]</span><br><span class="line">&lt;%= &quot;View in PDF&quot;, product_path(@product, format: &quot;pdf&quot;) %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>接着, 在Controller的show方法中, 使用<code>respond_to</code>方法对pdf和html格式的请求做出处理:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">def show</span><br><span class="line">  respond_to do |format|</span><br><span class="line">    format.html</span><br><span class="line">    format.pdf do</span><br><span class="line">      html = render_to_string template: &quot;products/show&quot;</span><br><span class="line">      pdf = PDFKit.new(html, encoding: &quot;UTF-8&quot;)</span><br><span class="line">      # 加入样式</span><br><span class="line">      pdf.stylesheets &lt;&lt; &quot;#&#123;Rails.root&#125;/app/assets/stylesheets/scaffolds.scss&quot;</span><br><span class="line">      pdf.stylesheets &lt;&lt; &quot;#&#123;Rails.root&#125;/app/assets/stylesheets/bootstrap.min.css&quot;</span><br><span class="line">      send_data pdf.to_pdf,</span><br><span class="line">        filename: &quot;#&#123;@product.id&#125;.pdf&quot;,</span><br><span class="line">        type: &quot;application/pdf&quot;,</span><br><span class="line">        # 在浏览器内显示, 而非下载</span><br><span class="line">        disposition: &quot;inline&quot;</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="PDFKit-配置信息"><a href="#PDFKit-配置信息" class="headerlink" title="PDFKit 配置信息"></a>PDFKit 配置信息</h2><blockquote>
+<p>新建 <code>config/initializers/pdfkit.rb</code> :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># config/initializers/pdfkit.rb</span><br><span class="line"></span><br><span class="line">PDFKit.configure do |config|</span><br><span class="line">  config.wkhtmltopdf = `which wkhtmltopdf`.to_s.strip</span><br><span class="line">  config.default_options = &#123;</span><br><span class="line">    encoding:                &quot;UTF-8&quot;,</span><br><span class="line">    page_size:               &quot;A4&quot;,</span><br><span class="line">    margin_top:              &quot;0.25in&quot;, </span><br><span class="line">    margin_right:            &quot;1in&quot;,</span><br><span class="line">    margin_bottom:           &quot;0.25in&quot;,</span><br><span class="line">    margin_left:             &quot;1in&quot;,</span><br><span class="line">    disable_smart_shrinking: false</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后, 需要添加pdf格式的模板文件, 实际上和html格式大致一样</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/show.pdf.erb</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;page-header&quot;&gt;</span><br><span class="line">&lt;h1&gt;Product&lt;/h1&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;a href=&quot;#&quot;, class=&quot;btn btn-primary&quot;&gt;HELLO&lt;/a&gt;</span><br><span class="line">&lt;img src=&quot;http://proof.nationalgeographic.com/files/2014/12/MM8228_130309_01458_1-990x450.jpg&quot; alt=&quot;&quot; /&gt;</span><br><span class="line">&lt;p id=&quot;notice&quot;&gt;&lt;%= notice %&gt;&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Name:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.name %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Price:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.price %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Number:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.number %&gt;</span><br><span class="line">&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后重启服务器, 访问 <a href="http://localhost:3000/products/1.pdf" target="_blank" rel="external">http://localhost:3000/products/1.pdf</a> , 效果如下:</p>
+<p><img src="http://i2.tietuku.com/434257cfaeca315b.png"></p>
+</blockquote>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="Heroku下无法转换"><a href="#Heroku下无法转换" class="headerlink" title="Heroku下无法转换"></a>Heroku下无法转换</h3><blockquote>
+<p>使用 <code>wkhtmltopdf-binary</code> gem 代替原来的 <code>wkhtmltopdf</code></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/12/ransack-full-text-search/" itemprop="url">
+                  Rails 使用ransack全文搜索
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-12T07:52:40+08:00" content="2015-03-12">
+              2015-03-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>ransack gem可以帮助我们简单地进行全文检索, 本文就简单介绍一下具体的使用方法.</p>
+</blockquote>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><blockquote>
+<p>创建项目, 倒入数据等准备工作:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ rails new ransack_test</span><br><span class="line">$ cd ransack_test</span><br><span class="line"></span><br><span class="line"># 使用Scaffolding 生成Product</span><br><span class="line"></span><br><span class="line">$ rails g scaffold Product name:string description:string price:integer discontinued:boolean carrier_id:integer</span><br><span class="line"></span><br><span class="line"># 创建Product的货架(持有者)Model Carrier</span><br><span class="line">$ rails g model Carrier name:string</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Carrier和Product是一对多的关系:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># app/models/carrier.rb</span><br><span class="line"></span><br><span class="line">class Carrier &lt; ActiveRecord::Base</span><br><span class="line">  has_many :products</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/carrier.rb</span><br><span class="line"></span><br><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :carrier</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>创建表:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>初始化一些数据(seeds.rb)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">carrier1 = Carrier.create!(name: &quot;JD&quot;)</span><br><span class="line">carrier2 = Carrier.create!(name: &quot;SN&quot;)</span><br><span class="line"></span><br><span class="line">carrier1.products.create!(</span><br><span class="line">  name: &quot;MacbookAir 2015&quot;,</span><br><span class="line">  description: &quot;2015年3月10号 苹果推出了新一代MacBookAir, 这对PC厂商来说是很大的打击, 精湛的工艺和超前的设计, 简直让人陶醉了.&quot;,</span><br><span class="line">  price: 8000,</span><br><span class="line">  discontinued: true</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">carrier1.products.create!(</span><br><span class="line">  name: &quot;Xbox One&quot;,</span><br><span class="line">  description: &quot;Xbox One 是由MicroSoft公司于2013年推出的一款电视游戏机, 它集成了电视盒功能...&quot;,</span><br><span class="line">  price: 3300,</span><br><span class="line">  discontinued: false</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">carrier2.products.create!(</span><br><span class="line">  name: &quot;PS4&quot;,</span><br><span class="line">  description: &quot;PlayStation 4（官方缩写：PS4）是一部索尼电脑娱乐推出的电子游戏机，2013年11月15日正式于北美发售，PlayStation 4属于第八世代的游戏机，作为PlayStation 3的后续机种，并将与任天堂的Wii U和微软的Xbox One共同在市场上竞争&quot;,</span><br><span class="line">  price: 2800,</span><br><span class="line">  discontinued: false</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>导入数据:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rake db:seed</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>现在, 把Carrier的name显示在product的index页面上, 替换掉id</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/index.html.erb</span><br><span class="line"></span><br><span class="line"># &lt;td&gt;&lt;%= product.carrier_id %&gt;&lt;/td&gt; 替换为</span><br><span class="line"></span><br><span class="line">&lt;td&gt;&lt;%= product.carrier.name %&gt;&lt;/td&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>到现在为止, 准备工作已经做完, 看下面的截图:</p>
+<p><img src="http://i3.tietuku.com/b50913417ef7affa.png"></p>
+</blockquote>
+<h2 id="安装-ransack"><a href="#安装-ransack" class="headerlink" title="安装 ransack"></a>安装 ransack</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line">gem &apos;ransack&apos;</span><br><span class="line"></span><br><span class="line">$ bundle install</span><br></pre></td></tr></table></figure>
+<h2 id="添加搜索功能和搜索表单"><a href="#添加搜索功能和搜索表单" class="headerlink" title="添加搜索功能和搜索表单"></a>添加搜索功能和搜索表单</h2><blockquote>
+<p>在Controller的index 方法中</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def index</span><br><span class="line">  @q = Product.search(params[:q])</span><br><span class="line">  @products = @q.result(distinct: true)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后再index 页面中添加一个搜索的表单:<br><strong><em> 需要注意: <code>search_form_for</code> 是一个helper, 会生成一个搜索的表单</em></strong><br><strong><em> 页面搜索字段为<code>[column_name]_start</code>, <code>[column_name]_cont</code> </em></strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">... </span><br><span class="line">&lt;h1&gt;Listing Products&lt;/h1&gt;</span><br><span class="line">    &lt;%# 使用search_form_for 生成搜索表单  %&gt;</span><br><span class="line">    &lt;%= search_form_for @q do |f| %&gt;</span><br><span class="line">      &lt;%# name_start搜索数据库中name字段的值需要以该field填入值开头 %&gt;</span><br><span class="line">      &lt;%= f.label :name_start, &quot;Name starts with:&quot; %&gt;</span><br><span class="line">      &lt;%= f.search_field :name_start %&gt;</span><br><span class="line">      &lt;br /&gt;</span><br><span class="line">      &lt;%# cont指的是搜索含有该field的值的字段 %&gt;</span><br><span class="line">      &lt;%= f.label :description_cont, &quot;Description contains:&quot; %&gt;</span><br><span class="line">      &lt;%= f.search_field :description_cont %&gt;</span><br><span class="line">      &lt;br /&gt;</span><br><span class="line"></span><br><span class="line">      &lt;%# 关联搜索: Product.carrier.name %&gt;</span><br><span class="line">      &lt;%= f.label :carrier_name_cont, &quot;Carrier:&quot; %&gt;</span><br><span class="line">      &lt;%= f.search_field :carrier_name_cont %&gt;</span><br><span class="line">      &lt;br /&gt;</span><br><span class="line"></span><br><span class="line">      &lt;%# lt 指的是查找小于该field的记录 %&gt;</span><br><span class="line">      &lt;%= f.label :price_lt, &quot;Price &lt; :&quot; %&gt;</span><br><span class="line">      &lt;%= f.search_field :price_lt %&gt;</span><br><span class="line"></span><br><span class="line">      &lt;%# or 指定是使用or连接的多条字段查询, 也就是name或description包含指定的值  %&gt;</span><br><span class="line">      &lt;%= f.label :name_or_description_cont, &quot;Name OR Description contains:&quot; %&gt;</span><br><span class="line">      &lt;%= f.search_field :name_or_description_cont %&gt;</span><br><span class="line"></span><br><span class="line">      &lt;%# 搜索按钮  %&gt;</span><br><span class="line">      &lt;%= f.submit %&gt;</span><br><span class="line">    &lt;% end %&gt;</span><br><span class="line">&lt;hr /&gt;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>启动服务器, 效果如下:</p>
+<p><img src="http://i3.tietuku.com/5bcfb19d3a748955.png"></p>
+</blockquote>
+<h2 id="排序链接"><a href="#排序链接" class="headerlink" title="排序链接"></a>排序链接</h2><blockquote>
+<p>ransack还提供了<code>sort_link</code>方法生成链接来按照某个字段的升序或者降序来进行排序, default_order 选项可以指定查询结果是按照升序还是降序:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/index.html.erb</span><br><span class="line"></span><br><span class="line"># 默认按照价格的降序来排序结果</span><br><span class="line"></span><br><span class="line">....</span><br><span class="line">&lt;th&gt; &lt;%= sort_link(@q, :price, default_order: :desc) %&gt; &lt;/th&gt;</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>点击 Price表头, 倒序结果:</p>
+<p><img src="http://i3.tietuku.com/9e9be59b1a6360e4.png"></p>
+</blockquote>
+<h2 id="搜索字段的黑白名单"><a href="#搜索字段的黑白名单" class="headerlink" title="搜索字段的黑白名单"></a>搜索字段的黑白名单</h2><blockquote>
+<p>由于安全性的考量, 需要限制一些字段搜索, 加入我不想让别人使用name进行搜索, 我需要在 product.rb中重写<code>self.ransackable_attributes</code>方法来限制name字段, 有些类似于Strong Parameters</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :carrier</span><br><span class="line"></span><br><span class="line">  def self.ransackable_attributes auth_object = nil</span><br><span class="line">    %w( description price) # name不在其中</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果需要限制关联的字段, 比如<code>carrier</code>, 就需要重写<code>self.ransackable_associations</code>方法. 还可以限制scope等等. 具体请参考 <a href="https://github.com/activerecord-hackery/ransack#authorization-whitelistingblacklisting" target="_blank" rel="external">https://github.com/activerecord-hackery/ransack#authorization-whitelistingblacklisting</a></p>
+</blockquote>
+<h2 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h2><h3 id="访问页面前-需先设置好-q"><a href="#访问页面前-需先设置好-q" class="headerlink" title="访问页面前, 需先设置好@q"></a>访问页面前, 需先设置好@q</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">No Ransack::Search object was provided to search_form_for! #3</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解决方案</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">I did this <span class="keyword">in</span> my application controller</span><br><span class="line"></span><br><span class="line">before_filter <span class="symbol">:set_search</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_search</span></span></span><br><span class="line">  @search=Product.search(params[<span class="symbol">:q</span>])</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><blockquote>
+<p><a href="https://github.com/activerecord-hackery/ransack" target="_blank" rel="external">https://github.com/activerecord-hackery/ransack</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

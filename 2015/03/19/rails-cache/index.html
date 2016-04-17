@@ -1,0 +1,645 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Fragment Caching," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Rails4中废除了Action Caching和Page Caching. 重点是Fragment Caching.
+需要缓存最新创建的3个posts
+
+123456def show  # 首先查看缓存片段是否存在, 如果不存在, 再去执行数据库查询  unless fragment_exist? &amp;apos;recent_post&amp;apos;    Post.order(created_at">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fragment Caching">
+<meta property="og:url" content="http://yoursite.com/2015/03/19/rails-cache/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Rails4中废除了Action Caching和Page Caching. 重点是Fragment Caching.
+需要缓存最新创建的3个posts
+
+123456def show  # 首先查看缓存片段是否存在, 如果不存在, 再去执行数据库查询  unless fragment_exist? &amp;apos;recent_post&amp;apos;    Post.order(created_at">
+<meta property="og:updated_time" content="2015-03-19T10:26:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fragment Caching">
+<meta name="twitter:description" content="Rails4中废除了Action Caching和Page Caching. 重点是Fragment Caching.
+需要缓存最新创建的3个posts
+
+123456def show  # 首先查看缓存片段是否存在, 如果不存在, 再去执行数据库查询  unless fragment_exist? &amp;apos;recent_post&amp;apos;    Post.order(created_at">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Fragment Caching | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Fragment Caching
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-19T14:51:24+08:00" content="2015-03-19">
+              2015-03-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Rails4中废除了Action Caching和Page Caching. 重点是Fragment Caching.</p>
+<p>需要缓存最新创建的3个posts</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def show</span><br><span class="line">  # 首先查看缓存片段是否存在, 如果不存在, 再去执行数据库查询</span><br><span class="line">  unless fragment_exist? &apos;recent_post&apos;</span><br><span class="line">    Post.order(created_at: :desc).limit(3)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="使用cache-block包裹需要缓存的部分"><a href="#使用cache-block包裹需要缓存的部分" class="headerlink" title="使用cache block包裹需要缓存的部分:"></a>使用<code>cache</code> block包裹需要缓存的部分:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- cache(&apos;recent_post&apos;, skip_digest: true)</span><br><span class="line">  .recentPost</span><br><span class="line">    ul</span><br><span class="line">    - @recent_posts.each do |post|</span><br><span class="line">      li = link_to post.title, post</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong><em> 这里要尤其注意: <code>skip_digest: true</code> 指定了不使用rails为我们提供的digest作为key, 而是使用自定义的</em></strong></p>
+</blockquote>
+<h2 id="使缓存过期expire-fragment"><a href="#使缓存过期expire-fragment" class="headerlink" title="使缓存过期expire_fragment"></a>使缓存过期expire_fragment</h2><blockquote>
+<p>使用方法 <code>expire_fragment(key)</code>, 比如我想在某个action中让recent_post过期, 那么我可以这样写:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Post#update</span><br><span class="line"></span><br><span class="line">def update</span><br><span class="line">  [...]</span><br><span class="line">  expire_fragment(&apos;recent_post&apos;)</span><br><span class="line">  [...]</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="使用对象作为cache-key"><a href="#使用对象作为cache-key" class="headerlink" title="使用对象作为cache key"></a>使用对象作为cache key</h2><blockquote>
+<p>下面的代码会自动调用对象cache_key方法, 返回的值为<code>&quot;posts/1-20150319072533719235000&quot;</code>, 包含updated_at这个时间戳, 也就是说, 一旦对象发生变化, 这个缓存片段会自动过期, 非常酷<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- cache @post</span><br><span class="line">  # blah ...</span><br></pre></td></tr></table></figure></p>
+<p>需要注意, 使用对象作为cache key, 其内部有动态的部分发生了变化, 不会自动变化, 比如说@post内部又迭代了评论(comment)</p>
+<p>解决方法是在ActiveRecord(comment.rb) 的belongs_to: :post, 添加 <code>touch: true</code>, 其原理是,如果我修改了与post相关联的comment或者添加一个comment, 同时也会更新这个post的updated_at属性, 也就触发了cache_key.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Comment &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :post, touch: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="俄罗斯套娃缓存机制"><a href="#俄罗斯套娃缓存机制" class="headerlink" title="俄罗斯套娃缓存机制"></a>俄罗斯套娃缓存机制</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- cache(cache_key_for_products)</span><br><span class="line">  - Product.all.each  do |p|</span><br><span class="line">    - cache(p)</span><br><span class="line">      = link_to p.name, product_url(p)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>一个对象发生了变化, 不会影响其它对象的缓存, 其他对象还好从缓存中读取, 而变化的对象是从数据库中返回.</p>
+</blockquote>
+<h2 id="缓存是如何存储的"><a href="#缓存是如何存储的" class="headerlink" title="缓存是如何存储的"></a>缓存是如何存储的</h2><blockquote>
+<p>进入Rails Console <code>rails c</code>. 缓存是以键值对的形式存取的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># rails console</span><br><span class="line"></span><br><span class="line">Rails.cache.read(&apos;views/recent_post&apos;)</span><br><span class="line">=&gt; &quot;&lt;div class=\&quot;recentPost\&quot;&gt;\n  &lt;strong&gt; Recent Posts&lt;/strong&gt;\n  &lt;ul&gt;&lt;/ul&gt;\n  &lt;li&gt;\n    &lt;a href=\&quot;/posts/23\&quot;&gt;额  &lt;/a&gt;\n  &lt;/li&gt;\n  &lt;li&gt;\n    &lt;a href=\&quot;/posts/22\&quot;&gt;888一 4&lt;/a&gt;\n  &lt;/li&gt;\n  &lt;li&gt;\n    &lt;a href=\&quot;/posts/21\&quot;&gt;瞎忙活&lt;/a&gt;\n  &lt;/li&gt;\n  &lt;li&gt;\n    &lt;a href=\&quot;/posts/20\&quot;&gt;法拉利&lt;/a&gt;\n  &lt;/li&gt;\n  &lt;li&gt;\n    &lt;a href=\&quot;/posts/19\&quot;&gt;太阳额&lt;/a&gt;\n  &lt;/li&gt;\n&lt;/div&gt;&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>目前是存储于文件系统的</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Rails.cache.class</span><br><span class="line"># =&gt; ActiveSupport::Cache::FileStore</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果要使用memcached来存储, 需要修改配置文件 <code>config/environments/*.rb</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.cache_store = :mem_cache_store</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Fragment-Caching/" rel="tag">#Fragment Caching</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/19/rails-caching/" rel="next" title="Rails中使用memcached内存缓存技术">
+                <i class="fa fa-chevron-left"></i> Rails中使用memcached内存缓存技术
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/22/ruby-metaprogramming-chpt2/" rel="prev" title="Ruby 元编程 第二章 对象模型">
+                Ruby 元编程 第二章 对象模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用cache-block包裹需要缓存的部分"><span class="nav-number">1.</span> <span class="nav-text">使用cache block包裹需要缓存的部分:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使缓存过期expire-fragment"><span class="nav-number">2.</span> <span class="nav-text">使缓存过期expire_fragment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用对象作为cache-key"><span class="nav-number">3.</span> <span class="nav-text">使用对象作为cache key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#俄罗斯套娃缓存机制"><span class="nav-number">4.</span> <span class="nav-text">俄罗斯套娃缓存机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存是如何存储的"><span class="nav-number">5.</span> <span class="nav-text">缓存是如何存储的</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

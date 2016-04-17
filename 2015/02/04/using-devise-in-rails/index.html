@@ -1,0 +1,689 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Rails devise," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="上一个项目中, 我发现老外的登录验证等都是自己写, 我不解就问, 老外告诉我, 其实他们的登录验证非常复杂, 如果使用 devise 很多东西都会被限制住. 而且他还告诉我, 对于新手来说, 最好是先写一些实现, 等到理解背后的原理以后再去走捷径.
+不过现在我觉得我已经不用再继续制造车轮了, 该用一下别人的车轮了, 谨以此文总结记录一下如何在 Rails 中使用 devise 进行验证.
+
+安装">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用devise gem为Rails提供验证">
+<meta property="og:url" content="http://yoursite.com/2015/02/04/using-devise-in-rails/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="上一个项目中, 我发现老外的登录验证等都是自己写, 我不解就问, 老外告诉我, 其实他们的登录验证非常复杂, 如果使用 devise 很多东西都会被限制住. 而且他还告诉我, 对于新手来说, 最好是先写一些实现, 等到理解背后的原理以后再去走捷径.
+不过现在我觉得我已经不用再继续制造车轮了, 该用一下别人的车轮了, 谨以此文总结记录一下如何在 Rails 中使用 devise 进行验证.
+
+安装">
+<meta property="og:updated_time" content="2015-04-25T04:11:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用devise gem为Rails提供验证">
+<meta name="twitter:description" content="上一个项目中, 我发现老外的登录验证等都是自己写, 我不解就问, 老外告诉我, 其实他们的登录验证非常复杂, 如果使用 devise 很多东西都会被限制住. 而且他还告诉我, 对于新手来说, 最好是先写一些实现, 等到理解背后的原理以后再去走捷径.
+不过现在我觉得我已经不用再继续制造车轮了, 该用一下别人的车轮了, 谨以此文总结记录一下如何在 Rails 中使用 devise 进行验证.
+
+安装">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 使用devise gem为Rails提供验证 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用devise gem为Rails提供验证
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-04T12:57:45+08:00" content="2015-02-04">
+              2015-02-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ruby-Gems/" itemprop="url" rel="index">
+                    <span itemprop="name">Ruby Gems</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>上一个项目中, 我发现老外的登录验证等都是自己写, 我不解就问, 老外告诉我, 其实他们的登录验证非常复杂, 如果使用 devise 很多东西都会被限制住. 而且他还告诉我, 对于新手来说, 最好是先写一些实现, 等到理解背后的原理以后再去走捷径.</p>
+<p>不过现在我觉得我已经不用再继续制造车轮了, 该用一下别人的车轮了, 谨以此文总结记录一下如何在 Rails 中使用 devise 进行验证.</p>
+</blockquote>
+<h2 id="安装与设定"><a href="#安装与设定" class="headerlink" title="安装与设定"></a>安装与设定</h2><blockquote>
+<p>在项目的Gemfile 中加入 <code>gem &#39;devise&#39;</code>, 然后执行 <code>bundle install</code></p>
+<p>然后我们为 Rails 设定 devise 相关联的配置文件, 运行:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">$ rails g devise:install</span><br><span class="line">  create config/initializers/devise.rb</span><br><span class="line">  create config/locales/devise.en.yml</span><br><span class="line"></span><br><span class="line">  Some setup you must do manually if you haven&apos;t yet:</span><br><span class="line"></span><br><span class="line">  1. Ensure you have defined default url options in your environments files. Here</span><br><span class="line">  is an example of default_url_options appropriate for a development environment</span><br><span class="line">  in config/environments/development.rb:</span><br><span class="line"></span><br><span class="line">  config.action_mailer.default_url_options = &#123; host: &apos;localhost&apos;, port: 3000  &#125;</span><br><span class="line"></span><br><span class="line">  In production, :host should be set to the actual host of your application.</span><br><span class="line"></span><br><span class="line">  2. Ensure you have defined root_url to *something* in your config/routes.rb.</span><br><span class="line">  For example:</span><br><span class="line"></span><br><span class="line">  root to: &quot;home#index&quot;</span><br><span class="line"></span><br><span class="line">  3. Ensure you have flash messages in app/views/layouts/application.html.erb.</span><br><span class="line">  For example:</span><br><span class="line"></span><br><span class="line">  &lt;p class=&quot;notice&quot;&gt;&lt;%= notice %&gt;&lt;/p&gt;</span><br><span class="line">  &lt;p class=&quot;alert&quot;&gt;&lt;%= alert %&gt;&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">  4. If you are deploying on Heroku with Rails 3.2 only, you may want to set:</span><br><span class="line"></span><br><span class="line">  config.assets.initialize_on_precompile = false</span><br><span class="line"></span><br><span class="line">  On config/application.rb forcing your application to not access the DB</span><br><span class="line">  or load models when precompiling your assets.</span><br><span class="line"></span><br><span class="line">  5. You can copy Devise views (for customization) to your app by running:</span><br><span class="line"></span><br><span class="line">  rails g devise:views</span><br><span class="line"></span><br><span class="line">  ===============================================================================</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这时 devise 会让我设定5项内容. 我们依次来做.</p>
+</blockquote>
+<ul>
+<li><p>指定邮件发送的机器的 ip.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># config/environments/development.rb</span><br><span class="line">config.action_mailer.default_url_options = &#123; host: &apos;localhost:3000&apos; &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>确保routes.rb中定义了 root_url<br>  由于退出一个重定向到 root, 所以 root 需要一并设定.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># config/routes.rb</span><br><span class="line"></span><br><span class="line">root to: &quot;home#index&quot;</span><br></pre></td></tr></table></figure>
+<p>  root_url 已经设定, 但是对应的Controller 和 View 还没有创建, 所以需要创建.<br>  “home#index” 创建后, root_url 就可以访问了.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rails g controller Home index show</span><br></pre></td></tr></table></figure>
+<p>  home#show 创建后, 接下来文章着重介绍 Devise定制访问限制的使用.</p>
+</li>
+<li><p>确保在 application.html.erb 中定义了 flash 消息.<br>  用户登录成功后或者密码错误, 我们需要使用 Flash 给用户返回友好信息, 我们在 application 模板中加入该信息.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;p class=&quot;notice&quot;&gt;&lt;%= notice %&gt;&lt;/p&gt;</span><br><span class="line">&lt;p class=&quot;alert&quot;&gt;&lt;%= alert %&gt;&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果你只使用 rails 3.2 部署, 还需要设置一下内容:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.assets.initialize_on_precompile = false</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>你可以使用 devise 提供的视图</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rails g devise:views</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>到此为止, 我们已经设定完了.</p>
+</blockquote>
+<h2 id="使用devise生成Model"><a href="#使用devise生成Model" class="headerlink" title="使用devise生成Model"></a>使用devise生成Model</h2><blockquote>
+<p>我们开始使用 devise 写一个小例子吧. 我们来生成一个叫做 <code>User</code> 的Model.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ rails g devise User</span><br><span class="line"></span><br><span class="line">invoke  active_record</span><br><span class="line">create    db/migrate/20150204073457_devise_create_users.rb</span><br><span class="line">create    app/models/user.rb</span><br><span class="line">invoke    test_unit</span><br><span class="line">create      test/models/user_test.rb</span><br><span class="line">create      test/fixtures/users.yml</span><br><span class="line">insert    app/models/user.rb</span><br><span class="line">route   devise_for :users</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们来看看user.rb 和 其对应的 migration 文件中看看.</p>
+<p>首先在 user.rb 中, 一些module 是被注释掉的.如果你想开启一些功能就需要去掉其注释.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class User &lt; ActiveRecord::Base</span><br><span class="line">  # Include default devise modules. Others available are:</span><br><span class="line">  # :confirmable, :lockable, :timeoutable and :omniauthable</span><br><span class="line">  devise :database_authenticatable, :registerable,</span><br><span class="line">  ¦ ¦ ¦ ¦:recoverable, :rememberable, :trackable, :validatable</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后再看看这个migration文件, xxx_devise_create_users.rb. 注意看注释部分, 并且结合 user.rb, 比如: <code>Database authenticatable</code> <code>Rememberable</code> 是不是和 user.rb 对应的呢!<br>再比如: 我们在 user.rb 中注释掉了<code>confirmable</code>, 那么在该 migration 中也相应地去掉了这些字段. 也就是程序员没有设定Model 的这些性质, 那么移植文件就不会增加相应字段. 并且, <code>confirmation_token</code> 的add_index 方法也被去掉了.</p>
+</blockquote>
+<p><strong><em> 如果有空闲时间, 一定要读读这些优秀 gem 的源码, 肯定会对自己很有帮助</em></strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">class DeviseCreateUsers &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    create_table(:users) do |t|</span><br><span class="line">      ## Database authenticatable</span><br><span class="line">      t.string :email,              null: false, default: &quot;&quot;</span><br><span class="line">      t.string :encrypted_password, null: false, default: &quot;&quot;</span><br><span class="line"></span><br><span class="line">      ## Recoverable</span><br><span class="line">      t.string   :reset_password_token</span><br><span class="line">      t.datetime :reset_password_sent_at</span><br><span class="line"></span><br><span class="line">      ## Rememberable</span><br><span class="line">      t.datetime :remember_created_at</span><br><span class="line"></span><br><span class="line">      ## Trackable</span><br><span class="line">      t.integer  :sign_in_count, default: 0, null: false</span><br><span class="line">      t.datetime :current_sign_in_at</span><br><span class="line">      t.datetime :last_sign_in_at</span><br><span class="line">      t.string   :current_sign_in_ip</span><br><span class="line">      t.string   :last_sign_in_ip</span><br><span class="line"></span><br><span class="line">      ## Confirmable</span><br><span class="line">      # t.string   :confirmation_token</span><br><span class="line">      # t.datetime :confirmed_at</span><br><span class="line">      # t.datetime :confirmation_sent_at</span><br><span class="line">      # t.string   :unconfirmed_email # Only if using reconfirmable</span><br><span class="line"></span><br><span class="line">      ## Lockable</span><br><span class="line">      # t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts</span><br><span class="line">      # t.string   :unlock_token # Only if unlock strategy is :email or :both</span><br><span class="line">      # t.datetime :locked_at</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      t.timestamps</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    add_index :users, :email,                unique: true</span><br><span class="line">    add_index :users, :reset_password_token, unique: true</span><br><span class="line">    # add_index :users, :confirmation_token,   unique: true</span><br><span class="line">    # add_index :users, :unlock_token,         unique: true</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>我们先 migrate.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rake db:migrate</span><br></pre></td></tr></table></figure></p>
+<p>然后我们写页面的代码</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;header&gt;</span><br><span class="line">    &lt;nav&gt;</span><br><span class="line">      &lt;!-- user_signed_in? 判断用户是否已经登录 --&gt;</span><br><span class="line">      &lt;!-- current_user 返回当前已登录的用户--&gt;</span><br><span class="line">      &lt;!-- *_path 使用 User 对象组合而成的, 都是 devise 提供的helper --&gt;</span><br><span class="line">      &lt;% if user_signed_in? %&gt;</span><br><span class="line">        Logged in as &lt;strong&gt;&lt;%= current_user.email %&gt;&lt;/strong&gt;</span><br><span class="line">        &lt;%= link_to &apos;Edit Profile&apos;, edit_user_registration_path %&gt; |</span><br><span class="line">        &lt;%= link_to &apos;Sign Out&apos;, destroy_user_session_path, method: :delete %&gt;</span><br><span class="line">      &lt;% else  %&gt;</span><br><span class="line">        &lt;%= link_to &apos;Sign up&apos;, new_user_registration_path %&gt; |</span><br><span class="line">        &lt;%= link_to &apos;Sign in&apos;, new_user_session_path %&gt;</span><br><span class="line">      &lt;% end %&gt;</span><br><span class="line">    &lt;/nav&gt;</span><br><span class="line">  &lt;/header&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;notice&quot;&gt;&lt;%= notice %&gt;&lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;alert&quot;&gt;&lt;%= alert %&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= yield %&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我偷个懒, 就不传图片了.</p>
+</blockquote>
+<h2 id="devise-的10个-module"><a href="#devise-的10个-module" class="headerlink" title="devise 的10个 module"></a>devise 的10个 module</h2><blockquote>
+<p>下面解释一下user.rb 中这10个 module 到底都有什么作用</p>
+</blockquote>
+<ul>
+<li>Database Authenticatable<br>  为了登录过程中用户认证, 密码经过加密后保存到数据库, 最基本的.</li>
+<li>Omniauthable<br>  开放性验证, 比如想用 Facebook Twitter 等账号登录时需要打开.</li>
+<li>Confirmable<br>  新用户注册后会通过邮件发送确认链接, 如果不设置该项, 用户注册马上就会登录.</li>
+<li>Recoverabl<br>  提供用户忘记密码重置功能.</li>
+<li>Registerable<br>  处理用户注册, 同时也允许编辑删除账户.</li>
+<li>Rememberable<br>  管理生成和清除记住用户的 token, 从 cookie 中.</li>
+<li>Trackable<br>  将用户的登录次数和时间保存到数据库中</li>
+<li>Timeoutable<br>  让一段时间内没有活动的 session 失效</li>
+<li>Lockable<br>  错误登录一定次数后锁住账号, 可以通过email 或者一段时间后解锁.</li>
+</ul>
+<h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><ul>
+<li><p><code>before_action :authenticate_user!</code> 不登录无法访问</p>
+</li>
+<li><p><code>user_signed_in?</code></p>
+</li>
+<li><p><code>current_user</code></p>
+</li>
+</ul>
+<h2 id="特别鸣谢"><a href="#特别鸣谢" class="headerlink" title="特别鸣谢"></a>特别鸣谢</h2><p><a href="https://github.com/plataformatec/devise" target="_blank" rel="external">plataformatec/devise · GitHub</a></p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails-devise/" rel="tag">#Rails devise</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/03/install-postgresSQL-osx/" rel="next" title="OSX 下安装PostgresSQL">
+                <i class="fa fa-chevron-left"></i> OSX 下安装PostgresSQL
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/04/devise-customize/" rel="prev" title="Devise 定制">
+                Devise 定制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装与设定"><span class="nav-number">1.</span> <span class="nav-text">安装与设定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用devise生成Model"><span class="nav-number">2.</span> <span class="nav-text">使用devise生成Model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#devise-的10个-module"><span class="nav-number">3.</span> <span class="nav-text">devise 的10个 module</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用方法"><span class="nav-number">4.</span> <span class="nav-text">常用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特别鸣谢"><span class="nav-number">5.</span> <span class="nav-text">特别鸣谢</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,728 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Rails render," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="你会发现 rails 的 controller 或者 view 中使用了很多的 render 方法, 本文主要关注的是 controller 中 render 方法的使用
+
+表示出视图隐式地表示视图
+即便是没有明显的 render 方法, rails 也会根据 controller 和 action(方法) 的名字来解析该 controller 下该 action 对应的视图模板, 比如:123">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails4 controller中的render 方法的技巧">
+<meta property="og:url" content="http://yoursite.com/2015/02/07/rails4-render-recipe/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="你会发现 rails 的 controller 或者 view 中使用了很多的 render 方法, 本文主要关注的是 controller 中 render 方法的使用
+
+表示出视图隐式地表示视图
+即便是没有明显的 render 方法, rails 也会根据 controller 和 action(方法) 的名字来解析该 controller 下该 action 对应的视图模板, 比如:123">
+<meta property="og:image" content="http://i2.tietuku.com/861e631264d685a2.png">
+<meta property="og:updated_time" content="2015-02-13T14:02:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails4 controller中的render 方法的技巧">
+<meta name="twitter:description" content="你会发现 rails 的 controller 或者 view 中使用了很多的 render 方法, 本文主要关注的是 controller 中 render 方法的使用
+
+表示出视图隐式地表示视图
+即便是没有明显的 render 方法, rails 也会根据 controller 和 action(方法) 的名字来解析该 controller 下该 action 对应的视图模板, 比如:123">
+<meta name="twitter:image" content="http://i2.tietuku.com/861e631264d685a2.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails4 controller中的render 方法的技巧 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails4 controller中的render 方法的技巧
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-07T13:45:25+08:00" content="2015-02-07">
+              2015-02-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>你会发现 rails 的 controller 或者 view 中使用了很多的 render 方法, 本文主要关注的是 controller 中 render 方法的使用</p>
+</blockquote>
+<h2 id="表示出视图"><a href="#表示出视图" class="headerlink" title="表示出视图"></a>表示出视图</h2><h3 id="隐式地表示视图"><a href="#隐式地表示视图" class="headerlink" title="隐式地表示视图"></a>隐式地表示视图</h3><blockquote>
+<p>即便是没有明显的 <code>render</code> 方法, rails 也会根据 controller 和 action(方法) 的名字来解析该 controller 下该 action 对应的视图模板, 比如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/products_controller.rb</span><br><span class="line"></span><br><span class="line">#GET /products</span><br><span class="line"># rails 会自动渲染 app/views/products/index.html.erb</span><br><span class="line">def index</span><br><span class="line">  @products = Product.all</span><br><span class="line"></span><br><span class="line">  # 相当于 rails 自动调用了下面的代码</span><br><span class="line">  # render index</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="表示其他-action-的视图"><a href="#表示其他-action-的视图" class="headerlink" title="表示其他 action 的视图"></a>表示其他 action 的视图</h3><blockquote>
+<p>通过指定action选项, 我们可以指定表示同一个 controller 下的其他view<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/products_controller.rb</span><br><span class="line"></span><br><span class="line"># render 方法会自动调用app/views/products/new.html.erb</span><br><span class="line">def index</span><br><span class="line">  @products = Post.all</span><br><span class="line">  render action: :new # &apos;new&apos; 也 OK :)</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>我们还可以通过指定 render 方法的 layout 选项来指定布局文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 使用 special_layout 布局文件</span><br><span class="line">render action: :new, layout: :special_layout</span><br><span class="line"></span><br><span class="line"># 不使用任何的布局</span><br><span class="line">render action: :new, layout: false</span><br><span class="line"></span><br><span class="line"># 不知道 layout 选项, 则使用默认的布局</span><br><span class="line">render action: :new</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="其他-controller-的视图表示"><a href="#其他-controller-的视图表示" class="headerlink" title="其他 controller 的视图表示"></a>其他 controller 的视图表示</h3><blockquote>
+<p>如果需要表示其他的 controller 的视图文件, 那么就需要指定 template 选项了, 我喜欢称之为[跨域渲染视图]</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">render template: &apos;welcome/index&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="返回-JSON"><a href="#返回-JSON" class="headerlink" title="返回 JSON"></a>返回 JSON</h2><h3 id="render"><a href="#render" class="headerlink" title="render"></a>render</h3><blockquote>
+<p>render 方法指定 json 选项, 会把数据变成JSON 格式返回</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def show</span><br><span class="line">  render json: @post</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># JSON 的数据</span><br><span class="line">#=&gt;</span><br><span class="line"></span><br><span class="line">&#123;&quot;id&quot;:1,&quot;title&quot;:&quot;1&quot;,&quot;body&quot;:&quot;hahhah&quot;,&quot;created_at&quot;:&quot;2015-02-07T01:53:18.932Z&quot;,&quot;updated_at&quot;:&quot;2015-02-07T01:53:18.932Z&quot;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果大于两个元素则返回数组</p>
+</blockquote>
+<h3 id="jbuilder"><a href="#jbuilder" class="headerlink" title="jbuilder"></a>jbuilder</h3><blockquote>
+<p>在 rails4.1中, jbuilder 已经以 gem 的形式默认加入, 用template即可生成JSON</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">json.array!(@posts) do |post|</span><br><span class="line">  json.extract! post, :id, :title, :body</span><br><span class="line">  json.url post_url(post, format: :json)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>访问 <a href="http://localhost:3000/posts.json" target="_blank" rel="external">http://localhost:3000/posts.json</a>, 返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#123;&quot;id&quot;:1,&quot;title&quot;:&quot;1&quot;,&quot;body&quot;:&quot;hahhah&quot;,&quot;url&quot;:&quot;http://localhost:3000/posts/1.json&quot;&#125;]:</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="ActiveModelSerializer"><a href="#ActiveModelSerializer" class="headerlink" title="ActiveModelSerializer"></a>ActiveModelSerializer</h3><blockquote>
+<p>active_model_serializer gem 可以把 model以 json 的形式返回</p>
+</blockquote>
+<h2 id="除了-view-之外其他形式的表示方法"><a href="#除了-view-之外其他形式的表示方法" class="headerlink" title="除了 view 之外其他形式的表示方法"></a>除了 view 之外其他形式的表示方法</h2><h3 id="字符串的表示方法"><a href="#字符串的表示方法" class="headerlink" title="字符串的表示方法"></a>字符串的表示方法</h3><blockquote>
+<p>render 方法指定 text 选项可以在没有模板的情况下将字符串返回:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">render text: &quot;hello world without template!&quot;</span><br></pre></td></tr></table></figure></p>
+<p>这默认会设置 layout 为 false, 当然可以自己指定 layout 选项.</p>
+</blockquote>
+<h3 id="返回-XML"><a href="#返回-XML" class="headerlink" title="返回 XML"></a>返回 XML</h3><blockquote>
+<p>指定render 方法的 xml 选项, 即可以返回 XML 格式的数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def index</span><br><span class="line">  @posts = Post.all</span><br><span class="line">  render xml: @posts</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>效果如下:<br><img src="http://i2.tietuku.com/861e631264d685a2.png" alt=""></p>
+</blockquote>
+<h2 id="返回状态码"><a href="#返回状态码" class="headerlink" title="返回状态码"></a>返回状态码</h2><blockquote>
+<p>通过 API 可以知道, 有些action 的响应体中是不需要有内容的, 只需要返回状态码成功/失败即可以了, 这时候就需要使用 head 方法了.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">head 200 # 返回200</span><br><span class="line">head :ok # 等价</span><br></pre></td></tr></table></figure></p>
+<p>第二个参数指定了 HTTP 头内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">head :created, location: post_path(@post)</span><br></pre></td></tr></table></figure></p>
+<p>还可以使用判断语句过滤掉一些条件:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">return head(:method_not_allowed) unless request.post?</span><br><span class="line">return head(:bad_request) unless valid_request?</span><br><span class="line">render</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="根据请求的不同-改变响应的格式"><a href="#根据请求的不同-改变响应的格式" class="headerlink" title="根据请求的不同, 改变响应的格式"></a>根据请求的不同, 改变响应的格式</h3><blockquote>
+<p><code>respond_to</code> 方法可以将JSON, XML, YAML, HTML 格式的数据返回给浏览器.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def show</span><br><span class="line">¦ @post = Post.find(params[:id])</span><br><span class="line"></span><br><span class="line">¦ respond_to do |format|</span><br><span class="line">¦ ¦ # GET /posts/1</span><br><span class="line">¦ ¦ format.html # show.html.erb</span><br><span class="line">¦ ¦ # GET /posts/1.json</span><br><span class="line">¦ ¦ format.json &#123; render json: @post  &#125;</span><br><span class="line">¦ ¦ # GET /posts/1.xml</span><br><span class="line">¦ ¦ format.xml &#123; render xml: @post  &#125;</span><br><span class="line">¦ ¦ # GET /posts/1.yaml</span><br><span class="line">¦ ¦ format.yaml &#123; render text: @post.to_yaml  &#125;</span><br><span class="line"></span><br><span class="line">¦ end</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="把视图转换成字符串"><a href="#把视图转换成字符串" class="headerlink" title="把视图转换成字符串"></a>把视图转换成字符串</h3><blockquote>
+<p>很多时候我们需要 debug, 在终端中观察响应给浏览器的视图代码,rails 提供了一个方法<code>render_to_string</code> :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># index.html</span><br><span class="line">html_str = render_to_string action: :index</span><br><span class="line">p html_str</span><br><span class="line"># =&gt; &quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n&lt;head&gt;\n  ...&quot;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="经常使用的状态码表"><a href="#经常使用的状态码表" class="headerlink" title="经常使用的状态码表:"></a>经常使用的状态码表:</h3><table>
+<thead>
+<tr>
+<th>Code</th>
+<th>symbol</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>:ok</td>
+<td>响应正常终止</td>
+</tr>
+<tr>
+<td>201</td>
+<td>:created</td>
+<td>如 create这样的 action成功创建资源, 与创建的资源相对应loaction head也设定了.</td>
+</tr>
+<tr>
+<td>302</td>
+<td>:found</td>
+<td>rails 一般会使用 redirect_to 方法进行重定向, 很少明确使用该状态码</td>
+</tr>
+<tr>
+<td>400</td>
+<td>:bad_request</td>
+<td>错误的请求</td>
+</tr>
+<tr>
+<td>401</td>
+<td>:unauthorized</td>
+<td>认证失败</td>
+</tr>
+<tr>
+<td>403</td>
+<td>:forbidden</td>
+<td>访问被禁止</td>
+</tr>
+<tr>
+<td>404</td>
+<td>:not_found</td>
+<td>对象 url 不存在</td>
+</tr>
+<tr>
+<td>406</td>
+<td>:not_acceptable</td>
+<td>无法返回指定格式的响应</td>
+</tr>
+<tr>
+<td>422</td>
+<td>:unprocessable_entity</td>
+<td>验证错误</td>
+</tr>
+<tr>
+<td>500</td>
+<td>:internal_server_error</td>
+<td>服务器端出错</td>
+</tr>
+<tr>
+<td>503</td>
+<td>:server_unavailable</td>
+<td>服务器维护或者高负荷运转</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails-render/" rel="tag">#Rails render</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/06/view-layout/" rel="next" title="指定视图的布局">
+                <i class="fa fa-chevron-left"></i> 指定视图的布局
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/08/rails-view-render/" rel="prev" title="Rails 中render 方法的用法">
+                Rails 中render 方法的用法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#表示出视图"><span class="nav-number">1.</span> <span class="nav-text">表示出视图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#隐式地表示视图"><span class="nav-number">1.1.</span> <span class="nav-text">隐式地表示视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表示其他-action-的视图"><span class="nav-number">1.2.</span> <span class="nav-text">表示其他 action 的视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他-controller-的视图表示"><span class="nav-number">1.3.</span> <span class="nav-text">其他 controller 的视图表示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#返回-JSON"><span class="nav-number">2.</span> <span class="nav-text">返回 JSON</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#render"><span class="nav-number">2.1.</span> <span class="nav-text">render</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jbuilder"><span class="nav-number">2.2.</span> <span class="nav-text">jbuilder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ActiveModelSerializer"><span class="nav-number">2.3.</span> <span class="nav-text">ActiveModelSerializer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#除了-view-之外其他形式的表示方法"><span class="nav-number">3.</span> <span class="nav-text">除了 view 之外其他形式的表示方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串的表示方法"><span class="nav-number">3.1.</span> <span class="nav-text">字符串的表示方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回-XML"><span class="nav-number">3.2.</span> <span class="nav-text">返回 XML</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#返回状态码"><span class="nav-number">4.</span> <span class="nav-text">返回状态码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#根据请求的不同-改变响应的格式"><span class="nav-number">4.1.</span> <span class="nav-text">根据请求的不同, 改变响应的格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#把视图转换成字符串"><span class="nav-number">4.2.</span> <span class="nav-text">把视图转换成字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#经常使用的状态码表"><span class="nav-number">4.3.</span> <span class="nav-text">经常使用的状态码表:</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

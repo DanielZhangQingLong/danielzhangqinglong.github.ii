@@ -1,0 +1,643 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Code That Writes Code," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Kernel#eval
+之前学习过class_eval和instance_eval, 还有一个比较直接的方法Kernel#eval, 它不像前两者计算的是block, 它会把字符串作为Ruby代码来运行:
+
+123array = [10, 20]element = 30eval(&amp;quot; array &amp;lt;&amp;lt; element&amp;quot;) # =&amp;gt; # =&amp;gt; [10, 20">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ruby 元编程 第六章 Code That Writes Code">
+<meta property="og:url" content="http://yoursite.com/2015/03/30/ruby-metaprogramming-chpt6-code-that-write-code/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Kernel#eval
+之前学习过class_eval和instance_eval, 还有一个比较直接的方法Kernel#eval, 它不像前两者计算的是block, 它会把字符串作为Ruby代码来运行:
+
+123array = [10, 20]element = 30eval(&amp;quot; array &amp;lt;&amp;lt; element&amp;quot;) # =&amp;gt; # =&amp;gt; [10, 20">
+<meta property="og:updated_time" content="2015-03-30T12:53:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ruby 元编程 第六章 Code That Writes Code">
+<meta name="twitter:description" content="Kernel#eval
+之前学习过class_eval和instance_eval, 还有一个比较直接的方法Kernel#eval, 它不像前两者计算的是block, 它会把字符串作为Ruby代码来运行:
+
+123array = [10, 20]element = 30eval(&amp;quot; array &amp;lt;&amp;lt; element&amp;quot;) # =&amp;gt; # =&amp;gt; [10, 20">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Ruby 元编程 第六章 Code That Writes Code | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ruby 元编程 第六章 Code That Writes Code
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-30T13:32:07+08:00" content="2015-03-30">
+              2015-03-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ruby/" itemprop="url" rel="index">
+                    <span itemprop="name">Ruby</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Kernel-eval"><a href="#Kernel-eval" class="headerlink" title="Kernel#eval"></a>Kernel#eval</h2><blockquote>
+<p>之前学习过<code>class_eval</code>和<code>instance_eval</code>, 还有一个比较直接的方法<code>Kernel#eval</code>, 它不像前两者计算的是block, 它会把字符串作为Ruby代码来运行:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array = [10, 20]</span><br><span class="line">element = 30</span><br><span class="line">eval(&quot; array &lt;&lt; element&quot;) # =&gt; # =&gt; [10, 20, 30]</span><br></pre></td></tr></table></figure>
+<h3 id="Binding-Objects-绑定对象"><a href="#Binding-Objects-绑定对象" class="headerlink" title="Binding Objects (绑定对象)"></a>Binding Objects (绑定对象)</h3><blockquote>
+<p>Binding 将整个scope打包成对象, 通过创建Binding来捕捉当前的scope, 以后可以通过与<code>eval</code>配合执行该scope中的代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  def my_method</span><br><span class="line">    @x = 1</span><br><span class="line">    binding</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">b = MyClass.new.my_method</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>可以把绑定对象理解成闭包对象, 然后可以计算b这个scope中@x的值:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval &quot;@x&quot;, b #=&gt; 1</span><br></pre></td></tr></table></figure>
+<h3 id="Strings-of-Code-vs-Blocks"><a href="#Strings-of-Code-vs-Blocks" class="headerlink" title="Strings of Code vs. Blocks"></a>Strings of Code vs. Blocks</h3><blockquote>
+<p>事实上<code>instance_eval</code>和<code>class_eval</code>也可以运行字符串:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">array = [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]</span><br><span class="line">x = &apos;d&apos;</span><br><span class="line">array.instance_eval &quot;self[1] = x&quot;</span><br><span class="line">array # =&gt; [&quot;a&quot;, &quot;d&quot;, &quot;c&quot;]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>那么到底是使用String还是block?</p>
+</blockquote>
+<h3 id="The-Trouble-with-eval"><a href="#The-Trouble-with-eval" class="headerlink" title="The Trouble with eval()"></a>The Trouble with eval()</h3><blockquote>
+<p>String的代码确实很强大, 但是也会出现一些问题, 比如说编辑器不会为这样的代码高亮显示, 可读性差.</p>
+</blockquote>
+<h2 id="Hook-Methods"><a href="#Hook-Methods" class="headerlink" title="Hook Methods"></a>Hook Methods</h2><blockquote>
+<p>这里介绍一个方法<code>Class#inherited</code>, <code>inherited</code>是Class的一个实例方法, 当一个class被继承Ruby就会调用它, 像这样的方法被称作<code>Hook Method</code> 因为你可以用它来勾住指定的事件. 个人觉得可以这样记忆该方法: “当我被继承了之后执行这个方法”.<br>类似的, 我们还可以重写针对Module的<code>Module#included</code> 和 “Module#prepended”</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">module M1</span><br><span class="line">  def self.included(othermod)</span><br><span class="line">    puts &quot;M1 was included into #&#123;othermod&#125;&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">module M2</span><br><span class="line">  def self.prepended(othermod)</span><br><span class="line">    puts &quot;M2 was prepended to #&#123;othermod&#125;&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line">class C</span><br><span class="line">  include M1 </span><br><span class="line">  prepend M2</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">M1 was included into C</span><br><span class="line">M2 was prepended to C</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>相应的, 还有<code>method_added</code>, <code>method_removed</code>, 和<code>method_undefined</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">module M</span><br><span class="line">  def self.method_added(method)</span><br><span class="line">    puts &quot;New method: M##&#123;method&#125;&quot;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def my_method</span><br><span class="line">    </span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def self.method_undefined(method)</span><br><span class="line">    puts &quot;Undefine method: M##&#123;method&#125;&quot;</span><br><span class="line">  end</span><br><span class="line">  undef :my_method</span><br><span class="line"></span><br><span class="line">  def self.method_removed(method)</span><br><span class="line">    puts &quot;Remove method: M## &#123;method&#125;&quot;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def print</span><br><span class="line">    </span><br><span class="line">  end</span><br><span class="line">  remove_method :print</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>以上只是针对普通方法而已, 如果是singleton_method, 也有需要的hook方法: <code>BasicObject#sin- gleton_method_added, singleton_method_removed, and singleton_method_undefined</code></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Code-That-Writes-Code/" rel="tag">#Code That Writes Code</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/29/ruby-metaprogramming-chpt5-class-definitions/" rel="next" title="Ruby 元编程 第五章 Class Definitions">
+                <i class="fa fa-chevron-left"></i> Ruby 元编程 第五章 Class Definitions
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/31/design-active-record/" rel="prev" title="Active Record 的设计">
+                Active Record 的设计 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kernel-eval"><span class="nav-number">1.</span> <span class="nav-text">Kernel#eval</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Binding-Objects-绑定对象"><span class="nav-number">1.1.</span> <span class="nav-text">Binding Objects (绑定对象)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Strings-of-Code-vs-Blocks"><span class="nav-number">1.2.</span> <span class="nav-text">Strings of Code vs. Blocks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Trouble-with-eval"><span class="nav-number">1.3.</span> <span class="nav-text">The Trouble with eval()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hook-Methods"><span class="nav-number">2.</span> <span class="nav-text">Hook Methods</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

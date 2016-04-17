@@ -1,0 +1,717 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="migration," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Rails的migration可以对数据库表进行修改, 比如添加或者删除列, 添加索引, 加NULL限制, 更改列名等等. 以下就对migration进行总结.
+
+Migration的基础创建migration文件
+migration可以说是管理数据库schema的基础.有两种方法来创建migration文件, 一个是”手动直接创建”, 另一个是rails g model间接创建.实际上我们在创">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails migration">
+<meta property="og:url" content="http://yoursite.com/2015/02/15/migration/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Rails的migration可以对数据库表进行修改, 比如添加或者删除列, 添加索引, 加NULL限制, 更改列名等等. 以下就对migration进行总结.
+
+Migration的基础创建migration文件
+migration可以说是管理数据库schema的基础.有两种方法来创建migration文件, 一个是”手动直接创建”, 另一个是rails g model间接创建.实际上我们在创">
+<meta property="og:updated_time" content="2015-02-16T08:19:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails migration">
+<meta name="twitter:description" content="Rails的migration可以对数据库表进行修改, 比如添加或者删除列, 添加索引, 加NULL限制, 更改列名等等. 以下就对migration进行总结.
+
+Migration的基础创建migration文件
+migration可以说是管理数据库schema的基础.有两种方法来创建migration文件, 一个是”手动直接创建”, 另一个是rails g model间接创建.实际上我们在创">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails migration | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails migration
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-15T16:14:52+08:00" content="2015-02-15">
+              2015-02-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Rails的migration可以对数据库表进行修改, 比如添加或者删除列, 添加索引, 加NULL限制, 更改列名等等. 以下就对migration进行总结.</p>
+</blockquote>
+<h2 id="Migration的基础"><a href="#Migration的基础" class="headerlink" title="Migration的基础"></a>Migration的基础</h2><h3 id="创建migration文件"><a href="#创建migration文件" class="headerlink" title="创建migration文件"></a>创建migration文件</h3><blockquote>
+<p>migration可以说是管理数据库schema的基础.<br>有两种方法来创建migration文件, 一个是”手动直接创建”, 另一个是<code>rails g model</code>间接创建.<br>实际上我们在创建一个model <code>rails g model</code>也会生成对应的migration, 然后我们使用<code>rake db:migrate</code>创建数据库, 之后如果需要修改表, 比如添加自动, 加约束, 那么就需要使用<code>rails g migration</code>了.</p>
+</blockquote>
+<h4 id="通过生成model创建migration"><a href="#通过生成model创建migration" class="headerlink" title="通过生成model创建migration"></a>通过生成model创建migration</h4><blockquote>
+<p>生成Article model, 同时生成对应的migration, Article中有String类型的title 和 Text类型的content.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ rails g model Article title content:text</span><br><span class="line">invoke  active_record</span><br><span class="line">create    db/migrate/20150215104136_create_articles.rb</span><br><span class="line">create    app/models/article.rb</span><br><span class="line">invoke    test_unit</span><br><span class="line">create      test/models/article_test.rb</span><br><span class="line">create      test/fixtures/articles.yml</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>migration 文件在<code>db/migrate</code>目录下, 而且为了防止生成的migration名字冲突, 将生成migration的时刻加入到了migration的文件名中, 降低了同名文件的概率.<br>那么我们来看看刚刚生成的migration文件, 需要继承<code>ActiveRecord::Migration</code>, 而且需要有<code>change</code>方法, 或者有<code>up</code>和<code>down</code>方法.<br>方法中, 可以创建一个表或者添加/删除列. 本例中使用<code>create_table</code>方法创建了一个叫做<code>articles</code>的方法, 在block中添加列.<br>timestamps实际上是生成了两个列: 记录创建时刻<code>created_at</code>记录被更新的时刻<code>updated_at</code>, 这两个列我们在创建或者更新属性的时候不需要添加, rails会自动更新这两个列的值.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># db/migrate/20150215104136_create_articles.rb</span><br><span class="line"></span><br><span class="line">class CreateArticles &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    create_table :articles do |t|</span><br><span class="line">      t.string :title</span><br><span class="line">      t.text :content</span><br><span class="line"></span><br><span class="line">      t.timestamps</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>up</code>和<code>down</code>方法同时定义可以取代<code>change</code>方法, <code>up</code>方法在<code>rake db:migrate</code>执行时被执行, <code>down</code>方法在<code>rake db:rollback</code>执行时被执行.<br>使用<code>change</code>方法时, 我们应该可以推断出实现逻辑是可逆的, 如果我不确定实现的逻辑是否可逆, 那么就使用<code>up/down</code>方法, 下面的代码使用<code>up/down</code>替代了<code>change</code>方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class CreateArticles &lt; ActiveRecord::Migration</span><br><span class="line">  def up</span><br><span class="line">    create_table :articles do |t|</span><br><span class="line">      t.string :title</span><br><span class="line">      t.text :content</span><br><span class="line"></span><br><span class="line">      t.timestamps</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def down</span><br><span class="line">    drop_table :articles</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h4 id="直接生成migration文件"><a href="#直接生成migration文件" class="headerlink" title="直接生成migration文件"></a>直接生成migration文件</h4><blockquote>
+<p>有时候需要为已生成的表修改结构, 这时候就需要使用migration文件了.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ rails g migration create_articles title:string content:text</span><br><span class="line"></span><br><span class="line">  invoke  active_record</span><br><span class="line">  create    db/migrate/&#123;current_time&#125;_create_articles.rb</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>生成了与<code>rails g model</code>相同的migration文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># db/migrate/20150215104136_create_articles.rb</span><br><span class="line"></span><br><span class="line">class CreateArticles &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    create_table :articles do |t|</span><br><span class="line">      t.string :title</span><br><span class="line">      t.text :content</span><br><span class="line"></span><br><span class="line">      t.timestamps</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="移植命令rake-db-migrate"><a href="#移植命令rake-db-migrate" class="headerlink" title="移植命令rake db:migrate"></a>移植命令<code>rake db:migrate</code></h3><blockquote>
+<p><code>rake db:migrate</code>命令执行后, <strong><em>没有被移植的所有migration文件, 会被执行</em></strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ rake db:migrate</span><br><span class="line"></span><br><span class="line"># 可以指定环境(生产, 开发或者测试等等)</span><br><span class="line">$ rake db:migrate RAILS_ENV=test</span><br><span class="line">$ rake db:migrate RAILS_ENV=production</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果了刚刚实行的migration, 可以使用<code>rake db:rollback</code>命令回退一步, 注意必须要有<code>down</code>方法.(使用change的请忽略)</p>
+<p>如果要将数据库回到最初状态可以使用:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rake db:migrate VERSION=0</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果想要删除数据库所有的表和数据, 就需要使用到<code>schema.rb</code>了, 有时候migration把数据库弄得很乱, 又不知道该如何修复, 那么干脆就重置数据库:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 数据库将被重置</span><br><span class="line">$ rake db:reset</span><br></pre></td></tr></table></figure>
+<h3 id="查看migrate的使用记录"><a href="#查看migrate的使用记录" class="headerlink" title="查看migrate的使用记录"></a>查看migrate的使用记录</h3><blockquote>
+<p>有时候我们需要查看使用了那些migrate, up状态还是down状态, 需要使用<code>rake db:migrate:status</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ rake db:migrate:status</span><br><span class="line"></span><br><span class="line"># up代表执行的是up方法(rake db:migrate),down方法, 表示运行的命令时rake db:rollback</span><br><span class="line">database: /Users/daniel/workspace/web_dev/backend/my_own_project/rails_basic/migration_test/db/development.sqlite3</span><br><span class="line"></span><br><span class="line"> Status   Migration ID    Migration Name</span><br><span class="line"> --------------------------------------------------</span><br><span class="line">    up     20150215104136  Create articles</span><br></pre></td></tr></table></figure>
+<h3 id="批量导入数据"><a href="#批量导入数据" class="headerlink" title="批量导入数据"></a>批量导入数据</h3><blockquote>
+<p>在开发时, 我们往往需要一些初始化数据, 一个个从页面提交固然可以, 但是, 这样做太麻烦, rails提供了更为简洁的方法:<br>可以在db/seeds.rb中创建对象, 然后运行<code>rake db:seed</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">10.times do |i|</span><br><span class="line">  Article.create!( title: &quot;T#&#123;i&#125;&quot; , content: &quot;C#&#123;i&#125;&quot; )</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后运行:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rake db:seed</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样数据就被保存的db中作为初始数据了.</p>
+</blockquote>
+<h3 id="migration中可以使用的数据类型"><a href="#migration中可以使用的数据类型" class="headerlink" title="migration中可以使用的数据类型"></a>migration中可以使用的数据类型</h3><blockquote>
+<p><code>rails g model</code>和<code>rails g migration</code>可以使用的数据类型如下:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">integer 整数</span><br><span class="line">float 浮点小数</span><br><span class="line">decimal 高精度小数</span><br><span class="line"></span><br><span class="line">string </span><br><span class="line">text</span><br><span class="line">binary</span><br><span class="line"></span><br><span class="line">datetime</span><br><span class="line">timestamp</span><br><span class="line">date</span><br><span class="line">time</span><br><span class="line"></span><br><span class="line">boolean</span><br><span class="line"></span><br><span class="line">primary_key</span><br><span class="line">references</span><br></pre></td></tr></table></figure>
+<h2 id="Migration的方法总结"><a href="#Migration的方法总结" class="headerlink" title="Migration的方法总结"></a>Migration的方法总结</h2><h3 id="添加列-add-column"><a href="#添加列-add-column" class="headerlink" title="添加列(add_column)"></a>添加列(add_column)</h3><blockquote>
+<p>向<code>articles</code>表中添加<code>user_id</code>列.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ rails g migration add_user_id_to_articles user_id:integer</span><br><span class="line"></span><br><span class="line">invoke  active_record</span><br><span class="line">create    db/migrate/20150216050907_add_user_id_to_articles.rb</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class AddUserIdToArticles &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    add_column :articles, :user_id, :integer</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>add_column</code>还可以指定下面的选项:</p>
+</blockquote>
+<ul>
+<li>null(null_allowed): true 指的是该列允许是空值</li>
+<li>limit: size 指的是对字段限定长度, 如果是string类型或者text类型的size代表字符个数, 如果是binary类型或者integer类型那么size就代表字节数</li>
+<li>default: 设定默认值</li>
+</ul>
+<blockquote>
+<p>如果类型是<code>decimal</code>, 还可以追加精确度选项, <code>precision: [num], scale: [num]</code>, precision表示一共保留几位有效数字, scale表示其中保留几位小数.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">precision: 5, scale: 2 # =&gt; 一共保留5位有效数字, 保留2位小数. 所以范围是 -999.99~999.99</span><br></pre></td></tr></table></figure>
+<h3 id="删除列"><a href="#删除列" class="headerlink" title="删除列"></a>删除列</h3><blockquote>
+<p>删除使用的方法是<code>remove_column</code>, 比如: 删除user_id这一列</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ rails g migration remove_user_id_from_articles user_id</span><br><span class="line"></span><br><span class="line">invoke  active_record</span><br><span class="line">create    db/migrate/20150216055403_remove_user_id_from_articles.rb</span><br><span class="line"></span><br><span class="line"># 生成的文件</span><br><span class="line">class RemoveUserIdFromArticles &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    remove_column :articles, :user_id, :string</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="改变数据类型"><a href="#改变数据类型" class="headerlink" title="改变数据类型"></a>改变数据类型</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ rails g migration change_datatype_title_of_articles</span><br><span class="line"></span><br><span class="line">invoke  active_record</span><br><span class="line">create    db/migrate/20150216061727_change_datatype_title_of_articles.rb</span><br><span class="line"></span><br><span class="line">class ChangeDatatypeTitleOfArticles &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    change_column :articles, :title, :text</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>change_column</code>方法也可以指定各种选项, 这里不多说了.</p>
+</blockquote>
+<h3 id="索引及唯一性限制条件的添加与删除"><a href="#索引及唯一性限制条件的添加与删除" class="headerlink" title="索引及唯一性限制条件的添加与删除"></a>索引及唯一性限制条件的添加与删除</h3><blockquote>
+<p>可以使用<code>add_index</code>方法向表的某一列添加索引. 下面的例子是为title字段添加索引</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class AddTitleIndexToArticles &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    # 唯一性约束</span><br><span class="line">    add_index :articles, :title, unique: true</span><br><span class="line">    add_index :articles, :title</span><br><span class="line">    # 设定复合索引</span><br><span class="line">    add_index :articles, [:title, :created_at]</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="是否允许为NULL"><a href="#是否允许为NULL" class="headerlink" title="是否允许为NULL"></a>是否允许为NULL</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">change_column_null(:users, :nickname, false) # =&gt; 不允许 :nickname NULL</span><br><span class="line">change_column_null(:users, :nickname, true) # =&gt; 允许 :nickname NULL</span><br></pre></td></tr></table></figure>
+<h3 id="设定默认值"><a href="#设定默认值" class="headerlink" title="设定默认值"></a>设定默认值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">change_column_default :suppliers, :qualification, &apos;new&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="修改列名"><a href="#修改列名" class="headerlink" title="修改列名"></a>修改列名</h3><blockquote>
+<p>列名也是可以修改的, 使用<code>rename_column</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class RenameTitleToTimuInArticles &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    # rename_column(:table_name, :old_column_name, :new_column_name)</span><br><span class="line">    rename_column :articles, :title, :timu</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="创建表-create-table"><a href="#创建表-create-table" class="headerlink" title="创建表(create_table)"></a>创建表(create_table)</h3><blockquote>
+<p>创建<code>users</code>表</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">rails g migration create_users name:string email:string</span><br><span class="line">  invoke  active_record</span><br><span class="line">  create    db/migrate/20150216073226_create_users.rb</span><br><span class="line"></span><br><span class="line">class CreateUsers &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    create_table :users do |t|</span><br><span class="line">      t.string :name</span><br><span class="line">      t.string :email</span><br><span class="line"></span><br><span class="line">      # 如果没有生成时间戳, 自行加上</span><br><span class="line">      t.timestamps</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h3><blockquote>
+<p>使用<code>drop_table</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class DropUsers &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    drop_table :users</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>需要注意: 删除表和删除列都是不可逆的, 也就是说不可以使用<code>rake db:rollback</code>撤销刚刚的变更.如果想使用<code>rollback</code>就需要使用<code>up/down</code>取代change方法了:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class DropUsers &lt; ActiveRecord::Migration</span><br><span class="line">  def up</span><br><span class="line">    drop_table :users</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def down</span><br><span class="line">    create_table :users do |t|</span><br><span class="line">      t.string :name</span><br><span class="line">      t.string :email</span><br><span class="line"></span><br><span class="line">      t.timestamps</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="改变表名-rename-table"><a href="#改变表名-rename-table" class="headerlink" title="改变表名(rename_table)"></a>改变表名(rename_table)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rails g migration rename_artiles_to_posts</span><br><span class="line">  invoke  active_record</span><br><span class="line">  create    db/migrate/20150216075545_rename_artiles_to_posts.rb</span><br><span class="line"></span><br><span class="line">class RenameArtilesToPosts &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    rename_table :articles, :posts</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="生成环境下初始化数据库"><a href="#生成环境下初始化数据库" class="headerlink" title="生成环境下初始化数据库"></a>生成环境下初始化数据库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rails g migration insert_initial_categories_into_categories</span><br><span class="line">class InsertInitialCategoriesIntoCategories &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    contents = %w(交通费 电话费 水费 燃气费)</span><br><span class="line">    contents.each do |content|</span><br><span class="line">      Article.create content: content</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/migration/" rel="tag">#migration</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/15/model-callback/" rel="next" title="Model中的回调方法(CallBack)">
+                <i class="fa fa-chevron-left"></i> Model中的回调方法(CallBack)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/16/form-for/" rel="prev" title="关于form_for">
+                关于form_for <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Migration的基础"><span class="nav-number">1.</span> <span class="nav-text">Migration的基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建migration文件"><span class="nav-number">1.1.</span> <span class="nav-text">创建migration文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过生成model创建migration"><span class="nav-number">1.1.1.</span> <span class="nav-text">通过生成model创建migration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#直接生成migration文件"><span class="nav-number">1.1.2.</span> <span class="nav-text">直接生成migration文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移植命令rake-db-migrate"><span class="nav-number">1.2.</span> <span class="nav-text">移植命令rake db:migrate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看migrate的使用记录"><span class="nav-number">1.3.</span> <span class="nav-text">查看migrate的使用记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#批量导入数据"><span class="nav-number">1.4.</span> <span class="nav-text">批量导入数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#migration中可以使用的数据类型"><span class="nav-number">1.5.</span> <span class="nav-text">migration中可以使用的数据类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Migration的方法总结"><span class="nav-number">2.</span> <span class="nav-text">Migration的方法总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加列-add-column"><span class="nav-number">2.1.</span> <span class="nav-text">添加列(add_column)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除列"><span class="nav-number">2.2.</span> <span class="nav-text">删除列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改变数据类型"><span class="nav-number">2.3.</span> <span class="nav-text">改变数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引及唯一性限制条件的添加与删除"><span class="nav-number">2.4.</span> <span class="nav-text">索引及唯一性限制条件的添加与删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#是否允许为NULL"><span class="nav-number">2.5.</span> <span class="nav-text">是否允许为NULL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设定默认值"><span class="nav-number">2.6.</span> <span class="nav-text">设定默认值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改列名"><span class="nav-number">2.7.</span> <span class="nav-text">修改列名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建表-create-table"><span class="nav-number">2.8.</span> <span class="nav-text">创建表(create_table)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除表"><span class="nav-number">2.9.</span> <span class="nav-text">删除表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改变表名-rename-table"><span class="nav-number">2.10.</span> <span class="nav-text">改变表名(rename_table)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成环境下初始化数据库"><span class="nav-number">2.11.</span> <span class="nav-text">生成环境下初始化数据库</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

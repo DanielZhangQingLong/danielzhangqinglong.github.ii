@@ -1,0 +1,770 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="TDD BDD RSpec Cucumber Test," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="搭建开发环境
+请参见我的上一篇文章: 在Rails中使用Cucumber和RSpec搭建BDD/TDD测试环境.
+
+Cucumber 和 RSpec的区别Cucumber的特点
+由于使用了更自然的语言来描述, 所以阅读代码时更容易理解. 更加适合整体测试.
+
+RSpec的特点
+读起来像英语一样, 适合测试View, Controller, Model这些单独的组件.
+
+结合RSpec和Cucumb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在实际开发中使用RSpec和Cucumber进行TDD/BDD测试">
+<meta property="og:url" content="http://yoursite.com/2015/03/02/rails-test-samples/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="搭建开发环境
+请参见我的上一篇文章: 在Rails中使用Cucumber和RSpec搭建BDD/TDD测试环境.
+
+Cucumber 和 RSpec的区别Cucumber的特点
+由于使用了更自然的语言来描述, 所以阅读代码时更容易理解. 更加适合整体测试.
+
+RSpec的特点
+读起来像英语一样, 适合测试View, Controller, Model这些单独的组件.
+
+结合RSpec和Cucumb">
+<meta property="og:image" content="http://i3.tietuku.com/024da538e47035a4.png">
+<meta property="og:updated_time" content="2015-03-04T13:16:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在实际开发中使用RSpec和Cucumber进行TDD/BDD测试">
+<meta name="twitter:description" content="搭建开发环境
+请参见我的上一篇文章: 在Rails中使用Cucumber和RSpec搭建BDD/TDD测试环境.
+
+Cucumber 和 RSpec的区别Cucumber的特点
+由于使用了更自然的语言来描述, 所以阅读代码时更容易理解. 更加适合整体测试.
+
+RSpec的特点
+读起来像英语一样, 适合测试View, Controller, Model这些单独的组件.
+
+结合RSpec和Cucumb">
+<meta name="twitter:image" content="http://i3.tietuku.com/024da538e47035a4.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 在实际开发中使用RSpec和Cucumber进行TDD/BDD测试 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                在实际开发中使用RSpec和Cucumber进行TDD/BDD测试
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-02T12:25:54+08:00" content="2015-03-02">
+              2015-03-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="搭建开发环境"><a href="#搭建开发环境" class="headerlink" title="搭建开发环境"></a>搭建开发环境</h2><blockquote>
+<p>请参见我的上一篇文章: <a href="/2015/03/02/rails-test-install/">在Rails中使用Cucumber和RSpec搭建BDD/TDD测试环境</a>.</p>
+</blockquote>
+<h2 id="Cucumber-和-RSpec的区别"><a href="#Cucumber-和-RSpec的区别" class="headerlink" title="Cucumber 和 RSpec的区别"></a>Cucumber 和 RSpec的区别</h2><h3 id="Cucumber的特点"><a href="#Cucumber的特点" class="headerlink" title="Cucumber的特点"></a>Cucumber的特点</h3><blockquote>
+<p>由于使用了更自然的语言来描述, 所以阅读代码时更容易理解. 更加适合整体测试.</p>
+</blockquote>
+<h3 id="RSpec的特点"><a href="#RSpec的特点" class="headerlink" title="RSpec的特点"></a>RSpec的特点</h3><blockquote>
+<p>读起来像英语一样, 适合测试View, Controller, Model这些单独的组件.</p>
+</blockquote>
+<h2 id="结合RSpec和Cucumber"><a href="#结合RSpec和Cucumber" class="headerlink" title="结合RSpec和Cucumber"></a>结合RSpec和Cucumber</h2><blockquote>
+<p>不能看出, Cucumber读起来简单但是写起来麻烦, 而RSpec恰恰相反, 所以可以将二者结合进行测试. 具体来讲:</p>
+</blockquote>
+<ul>
+<li>单元测试(View, Controller, Model各个各个组件的测试)使用RSpec</li>
+<li>结合测试(将View, Controller, Model结合, 页面之间跳转这样的测试)使用Cucumber</li>
+<li>整体测试(页面跳转后是否会达到预期效果这样的测试)使用Cucumber</li>
+</ul>
+<h2 id="测试流程"><a href="#测试流程" class="headerlink" title="测试流程"></a>测试流程</h2><h3 id="生成User-story"><a href="#生成User-story" class="headerlink" title="生成User story"></a>生成User story</h3><blockquote>
+<p>为了便于说明问题, 我目的的创建一个对于User进行增删改查的Rails应用, 我先来描述一下我想要的效果:</p>
+</blockquote>
+<ul>
+<li>在User 列表页面, 有以下可以跳转到的页面:<ul>
+<li>新建和编辑User的页面</li>
+<li>列出用户详细信息的页面</li>
+</ul>
+</li>
+<li>有如下功能:<ul>
+<li>管理员可以查看展示所有用户的信息</li>
+<li>管理员可以新建, 编辑和删除用户</li>
+<li>管理员可以查看某一用户的详细信息</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用cucumber生成scenario-场景"><a href="#使用cucumber生成scenario-场景" class="headerlink" title="使用cucumber生成scenario(场景)"></a>使用cucumber生成scenario(场景)</h3><blockquote>
+<p>接下来描述”管理员可以查看展示所有用户的信息”这个场景.<br>Cucumber规定, 在features/目录下创建<code>.feature</code>文件(feature file), 在文件中使用自然语言来定义scenario ; 然后, 在<code>features/step_definitions</code>目录下定义<code>.rb</code>文件用于将自然语言和实际的代码匹配.</p>
+</blockquote>
+<h3 id="feature-file的语法"><a href="#feature-file的语法" class="headerlink" title="feature file的语法"></a>feature file的语法</h3><blockquote>
+<p>首先看看feature file如果定义, 可以选择除了英语之外的其他语言, 不过我还是会使用英语, 如果使用其他语言需要在文件开头写上 <code># language cn</code>.<br>一个feature 文件中可以定义多个scenario, scenario中必须有”Given”, “When”和”Then”, 分别表示前提, 如果 和 那么. 看下面的例子:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Feature: [描述功能]</span><br><span class="line">  [可以随便写, 也可以不写]</span><br><span class="line"></span><br><span class="line">  # 注释</span><br><span class="line">  Scenario: [一个前提的情况下]</span><br><span class="line">    Given [描述前提]</span><br><span class="line">    When [描述一个动作(action)]</span><br><span class="line">    Then [描述结果]</span><br><span class="line"></span><br><span class="line">  Scenario: [两个前提条件情况]</span><br><span class="line">    Given [前提描述]</span><br><span class="line">    And [另一个前提]</span><br><span class="line">    When [一个action]</span><br><span class="line">    And [另一个action]</span><br><span class="line">    Then [结果]</span><br><span class="line"></span><br><span class="line">  Scenario Outline: [需要输入的情况]</span><br><span class="line">    Given [前提]</span><br><span class="line">    When 输入&lt;input&gt;</span><br><span class="line">    Then 显示&lt;result&gt;</span><br><span class="line">  Example:</span><br><span class="line">    | input | result |</span><br><span class="line">    |     0 |     0  |</span><br><span class="line">    |     1 |     1  |</span><br><span class="line">    |     2 |     10 |</span><br><span class="line">    |     3 |    100 |</span><br></pre></td></tr></table></figure>
+<h3 id="生成feature-file"><a href="#生成feature-file" class="headerlink" title="生成feature file"></a>生成feature file</h3><blockquote>
+<p>创建User story的feature file</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">$ vim feature/user_index.feature</span><br><span class="line"></span><br><span class="line">Feature: Listing all users&apos; info for admin</span><br><span class="line"></span><br><span class="line">  Scenario Outline: List all users</span><br><span class="line">    Given There are &lt;user_number&gt; users in the db</span><br><span class="line">    When the index page is displayed</span><br><span class="line">    Then I should see &lt;user_number&gt; users</span><br><span class="line">    Examples:</span><br><span class="line">      | user_number |</span><br><span class="line">      | 0 |</span><br><span class="line">      | 1 |</span><br><span class="line"></span><br><span class="line"># 执行测试返回结果:</span><br><span class="line">➜  test_rspec_cucumber_rails  cucumber features/user_index.feature</span><br><span class="line">Using the default profile...</span><br><span class="line">Feature: Listing all users&apos; info for admin</span><br><span class="line"></span><br><span class="line">Scenario Outline: List all users                # features/user_index.feature:3</span><br><span class="line">Given There are &lt;user_number&gt; users in the db # features/user_index.feature:4</span><br><span class="line">When the index page is displayed              # features/user_index.feature:5</span><br><span class="line">Then I should see &lt;user_number&gt; users         # features/user_index.feature:6</span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line">| user_number |</span><br><span class="line">| 0           |</span><br><span class="line">Undefined step: &quot;There are 0 users in the db&quot; (Cucumber::Undefined)</span><br><span class="line">features/user_index.feature:4:in `Given There are &lt;user_number&gt; users in the db&apos;</span><br><span class="line">| 1           |</span><br><span class="line">Undefined step: &quot;There are 1 users in the db&quot; (Cucumber::Undefined)</span><br><span class="line">features/user_index.feature:4:in `Given There are &lt;user_number&gt; users in the db&apos;</span><br><span class="line"></span><br><span class="line">2 scenarios (2 undefined)</span><br><span class="line">6 steps (6 undefined)</span><br><span class="line">0m0.055s</span><br><span class="line"></span><br><span class="line">You can implement step definitions for undefined steps with these snippets:</span><br><span class="line"></span><br><span class="line">Given(/^There are (\d+) users in the db$/) do |arg1|</span><br><span class="line">pending # express the regexp above with the code you wish you had</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">When(/^the index page is displayed$/) do</span><br><span class="line">pending # express the regexp above with the code you wish you had</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">Then(/^I should see (\d+) users$/) do |arg1|</span><br><span class="line">pending # express the regexp above with the code you wish you had</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="实现step定义"><a href="#实现step定义" class="headerlink" title="实现step定义"></a>实现step定义</h3><blockquote>
+<p>其实上面的错误信息已经提示如何实现step文件.我们需要让自然语言和代码进行匹配时, 相比于方法的设计我们考虑更多的是实际问题, 这样更加利于理解.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># user_steps.rb</span><br><span class="line"></span><br><span class="line">Given(/^There are (\d+) users in the db$/) do |num|</span><br><span class="line">  num.to_i.times do |i|</span><br><span class="line">    User.create(name: &quot;User#&#123;i&#125;&quot;, email: &quot;user#&#123;i&#125;@example.com&quot;)</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">When(/^the index page is displayed$/) do</span><br><span class="line">  visit users_path # 跳转到index页面, visit方法来自于Capybara</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">Then(/^I should see (\d+) users$/) do |num|</span><br><span class="line">  # 判断所期待的内容是否存在</span><br><span class="line">  num.to_i.times do |i|</span><br><span class="line">    expect(page).to have_content(&quot;user#&#123;i&#125;@example.com&quot;)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="再次测试"><a href="#再次测试" class="headerlink" title="再次测试"></a>再次测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">test_rspec_cucumber_rails  cucumber features/user_index.feature</span><br><span class="line">Using the default profile...</span><br><span class="line">Feature: Listing all users&apos; info for admin</span><br><span class="line"></span><br><span class="line">Scenario Outline: List all users                # features/user_index.feature:3</span><br><span class="line">Given There are &lt;user_number&gt; users in the db # features/step_definitions/users_steps.rb:1</span><br><span class="line">When the index page is displayed              # features/step_definitions/users_steps.rb:7</span><br><span class="line">Then I should see &lt;user_number&gt; users         # features/step_definitions/users_steps.rb:11</span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line">| user_number |</span><br><span class="line">| 0           |</span><br><span class="line">undefined local variable or method `users_path&apos; for #&lt;Cucumber::Rails::World:0x007fc3100576b8&gt; (NameError)</span><br><span class="line">./features/step_definitions/users_steps.rb:8:in `/^the index page is displayed$/&apos;</span><br><span class="line">features/user_index.feature:5:in `When the index page is displayed&apos;</span><br><span class="line">| 1           |</span><br><span class="line">uninitialized constant User (NameError)</span><br><span class="line">./features/step_definitions/users_steps.rb:3:in `block (2 levels) in &lt;top (required)&gt;&apos;</span><br><span class="line">./features/step_definitions/users_steps.rb:2:in `times&apos;</span><br><span class="line">./features/step_definitions/users_steps.rb:2:in `/^There are (\d+) users in the db$/&apos;</span><br><span class="line">features/user_index.feature:4:in `Given There are &lt;user_number&gt; users in the db&apos;</span><br><span class="line"></span><br><span class="line">Failing Scenarios:</span><br><span class="line">cucumber features/user_index.feature:3 # Scenario: List all users</span><br><span class="line">cucumber features/user_index.feature:3 # Scenario: List all users</span><br><span class="line"></span><br><span class="line">2 scenarios (2 failed)</span><br><span class="line">6 steps (2 failed, 3 skipped, 1 passed)</span><br><span class="line">0m0.025s`</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>users_path 没有定义, 接下来使用RSpec来实现MVC各个单元测试和开发</p>
+</blockquote>
+<h2 id="使用RSpec实现单元测试"><a href="#使用RSpec实现单元测试" class="headerlink" title="使用RSpec实现单元测试"></a>使用RSpec实现单元测试</h2><h3 id="Rspec的基本语法"><a href="#Rspec的基本语法" class="headerlink" title="Rspec的基本语法"></a>Rspec的基本语法</h3><blockquote>
+<p>首先介绍一下RSpec的相关知识:</p>
+</blockquote>
+<ul>
+<li>文件名: xxx_spec.rb 表示是rspec的测试文件</li>
+<li>describe: 对于测试用例的描述.</li>
+<li>context: describe分情况讨论的描述.</li>
+<li>subject: 设置it所指代的对象</li>
+<li>it / specify : 测试的对象</li>
+<li>expect : 需要在it block中使用</li>
+<li>异常: raise_error(RuntimeError, ‘msg…’)</li>
+</ul>
+<blockquote>
+<p>基本形式:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">describe &quot;Array&quot; do</span><br><span class="line">  before &#123; @arr = Array.new &#125;</span><br><span class="line"></span><br><span class="line">  it &quot;should be empty&quot; do</span><br><span class="line">    expect(:arr).to be_empty</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="Controller的测试"><a href="#Controller的测试" class="headerlink" title="Controller的测试"></a>Controller的测试</h3><blockquote>
+<p>由于我已经安装了RSpec, 所以我在创建Controller的时候会自动创建相应的rspec测试文件:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails g controller Users </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>测试文件:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">require &apos;rails_helper&apos;</span><br><span class="line"></span><br><span class="line">RSpec.describe UsersController, type: :controller do</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  describe &quot;GET #index&quot; do</span><br><span class="line"></span><br><span class="line">    # Test responsing HTTP 200 status code</span><br><span class="line">    it &quot;should respond successfully with an HTTP 200 status code&quot; do</span><br><span class="line">      get :index</span><br><span class="line">      expect(response).to be_success</span><br><span class="line">      expect(response).to have_http_status(200)</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    # Test Rendering index template</span><br><span class="line">    it &quot;should render index template&quot; do</span><br><span class="line">      get :index</span><br><span class="line">      expect(response).to render_template(&quot;index&quot;)</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    # Test loading all users into @users</span><br><span class="line">    it &quot;should load all users into @users&quot; do</span><br><span class="line">      user1 = User.create!(name: &quot;test user1&quot;, email: &quot;user1@example.com&quot;)</span><br><span class="line">      user2 = User.create!(name: &quot;test user2&quot;, email: &quot;user2@example.com&quot;)</span><br><span class="line">      get :index</span><br><span class="line"></span><br><span class="line">      expect(assigns(:users)).to match_array([user1, user2])</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>运行测试</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">$ rspec --color --format doc spec/</span><br><span class="line"></span><br><span class="line">UsersController</span><br><span class="line">GET #index</span><br><span class="line">responds successfully with an HTTP 200 status code (FAILED - 1)</span><br><span class="line">renders the index template (FAILED - 2)</span><br><span class="line">loads all of the users into @users (FAILED - 3)</span><br><span class="line"></span><br><span class="line">Failures:</span><br><span class="line"></span><br><span class="line">1) UsersController GET #index responds successfully with an HTTP 200 status code</span><br><span class="line">Failure/Error: get :index</span><br><span class="line">ActionController::UrlGenerationError:</span><br><span class="line">No route matches &#123;:action=&gt;&quot;index&quot;, :controller=&gt;&quot;users&quot;&#125;</span><br><span class="line"># ./spec/controllers/users_controller_spec.rb:11:in `block (3 levels) in &lt;top (required)&gt;&apos;</span><br><span class="line"></span><br><span class="line">2) UsersController GET #index renders the index template</span><br><span class="line">Failure/Error: get :index</span><br><span class="line">ActionController::UrlGenerationError:</span><br><span class="line">No route matches &#123;:action=&gt;&quot;index&quot;, :controller=&gt;&quot;users&quot;&#125;</span><br><span class="line"># ./spec/controllers/users_controller_spec.rb:18:in `block (3 levels) in &lt;top (required)&gt;&apos;</span><br><span class="line"></span><br><span class="line">3) UsersController GET #index loads all of the users into @users</span><br><span class="line">Failure/Error: user1 = User.create!(name: &quot;test user1&quot;, email: &quot;user1@example.com&quot;)</span><br><span class="line">NameError:</span><br><span class="line">uninitialized constant User</span><br><span class="line"># ./spec/controllers/users_controller_spec.rb:24:in `block (3 levels) in &lt;top (required)&gt;&apos;</span><br><span class="line"></span><br><span class="line">Finished in 0.00799 seconds (files took 1.93 seconds to load)</span><br><span class="line">3 examples, 3 failures</span><br><span class="line"></span><br><span class="line">Failed examples:</span><br><span class="line"></span><br><span class="line">rspec ./spec/controllers/users_controller_spec.rb:10 # UsersController GET #index responds successfully with an HTTP 200 status code</span><br><span class="line">rspec ./spec/controllers/users_controller_spec.rb:17 # UsersController GET #index renders the index template</span><br><span class="line">rspec ./spec/controllers/users_controller_spec.rb:23 # UsersController GET #index loads all of the users into @usersZ</span><br></pre></td></tr></table></figure>
+<h3 id="RSpec设置options"><a href="#RSpec设置options" class="headerlink" title="RSpec设置options"></a>RSpec设置options</h3><blockquote>
+<p>顺便说一句, 如果觉得每次都指定<code>--color</code>和<code>--format doc</code>麻烦, 那么可以修改<code>.rspec</code>文件, 添加默认option</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ vim .rspec</span><br><span class="line">--color</span><br><span class="line">--format doc</span><br></pre></td></tr></table></figure>
+<h3 id="添加Routing"><a href="#添加Routing" class="headerlink" title="添加Routing"></a>添加Routing</h3><blockquote>
+<p>从刚刚的结果看以判断, 首先需要添加routing:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># config/route.rb</span><br><span class="line"></span><br><span class="line">Rails.application.routes.draw do</span><br><span class="line">  get &apos;users&apos; =&gt; &apos;users#index&apos;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="实现UsersController"><a href="#实现UsersController" class="headerlink" title="实现UsersController"></a>实现UsersController</h3><blockquote>
+<p>执行<code>rspec</code>, 这回返回的错误信息是<code>The action &#39;index&#39; could not be found for UsersController</code>, 所以我需要在<code>UsersController</code>中实现index方法, 在index方法中, 我需要从数据库中取出所有的user赋给实例变量@users, 进而可以在index.html.erb中显示这些用户.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class UsersController &lt; ApplicationController</span><br><span class="line"></span><br><span class="line">  def index</span><br><span class="line">    @users = User.all</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="创建User-model"><a href="#创建User-model" class="headerlink" title="创建User model"></a>创建User model</h3><blockquote>
+<p>继续执行测试, 这时发生的错误是 <code>uninitialized constant UsersController::User</code>, 所以我应该创建User Model了.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ rails g model User name:string email:string</span><br><span class="line">  invoke  active_record</span><br><span class="line">  create    db/migrate/20150302123110_create_users.rb</span><br><span class="line">  create    app/models/user.rb</span><br><span class="line">  invoke    rspec</span><br><span class="line">  create      spec/models/user_spec.rb</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后, 我来实现User的测试代码</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># spec/models/user_spec.rb</span><br><span class="line"></span><br><span class="line">require &apos;rails_helper&apos;</span><br><span class="line"></span><br><span class="line">RSpec.describe User, type: :model do</span><br><span class="line">  # before()在测试执行前执行</span><br><span class="line">  before &#123; @user = User.new(name: &quot;test user&quot;, email: &quot;user@example.com&quot;)  &#125;</span><br><span class="line"></span><br><span class="line">  # it = @user</span><br><span class="line">  subject &#123; @user  &#125;</span><br><span class="line"></span><br><span class="line">  # respond_to 测试的是对象能否调用某个方法</span><br><span class="line">  # 在本例中, 测试的是@user.email 和 @user.name是否可以成功调用</span><br><span class="line">  it &#123; should respond_to :name  &#125;</span><br><span class="line">  it &#123; should respond_to :email  &#125;</span><br><span class="line"></span><br><span class="line">  # be_valid测试数据是否可以正确调用</span><br><span class="line">  it &#123; should be_valid  &#125;</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>执行 migrate, <code>$ rake db:migrate</code></p>
+<p>然后, 单独测试model</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ rspec spec/models/user_spec.rb</span><br><span class="line">  User</span><br><span class="line">  should respond to #name</span><br><span class="line">  should respond to #email</span><br><span class="line">  should be valid</span><br><span class="line"></span><br><span class="line">  Finished in 0.00976 seconds (files took 1.97 seconds to load)</span><br><span class="line">  3 examples, 0 failures</span><br></pre></td></tr></table></figure>
+<h3 id="实现视图"><a href="#实现视图" class="headerlink" title="实现视图"></a>实现视图</h3><blockquote>
+<p>这时候再执行 Controller的测试:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ rspec spec/controllers/users_controller_spec.rb</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">Failures:</span><br><span class="line"></span><br><span class="line">1) UsersController GET #index responds successfully with an HTTP 200 status code</span><br><span class="line">Failure/Error: get :index</span><br><span class="line">ActionView::MissingTemplate:</span><br><span class="line">Missing template users/index, application/index with ...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我来创建<code>index.html.erb</code>并实现其代码.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;List Users&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">  &lt;% @users.each do |user| %&gt;</span><br><span class="line">    &lt;li&gt;</span><br><span class="line">      &lt;%= user.name %&gt;</span><br><span class="line">      &lt;%= user.email %&gt;</span><br><span class="line">    &lt;/li&gt;</span><br><span class="line">  &lt;% end %&gt;</span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="启动server-观察页面"><a href="#启动server-观察页面" class="headerlink" title="启动server, 观察页面"></a>启动server, 观察页面</h3><blockquote>
+<p>执行所有测试<code>rspec spec/</code>, 全都通过:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ rspec spec/</span><br><span class="line"></span><br><span class="line">  UsersController</span><br><span class="line">  GET #index</span><br><span class="line">  should respond successfully with an HTTP 200 status code</span><br><span class="line">  should render index template</span><br><span class="line">  should load all users into @users</span><br><span class="line"></span><br><span class="line">  User</span><br><span class="line">  should respond to #name</span><br><span class="line">  should respond to #email</span><br><span class="line">  should be valid</span><br><span class="line"></span><br><span class="line">  Finished in 0.03626 seconds (files took 1.41 seconds to load)</span><br><span class="line">  6 examples, 0 failures</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后我通过rails console新建一条数据</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ rails console</span><br><span class="line"></span><br><span class="line">001:0&gt; User.create(name: &quot;test user&quot;, email: &quot;user@example.com&quot;)</span><br><span class="line">002:0&gt; User.all.count #=&gt; 1</span><br><span class="line">003:0&gt; exit</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>效果图:</p>
+</blockquote>
+<p><img src="http://i3.tietuku.com/024da538e47035a4.png" alt=""></p>
+<h2 id="通过Cucumber测试"><a href="#通过Cucumber测试" class="headerlink" title="通过Cucumber测试"></a>通过Cucumber测试</h2><blockquote>
+<p>这时cucumber的测试也可以通过了</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$  cucumber features/user_index.feature</span><br><span class="line">Using the default profile...</span><br><span class="line"><span class="symbol">Feature:</span> Listing all users<span class="string">' info for admin</span><br><span class="line"></span><br><span class="line">Scenario Outline: List all users                # features/user_index.feature:3</span><br><span class="line">Given There are &lt;user_number&gt; users in the db # features/step_definitions/users_steps.rb:1</span><br><span class="line">When the index page is displayed              # features/step_definitions/users_steps.rb:7</span><br><span class="line">Then I should see &lt;user_number&gt; users         # features/step_definitions/users_steps.rb:11</span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line">| user_number |</span><br><span class="line">| 0           |</span><br><span class="line">| 1           |</span><br><span class="line"></span><br><span class="line">2 scenarios (2 passed)</span><br><span class="line">6 steps (6 passed)</span><br><span class="line">0m0.982s</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>重构代码, 可以将公共的视图代码抽取到局部视图(app/views/users/_user.html.erb)中:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># app/views/users/index.html.erb</span><br><span class="line">&lt;h1&gt;List Users&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">  &lt;% @users.each do |user| %&gt;</span><br><span class="line">    &lt;%= render @users %&gt;</span><br><span class="line">  &lt;% end %&gt;</span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># app/views/users/_user.html.erb</span><br><span class="line"></span><br><span class="line">&lt;li&gt;</span><br><span class="line">  &lt;%= user.name&gt; %&gt;</span><br><span class="line">  &lt;%= user.email %&gt;</span><br><span class="line">&lt;/li&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>重构之后再分别进行cucumber和rspec的测试, 保证通过.</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>通过以上的例子不难发现, cucumber着重于整体的页面测试, 而RSpec着重于MVC这三个组件这样的细节测试.<br>具体的步骤, 先使用cucumber生成一个失败的测试, 因为没有MVC这三个组件, 我必须要通过RSpec来实现各个细节, 最后在RSpec开始测试到View时, 需要考虑让Cucumber测试也可以通过.</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/TDD-BDD-RSpec-Cucumber-Test/" rel="tag">#TDD BDD RSpec Cucumber Test</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/02/rails-test-install/" rel="next" title="在Rails中使用Cucumber和RSpec搭建BDD/TDD测试环境">
+                <i class="fa fa-chevron-left"></i> 在Rails中使用Cucumber和RSpec搭建BDD/TDD测试环境
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/03/rspec-capybara/" rel="prev" title="RSpec, Capybara, FactoryGirl的使用方法介绍">
+                RSpec, Capybara, FactoryGirl的使用方法介绍 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建开发环境"><span class="nav-number">1.</span> <span class="nav-text">搭建开发环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cucumber-和-RSpec的区别"><span class="nav-number">2.</span> <span class="nav-text">Cucumber 和 RSpec的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cucumber的特点"><span class="nav-number">2.1.</span> <span class="nav-text">Cucumber的特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RSpec的特点"><span class="nav-number">2.2.</span> <span class="nav-text">RSpec的特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结合RSpec和Cucumber"><span class="nav-number">3.</span> <span class="nav-text">结合RSpec和Cucumber</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试流程"><span class="nav-number">4.</span> <span class="nav-text">测试流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成User-story"><span class="nav-number">4.1.</span> <span class="nav-text">生成User story</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用cucumber生成scenario-场景"><span class="nav-number">4.2.</span> <span class="nav-text">使用cucumber生成scenario(场景)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feature-file的语法"><span class="nav-number">4.3.</span> <span class="nav-text">feature file的语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成feature-file"><span class="nav-number">4.4.</span> <span class="nav-text">生成feature file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现step定义"><span class="nav-number">4.5.</span> <span class="nav-text">实现step定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#再次测试"><span class="nav-number">4.6.</span> <span class="nav-text">再次测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用RSpec实现单元测试"><span class="nav-number">5.</span> <span class="nav-text">使用RSpec实现单元测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Rspec的基本语法"><span class="nav-number">5.1.</span> <span class="nav-text">Rspec的基本语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Controller的测试"><span class="nav-number">5.2.</span> <span class="nav-text">Controller的测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RSpec设置options"><span class="nav-number">5.3.</span> <span class="nav-text">RSpec设置options</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加Routing"><span class="nav-number">5.4.</span> <span class="nav-text">添加Routing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现UsersController"><span class="nav-number">5.5.</span> <span class="nav-text">实现UsersController</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建User-model"><span class="nav-number">5.6.</span> <span class="nav-text">创建User model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现视图"><span class="nav-number">5.7.</span> <span class="nav-text">实现视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动server-观察页面"><span class="nav-number">5.8.</span> <span class="nav-text">启动server, 观察页面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过Cucumber测试"><span class="nav-number">6.</span> <span class="nav-text">通过Cucumber测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

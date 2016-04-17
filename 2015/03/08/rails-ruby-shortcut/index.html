@@ -1,0 +1,739 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Rails Ruby shortcut Refactoring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="有句经典的话-“不要重复制造轮子”, 但是事实上我们在写代码的时候, 不知不觉中还是制造了很多轮子, Ruby是一种很优雅的语言, 但是记得我刚刚学习使用ruby的时候, 却没有使用这些优雅, 导致我的代码看起来”比较脏”. 今天我就把ruby和rails中提供的这些技巧进行一次总结, 如果以后再遇到一些好的方法, 我会继续追加到这篇文章中.
+
+Ruby相关的技巧汇总使用后置if减少代码行数12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails代码技巧总结(一) Ruby相关">
+<meta property="og:url" content="http://yoursite.com/2015/03/08/rails-ruby-shortcut/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="有句经典的话-“不要重复制造轮子”, 但是事实上我们在写代码的时候, 不知不觉中还是制造了很多轮子, Ruby是一种很优雅的语言, 但是记得我刚刚学习使用ruby的时候, 却没有使用这些优雅, 导致我的代码看起来”比较脏”. 今天我就把ruby和rails中提供的这些技巧进行一次总结, 如果以后再遇到一些好的方法, 我会继续追加到这篇文章中.
+
+Ruby相关的技巧汇总使用后置if减少代码行数12">
+<meta property="og:updated_time" content="2015-04-02T02:21:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails代码技巧总结(一) Ruby相关">
+<meta name="twitter:description" content="有句经典的话-“不要重复制造轮子”, 但是事实上我们在写代码的时候, 不知不觉中还是制造了很多轮子, Ruby是一种很优雅的语言, 但是记得我刚刚学习使用ruby的时候, 却没有使用这些优雅, 导致我的代码看起来”比较脏”. 今天我就把ruby和rails中提供的这些技巧进行一次总结, 如果以后再遇到一些好的方法, 我会继续追加到这篇文章中.
+
+Ruby相关的技巧汇总使用后置if减少代码行数12">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails代码技巧总结(一) Ruby相关 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails代码技巧总结(一) Ruby相关
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-08T13:43:07+08:00" content="2015-03-08">
+              2015-03-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>有句经典的话-“不要重复制造轮子”, 但是事实上我们在写代码的时候, 不知不觉中还是制造了很多轮子, Ruby是一种很优雅的语言, 但是记得我刚刚学习使用ruby的时候, 却没有使用这些优雅, 导致我的代码看起来”比较脏”. 今天我就把ruby和rails中提供的这些技巧进行一次总结, 如果以后再遇到一些好的方法, 我会继续追加到这篇文章中.</p>
+</blockquote>
+<h2 id="Ruby相关的技巧汇总"><a href="#Ruby相关的技巧汇总" class="headerlink" title="Ruby相关的技巧汇总"></a>Ruby相关的技巧汇总</h2><h3 id="使用后置if减少代码行数"><a href="#使用后置if减少代码行数" class="headerlink" title="使用后置if减少代码行数"></a>使用后置if减少代码行数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if user.active?</span><br><span class="line">  send_mail_to(user)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">send_email_to(user) if user.active?</span><br></pre></td></tr></table></figure>
+<h3 id="使用unless代替if-not"><a href="#使用unless代替if-not" class="headerlink" title="使用unless代替if not"></a>使用unless代替if not</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user.destroy if !user.active?</span><br><span class="line">user.destroy unless user.active?</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但是<code>unless</code>有些逆向思维, 如果条件中包含<code>and``or</code>, 或者再加上否定形式, 那么代码理解起来就会有些困难, 这时候使用if会更好</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 下面的代码并不好理解</span><br><span class="line">user.destroy unless (user.active? || user.admin?) &amp;&amp; !user.spam?</span><br></pre></td></tr></table></figure>
+<h3 id="三木运算"><a href="#三木运算" class="headerlink" title="三木运算"></a>三木运算</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if user.admin?</span><br><span class="line">  &quot;I am Admin!&quot;</span><br><span class="line">else</span><br><span class="line">  &quot;I am a normal User&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 三木</span><br><span class="line"></span><br><span class="line">user.admin? ? &quot;I am Admin&quot; : &quot;I am a normal User&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="赋值语句并入到if条件中"><a href="#赋值语句并入到if条件中" class="headerlink" title="赋值语句并入到if条件中"></a>赋值语句并入到if条件中</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">user = find_user</span><br><span class="line">if user</span><br><span class="line">  send_email_to(user)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if user = find_user</span><br><span class="line">  send_email_to(user)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但是这么写很容易和<code>if user === find_user</code>混淆, 所以还是看个人习惯吧.</p>
+</blockquote>
+<h3 id="合并嵌套if"><a href="#合并嵌套if" class="headerlink" title="合并嵌套if"></a>合并嵌套if</h3><blockquote>
+<p><code>&amp;&amp;</code>如果前面的条件成立才会去计算后面的条件是否成立</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if parent.children</span><br><span class="line">  if parent.children.singleton?</span><br><span class="line">    singleton = parent.children.first</span><br><span class="line">    send_email_to(singleton)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if parent.children &amp;&amp; parent.children.singleton?</span><br><span class="line">  singleton = parent.children.first</span><br><span class="line">  send_email_to(singleton)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="返回值不需要写return"><a href="#返回值不需要写return" class="headerlink" title="返回值不需要写return"></a>返回值不需要写return</h3><blockquote>
+<p>ruby方法中默认的返回值就是最后一个表达式的值, 所以不需要写return, 这样也显得代码更符合地道的Ruby语言</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def build_message(user)</span><br><span class="line">  message = &apos;hello&apos;</span><br><span class="line">  message += &apos;!!&apos; if user.admin</span><br><span class="line">  return message</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def build_message(user)</span><br><span class="line">  message = &apos;hello&apos;</span><br><span class="line">  message = &apos;!!&apos; if user.admin</span><br><span class="line">  # message</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="Object-tap方法代替初始化-赋值-返回值"><a href="#Object-tap方法代替初始化-赋值-返回值" class="headerlink" title="Object#tap方法代替初始化, 赋值, 返回值"></a><code>Object#tap</code>方法代替<code>初始化, 赋值, 返回值</code></h3><blockquote>
+<p>tap方法返回其调用者, 赋值操作在block中完成, 这样代码更加简洁</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def build_user</span><br><span class="line">  user = User.new</span><br><span class="line">  user.email = &quot;dan@126.com&quot;</span><br><span class="line">  user.name = &quot;Dan&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">def build_user</span><br><span class="line">  User.new.tap do |user|</span><br><span class="line">    user.email = &quot;dan@126.com&quot;</span><br><span class="line">    user.name = &quot;Dan&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="字符串相加"><a href="#字符串相加" class="headerlink" title="字符串相加"></a>字符串相加</h3><blockquote>
+<p>字符串连接时,避免使用<code>+</code>而是使用Ruby的表达式<code>#{...}</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;hello, &quot; + user.name + &quot;!&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;hello, #&#123;user.name&#125;!&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="freeze方法冻结常量"><a href="#freeze方法冻结常量" class="headerlink" title="freeze方法冻结常量"></a>freeze方法冻结常量</h3><blockquote>
+<p>使用<code>freeze</code>方法可以冻结常量, 防止被修改</p>
+</blockquote>
+<h4 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CONTACT_PHONE_NUMBER = &quot;03-1234-5678&quot;</span><br><span class="line">CONTACT_PHONE_NUMBER &lt;&lt; &quot;@#$%^&quot;</span><br><span class="line">puts CONTACT_PHONE_NUMBER # =&gt; 03-1234-5678@#$%^</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 冻结</span><br><span class="line">CONTACT_PHONE_NUMBER = &quot;03-1234-5678&quot;.freeze</span><br><span class="line">CONTACT_PHONE_NUMBER &lt;&lt; &quot;@#$%^&quot;</span><br><span class="line"># =&gt; RuntimeError: can&apos;t modify frozen String</span><br></pre></td></tr></table></figure>
+<h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ADMIN_NAMES = [&quot;Tom&quot;, &quot;Alice&quot;]</span><br><span class="line">ADMIN_NAMES &lt;&lt; &quot;Taro&quot;</span><br><span class="line">puts ADMIN_NAMES # =&gt; [&quot;Tom&quot;, &quot;Alice&quot;, &quot;Taro&quot;]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ADMIN_NAMES = [&quot;Tom&quot;, &quot;Alice&quot;].freeze</span><br><span class="line">ADMIN_NAMES &lt;&lt; &quot;Taro&quot; # =&gt; RuntimeError: can&apos;t modify frozen Array</span><br></pre></td></tr></table></figure>
+<h4 id="整数"><a href="#整数" class="headerlink" title="整数"></a>整数</h4><blockquote>
+<p>由于整数(Fixnum)本来就是固定的, 不可以被修改, 所以调用<code>freeze</code>方法毫无意义</p>
+</blockquote>
+<h3 id="w-i-代替传统的-新建数组"><a href="#w-i-代替传统的-新建数组" class="headerlink" title="%w() %i()代替传统的[]新建数组"></a><code>%w() %i()</code>代替传统的<code>[]</code>新建数组</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">actions = [&apos;index&apos;, &apos;new&apos;, &apos;create&apos;]</span><br><span class="line"></span><br><span class="line">actions = %w(index new create)</span><br><span class="line"># =&gt; [&apos;index&apos;, &apos;new&apos;, &apos;create&apos;]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>ruby 2.0后, 可以使用%i()创建元素类型为symbol类型的数组</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">actions = %i(index new create) # =&gt; [:index, :new, :create]</span><br></pre></td></tr></table></figure>
+<h3 id="遍历-处理-集合元素时-使用-amp-method代替obj-method"><a href="#遍历-处理-集合元素时-使用-amp-method代替obj-method" class="headerlink" title="遍历(处理)集合元素时, 使用&amp;:method代替obj.method"></a>遍历(处理)集合元素时, 使用<code>&amp;:method</code>代替<code>obj.method</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">names = users.map&#123;|user| user.name&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">names = users.map(:&amp;name)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>each</code>, <code>select</code>方法也同样适用</p>
+</blockquote>
+<h3 id="位数多的整数使用下划线分割"><a href="#位数多的整数使用下划线分割" class="headerlink" title="位数多的整数使用下划线分割"></a>位数多的整数使用下划线分割</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ITEM_LIMIT = 1000000000</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ITEM_LIMIT = 1_000_000_000</span><br></pre></td></tr></table></figure>
+<h3 id="使用attr-reader方法代替getter方法"><a href="#使用attr-reader方法代替getter方法" class="headerlink" title="使用attr_reader方法代替getter方法"></a>使用<code>attr_reader</code>方法代替getter方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Person</span><br><span class="line">  def initialize</span><br><span class="line">    @name = &quot;No name&quot;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def name</span><br><span class="line">    @name</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class Person</span><br><span class="line">  attr_reader :name</span><br><span class="line">  def initialize</span><br><span class="line">    @name = &quot;No name&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="分别赋值"><a href="#分别赋值" class="headerlink" title="分别赋值"></a>分别赋值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ans_array = 14.divmod(3)</span><br><span class="line">puts &quot;商#&#123;ans_array[0]&#125;&quot;     # =&gt; 商4</span><br><span class="line">puts &quot;余数#&#123;ans_array[1]&#125;&quot; # =&gt; 余数2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">quotient, remainder = 14.divmod(3)</span><br><span class="line"></span><br><span class="line">quotient #=&gt; 4</span><br><span class="line">remainder #=&gt; 2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>可以那hash block的参数作为对比</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;name: &apos;Tom&apos;, email: &apos;hoge@hoge.com&apos;&#125;.each do |key_and_value|</span><br><span class="line">  puts &quot;key: #&#123;key_and_value[0]&#125;&quot;</span><br><span class="line">  puts &quot;value: #&#123;key_and_value[1]&#125;&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># key 和 value 分别被赋值</span><br><span class="line">&#123;name: &apos;Tom&apos;, email: &apos;hoge@hoge.com&apos;&#125;.each do |key, value|</span><br><span class="line">  puts &quot;key: #&#123;key&#125;&quot;</span><br><span class="line">  puts &quot;value: #&#123;value&#125;&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="合并数组使用splat-而不是做加法"><a href="#合并数组使用splat-而不是做加法" class="headerlink" title="合并数组使用splat(*)而不是做加法"></a>合并数组使用splat(*)而不是做加法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numbers = [1, 2, 3]</span><br><span class="line">numbers_with_zero_and_100 = [0] + numbers + [100] # =&gt; [0, 1, 2, 3, 100]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numbers = [1, 2, 3]</span><br><span class="line">numbers_with_zero_and_100 = [0, *numbers, 100] # =&gt; [0, 1, 2, 3, 100]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果不使用<code>*</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[0, numbers, 100] # =&gt; [0, [1, 2, 3], 100]</span><br></pre></td></tr></table></figure>
+<h3 id="代替判断为nil时初始化"><a href="#代替判断为nil时初始化" class="headerlink" title="||=代替判断为nil时初始化"></a><code>||=</code>代替判断为nil时初始化</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def twitter_client</span><br><span class="line">  @twitter_client = Twitter::REST::Client.new if @twitter_client.nil?</span><br><span class="line">  @twitter_client</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def twitter_client</span><br><span class="line">  @twitter_client ||= Twitter::REST::Client.new </span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="rescue-的对象只是一行代码-可以省略begin-end"><a href="#rescue-的对象只是一行代码-可以省略begin-end" class="headerlink" title="rescue 的对象只是一行代码, 可以省略begin end"></a>rescue 的对象只是一行代码, 可以省略begin end</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def process_user(user)</span><br><span class="line">  begin</span><br><span class="line">    send_to_mail(user)</span><br><span class="line">  rescue</span><br><span class="line">    # 异常处理</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def process_user(user)</span><br><span class="line">  send_to_mail(user)</span><br><span class="line">rescue</span><br><span class="line">  # 异常处理</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="rescue需要捕捉的是StandardError而不是EXception"><a href="#rescue需要捕捉的是StandardError而不是EXception" class="headerlink" title="rescue需要捕捉的是StandardError而不是EXception"></a>rescue需要捕捉的是<code>StandardError</code>而不是<code>EXception</code></h3><blockquote>
+<p>在Java或C语言中, Exception和Error是不同的概念, 捕捉异常就是捕捉Exception, 但是, Ruby中Exception包含了NoMemoryError这种致命错误, 所以我们在ruby中处理异常要格外小心, 我们应该rescue的是StandardError(Exception的子类)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def process_user(user)</span><br><span class="line">  send_to_mail(user)</span><br><span class="line">rescue Excpetion =&gt; ex</span><br><span class="line">  # 这样处理包括了NoMemoryError这样的致命错误, 不可取</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def process_user(user)</span><br><span class="line">  send_to_mail(user)</span><br><span class="line">rescue ex</span><br><span class="line">  # 捕捉的是StandardError极其子类, 这样做可取</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="查找数组末尾元素时不要使用size-1"><a href="#查找数组末尾元素时不要使用size-1" class="headerlink" title="查找数组末尾元素时不要使用size-1"></a>查找数组末尾元素时不要使用<code>size-1</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">numbers = [1, 2, 3, 4, 5]</span><br><span class="line">numbers[numbers.size - 1]</span><br><span class="line">numbers[1..numbers.size - 2] # =&gt; [2, 3, 4]</span><br><span class="line"></span><br><span class="line">name = &quot;DanielZhang&quot;</span><br><span class="line">name[name.size-1]</span><br><span class="line">=&gt; &quot;g&quot;</span><br><span class="line">name[1..name.size-3]</span><br><span class="line">=&gt; &quot;anielZha&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">numbers = [1, 2, 3, 4, 5]</span><br><span class="line">numbers[-1] # =&gt; 5</span><br><span class="line">numbers[1..-2] # =&gt; [2, 3, 4]</span><br><span class="line"></span><br><span class="line">name = &quot;DanielZhang&quot;</span><br><span class="line">name[-1]</span><br><span class="line">=&gt; &quot;g&quot;</span><br><span class="line">name[1..-3]</span><br><span class="line">=&gt; &quot;anielZha&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="数组相关技巧"><a href="#数组相关技巧" class="headerlink" title="数组相关技巧"></a>数组相关技巧</h3><h4 id="find-直到找到第一个符合条件的元素并返回"><a href="#find-直到找到第一个符合条件的元素并返回" class="headerlink" title="find: 直到找到第一个符合条件的元素并返回"></a>find: 直到找到第一个符合条件的元素并返回</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def find_admin</span><br><span class="line">  users.each do |user|</span><br><span class="line">    return user if user.admin?</span><br><span class="line">  end</span><br><span class="line">  nil</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def find_admin</span><br><span class="line">  users.find(&amp;:admin?)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>获取元素索引使用<code>find_index</code>方法</p>
+</blockquote>
+<h4 id="select-返回所有符合条件的元素"><a href="#select-返回所有符合条件的元素" class="headerlink" title="select: 返回所有符合条件的元素"></a>select: 返回所有符合条件的元素</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def find_admins(users)</span><br><span class="line">  admins = []</span><br><span class="line">  users.each do |user|</span><br><span class="line">    admins &lt;&lt; user if user.admin?</span><br><span class="line">  end</span><br><span class="line">  admins</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def find_admins(users)</span><br><span class="line">  users.select(&amp;:admin?)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>select</code>的对立方法是<code>reject</code>, 放到上面的例子是找出非admin?的</p>
+</blockquote>
+<h4 id="count-返回符合条件的元素个数"><a href="#count-返回符合条件的元素个数" class="headerlink" title="count: 返回符合条件的元素个数"></a>count: 返回符合条件的元素个数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def count_admin(users)</span><br><span class="line">  count = 0</span><br><span class="line">  users.each do |user|</span><br><span class="line">    count += 1 if user.admin?</span><br><span class="line">  end</span><br><span class="line">  count</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def count_admin(users)</span><br><span class="line">  users.count(&amp;:admin?)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h4 id="map-返回的元素是block中方法执行的返回值"><a href="#map-返回的元素是block中方法执行的返回值" class="headerlink" title="map: 返回的元素是block中方法执行的返回值"></a>map: 返回的元素是block中方法执行的返回值</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def user_names(users)</span><br><span class="line">  names = []</span><br><span class="line">  users.each do |user|</span><br><span class="line">    names &lt;&lt; user.name</span><br><span class="line">  end</span><br><span class="line">  names</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def user_names(users)</span><br><span class="line">  users.map(&amp;:name)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h4 id="flat-map-map的结果如果包含多维数组-该方法负责变成一维数组"><a href="#flat-map-map的结果如果包含多维数组-该方法负责变成一维数组" class="headerlink" title="flat_map: map的结果如果包含多维数组, 该方法负责变成一维数组"></a>flat_map: map的结果如果包含多维数组, 该方法负责变成一维数组</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nested_array = [[1, 2, 3], [4, 5, 6]]</span><br><span class="line">mapped_array = nested_array.map &#123;|array| array.map &#123;|n| n * 10 &#125; &#125;</span><br><span class="line"># =&gt; [[10, 20, 30], [40, 50, 60]]</span><br><span class="line">flat_array = mapped_array.flatten</span><br><span class="line"># =&gt; [10, 20, 30, 40, 50, 60]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nested_array = [[1, 2, 3], [4, 5, 6]]</span><br><span class="line">flat_array = nested_array.flat_map &#123;|array| array.map &#123;|n| n * 10 &#125; &#125;</span><br><span class="line"># =&gt; [10, 20, 30, 40, 50, 60]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其实相当于, 先把数组摆”平”, 再计算</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[1, 2, 3], [4, [5, 6]]].flatten.map &#123; |n| n * 10  &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="compact-保留数组中的非nil元素"><a href="#compact-保留数组中的非nil元素" class="headerlink" title="compact:  保留数组中的非nil元素"></a>compact:  保留数组中的非nil元素</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numbmers_and_nil = [1, 2, 3, nil, nil, 6]</span><br><span class="line">only_numbers = numbmers_and_nil.reject(&amp;:nil?) # =&gt; [1, 2, 3, 6]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numbers_and_nil = [1, 2, 3, nil, nil, 6]</span><br><span class="line">only_numbers = numbers_and_nil.compact # =&gt; [1, 2, 3, 6]</span><br></pre></td></tr></table></figure>
+<h4 id="any-只要有一个符合条件即返回true"><a href="#any-只要有一个符合条件即返回true" class="headerlink" title="any? :只要有一个符合条件即返回true"></a>any? :只要有一个符合条件即返回true</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def contains_nil?(users)</span><br><span class="line">  users.each do |user|</span><br><span class="line">    return true if user.nil?</span><br><span class="line">  end</span><br><span class="line">  false</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def contains_nil?(users)</span><br><span class="line">  users.any?(&amp;:nil?)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong><em> 返回所有符合条件的元素<code>all?</code> </em></strong></p>
+</blockquote>
+<h4 id="empty-一个都没有返回true"><a href="#empty-一个都没有返回true" class="headerlink" title="empty? :一个都没有返回true"></a>empty? :一个都没有返回true</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">puts &quot;Empty&quot; if users.size.zero?</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">puts &quot;Empty&quot; users.empty?</span><br></pre></td></tr></table></figure>
+<h4 id="first-last-返回第一个-最后元素"><a href="#first-last-返回第一个-最后元素" class="headerlink" title="first/last :返回第一个/最后元素"></a>first/last :返回第一个/最后元素</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">first_user = users[0]</span><br><span class="line">last_user = users[-1]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">first_user = users.first</span><br><span class="line">last_user = users.last</span><br></pre></td></tr></table></figure>
+<h4 id="sample-返回任意元素"><a href="#sample-返回任意元素" class="headerlink" title="sample : 返回任意元素"></a>sample : 返回任意元素</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">users[rand(users.size)]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">users.sample</span><br></pre></td></tr></table></figure>
+<h4 id="each-with-index-使用each循环数组-同时获取元素和计数器"><a href="#each-with-index-使用each循环数组-同时获取元素和计数器" class="headerlink" title="each_with_index : 使用each循环数组, 同时获取元素和计数器"></a>each_with_index : 使用each循环数组, 同时获取元素和计数器</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">counter = 0</span><br><span class="line">users.each do |user|</span><br><span class="line">  puts &quot;, &quot; if counter &gt; 0</span><br><span class="line">  puts user.name</span><br><span class="line">  counter += 1</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">users.each_with_index do |user, counter|</span><br><span class="line">  puts &quot;, &quot; if counter &gt; 0</span><br><span class="line">  puts += 1</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>join : 把数组以字符串的形式返回回来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def numbers_text(numbers)</span><br><span class="line">  text = &apos;&apos;</span><br><span class="line">  numbers.each_with_index do |number, i|</span><br><span class="line">    text = &apos;, &apos; if i &gt; 0</span><br><span class="line">    text += number.to_s</span><br><span class="line">  end</span><br><span class="line">  text</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def numbers_text(numbers)</span><br><span class="line">  numbers.join(&apos;, &apos;)  # [1, 2, 3] =&gt; &quot;1, 2, 3&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h4 id="max-max-by-返回最大的元素"><a href="#max-max-by-返回最大的元素" class="headerlink" title="max/max_by : 返回最大的元素"></a>max/max_by : 返回最大的元素</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def oldest_user(users)</span><br><span class="line">  oldest = nil</span><br><span class="line">  users.each do |user|</span><br><span class="line">    oldest = user if oldest.nil? || user.age &gt; oldest.age</span><br><span class="line">  end</span><br><span class="line">  oldest</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def oldest_user(uses)</span><br><span class="line">  users.max_by(&amp;:age)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong><em> max_by 返回的是遍历类型, max 返回的是元素 </em></strong></p>
+</blockquote>
+<h4 id="each-with-object-遍历数组-并将指定block的第二个参数为指定的类型"><a href="#each-with-object-遍历数组-并将指定block的第二个参数为指定的类型" class="headerlink" title="each_with_object : 遍历数组, 并将指定block的第二个参数为指定的类型"></a>each_with_object : 遍历数组, 并将指定block的第二个参数为指定的类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def admin_names(users)</span><br><span class="line">  ret = []</span><br><span class="line">    users.each do |user|</span><br><span class="line">      ret &lt;&lt; user.name if user.admin?</span><br><span class="line">    end</span><br><span class="line">  ret</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def admin_names(users)</span><br><span class="line">  users.each_with_object([]) do |user, names|</span><br><span class="line">    names &lt;&lt; user.name if user.admin?</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>以上的方法是可以进行链调用的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">users.select(&amp;:admin?).map(&amp;:name)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails-Ruby-shortcut-Refactoring/" rel="tag">#Rails Ruby shortcut Refactoring</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/08/rails-ruby-shortcut2/" rel="next" title="Rails代码技巧总结(二) Rails相关">
+                <i class="fa fa-chevron-left"></i> Rails代码技巧总结(二) Rails相关
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/09/kaminari/" rel="prev" title="Rails 分页Gem (kaminari)">
+                Rails 分页Gem (kaminari) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ruby相关的技巧汇总"><span class="nav-number">1.</span> <span class="nav-text">Ruby相关的技巧汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用后置if减少代码行数"><span class="nav-number">1.1.</span> <span class="nav-text">使用后置if减少代码行数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用unless代替if-not"><span class="nav-number">1.2.</span> <span class="nav-text">使用unless代替if not</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三木运算"><span class="nav-number">1.3.</span> <span class="nav-text">三木运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#赋值语句并入到if条件中"><span class="nav-number">1.4.</span> <span class="nav-text">赋值语句并入到if条件中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合并嵌套if"><span class="nav-number">1.5.</span> <span class="nav-text">合并嵌套if</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回值不需要写return"><span class="nav-number">1.6.</span> <span class="nav-text">返回值不需要写return</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-tap方法代替初始化-赋值-返回值"><span class="nav-number">1.7.</span> <span class="nav-text">Object#tap方法代替初始化, 赋值, 返回值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串相加"><span class="nav-number">1.8.</span> <span class="nav-text">字符串相加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#freeze方法冻结常量"><span class="nav-number">1.9.</span> <span class="nav-text">freeze方法冻结常量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串"><span class="nav-number">1.9.1.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数组"><span class="nav-number">1.9.2.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#整数"><span class="nav-number">1.9.3.</span> <span class="nav-text">整数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#w-i-代替传统的-新建数组"><span class="nav-number">1.10.</span> <span class="nav-text">%w() %i()代替传统的[]新建数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遍历-处理-集合元素时-使用-amp-method代替obj-method"><span class="nav-number">1.11.</span> <span class="nav-text">遍历(处理)集合元素时, 使用&:method代替obj.method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#位数多的整数使用下划线分割"><span class="nav-number">1.12.</span> <span class="nav-text">位数多的整数使用下划线分割</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用attr-reader方法代替getter方法"><span class="nav-number">1.13.</span> <span class="nav-text">使用attr_reader方法代替getter方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分别赋值"><span class="nav-number">1.14.</span> <span class="nav-text">分别赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合并数组使用splat-而不是做加法"><span class="nav-number">1.15.</span> <span class="nav-text">合并数组使用splat(*)而不是做加法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代替判断为nil时初始化"><span class="nav-number">1.16.</span> <span class="nav-text">||=代替判断为nil时初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rescue-的对象只是一行代码-可以省略begin-end"><span class="nav-number">1.17.</span> <span class="nav-text">rescue 的对象只是一行代码, 可以省略begin end</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rescue需要捕捉的是StandardError而不是EXception"><span class="nav-number">1.18.</span> <span class="nav-text">rescue需要捕捉的是StandardError而不是EXception</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查找数组末尾元素时不要使用size-1"><span class="nav-number">1.19.</span> <span class="nav-text">查找数组末尾元素时不要使用size-1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组相关技巧"><span class="nav-number">1.20.</span> <span class="nav-text">数组相关技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#find-直到找到第一个符合条件的元素并返回"><span class="nav-number">1.20.1.</span> <span class="nav-text">find: 直到找到第一个符合条件的元素并返回</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#select-返回所有符合条件的元素"><span class="nav-number">1.20.2.</span> <span class="nav-text">select: 返回所有符合条件的元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#count-返回符合条件的元素个数"><span class="nav-number">1.20.3.</span> <span class="nav-text">count: 返回符合条件的元素个数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#map-返回的元素是block中方法执行的返回值"><span class="nav-number">1.20.4.</span> <span class="nav-text">map: 返回的元素是block中方法执行的返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flat-map-map的结果如果包含多维数组-该方法负责变成一维数组"><span class="nav-number">1.20.5.</span> <span class="nav-text">flat_map: map的结果如果包含多维数组, 该方法负责变成一维数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#compact-保留数组中的非nil元素"><span class="nav-number">1.20.6.</span> <span class="nav-text">compact:  保留数组中的非nil元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#any-只要有一个符合条件即返回true"><span class="nav-number">1.20.7.</span> <span class="nav-text">any? :只要有一个符合条件即返回true</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#empty-一个都没有返回true"><span class="nav-number">1.20.8.</span> <span class="nav-text">empty? :一个都没有返回true</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#first-last-返回第一个-最后元素"><span class="nav-number">1.20.9.</span> <span class="nav-text">first/last :返回第一个/最后元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sample-返回任意元素"><span class="nav-number">1.20.10.</span> <span class="nav-text">sample : 返回任意元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#each-with-index-使用each循环数组-同时获取元素和计数器"><span class="nav-number">1.20.11.</span> <span class="nav-text">each_with_index : 使用each循环数组, 同时获取元素和计数器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#max-max-by-返回最大的元素"><span class="nav-number">1.20.12.</span> <span class="nav-text">max/max_by : 返回最大的元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#each-with-object-遍历数组-并将指定block的第二个参数为指定的类型"><span class="nav-number">1.20.13.</span> <span class="nav-text">each_with_object : 遍历数组, 并将指定block的第二个参数为指定的类型</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

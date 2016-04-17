@@ -1,0 +1,687 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="full_text_search," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="ransack gem可以帮助我们简单地进行全文检索, 本文就简单介绍一下具体的使用方法.
+
+创建项目
+创建项目, 倒入数据等准备工作:
+
+123456789$ rails new ransack_test$ cd ransack_test# 使用Scaffolding 生成Product$ rails g scaffold Product name:string description:str">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 使用ransack全文搜索">
+<meta property="og:url" content="http://yoursite.com/2015/03/12/ransack-full-text-search/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="ransack gem可以帮助我们简单地进行全文检索, 本文就简单介绍一下具体的使用方法.
+
+创建项目
+创建项目, 倒入数据等准备工作:
+
+123456789$ rails new ransack_test$ cd ransack_test# 使用Scaffolding 生成Product$ rails g scaffold Product name:string description:str">
+<meta property="og:image" content="http://i3.tietuku.com/b50913417ef7affa.png">
+<meta property="og:image" content="http://i3.tietuku.com/5bcfb19d3a748955.png">
+<meta property="og:image" content="http://i3.tietuku.com/9e9be59b1a6360e4.png">
+<meta property="og:updated_time" content="2015-03-12T05:24:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 使用ransack全文搜索">
+<meta name="twitter:description" content="ransack gem可以帮助我们简单地进行全文检索, 本文就简单介绍一下具体的使用方法.
+
+创建项目
+创建项目, 倒入数据等准备工作:
+
+123456789$ rails new ransack_test$ cd ransack_test# 使用Scaffolding 生成Product$ rails g scaffold Product name:string description:str">
+<meta name="twitter:image" content="http://i3.tietuku.com/b50913417ef7affa.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails 使用ransack全文搜索 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails 使用ransack全文搜索
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-12T07:52:40+08:00" content="2015-03-12">
+              2015-03-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>ransack gem可以帮助我们简单地进行全文检索, 本文就简单介绍一下具体的使用方法.</p>
+</blockquote>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><blockquote>
+<p>创建项目, 倒入数据等准备工作:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ rails new ransack_test</span><br><span class="line">$ cd ransack_test</span><br><span class="line"></span><br><span class="line"># 使用Scaffolding 生成Product</span><br><span class="line"></span><br><span class="line">$ rails g scaffold Product name:string description:string price:integer discontinued:boolean carrier_id:integer</span><br><span class="line"></span><br><span class="line"># 创建Product的货架(持有者)Model Carrier</span><br><span class="line">$ rails g model Carrier name:string</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Carrier和Product是一对多的关系:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># app/models/carrier.rb</span><br><span class="line"></span><br><span class="line">class Carrier &lt; ActiveRecord::Base</span><br><span class="line">  has_many :products</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/carrier.rb</span><br><span class="line"></span><br><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :carrier</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>创建表:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>初始化一些数据(seeds.rb)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">carrier1 = Carrier.create!(name: &quot;JD&quot;)</span><br><span class="line">carrier2 = Carrier.create!(name: &quot;SN&quot;)</span><br><span class="line"></span><br><span class="line">carrier1.products.create!(</span><br><span class="line">  name: &quot;MacbookAir 2015&quot;,</span><br><span class="line">  description: &quot;2015年3月10号 苹果推出了新一代MacBookAir, 这对PC厂商来说是很大的打击, 精湛的工艺和超前的设计, 简直让人陶醉了.&quot;,</span><br><span class="line">  price: 8000,</span><br><span class="line">  discontinued: true</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">carrier1.products.create!(</span><br><span class="line">  name: &quot;Xbox One&quot;,</span><br><span class="line">  description: &quot;Xbox One 是由MicroSoft公司于2013年推出的一款电视游戏机, 它集成了电视盒功能...&quot;,</span><br><span class="line">  price: 3300,</span><br><span class="line">  discontinued: false</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">carrier2.products.create!(</span><br><span class="line">  name: &quot;PS4&quot;,</span><br><span class="line">  description: &quot;PlayStation 4（官方缩写：PS4）是一部索尼电脑娱乐推出的电子游戏机，2013年11月15日正式于北美发售，PlayStation 4属于第八世代的游戏机，作为PlayStation 3的后续机种，并将与任天堂的Wii U和微软的Xbox One共同在市场上竞争&quot;,</span><br><span class="line">  price: 2800,</span><br><span class="line">  discontinued: false</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>导入数据:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rake db:seed</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>现在, 把Carrier的name显示在product的index页面上, 替换掉id</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/index.html.erb</span><br><span class="line"></span><br><span class="line"># &lt;td&gt;&lt;%= product.carrier_id %&gt;&lt;/td&gt; 替换为</span><br><span class="line"></span><br><span class="line">&lt;td&gt;&lt;%= product.carrier.name %&gt;&lt;/td&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>到现在为止, 准备工作已经做完, 看下面的截图:</p>
+<p><img src="http://i3.tietuku.com/b50913417ef7affa.png"></p>
+</blockquote>
+<h2 id="安装-ransack"><a href="#安装-ransack" class="headerlink" title="安装 ransack"></a>安装 ransack</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line">gem &apos;ransack&apos;</span><br><span class="line"></span><br><span class="line">$ bundle install</span><br></pre></td></tr></table></figure>
+<h2 id="添加搜索功能和搜索表单"><a href="#添加搜索功能和搜索表单" class="headerlink" title="添加搜索功能和搜索表单"></a>添加搜索功能和搜索表单</h2><blockquote>
+<p>在Controller的index 方法中</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def index</span><br><span class="line">  @q = Product.search(params[:q])</span><br><span class="line">  @products = @q.result(distinct: true)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后再index 页面中添加一个搜索的表单:<br><strong><em> 需要注意: <code>search_form_for</code> 是一个helper, 会生成一个搜索的表单</em></strong><br><strong><em> 页面搜索字段为<code>[column_name]_start</code>, <code>[column_name]_cont</code> </em></strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">... </span><br><span class="line">&lt;h1&gt;Listing Products&lt;/h1&gt;</span><br><span class="line">    &lt;%# 使用search_form_for 生成搜索表单  %&gt;</span><br><span class="line">    &lt;%= search_form_for @q do |f| %&gt;</span><br><span class="line">      &lt;%# name_start搜索数据库中name字段的值需要以该field填入值开头 %&gt;</span><br><span class="line">      &lt;%= f.label :name_start, &quot;Name starts with:&quot; %&gt;</span><br><span class="line">      &lt;%= f.search_field :name_start %&gt;</span><br><span class="line">      &lt;br /&gt;</span><br><span class="line">      &lt;%# cont指的是搜索含有该field的值的字段 %&gt;</span><br><span class="line">      &lt;%= f.label :description_cont, &quot;Description contains:&quot; %&gt;</span><br><span class="line">      &lt;%= f.search_field :description_cont %&gt;</span><br><span class="line">      &lt;br /&gt;</span><br><span class="line"></span><br><span class="line">      &lt;%# 关联搜索: Product.carrier.name %&gt;</span><br><span class="line">      &lt;%= f.label :carrier_name_cont, &quot;Carrier:&quot; %&gt;</span><br><span class="line">      &lt;%= f.search_field :carrier_name_cont %&gt;</span><br><span class="line">      &lt;br /&gt;</span><br><span class="line"></span><br><span class="line">      &lt;%# lt 指的是查找小于该field的记录 %&gt;</span><br><span class="line">      &lt;%= f.label :price_lt, &quot;Price &lt; :&quot; %&gt;</span><br><span class="line">      &lt;%= f.search_field :price_lt %&gt;</span><br><span class="line"></span><br><span class="line">      &lt;%# or 指定是使用or连接的多条字段查询, 也就是name或description包含指定的值  %&gt;</span><br><span class="line">      &lt;%= f.label :name_or_description_cont, &quot;Name OR Description contains:&quot; %&gt;</span><br><span class="line">      &lt;%= f.search_field :name_or_description_cont %&gt;</span><br><span class="line"></span><br><span class="line">      &lt;%# 搜索按钮  %&gt;</span><br><span class="line">      &lt;%= f.submit %&gt;</span><br><span class="line">    &lt;% end %&gt;</span><br><span class="line">&lt;hr /&gt;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>启动服务器, 效果如下:</p>
+<p><img src="http://i3.tietuku.com/5bcfb19d3a748955.png"></p>
+</blockquote>
+<h2 id="排序链接"><a href="#排序链接" class="headerlink" title="排序链接"></a>排序链接</h2><blockquote>
+<p>ransack还提供了<code>sort_link</code>方法生成链接来按照某个字段的升序或者降序来进行排序, default_order 选项可以指定查询结果是按照升序还是降序:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/index.html.erb</span><br><span class="line"></span><br><span class="line"># 默认按照价格的降序来排序结果</span><br><span class="line"></span><br><span class="line">....</span><br><span class="line">&lt;th&gt; &lt;%= sort_link(@q, :price, default_order: :desc) %&gt; &lt;/th&gt;</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>点击 Price表头, 倒序结果:</p>
+<p><img src="http://i3.tietuku.com/9e9be59b1a6360e4.png"></p>
+</blockquote>
+<h2 id="搜索字段的黑白名单"><a href="#搜索字段的黑白名单" class="headerlink" title="搜索字段的黑白名单"></a>搜索字段的黑白名单</h2><blockquote>
+<p>由于安全性的考量, 需要限制一些字段搜索, 加入我不想让别人使用name进行搜索, 我需要在 product.rb中重写<code>self.ransackable_attributes</code>方法来限制name字段, 有些类似于Strong Parameters</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :carrier</span><br><span class="line"></span><br><span class="line">  def self.ransackable_attributes auth_object = nil</span><br><span class="line">    %w( description price) # name不在其中</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果需要限制关联的字段, 比如<code>carrier</code>, 就需要重写<code>self.ransackable_associations</code>方法. 还可以限制scope等等. 具体请参考 <a href="https://github.com/activerecord-hackery/ransack#authorization-whitelistingblacklisting" target="_blank" rel="external">https://github.com/activerecord-hackery/ransack#authorization-whitelistingblacklisting</a></p>
+</blockquote>
+<h2 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h2><h3 id="访问页面前-需先设置好-q"><a href="#访问页面前-需先设置好-q" class="headerlink" title="访问页面前, 需先设置好@q"></a>访问页面前, 需先设置好@q</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">No Ransack::Search object was provided to search_form_for! #3</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解决方案</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">I did this <span class="keyword">in</span> my application controller</span><br><span class="line"></span><br><span class="line">before_filter <span class="symbol">:set_search</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_search</span></span></span><br><span class="line">  @search=Product.search(params[<span class="symbol">:q</span>])</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><blockquote>
+<p><a href="https://github.com/activerecord-hackery/ransack" target="_blank" rel="external">https://github.com/activerecord-hackery/ransack</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/full-text-search/" rel="tag">#full_text_search</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/11/google-map-in-rails/" rel="next" title="Rails4中使用Google Map 服务">
+                <i class="fa fa-chevron-left"></i> Rails4中使用Google Map 服务
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/15/rails-pdf1/" rel="prev" title="Rails使用PDFKit和wkhtmltopdf将HTML转换成PDF">
+                Rails使用PDFKit和wkhtmltopdf将HTML转换成PDF <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建项目"><span class="nav-number">1.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-ransack"><span class="nav-number">2.</span> <span class="nav-text">安装 ransack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加搜索功能和搜索表单"><span class="nav-number">3.</span> <span class="nav-text">添加搜索功能和搜索表单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序链接"><span class="nav-number">4.</span> <span class="nav-text">排序链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜索字段的黑白名单"><span class="nav-number">5.</span> <span class="nav-text">搜索字段的黑白名单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到问题"><span class="nav-number">6.</span> <span class="nav-text">遇到问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#访问页面前-需先设置好-q"><span class="nav-number">6.1.</span> <span class="nav-text">访问页面前, 需先设置好@q</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">7.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,660 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Solr Linux Ubuntu," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="这个简短的教程描述了如何在 Ubuntu Server 上安装 Solr 4，我使用的版本是：Ubuntu Server 12.04 和 Apache Solr 4.0-BETA. 我同时将展示如何测试安装以及执行一个简单的索引和查询任务。
+在 Ubuntu 12.04 LTS 上安装 Tomcat
+
+
+安装包
+
+1    apt-get install tomcat6 curl
+
+从 http">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Config Solr in Linux">
+<meta property="og:url" content="http://yoursite.com/2015/01/30/solr-config/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="这个简短的教程描述了如何在 Ubuntu Server 上安装 Solr 4，我使用的版本是：Ubuntu Server 12.04 和 Apache Solr 4.0-BETA. 我同时将展示如何测试安装以及执行一个简单的索引和查询任务。
+在 Ubuntu 12.04 LTS 上安装 Tomcat
+
+
+安装包
+
+1    apt-get install tomcat6 curl
+
+从 http">
+<meta property="og:updated_time" content="2015-02-13T14:02:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Config Solr in Linux">
+<meta name="twitter:description" content="这个简短的教程描述了如何在 Ubuntu Server 上安装 Solr 4，我使用的版本是：Ubuntu Server 12.04 和 Apache Solr 4.0-BETA. 我同时将展示如何测试安装以及执行一个简单的索引和查询任务。
+在 Ubuntu 12.04 LTS 上安装 Tomcat
+
+
+安装包
+
+1    apt-get install tomcat6 curl
+
+从 http">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Config Solr in Linux | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Config Solr in Linux
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-01-30T14:15:48+08:00" content="2015-01-30">
+              2015-01-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Solr/" itemprop="url" rel="index">
+                    <span itemprop="name">Solr</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>这个简短的教程描述了如何在 Ubuntu Server 上安装 Solr 4，我使用的版本是：Ubuntu Server 12.04 和 Apache Solr 4.0-BETA. 我同时将展示如何测试安装以及执行一个简单的索引和查询任务。</p>
+<p>在 Ubuntu 12.04 LTS 上安装 Tomcat</p>
+</blockquote>
+<ol>
+<li>安装包</li>
+</ol>
+<p>1    apt-get install tomcat6 curl</p>
+<ol>
+<li><p>从 <a href="http://lucene.apache.org/solr" target="_blank" rel="external">http://lucene.apache.org/solr</a> 上下载 Solr 4 (写文章是的最新版本是 apache-solr-4.0.0-BETA.tgz)</p>
+</li>
+<li><p>为 solr 选择一个目录，并使用 SOLR_HOME 环境变量指向这个目录，我这里选择的是 /opt/solr ，因此我的 SOLR_HOME=/opt/solr. 如果你想选择不同的目录请替换 /opt/solr</p>
+</li>
+<li><p>解压缩文件并复制到 $SOLR_HOME:</p>
+</li>
+</ol>
+<p>复制 example/solr/* 到 /opt/solr<br>复制 example/webapps/solr.war 到 /opt/solr</p>
+<ol>
+<li>编辑 /opt/solr/collection1/conf/solrconfig.xml 中的 dataDir 配置项</li>
+</ol>
+<p>1    <datadir>${solr.data.dir:/opt/solr/data}</datadir></p>
+<ol>
+<li>为 Solr 创建数据目录，并给 tomcat 设置可读写权限</li>
+</ol>
+<p>1    % mkdir /opt/solr/data<br>2    % sudo chown tomcat6 /opt/solr/data<br>下面是我的 /opt/solr 目录的结构：</p>
+<p>$ tree -d ├── bin<br>├── collection1<br>│   └── conf<br>│       ├── lang<br>│       ├── velocity<br>│       └── xslt<br>└── data</p>
+<ol>
+<li>在 Tomcat 中设置新的 context （web应用程序）并指向我们的 solr 文件，只需要在创建文件/etc/tomcat6/Catalina/localhost/solr.xml ，内容如下:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;Context docBase=&quot;/opt/solr/solr.war&quot; debug=&quot;0&quot; crossContext=&quot;true&quot;&gt;</span><br><span class="line">&lt;Environment name=&quot;solr/home&quot; type=&quot;java.lang.String&quot; value=&quot;/opt/solr&quot;override=&quot;true&quot;/&gt;</span><br><span class="line">&lt;/Context&gt;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>重启 tomcat</li>
+</ol>
+<p><code>/etc/init.d/tomcat6 restart</code></p>
+<p>这是引用网上的教程，基本就是这样子，还需要补充的就是多和配置，需要配置的solr HOME 的solr.xml文件 ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;solr persistent=&quot;true&quot;&gt;</span><br><span class="line">        &lt;!-- by default, this is 50 @ WARN</span><br><span class="line">  &lt;logging enabled=&quot;true&quot;&gt;</span><br><span class="line">        &lt;watcher size=&quot;100&quot; threshold=&quot;INFO&quot; /&gt;</span><br><span class="line">  &lt;/logging&gt;</span><br><span class="line">   --&gt;</span><br><span class="line">  &lt;!--</span><br><span class="line">  adminPath: RequestHandler path to manage cores.</span><br><span class="line">    If &apos;null&apos; (or absent), cores will not be manageable via request handler</span><br><span class="line">  defaultCoreName: (optional) core to use when no core name is specified in an access url</span><br><span class="line">  All of the attributes in cores after defaultCoreName only apply when running in SolrCloud mode.</span><br><span class="line">  You can read more about SolrCloud mode at http://wiki.apache.org/solr/SolrCloud</span><br><span class="line">  --&gt;</span><br><span class="line">  &lt;cores adminPath=&quot;/admin/cores&quot; defaultCoreName=&quot;collection1&quot; host=&quot;$&#123;host:&#125;&quot; hostPort=&quot;$&#123;jetty.port:&#125;&quot; hostContext=&quot;$&#123;hostContext:&#125;&quot; zkClientTimeout=&quot;$&#123;zkClientTimeout:15000&#125;&quot;&gt;</span><br><span class="line">    &lt;core name=&quot;collection1&quot; instanceDir=&quot;collection1&quot; /&gt;</span><br><span class="line">     &lt;core name=&quot;activity_logs&quot; instanceDir=&quot;/opt/cores/solr/cores/activity_logs&quot; dataDir=&quot;/opt/cores/solr/data/activity_logs&quot;/&gt;</span><br><span class="line">      &lt;core name=&quot;bhl&quot; instanceDir=&quot;/opt/cores/solr/cores/bhl&quot; dataDir=&quot;/opt/cores/solr/data/bhl&quot;/&gt;</span><br><span class="line">      &lt;core name=&quot;collection_items&quot; instanceDir=&quot;/opt/cores/solr/cores/collection_items&quot; dataDir=&quot;/opt/cores/solr/data/collection_items&quot;/&gt;</span><br><span class="line">      &lt;core name=&quot;data_objects&quot; instanceDir=&quot;/opt/cores/solr/cores/data_objects&quot; dataDir=&quot;/opt/cores/solr/data/data_objects&quot;/&gt;</span><br><span class="line">      &lt;core name=&quot;hierarchy_entries&quot; instanceDir=&quot;/opt/cores/solr/cores/hierarchy_entries&quot; dataDir=&quot;/opt/cores/solr/data/hierarchy_entries&quot;/&gt;</span><br><span class="line">      &lt;core name=&quot;hierarchy_entry_relationship&quot; instanceDir=&quot;/opt/cores/solr/cores/hierarchy_entry_relationship&quot; dataDir=&quot;/opt/cores/solr/data/hierarchy_entry_relationship&quot;/&gt;</span><br><span class="line">      &lt;core name=&quot;site_search&quot; instanceDir=&quot;/opt/cores/solr/cores/site_search&quot; dataDir=&quot;/opt/cores/solr/data/site_search&quot;/&gt;</span><br><span class="line">      &lt;core name=&quot;taxon_concepts&quot; instanceDir=&quot;/opt/cores/solr/cores/taxon_concepts&quot; dataDir=&quot;/opt/cores/solr/data/taxon_concepts&quot;/&gt;</span><br><span class="line">  &lt;/cores&gt;</span><br><span class="line">&lt;/solr&gt;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Solr-Linux-Ubuntu/" rel="tag">#Solr Linux Ubuntu</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/01/30/mysql-multiple-instances/" rel="next" title="MySQL 多实例 配置">
+                <i class="fa fa-chevron-left"></i> MySQL 多实例 配置
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/01/using-redis-in-ruby/" rel="prev" title="OSX 下 ruby/rails 中使用 Redis">
+                OSX 下 ruby/rails 中使用 Redis <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">Dieser Artikel hat kein Inhaltsverzeichnis</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

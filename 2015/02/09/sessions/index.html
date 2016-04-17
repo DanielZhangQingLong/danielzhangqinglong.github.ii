@@ -1,0 +1,633 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Rails Session," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Rails 默认把 session信息保存在了浏览器的 cookies 中, 接着在controller 中可以通过使用 session 对象 向 session中设定值取值. session 也是类 hash 结构的.
+
+向 session 中设定值
+我们可以像为 hash 赋值那样给 通过使用session 对象1234567891011# app/controllers/logins_co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails session">
+<meta property="og:url" content="http://yoursite.com/2015/02/09/sessions/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Rails 默认把 session信息保存在了浏览器的 cookies 中, 接着在controller 中可以通过使用 session 对象 向 session中设定值取值. session 也是类 hash 结构的.
+
+向 session 中设定值
+我们可以像为 hash 赋值那样给 通过使用session 对象1234567891011# app/controllers/logins_co">
+<meta property="og:updated_time" content="2015-02-13T14:02:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails session">
+<meta name="twitter:description" content="Rails 默认把 session信息保存在了浏览器的 cookies 中, 接着在controller 中可以通过使用 session 对象 向 session中设定值取值. session 也是类 hash 结构的.
+
+向 session 中设定值
+我们可以像为 hash 赋值那样给 通过使用session 对象1234567891011# app/controllers/logins_co">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails session | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails session
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-09T12:54:12+08:00" content="2015-02-09">
+              2015-02-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Rails 默认把 session信息保存在了浏览器的 cookies 中, 接着在controller 中可以通过使用 session 对象 向 session中设定值取值. session 也是类 hash 结构的.</p>
+</blockquote>
+<h2 id="向-session-中设定值"><a href="#向-session-中设定值" class="headerlink" title="向 session 中设定值"></a>向 session 中设定值</h2><blockquote>
+<p>我们可以像为 hash 赋值那样给 通过使用<code>session</code> 对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/logins_controller.rb</span><br><span class="line"></span><br><span class="line">class LoginsController &lt; ApplicationController</span><br><span class="line">  def create</span><br><span class="line">    if user.authenticate(params[:username], params[:password])</span><br><span class="line">      # 认证成功, 把以后的 id存入 session 中</span><br><span class="line">      session[:user_id] = user.id</span><br><span class="line">      redirect_to root_url</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="从-session-中取值"><a href="#从-session-中取值" class="headerlink" title="从 session 中取值"></a>从 session 中取值</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/application_controller.rb</span><br><span class="line"></span><br><span class="line">class ApplicationController &lt; ActionController::Base</span><br><span class="line">  </span><br><span class="line">  private</span><br><span class="line">    # 获取当前用户</span><br><span class="line">    # 如果 @_current_user为空, 从 session 中获取用户id, 再到数据库中取出用户</span><br><span class="line">    def current_user</span><br><span class="line">      @_current_user ||= User.find_by(id: session[:user_id])</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="删除已经设定的值"><a href="#删除已经设定的值" class="headerlink" title="删除已经设定的值"></a>删除已经设定的值</h2><blockquote>
+<p>我们要想删除 session 中的某个值也很简单, 只需设置为 nil 即可:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class LoginsController &lt; ApplicationController</span><br><span class="line">  # 退出登录( logout )</span><br><span class="line">  def destroy</span><br><span class="line">    # 把@_current_user 和session[:user_id]的值设置为 nil</span><br><span class="line">    @_current_user = session[:user_id] = nil</span><br><span class="line">    redirect_to root_url</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当然我们也可以清空 session<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def destroy</span><br><span class="line">  @_current_user = nil</span><br><span class="line">  reset_session</span><br><span class="line">  redirect_to root_url</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="使用-session-注意事项"><a href="#使用-session-注意事项" class="headerlink" title="使用 session 注意事项"></a>使用 session 注意事项</h2><h3 id="不要存隐私数据"><a href="#不要存隐私数据" class="headerlink" title="不要存隐私数据"></a>不要存隐私数据</h3><blockquote>
+<p>默认来说 session 数据都是保存在本地 cookie 中的, 因此, 即便是有防止篡改机制, 我们还需要去检查数据内容是否有变化, 这就带来了不必要的麻烦, 所以还是不要把很隐私的数据保存到 session 中.(数据一旦保存在本地就会有很大安全问题, 你无法保障用户的计算机是安全的)</p>
+</blockquote>
+<h3 id="不要保存太大的对象"><a href="#不要保存太大的对象" class="headerlink" title="不要保存太大的对象"></a>不要保存太大的对象</h3><blockquote>
+<p>cookie 只能保存小于4KB 的数据, 一般来讲我们推荐保存类似于 user_id, flash 消息这种小数据.</p>
+</blockquote>
+<h3 id="不要存放无法写入文件的对象"><a href="#不要存放无法写入文件的对象" class="headerlink" title="不要存放无法写入文件的对象"></a>不要存放无法写入文件的对象</h3><blockquote>
+<p>session 保存数据的原理是利用<code>Marshal#dump</code> 方法把对象序列化保存到硬盘文件上. 如果对象本身(如 IO 对象, Proc 对象) 不支持序列化, 那么我们也就不能将这些对象存入 session 中.</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails-Session/" rel="tag">#Rails Session</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/09/flash-messages/" rel="next" title="Rails 给用户友好的消息提示">
+                <i class="fa fa-chevron-left"></i> Rails 给用户友好的消息提示
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/09/request-head/" rel="prev" title="Rails 中request header 和 response header的获取">
+                Rails 中request header 和 response header的获取 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#向-session-中设定值"><span class="nav-number">1.</span> <span class="nav-text">向 session 中设定值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从-session-中取值"><span class="nav-number">2.</span> <span class="nav-text">从 session 中取值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除已经设定的值"><span class="nav-number">3.</span> <span class="nav-text">删除已经设定的值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-session-注意事项"><span class="nav-number">4.</span> <span class="nav-text">使用 session 注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不要存隐私数据"><span class="nav-number">4.1.</span> <span class="nav-text">不要存隐私数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不要保存太大的对象"><span class="nav-number">4.2.</span> <span class="nav-text">不要保存太大的对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不要存放无法写入文件的对象"><span class="nav-number">4.3.</span> <span class="nav-text">不要存放无法写入文件的对象</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,676 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ActiveJob DelayedJob," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在开发中, 往往需要涉及到发送邮件, 大量数据的导入导出, 这种耗时长的任务就需要进行后台处理. Rails中可以使用Sidekiq, Resque, Delayed Job 这些流行的gem来实现后台处理. Rails 4.2开始, 又加入了Active Job, 但需要和其他gem配合使用才可以进行后台任务处理.
+本文是我从项目中抽取出来, 做了简化处理, 说明如何在Rails中使用这些ge">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 中使用ActiveJob和DelayedJob进行后台处理">
+<meta property="og:url" content="http://yoursite.com/2015/03/18/activejob-delayjob/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在开发中, 往往需要涉及到发送邮件, 大量数据的导入导出, 这种耗时长的任务就需要进行后台处理. Rails中可以使用Sidekiq, Resque, Delayed Job 这些流行的gem来实现后台处理. Rails 4.2开始, 又加入了Active Job, 但需要和其他gem配合使用才可以进行后台任务处理.
+本文是我从项目中抽取出来, 做了简化处理, 说明如何在Rails中使用这些ge">
+<meta property="og:image" content="http://i3.tietuku.com/9e424f6b8f41a9b8.png">
+<meta property="og:image" content="http://i3.tietuku.com/5d9272720896edc6.png">
+<meta property="og:image" content="http://i2.tietuku.com/852355042d0afb1b.png">
+<meta property="og:image" content="http://i2.tietuku.com/e6a24317283d1c6a.png">
+<meta property="og:updated_time" content="2015-03-18T07:00:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 中使用ActiveJob和DelayedJob进行后台处理">
+<meta name="twitter:description" content="在开发中, 往往需要涉及到发送邮件, 大量数据的导入导出, 这种耗时长的任务就需要进行后台处理. Rails中可以使用Sidekiq, Resque, Delayed Job 这些流行的gem来实现后台处理. Rails 4.2开始, 又加入了Active Job, 但需要和其他gem配合使用才可以进行后台任务处理.
+本文是我从项目中抽取出来, 做了简化处理, 说明如何在Rails中使用这些ge">
+<meta name="twitter:image" content="http://i3.tietuku.com/9e424f6b8f41a9b8.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails 中使用ActiveJob和DelayedJob进行后台处理 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails 中使用ActiveJob和DelayedJob进行后台处理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-18T08:48:12+08:00" content="2015-03-18">
+              2015-03-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>在开发中, 往往需要涉及到发送邮件, 大量数据的导入导出, 这种耗时长的任务就需要进行后台处理. Rails中可以使用Sidekiq, Resque, Delayed Job 这些流行的gem来实现后台处理. Rails 4.2开始, 又加入了Active Job, 但需要和其他gem配合使用才可以进行后台任务处理.</p>
+<p>本文是我从项目中抽取出来, 做了简化处理, 说明如何在Rails中使用这些gem, 让它们配合来处理后台任务</p>
+</blockquote>
+<h2 id="Delayed-Job的安装和使用"><a href="#Delayed-Job的安装和使用" class="headerlink" title="Delayed Job的安装和使用"></a>Delayed Job的安装和使用</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><blockquote>
+<p>向Gemfile中加入如下的gem:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gem &apos;delayed_job_active_record&apos;</span><br><span class="line"></span><br><span class="line">$ bundle install</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后我使用scaffold来创建一个letter model, 我要以邮件发送为例, 来说明问题(我并不会真的发送邮件):</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rails g scaffold Letter title description delivered_at:time</span><br><span class="line">$ rake db:migrate</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>新建job管理表</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rails g delayed_job:active_record</span><br><span class="line">$ rake db:migrate</span><br></pre></td></tr></table></figure>
+<h3 id="创建job"><a href="#创建job" class="headerlink" title="创建job"></a>创建job</h3><blockquote>
+<p>通过使用<code>delay</code>方法, 可以实现后台处理:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 前台发送邮件</span><br><span class="line"></span><br><span class="line">@letter.deliver</span><br><span class="line"></span><br><span class="line"># 后台发送邮件</span><br><span class="line">@letter.delay.deliver</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>比如说, 我如果想下面这写代码, 那么就需要耗费用户不必要的等待时间:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/letters_controller.rb</span><br><span class="line">  def deliver</span><br><span class="line">    @letter = Letter.find(params[:id])</span><br><span class="line">    # 发送邮件</span><br><span class="line">    @letter.deliver</span><br><span class="line">    redirect_to letters_url, notice: &apos;Letter sent successfully!&apos;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line"># app/models/letter.rb</span><br><span class="line"></span><br><span class="line">class Letter &lt; ActiveRecord::Base</span><br><span class="line">  def deliver</span><br><span class="line">    # 让现场sleep 10秒钟, 模拟延迟</span><br><span class="line">    sleep(10)</span><br><span class="line">    update(deliver_at: Time.zone.now)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在页面上等待了10秒钟, 然后才执行完毕, 这对于用户来说体验是很不好的.<br><img src="http://i3.tietuku.com/9e424f6b8f41a9b8.png"><br><img src="http://i3.tietuku.com/5d9272720896edc6.png"></p>
+<p>但是如何使用<code>delay</code>方法, 页面马上就会跳转, 不会让用户等待, 发送的动作会交给另一个线程来做:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/letters_controller.rb</span><br><span class="line">@letter.delay.deliver</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>启动worker线程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rake jobs:work</span><br></pre></td></tr></table></figure></p>
+<p>然后点击<code>Deliver</code>, 马上重定向页面, 由于我设定的让线程sleep 10秒, 所以Delivered_at 的值还是空的, 过一会我再刷新页面, 发现其被设定了, 表示我的邮件被发出了:</p>
+<p><img src="http://i2.tietuku.com/852355042d0afb1b.png"><br><img src="http://i2.tietuku.com/e6a24317283d1c6a.png"></p>
+</blockquote>
+<h3 id="运行job-worker的启动-停止和重启"><a href="#运行job-worker的启动-停止和重启" class="headerlink" title="运行job(worker的启动, 停止和重启)"></a>运行job(worker的启动, 停止和重启)</h3><h4 id="开发模式"><a href="#开发模式" class="headerlink" title="开发模式"></a>开发模式</h4><blockquote>
+<p><code>rake jobs:work</code> , 退出 ctrl C</p>
+</blockquote>
+<h4 id="开发模式-1"><a href="#开发模式-1" class="headerlink" title="开发模式"></a>开发模式</h4><blockquote>
+<p>在开发模式下, 需要安装一个<code>daemons</code>的gem, 使用下面的命令:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 启动2个worker</span><br><span class="line">RAILS_ENV=production bin/delayed_job -n 2 start</span><br><span class="line"></span><br><span class="line"># 停止</span><br><span class="line">RAILS_ENV=production bin/delayed_job stop</span><br><span class="line"></span><br><span class="line"># 重启worker</span><br><span class="line">RAILS_ENV=production bin/delayed_job -n 2 restart</span><br></pre></td></tr></table></figure>
+<h2 id="和ActiveJob一起使用"><a href="#和ActiveJob一起使用" class="headerlink" title="和ActiveJob一起使用"></a>和ActiveJob一起使用</h2><blockquote>
+<p>ActiveJob的目的作于减少使用Sidekiq, Resque, Delayed Job这些gem的差异, 充当中间件的作用.</p>
+</blockquote>
+<h3 id="设定后台job适配器"><a href="#设定后台job适配器" class="headerlink" title="设定后台job适配器"></a>设定后台job适配器</h3><blockquote>
+<p>在<code>application.rb</code>中设定Sidekiq, Resque, Delayed Job各自的内容, 这里以delayed_job为例, 需要指定<code>:delayed_job</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># config/application.rb</span><br><span class="line"></span><br><span class="line">module DelayedJobTest</span><br><span class="line">  class Application &lt; Rails::Application</span><br><span class="line">    [...]</span><br><span class="line"></span><br><span class="line">    config.active_job.queue_adapter = :delayed_job</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="创建job-1"><a href="#创建job-1" class="headerlink" title="创建job"></a>创建job</h3><blockquote>
+<p>使用下面的命令来创建job</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rails g job news_deliver</span><br><span class="line">  invoke  test_unit</span><br><span class="line">  create    test/jobs/news_deliver_job_test.rb</span><br><span class="line">  create  app/jobs/news_deliver_job.rb</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>按照规定, job的配置文件需要在job目录下, 继承<code>ActiveJob::Base</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># app/jobs/news_deliver_job.rb</span><br><span class="line">class NewsDeliverJob &lt; ActiveJob::Base</span><br><span class="line">  queue_as :default</span><br><span class="line"></span><br><span class="line">  def perform(*args)</span><br><span class="line">    # Do something later</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>queue_as</code>指定运行哪个队列, <code>perform</code>方法来指定需要执行的job: 上一节的例子可以改写成这样:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class NewsDeliverJob &lt; ActiveJob::Base</span><br><span class="line">  queue_as :default</span><br><span class="line">  </span><br><span class="line">  def perform(letter_id)</span><br><span class="line">    Letter.find(letter_id).deliver</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># Controller的方法中</span><br><span class="line"></span><br><span class="line">class LettersController &lt; ApplicationController</span><br><span class="line">  [...]</span><br><span class="line">  </span><br><span class="line">  def deliver</span><br><span class="line">    NewsDeliverJob.perform_later(params[:id])</span><br><span class="line">    redirect_to letters_url, notice: &quot;Sent!&quot;</span><br><span class="line">  end</span><br><span class="line">  [...]</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 设定具体的执行时间</span><br><span class="line">NewsDeliverJob.set(wait_until: Date.tomorrow.noon).perform_later(params[:id])</span><br><span class="line">NewsDeliverJob.set(wait: 1.week).perform_later(params[:id])</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>启动: <code>rake jobs:work</code></p>
+</blockquote>
+<h3 id="ActiveJob异常的处理"><a href="#ActiveJob异常的处理" class="headerlink" title="ActiveJob异常的处理"></a>ActiveJob异常的处理</h3><blockquote>
+<p>job中发生了异常的话, 使用<code>rescue_from</code>处理:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class NewsDeliverJob &lt; ActiveJob::Base</span><br><span class="line">  queue_as :default</span><br><span class="line"></span><br><span class="line">  rescue_from(ActiveRecord::RecordNotFound) do |exception|</span><br><span class="line">    Rails.logger.error &quot;Letter Not FOUND&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ActiveJob-DelayedJob/" rel="tag">#ActiveJob DelayedJob</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/17/angular-examples/" rel="next" title="看例子学习angular">
+                <i class="fa fa-chevron-left"></i> 看例子学习angular
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/19/rails-caching/" rel="prev" title="Rails中使用memcached内存缓存技术">
+                Rails中使用memcached内存缓存技术 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Delayed-Job的安装和使用"><span class="nav-number">1.</span> <span class="nav-text">Delayed Job的安装和使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建job"><span class="nav-number">1.2.</span> <span class="nav-text">创建job</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行job-worker的启动-停止和重启"><span class="nav-number">1.3.</span> <span class="nav-text">运行job(worker的启动, 停止和重启)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#开发模式"><span class="nav-number">1.3.1.</span> <span class="nav-text">开发模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开发模式-1"><span class="nav-number">1.3.2.</span> <span class="nav-text">开发模式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#和ActiveJob一起使用"><span class="nav-number">2.</span> <span class="nav-text">和ActiveJob一起使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设定后台job适配器"><span class="nav-number">2.1.</span> <span class="nav-text">设定后台job适配器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建job-1"><span class="nav-number">2.2.</span> <span class="nav-text">创建job</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ActiveJob异常的处理"><span class="nav-number">2.3.</span> <span class="nav-text">ActiveJob异常的处理</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

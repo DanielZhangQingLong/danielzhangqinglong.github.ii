@@ -1,0 +1,691 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Grape," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="安装gem
+新建一个Rails项目, 添加grapegem
+
+12# Gemfilegem &amp;apos;grape&amp;apos;
+
+bundle install
+
+生成model
+生成zip(邮编)model
+
+1234rails g model zip zip_code:string  address:string  invoke  active_record  create  db/migrat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails使用grape生成REST API(一)">
+<meta property="og:url" content="http://yoursite.com/2015/04/04/grape-with-rails/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="安装gem
+新建一个Rails项目, 添加grapegem
+
+12# Gemfilegem &amp;apos;grape&amp;apos;
+
+bundle install
+
+生成model
+生成zip(邮编)model
+
+1234rails g model zip zip_code:string  address:string  invoke  active_record  create  db/migrat">
+<meta property="og:image" content="http://i2.tietuku.com/34f96188495b8106.png">
+<meta property="og:updated_time" content="2015-04-05T02:31:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails使用grape生成REST API(一)">
+<meta name="twitter:description" content="安装gem
+新建一个Rails项目, 添加grapegem
+
+12# Gemfilegem &amp;apos;grape&amp;apos;
+
+bundle install
+
+生成model
+生成zip(邮编)model
+
+1234rails g model zip zip_code:string  address:string  invoke  active_record  create  db/migrat">
+<meta name="twitter:image" content="http://i2.tietuku.com/34f96188495b8106.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails使用grape生成REST API(一) | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails使用grape生成REST API(一)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-04-04T23:03:34+08:00" content="2015-04-04">
+              2015-04-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="安装gem"><a href="#安装gem" class="headerlink" title="安装gem"></a>安装gem</h2><blockquote>
+<p>新建一个Rails项目, 添加<code>grape</code>gem</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line">gem &apos;grape&apos;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>bundle install</code></p>
+</blockquote>
+<h2 id="生成model"><a href="#生成model" class="headerlink" title="生成model"></a>生成model</h2><blockquote>
+<p>生成zip(邮编)model</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rails g model zip zip_code:string  address:string</span><br><span class="line">  invoke  active_record</span><br><span class="line">  create  db/migrate/#&#123;yyyymmddssssss&#125;_create_zips.rb</span><br><span class="line">  create  app/models/zip.rb</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>准备初始化数据:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html</span><br><span class="line"></span><br><span class="line">one:</span><br><span class="line">  zip_code: 10011</span><br><span class="line">  address: 北京市朝阳区</span><br><span class="line"></span><br><span class="line">two:</span><br><span class="line">  zip_code: 10050</span><br><span class="line">  address: 双鸭山林业局</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>导入数据库:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rake fixture:load</span><br></pre></td></tr></table></figure>
+<h2 id="实现API部分"><a href="#实现API部分" class="headerlink" title="实现API部分"></a>实现API部分</h2><blockquote>
+<p>接下来就使用grape实现API部分, 新建文件<code>app/api/zip_api.rb</code>, 具体代码如下:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Zip &lt; Grape::API</span><br><span class="line">  format :json</span><br><span class="line">  get &quot;zip/:zip_code&quot; do</span><br><span class="line">    zip = Zip.where(zip_code: params[:zip_code]).first</span><br><span class="line">    if zip</span><br><span class="line">      zip.to_json</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>以上相当于不使用grape在Rails这样写:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># routes.rb</span><br><span class="line">get &quot;zip/:zip_code&quot; =&gt; &quot;zip#show&quot;, format: false</span><br><span class="line"></span><br><span class="line"># controller</span><br><span class="line"></span><br><span class="line">class ZipsController &lt; ApplicationController</span><br><span class="line">  def show</span><br><span class="line">    zip = Zip.where(zip_code: params[:zip_code]).first</span><br><span class="line">    if zip</span><br><span class="line">      json = zip.to_json</span><br><span class="line">    end</span><br><span class="line">    render text: json</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里涉及到了2个方法:</p>
+</blockquote>
+<ul>
+<li><code>format(format_to_response)</code> 指定API的响应格式, 可以指定xml, json, txt等格式</li>
+<li><code>get(paths=[&#39;/&#39;], options={}, &amp;block)</code> : 表示处理客户端的GET请求(post, put, delete等)<ul>
+<li><code>paths=[&#39;/&#39;]</code> 表示与请求对应的url, 数组可以指定多个url</li>
+<li><code>[options]</code> 指定和paths匹配的条件</li>
+<li><code>[block]</code> 具体逻辑代码</li>
+</ul>
+</li>
+<li><code>params</code> 从中获取请求参数</li>
+</ul>
+<h2 id="部署到Rails中-让Rails加载这部分代码"><a href="#部署到Rails中-让Rails加载这部分代码" class="headerlink" title="部署到Rails中(让Rails加载这部分代码)"></a>部署到Rails中(让Rails加载这部分代码)</h2><blockquote>
+<p>在Rails应用启动时加载这部分代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># config/application.rb</span><br><span class="line">config.paths.add File.join(&quot;app&quot;, &quot;api&quot;), glob: File.join(&quot;**&quot;, &quot;*.rb&quot;)</span><br><span class="line">config.autoload_paths += Dir[Rails.root.join(&quot;app&quot;, &quot;api&quot;, &quot;*&quot;)]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>添加到route中:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># config/routes.rb</span><br><span class="line">mount ZipAPI =&gt; &quot;/&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="浏览器访问"><a href="#浏览器访问" class="headerlink" title="浏览器访问"></a>浏览器访问</h2><blockquote>
+<p>做完上面的工作之后, 启动rails项目, 访问<a href="http://localhost:3000/" target="_blank" rel="external">http://localhost:3000/</a> , 打开浏览器的console, 使用XMLHttpRequest访问API :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var xhr = new XMLHttpRequest; </span><br><span class="line">xhr.open(&quot;get&quot;, &quot;http://localhost:3000/zip/10050&quot;); </span><br><span class="line">xhr.addEventListener(&quot;load&quot;, function()&#123;</span><br><span class="line">　console.log(this.responseText); </span><br><span class="line">&#125;);</span><br><span class="line">xhr.send();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># =&gt; </span><br><span class="line">&quot;&#123;\&quot;id\&quot;:298486374,\&quot;zip_code\&quot;:\&quot;10050\&quot;,\&quot;address\&quot;:\&quot;双鸭山林业局\&quot;,\&quot;created_at\&quot;:\&quot;2015-04-04T11:53:57.000Z\&quot;,\&quot;updated_at\&quot;:\&quot;2015-04-04T11:53:57.000Z\&quot;&#125;&quot;</span><br></pre></td></tr></table></figure>
+<p><img src="http://i2.tietuku.com/34f96188495b8106.png"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>我参照<a href="https://github.com/intridea/grape" target="_blank" rel="external">grape文档</a>做了些简化修改, 实现了简单的API请求, 下一篇文章将更加详细介绍一下Grape的使用, 比如添加或者删除功能的实现方法, 并改进现在的代码.</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Grape/" rel="tag">#Grape</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/04/04/sidekiq/" rel="next" title="Rails使用sidekiq进行异步任务处理">
+                <i class="fa fa-chevron-left"></i> Rails使用sidekiq进行异步任务处理
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/04/grape-with-rails2/" rel="prev" title="Rails使用grape生成REST API(二)">
+                Rails使用grape生成REST API(二) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装gem"><span class="nav-number">1.</span> <span class="nav-text">安装gem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成model"><span class="nav-number">2.</span> <span class="nav-text">生成model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现API部分"><span class="nav-number">3.</span> <span class="nav-text">实现API部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署到Rails中-让Rails加载这部分代码"><span class="nav-number">4.</span> <span class="nav-text">部署到Rails中(让Rails加载这部分代码)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览器访问"><span class="nav-number">5.</span> <span class="nav-text">浏览器访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,758 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="view-helper," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="View Helper提供了form, select, check_box等等一系列的页面元素, 这篇文章进行总结
+
+超链接(link_to)基本使用方法
+link_to会生成 a 标签
+
+1link_to(name = nil, options = nil, html_options = nil, &amp;amp;block)
+可以指定的options
+method: 指定:get, ‘:post’">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails中View Helper总结">
+<meta property="og:url" content="http://yoursite.com/2015/02/17/view-helper/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="View Helper提供了form, select, check_box等等一系列的页面元素, 这篇文章进行总结
+
+超链接(link_to)基本使用方法
+link_to会生成 a 标签
+
+1link_to(name = nil, options = nil, html_options = nil, &amp;amp;block)
+可以指定的options
+method: 指定:get, ‘:post’">
+<meta property="og:image" content="http://i2.tietuku.com/f2f5d504930df9cf.png">
+<meta property="og:image" content="http://i2.tietuku.com/884bd4cc71002787.png">
+<meta property="og:image" content="http://i2.tietuku.com/f2d00300cacb6914.png">
+<meta property="og:updated_time" content="2015-02-17T10:36:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails中View Helper总结">
+<meta name="twitter:description" content="View Helper提供了form, select, check_box等等一系列的页面元素, 这篇文章进行总结
+
+超链接(link_to)基本使用方法
+link_to会生成 a 标签
+
+1link_to(name = nil, options = nil, html_options = nil, &amp;amp;block)
+可以指定的options
+method: 指定:get, ‘:post’">
+<meta name="twitter:image" content="http://i2.tietuku.com/f2f5d504930df9cf.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails中View Helper总结 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails中View Helper总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-17T09:25:20+08:00" content="2015-02-17">
+              2015-02-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>View Helper提供了form, select, check_box等等一系列的页面元素, 这篇文章进行总结</p>
+</blockquote>
+<h2 id="超链接-link-to"><a href="#超链接-link-to" class="headerlink" title="超链接(link_to)"></a>超链接(link_to)</h2><h3 id="基本使用方法"><a href="#基本使用方法" class="headerlink" title="基本使用方法"></a>基本使用方法</h3><blockquote>
+<p><code>link_to</code>会生成 a 标签</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">link_to(name = nil, options = nil, html_options = nil, &amp;block)</span><br></pre></td></tr></table></figure>
+<h4 id="可以指定的options"><a href="#可以指定的options" class="headerlink" title="可以指定的options"></a>可以指定的options</h4><ul>
+<li><code>method:</code> 指定<code>:get</code>, ‘:post’, <code>:patch</code>, <code>:delete</code> 代表生成的链接发给服务器的请求使用GET, POST 等HTTP方法.</li>
+<li><code>remote: true</code> 像server发送Ajax请求(默认值是false)</li>
+<li><code>data: { confirm: &quot;Are you sure to delete?&quot; }</code> 弹出确认对话框</li>
+</ul>
+<h4 id="link-to经常使用的方法"><a href="#link-to经常使用的方法" class="headerlink" title="link_to经常使用的方法"></a><code>link_to</code>经常使用的方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># HTML属性指定(class)</span><br><span class="line">link_to &quot;Profile&quot;, profile_path(@profile), class: &quot;btn btn-large&quot;, id: &quot;profile#&#123;@profile.id&#125;&quot;</span><br><span class="line">#=&gt; &lt;a class=&quot;btn btn-large&quot; href=&quot;/profiles/1&quot; id=&quot;profiles1&quot;&gt;Profile&lt;/a&gt;</span><br><span class="line"></span><br><span class="line"># 添加查询(?=xxx)</span><br><span class="line">link_to &quot;Profile&quot;, profile_path(@profile, q: &quot;list&quot;)</span><br><span class="line">#=&gt; &lt;a href=&quot;/profiles/1?q=list&quot;&gt;Profile&lt;/a&gt;</span><br><span class="line"></span><br><span class="line"># 指定格式</span><br><span class="line">link_to &quot;Profile&quot;, profile_path(@profile, format: &apos;csv&apos;)</span><br><span class="line"></span><br><span class="line"># 使用block环绕一些元素 </span><br><span class="line"># 这样更加灵活地将链接内容显示在页面</span><br><span class="line">link_to @profile do</span><br><span class="line">  &lt;strong&gt;&lt;%= @profile.name&gt;&lt;/strong&gt; -- &lt;span&gt;Check it out!&lt;/span&gt;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># =&gt;  &lt;a href=&quot;/profiles/1&quot;&gt;</span><br><span class="line">        &lt;strong&gt;Daniel&lt;/strong&gt; -- &lt;span&gt;Check it out!&lt;/span&gt;</span><br><span class="line">      &lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="link-to-if更加条件显示链接"><a href="#link-to-if更加条件显示链接" class="headerlink" title="link_to_if更加条件显示链接"></a><code>link_to_if</code>更加条件显示链接</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">link_to_if(current_user.admin?, &quot;管理员&quot;, admin_path)</span><br></pre></td></tr></table></figure>
+<h2 id="img-tag"><a href="#img-tag" class="headerlink" title="img_tag"></a>img_tag</h2><p>###基本使用方法</p>
+<blockquote>
+<p>生成img 标签, 也就是需要在页面显示图片时使用:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">image_tag(source, options=&#123;&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="Options"><a href="#Options" class="headerlink" title="Options"></a>Options</h3><ul>
+<li><p><code>source</code> 表示图片文件的具体位置, 可以使用绝对路径和相对路径, 如果你直接指定文件名, 那么rails会默认去assets/images中寻找该图片文件.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例: &lt;%= image_tag &apos;picture.png&apos; %&gt;</span><br><span class="line">#=&gt; &lt;img src=&quot;/images/picture.png&quot; alt=&quot;Picture&quot;&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>alt</code> 加入无法显示图片, alt的文本内容会显示出来.</p>
+</li>
+<li><code>size</code> 指定图片的长度和高度.</li>
+</ul>
+<blockquote>
+<p>还可以指定html的id属性class属性等等</p>
+</blockquote>
+<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= image_tag &apos;http://i2.tietuku.com/09b177fc2e10b2dd.png&apos;, alt: &quot;Picture&quot; %&gt;</span><br><span class="line"># =&gt; &lt;img alt=&quot;Picture&quot; src=&quot;http://i2.tietuku.com/09b177fc2e10b2dd.png&quot;&gt;</span><br><span class="line"></span><br><span class="line">image_tag(&quot;picture.png&quot;, size: &quot;50x40&quot;, alt: &quot;Home Image&quot;)</span><br><span class="line"># =&gt; &lt;img src=&quot;/images/picture.png&quot; width=&quot;50&quot; height=&quot;40&quot; alt=&quot;Home Image&quot; /&gt;</span><br><span class="line"></span><br><span class="line">image_tag(&quot;/gallery/picture.png&quot;, size: &quot;200&quot;)</span><br><span class="line"># =&gt; &lt;img src=&quot;/gallery/picture.png&quot; width=&quot;200&quot; height=&quot;200&quot; alt=&quot;Picture&quot; /&gt;</span><br><span class="line"></span><br><span class="line">image_tag(&quot;picture.png&quot;, class: &quot;menu_img&quot;)</span><br><span class="line"># =&gt; &lt;img alt=&quot;Picture&quot; class=&quot;main_img&quot; src=&quot;/images/picture.png&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="FORM-form-for-form-tag"><a href="#FORM-form-for-form-tag" class="headerlink" title="FORM - form_for form_tag"></a>FORM - <code>form_for</code> <code>form_tag</code></h2><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><ul>
+<li><code>form_for</code> : 我们在创建或者更新Model时, 需要生成依附于这样的Model的表单, 这时使用<code>form_for</code>, 由于表单依附于Model实体, 当发生验证错误时候, 我们可以将错误消息和错误的具体位置在页面表示出来</li>
+<li><code>form_tag</code> : 只是单纯地输出表单, 比如我们可以要搜索, 需要提交表单给一个Controller的某个action.不依附于Model, 所以也就进行validation.(可以先这么理解, 我以后写一篇文章介绍两者区别), 其block内部需要使用<code>label_tag</code>这样的xxx_tag方法来生成表单元素<br>&gt;</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">form_for(record, options = &#123;&#125; &amp;block)</span><br><span class="line">form_tag(url_for_options = &#123;&#125;&lt; options = &#123;&#125;, &amp;block)</span><br></pre></td></tr></table></figure>
+<h3 id="Option"><a href="#Option" class="headerlink" title="Option"></a>Option</h3><ul>
+<li><code>url</code> 指提交到的那个url, 对于<code>form_for</code>, 由于Model会自动生成URL, 所以此项不是必须的; 对于<code>form_tag</code>来说, 是必须指定的, 当然, 也可以通过<code>controller</code>, <code>action</code>间接指定url.</li>
+<li><code>method</code> 指定HTTP方法, 类似于<code>link_to</code></li>
+<li><code>remote</code> Ajax相关, 设置true后, 会通过Ajax来submit.</li>
+<li><code>html</code> 指定form的HTML属性, <code>class</code>, <code>role</code>等<blockquote>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= form_for @user, remote: true, :html =&gt; &#123; :class =&gt; &quot;form-horizontal&quot;, :role =&gt; &quot;form&quot;  &#125; do |f| %&gt;</span><br><span class="line"></span><br><span class="line">  # 指定user的属性</span><br><span class="line">  &lt;%= f.text_field :name %&gt;</span><br><span class="line">  &lt;%= f.number_field :age %&gt;</span><br><span class="line"></span><br><span class="line">  &lt;%= f.submit %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果需要嵌套Model:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># config/routes.rb</span><br><span class="line"># resources :users do</span><br><span class="line">    resources :comments</span><br><span class="line"># end</span><br><span class="line"></span><br><span class="line"># 需要给form_for 方法传入数组</span><br><span class="line"></span><br><span class="line">&lt;%= form_for [@users, @comments] do |f| %&gt;</span><br><span class="line">  &lt;%= f.text_field :content %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>form_tag</code> :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= form_tag(:action =&gt; &quot;create&quot;) do%&gt;</span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">  &lt;%= label_tag &apos;title&apos; %&gt;</span><br><span class="line">  &lt;%= text_field_tag &apos;title&apos; %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">  &lt;%= label_tag &apos;content&apos; %&gt;</span><br><span class="line">  &lt;%= text_field_tag &apos;content&apos; %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;actions&quot;&gt;</span><br><span class="line">  &lt;%= submit_tag &quot;作成&quot; %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="嵌套其他Model的表单fields-for"><a href="#嵌套其他Model的表单fields-for" class="headerlink" title="嵌套其他Model的表单fields_for"></a>嵌套其他Model的表单<code>fields_for</code></h2><blockquote>
+<p>如果在Model中使用<code>has_one``has_many</code>去关联其他的Model, 那么在页面表单中就需要使用<code>fields_for</code>来关联这些来自于其他Model的字段, 下面例子说明了在表单中如何把Address的字段嵌入User.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= form_for @user do |f| %&gt;</span><br><span class="line">  &lt;%= f.fields_for :address do |address_fields| %&gt;</span><br><span class="line">    Street: &lt;%= address_fields.text_field :street %&gt;</span><br><span class="line">    Zip Code: &lt;%= address_fields.text_field :zip_code %&gt;</span><br><span class="line">  &lt;% end %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line"></span><br><span class="line"># 在 app/models/user.rb中:</span><br><span class="line"></span><br><span class="line">class User &lt; ActiveRecord::Base</span><br><span class="line">  has_many :addresses</span><br><span class="line">  accepts_nested_attributes_for :addresses</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="生成label的方法-label和label-tag"><a href="#生成label的方法-label和label-tag" class="headerlink" title="生成label的方法 label和label_tag"></a>生成label的方法 <code>label</code>和<code>label_tag</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.label(:name, &quot;名字&quot;) %&gt;</span><br><span class="line">#=&gt; &lt;label for=&quot;user_name&quot;&gt;名字&lt;/label&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= label_for(:user, &quot;名字&quot;) %&gt;</span><br><span class="line">#=&gt; &lt;label for=&quot;user&quot;&gt;姓名&lt;/label&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="文本框-text-field和text-field-tag"><a href="#文本框-text-field和text-field-tag" class="headerlink" title="文本框- text_field和text_field_tag"></a>文本框- <code>text_field</code>和<code>text_field_tag</code></h2><blockquote>
+<p>在页面上生成文本输入框, <code>&lt;input type=&quot;text&quot;&gt;</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.text_field :name %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;text&quot; name=&quot;user[name]&quot; id=&quot;user_name&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= text_field_tag &quot;user[name]&quot;, &quot;值&quot; %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;text&quot; name=&quot;user[name]&quot; id=&quot;user_name&quot; value=&quot;值&quot;&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Option-1"><a href="#Option-1" class="headerlink" title="Option"></a>Option</h3><ul>
+<li><code>:disabled</code> : true代表文本框变灰不可以输入</li>
+<li><code>:size</code> 设定文本框的长度</li>
+<li><code>:maxlength</code> 可以输入的最多字数</li>
+<li><code>:placeholder</code> 页面被加载后自动出现在输入框中的文字, 用户输入时会消失</li>
+<li>其他一些html的属性</li>
+</ul>
+<h3 id="一些其他类型的输入框"><a href="#一些其他类型的输入框" class="headerlink" title="一些其他类型的输入框"></a>一些其他类型的输入框</h3><ul>
+<li><code>email_field / email_field_tag</code></li>
+<li><code>password_field / password_field_tag</code></li>
+<li><code>search_field / search_field_tag</code></li>
+<li><code>number_field / number_field_tag</code></li>
+</ul>
+<h3 id="输入日期时间-date-field-time-field-datetime-field"><a href="#输入日期时间-date-field-time-field-datetime-field" class="headerlink" title="输入日期时间- date_field/time_field/datetime_field"></a>输入日期时间- <code>date_field/time_field/datetime_field</code></h3><blockquote>
+<p>效果如下:<br><img src="http://i2.tietuku.com/f2f5d504930df9cf.png" alt=""></p>
+</blockquote>
+<h3 id="选择日期时间-date-select-time-select-datetime-select"><a href="#选择日期时间-date-select-time-select-datetime-select" class="headerlink" title="选择日期时间 - date_select / time_select / datetime_select"></a>选择日期时间 - <code>date_select / time_select / datetime_select</code></h3><p><img src="http://i2.tietuku.com/884bd4cc71002787.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.time_select :updated_at %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对应的HTML:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type=&quot;hidden&quot; id=&quot;profile_updated_at_1i&quot; name=&quot;profile[updated_at(1i)]&quot; value=&quot;2015&quot; /&gt;</span><br><span class="line">&lt;input type=&quot;hidden&quot; id=&quot;profile_updated_at_2i&quot; name=&quot;profile[updated_at(2i)]&quot; value=&quot;2&quot; /&gt;</span><br><span class="line">&lt;input type=&quot;hidden&quot; id=&quot;profile_updated_at_3i&quot; name=&quot;profile[updated_at(3i)]&quot; value=&quot;17&quot; /&gt;</span><br><span class="line">&lt;select id=&quot;profile_updated_at_4i&quot; name=&quot;profile[updated_at(4i)]&quot;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>submit后, 封装在params中:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Parameters: &#123;&quot;utf8&quot;=&gt;&quot;✓&quot;,</span><br><span class="line">&quot;authenticity_token&quot;=&gt;&quot;WJhATdPc1LEzIpL9r1KG15uYp9TGKdZHV0oYFNjz8jHHDuyn4uuV4do0/7EumsNwHHzuUzt/5Ip5eXpzivxywg==&quot;,</span><br><span class="line">&quot;profile&quot;=&gt;&#123;&quot;updated_at(1i)&quot;=&gt;&quot;2015&quot;, &quot;updated_at(2i)&quot;=&gt;&quot;2&quot;, &quot;updated_at(3i)&quot;=&gt;&quot;17&quot;, &quot;updated_at(4i)&quot;=&gt;&quot;06&quot;, &quot;updated_at(5i)&quot;=&gt;&quot;53&quot;&#125;,</span><br><span class="line">&quot;commit&quot;=&gt;&quot;Create Profile&quot;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意, 虽然在页面上没有选择年月日, 但是不难看出在HTML源码和params中都有看到年月日一并在发送给了server.如果我指定<code>ignore_date: true</code>, 那么年月日就不会发送给server. 如果没有年月日就会发生异常, 所以, 必须有<code>date_select</code>在表单中.<br><code>date_select</code>和<code>date_time_select</code>道理相同, 我就不一一说明了</p>
+</blockquote>
+<h2 id="文件上传-file-field-file-field-tag"><a href="#文件上传-file-field-file-field-tag" class="headerlink" title="文件上传- file_field/file_field_tag"></a>文件上传- <code>file_field/file_field_tag</code></h2><p><img src="http://i2.tietuku.com/f2d00300cacb6914.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> # 对于form_tag提交的表单, 需要设置multipart: true, form_for则不需要</span><br><span class="line">&lt;%= form_tag &apos;/upload&apos;, multipart: true do %&gt;</span><br><span class="line">  &lt;label for=&quot;file&quot;&gt;File to Upload&lt;/label&gt; &lt;%= file_field_tag &quot;file&quot; %&gt;</span><br><span class="line">    &lt;%= submit_tag %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="text-area-text-area-tag"><a href="#text-area-text-area-tag" class="headerlink" title="text_area / text_area_tag"></a><code>text_area / text_area_tag</code></h2><blockquote>
+<p>该标签对应的Model的属性类型是text</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= text_area_tag &quot;post[content]&quot;, &quot;很长的文章&quot;, size: &quot;200x200&quot; %&gt;</span><br><span class="line">#=&gt; &lt;textarea name=&quot;post[content]&quot; id=&quot;post_content&quot; cols=&quot;200&quot; rows=&quot;200&quot;&gt;很长的文章&lt;/textarea&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="下拉列表-select-select-tag-collection-select"><a href="#下拉列表-select-select-tag-collection-select" class="headerlink" title="下拉列表 select / select_tag / collection_select"></a>下拉列表 <code>select / select_tag / collection_select</code></h2><blockquote>
+<p>一下三种方法产生的页面效果是一样的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.select :prefecture_id, Prefecture.all.map &#123; |p| [p.name, p.id]  &#125; %&gt;</span><br><span class="line">&lt;%= select_tag &quot;address[prefeture_id]&quot;, options_from_collection_for_select(Prefecture.all, :id, :name) %&gt;</span><br><span class="line">&lt;%= f.collection_select :prefecture_id, Prefecture.all, :id, :name %&gt;</span><br><span class="line"></span><br><span class="line"># =&gt;</span><br><span class="line"># &lt;select name=&quot;address[prefecture_id]&quot; id=&quot;address_prefecture_id&quot;&gt;</span><br><span class="line">#   &lt;option value=&quot;1&quot;&gt;北京&lt;/option&gt;</span><br><span class="line">#   &lt;option value=&quot;2&quot;&gt;上海&lt;/option&gt;</span><br><span class="line">#   &lt;option value=&quot;3&quot;&gt;哈尔滨&lt;/option&gt;</span><br><span class="line"># &lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="check-box-check-box-tag-collection-check-boxes"><a href="#check-box-check-box-tag-collection-check-boxes" class="headerlink" title="check_box / check_box_tag / collection_check_boxes"></a><code>check_box / check_box_tag / collection_check_boxes</code></h2><h3 id="一个check-box"><a href="#一个check-box" class="headerlink" title="一个check_box"></a>一个check_box</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.label :remember_me, &quot;REMEMBER_ME&quot; %&gt;</span><br><span class="line">&lt;%= f.check_box :remember_me %&gt;</span><br><span class="line"></span><br><span class="line"># =&gt; </span><br><span class="line"># &lt;label for=&quot;profile_remember_me&quot;&gt;REMEMBER_ME&lt;/label&gt;</span><br><span class="line"># &lt;input type=&quot;checkbox&quot; value=&quot;1&quot; name=&quot;profile[remember_me]&quot; id=&quot;profile_remember_me&quot;&gt;</span><br><span class="line">    </span><br><span class="line"># OR</span><br><span class="line"></span><br><span class="line">&lt;%= check_box_tag &quot;profile[remember_me]&quot;%&gt;</span><br><span class="line">&lt;%= label_tag &quot;profile[remember_me]&quot;, &quot;记住我&quot; %&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="多个-check-box"><a href="#多个-check-box" class="headerlink" title="多个 check_box"></a>多个 check_box</h3><blockquote>
+<p>Category和Product 有多对多的关系</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;% Category.all.each do |category| %&gt;</span><br><span class="line">  &lt;%= check_box_tag &quot;product[category_ids][]&quot;, category.id, @product.categories.include?(category), id: &quot;product_category_ids_#&#123;category.id&#125;&quot; %&gt;</span><br><span class="line">    &lt;%= label_tag &quot;product[category_ids][#&#123;category.id&#125;]&quot;, category.name %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line"></span><br><span class="line">#=&gt; </span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;product[category_ids][]&quot; id=&quot;product_category_ids_1&quot; value=&quot;1&quot; checked=&quot;checked&quot; /&gt;</span><br><span class="line">&lt;label for=&quot;Category_0&quot;&gt;Category#0&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;product[category_ids][]&quot; id=&quot;product_category_ids_2&quot; value=&quot;2&quot; checked=&quot;checked&quot; /&gt;</span><br><span class="line">&lt;label for=&quot;Category_1&quot;&gt;Category#1&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;product[category_ids][]&quot; id=&quot;product_category_ids_3&quot; value=&quot;3&quot; checked=&quot;checked&quot; /&gt;</span><br><span class="line">&lt;label for=&quot;Category_2&quot;&gt;Category#2&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;product[category_ids][]&quot; id=&quot;product_category_ids_4&quot; value=&quot;4&quot; /&gt;</span><br><span class="line">&lt;label for=&quot;Category_3&quot;&gt;Category#3&lt;/label&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后我们分析一下提交后params集合的参数情况</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">params</span><br><span class="line"># 选择0个box</span><br><span class="line">&quot;product&quot;=&gt;&#123;&quot;name&quot;=&gt;&quot;&quot;&#125;</span><br><span class="line"># 选择2个</span><br><span class="line">&quot;product&quot;=&gt;&#123;&quot;name&quot;=&gt;&quot;&quot;, category_ids&quot;=&gt;[&quot;1&quot;, &quot;2&quot;]&#125;&quot;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>还需要注意StrongParameters:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def product_params</span><br><span class="line">  # 注意category_ids: []</span><br><span class="line">  params.require(:product).permit(:name, category_ids: [])</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Parameter和SQL语句</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Parameters: &#123;&quot;utf8&quot;=&gt;&quot;✓&quot;, &quot;authenticity_token&quot;=&gt;&quot;cGk3YzhN3JGSROg+MKdVFj8hois/WQck5mwop/0j2oTv/5uJCXqdwXtShXKxbxCxuMXrrMIPNenIX0rAryxadw==&quot;, &quot;product&quot;=&gt;&#123;&quot;name&quot;=&gt;&quot;iMac&quot;, &quot;category_ids&quot;=&gt;[&quot;1&quot;, &quot;2&quot;]&#125;, &quot;commit&quot;=&gt;&quot;Create Product&quot;&#125;</span><br><span class="line">  Category Load (0.2ms)  SELECT &quot;categories&quot;.* FROM &quot;categories&quot; WHERE &quot;categories&quot;.&quot;id&quot; IN (1, 2)</span><br><span class="line">  (0.0ms)  begin transaction</span><br><span class="line">  SQL (0.2ms)  INSERT INTO &quot;products&quot; (&quot;name&quot;, &quot;created_at&quot;, &quot;updated_at&quot;) VALUES (?, ?, ?)  [[&quot;name&quot;, &quot;iMac&quot;], [&quot;created_at&quot;, &quot;2015-02-17 10:05:04.921510&quot;], [&quot;updated_at&quot;, &quot;2015-02-17 10:05:04.921510&quot;]]</span><br><span class="line">  SQL (0.1ms)  INSERT INTO &quot;categories_products&quot; (&quot;category_id&quot;, &quot;product_id&quot;) VALUES (?, ?)  [[&quot;category_id&quot;, 1], [&quot;product_id&quot;, 2]]</span><br><span class="line">  SQL (0.0ms)  INSERT INTO &quot;categories_products&quot; (&quot;category_id&quot;, &quot;product_id&quot;) VALUES (?, ?)  [[&quot;category_id&quot;, 2], [&quot;product_id&quot;, 2]]</span><br><span class="line">(0.6ms)  commit transaction</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>rails还提供了更为简单的方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.collection_check_boxes :category_ids, Category.all, :id, :name %&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="radio-button-radio-button-tag"><a href="#radio-button-radio-button-tag" class="headerlink" title="radio_button, radio_button_tag"></a><code>radio_button, radio_button_tag</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">%= f.label :rate %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 1 %&gt; &lt;%= f.label :rate_1, 1 %&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 2 %&gt; &lt;%= f.label :rate_2, 2 %&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 3 %&gt; &lt;%= f.label :rate_3, 3 %&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 4 %&gt; &lt;%= f.label :rate_4, 4 %&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 5 %&gt; &lt;%= f.label :rate_5, 5 %&gt;</span><br><span class="line"># =&gt;</span><br><span class="line">&lt;label for=&quot;product_rate&quot;&gt;Rate&lt;/label&gt;&lt;br&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;1&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_1&quot;&gt; &lt;label for=&quot;product_rate_1&quot;&gt;1&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;2&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_2&quot;&gt; &lt;label for=&quot;product_rate_2&quot;&gt;2&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;3&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_3&quot;&gt; &lt;label for=&quot;product_rate_3&quot;&gt;3&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;4&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_4&quot;&gt; &lt;label for=&quot;product_rate_4&quot;&gt;4&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;5&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_5&quot;&gt; &lt;label for=&quot;product_rate_5&quot;&gt;5&lt;/label&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>同样也有<code>collection_xx</code>版本的方法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.collection_radio_buttons :maker_id, Maker.all, :id, :name %&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="hidden-field-hidden-field-tag"><a href="#hidden-field-hidden-field-tag" class="headerlink" title="hidden_field / hidden_field_tag"></a>hidden_field / hidden_field_tag</h2><blockquote>
+<p>不显示在页面上, 有些信息没有必要给用户看到</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;%= f.hidden_field :lock_version %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;hidden&quot; name=&quot;product[lock_version]&quot; id=&quot;product_lock_version&quot; value=&quot;1&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= hidden_field_tag &quot;product[lock_version]&quot;, @product.lock_version %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;hidden&quot; name=&quot;product[lock_version]&quot; id=&quot;product_lock_version&quot; value=&quot;1&quot;&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="submit-submit-tag"><a href="#submit-submit-tag" class="headerlink" title="submit / submit_tag"></a>submit / submit_tag</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.submit &quot;注册&quot; %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;submit&quot; name=&quot;commit&quot; value=&quot;注册&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= submit_tag &quot;Search&quot; %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;submit&quot; name=&quot;commit&quot; value=&quot;Search&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/view-helper/" rel="tag">#view-helper</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/16/form-for/" rel="next" title="关于form_for">
+                <i class="fa fa-chevron-left"></i> 关于form_for
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/20/format-helper/" rel="prev" title="Format Helper">
+                Format Helper <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#超链接-link-to"><span class="nav-number">1.</span> <span class="nav-text">超链接(link_to)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本使用方法"><span class="nav-number">1.1.</span> <span class="nav-text">基本使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#可以指定的options"><span class="nav-number">1.1.1.</span> <span class="nav-text">可以指定的options</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#link-to经常使用的方法"><span class="nav-number">1.1.2.</span> <span class="nav-text">link_to经常使用的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#link-to-if更加条件显示链接"><span class="nav-number">1.1.3.</span> <span class="nav-text">link_to_if更加条件显示链接</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#img-tag"><span class="nav-number">2.</span> <span class="nav-text">img_tag</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Options"><span class="nav-number">2.1.</span> <span class="nav-text">Options</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#举例"><span class="nav-number">2.2.</span> <span class="nav-text">举例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FORM-form-for-form-tag"><span class="nav-number">3.</span> <span class="nav-text">FORM - form_for form_tag</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方法"><span class="nav-number">3.1.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Option"><span class="nav-number">3.2.</span> <span class="nav-text">Option</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#嵌套其他Model的表单fields-for"><span class="nav-number">4.</span> <span class="nav-text">嵌套其他Model的表单fields_for</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成label的方法-label和label-tag"><span class="nav-number">5.</span> <span class="nav-text">生成label的方法 label和label_tag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本框-text-field和text-field-tag"><span class="nav-number">6.</span> <span class="nav-text">文本框- text_field和text_field_tag</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Option-1"><span class="nav-number">6.1.</span> <span class="nav-text">Option</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些其他类型的输入框"><span class="nav-number">6.2.</span> <span class="nav-text">一些其他类型的输入框</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入日期时间-date-field-time-field-datetime-field"><span class="nav-number">6.3.</span> <span class="nav-text">输入日期时间- date_field/time_field/datetime_field</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择日期时间-date-select-time-select-datetime-select"><span class="nav-number">6.4.</span> <span class="nav-text">选择日期时间 - date_select / time_select / datetime_select</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件上传-file-field-file-field-tag"><span class="nav-number">7.</span> <span class="nav-text">文件上传- file_field/file_field_tag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text-area-text-area-tag"><span class="nav-number">8.</span> <span class="nav-text">text_area / text_area_tag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下拉列表-select-select-tag-collection-select"><span class="nav-number">9.</span> <span class="nav-text">下拉列表 select / select_tag / collection_select</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#check-box-check-box-tag-collection-check-boxes"><span class="nav-number">10.</span> <span class="nav-text">check_box / check_box_tag / collection_check_boxes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一个check-box"><span class="nav-number">10.1.</span> <span class="nav-text">一个check_box</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多个-check-box"><span class="nav-number">10.2.</span> <span class="nav-text">多个 check_box</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#radio-button-radio-button-tag"><span class="nav-number">11.</span> <span class="nav-text">radio_button, radio_button_tag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hidden-field-hidden-field-tag"><span class="nav-number">12.</span> <span class="nav-text">hidden_field / hidden_field_tag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#submit-submit-tag"><span class="nav-number">13.</span> <span class="nav-text">submit / submit_tag</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

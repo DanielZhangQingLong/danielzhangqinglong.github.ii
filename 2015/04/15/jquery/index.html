@@ -1,0 +1,698 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="jQuery," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="对jQuery进行一下总结, 最近发现之前用得稀里糊涂, 没有一个良好的知识体系.
+
+安装
+一种方法是去jquery的官方网站http://jquery.com/download/ 下载所要的版本, 然后在HTML中引入即可:
+
+123&amp;lt;head&amp;gt;&amp;lt;script src=&amp;quot;jquery.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;/head&amp;gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jQuery Review 1">
+<meta property="og:url" content="http://yoursite.com/2015/04/15/jquery/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="对jQuery进行一下总结, 最近发现之前用得稀里糊涂, 没有一个良好的知识体系.
+
+安装
+一种方法是去jquery的官方网站http://jquery.com/download/ 下载所要的版本, 然后在HTML中引入即可:
+
+123&amp;lt;head&amp;gt;&amp;lt;script src=&amp;quot;jquery.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;/head&amp;gt;">
+<meta property="og:updated_time" content="2015-04-15T10:26:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jQuery Review 1">
+<meta name="twitter:description" content="对jQuery进行一下总结, 最近发现之前用得稀里糊涂, 没有一个良好的知识体系.
+
+安装
+一种方法是去jquery的官方网站http://jquery.com/download/ 下载所要的版本, 然后在HTML中引入即可:
+
+123&amp;lt;head&amp;gt;&amp;lt;script src=&amp;quot;jquery.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;/head&amp;gt;">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> jQuery Review 1 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                jQuery Review 1
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-04-15T14:19:43+08:00" content="2015-04-15">
+              2015-04-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>对jQuery进行一下总结, 最近发现之前用得稀里糊涂, 没有一个良好的知识体系.</p>
+</blockquote>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><blockquote>
+<p>一种方法是去jquery的官方网站<a href="http://jquery.com/download/" target="_blank" rel="external">http://jquery.com/download/</a> 下载所要的版本, 然后在HTML中引入即可:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;head&gt;</span><br><span class="line">&lt;script src=&quot;jquery.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>另外一种方法是使用CDN(内容分发网络)应用jquery. Google或者微软的服务器上存有jquery了, 只需引用即可:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># Google CDN</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js&quot;&gt;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line"># 微软CDN</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;script src=&quot;http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js&quot;&gt;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样做还有一个优势用户访问别的网站时, 已经从这2个公司的服务器上缓存了jquery, 访问自己的站点可以大大减少加载时间, 而且我觉得这样做更优雅一些.</p>
+</blockquote>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><blockquote>
+<p>实际上jquery可以理解为 javascript query(查询), 也就是查询选取HTML文档的元素, 然后对选取的元素执行操作(action).</p>
+</blockquote>
+<h3 id="属性的选取"><a href="#属性的选取" class="headerlink" title="属性的选取"></a>属性的选取</h3><blockquote>
+<p>选取HTML元素可以有下面4种方法:</p>
+</blockquote>
+<ol>
+<li>选取当前的HTML元素</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(this)</span><br></pre></td></tr></table></figure>
+<ol>
+<li>通过元素id选取元素</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;#test&quot;)</span><br></pre></td></tr></table></figure>
+<ol>
+<li>通过元素本身选取</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;p&quot;)</span><br></pre></td></tr></table></figure>
+<ol>
+<li>通过元素class选取</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;.test&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="action"><a href="#action" class="headerlink" title="action"></a>action</h3><blockquote>
+<p>选取了元素之后就要在元素身上调用方法, 即: <code>$(selector).action()</code></p>
+</blockquote>
+<ul>
+<li>美元符号表示正在使用jquery</li>
+<li><code>(selector)</code>表示所要选择的HTML元素</li>
+<li><code>action()</code>表示对元素执行的操作</li>
+</ul>
+<h3 id="document-ready"><a href="#document-ready" class="headerlink" title="$(document).ready()"></a>$(document).ready()</h3><blockquote>
+<p>这是文档就绪函数, 我们的代码要写在<code>document ready</code>中:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(document).ready(function()&#123;</span><br><span class="line">  // Hack here</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样就确保文档完全加载后, 执行jquery代码.</p>
+</blockquote>
+<h2 id="jquery的选择器"><a href="#jquery的选择器" class="headerlink" title="jquery的选择器"></a>jquery的选择器</h2><blockquote>
+<p>选择器的作用就是帮助我们准确地找出需要DOM元素</p>
+</blockquote>
+<h3 id="jQuery-元素选择器"><a href="#jQuery-元素选择器" class="headerlink" title="jQuery 元素选择器"></a>jQuery 元素选择器</h3><blockquote>
+<p>jquery使用CSS选择器来选取HTML元素.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(&apos;p&apos;) 选取&lt;p&gt;元素</span><br><span class="line">$(&apos;p.intro&apos;) 选取class=&apos;intro&apos;的&lt;p&gt;元素</span><br><span class="line">$(&apos;p#demo&apos;) 选取id=&apos;demo&apos;的&lt;p&gt;元素</span><br></pre></td></tr></table></figure>
+<h3 id="jQuery-属性选择器"><a href="#jQuery-属性选择器" class="headerlink" title="jQuery 属性选择器"></a>jQuery 属性选择器</h3><blockquote>
+<p>jquery使用XPath表达式来选择带有给定属性的元素.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;[href]&quot;) 选取所有带有href属性的元素</span><br><span class="line"></span><br><span class="line">$(&quot;[href=&apos;#&apos;]&quot;) 选取所有href属性为#的元素.</span><br><span class="line"></span><br><span class="line">$(&quot;[href!=&apos;#&apos;]&quot;) 选取所有href属性不等于#的元素</span><br><span class="line"></span><br><span class="line">$(&quot;[href$=&apos;.jpg&apos;]&quot;) 选取所有href属性以&quot;.jpg&quot;结尾的元素.</span><br></pre></td></tr></table></figure>
+<h3 id="jQuery-CSS选择器"><a href="#jQuery-CSS选择器" class="headerlink" title="jQuery CSS选择器"></a>jQuery CSS选择器</h3><blockquote>
+<p>jQuery CSS选择器可以用于改变HTML的CSS属性</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(&apos;p&apos;).css(&apos;background-color&apos;, &apos;red&apos;) 把p元素的背景变为红色</span><br></pre></td></tr></table></figure>
+<h3 id="其他选择器"><a href="#其他选择器" class="headerlink" title="其他选择器"></a>其他选择器</h3><blockquote>
+<p>选择第一个元素:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(&apos;ul li:first&apos;) 所有ul下第一个li元素</span><br></pre></td></tr></table></figure>
+<h2 id="jQuery-事件"><a href="#jQuery-事件" class="headerlink" title="jQuery 事件"></a>jQuery 事件</h2><blockquote>
+<p>事件处理是HTML中发生某些事件所调用的方法, 比如一个按钮被点击指的就是一个事件, 而点击后隐藏所有的p标签就是对事件的处理:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;jquery.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">$(document).ready(function()&#123;</span><br><span class="line">$(&quot;button&quot;).click(function()&#123;</span><br><span class="line">    $(&quot;p&quot;).hide();</span><br><span class="line">      </span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h2&gt;This is a heading&lt;/h2&gt;</span><br><span class="line">&lt;p&gt;This is a paragraph.&lt;/p&gt;</span><br><span class="line">&lt;p&gt;This is another paragraph.&lt;/p&gt;</span><br><span class="line">&lt;button&gt;Click me&lt;/button&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line"></span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果几个HTML文件都需要某些相同的js函数, 那么可以将这些js函数放到单独的文件中管理, 然后在HTML中引用即可.</p>
+<p>如果jquery库与别的库发生了命名冲突, 可以替换<code>$</code>为别的字符来表示jQuery :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var jQ = jQuery.noConflict();</span><br><span class="line"></span><br><span class="line">jQ(&apos;button&apos;) ...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其他的事件可参考 <a href="http://www.w3school.com.cn/jquery/jquery_ref_events.asp" target="_blank" rel="external">http://www.w3school.com.cn/jquery/jquery_ref_events.asp</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jQuery/" rel="tag">#jQuery</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/04/07/rspec-mock/" rel="next" title="Rspec 中对mock的理解和使用">
+                <i class="fa fa-chevron-left"></i> Rspec 中对mock的理解和使用
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/15/jquery2/" rel="prev" title="jQuery Review 2">
+                jQuery Review 2 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#语法"><span class="nav-number">2.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#属性的选取"><span class="nav-number">2.1.</span> <span class="nav-text">属性的选取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#action"><span class="nav-number">2.2.</span> <span class="nav-text">action</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-ready"><span class="nav-number">2.3.</span> <span class="nav-text">$(document).ready()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jquery的选择器"><span class="nav-number">3.</span> <span class="nav-text">jquery的选择器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jQuery-元素选择器"><span class="nav-number">3.1.</span> <span class="nav-text">jQuery 元素选择器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jQuery-属性选择器"><span class="nav-number">3.2.</span> <span class="nav-text">jQuery 属性选择器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jQuery-CSS选择器"><span class="nav-number">3.3.</span> <span class="nav-text">jQuery CSS选择器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他选择器"><span class="nav-number">3.4.</span> <span class="nav-text">其他选择器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jQuery-事件"><span class="nav-number">4.</span> <span class="nav-text">jQuery 事件</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

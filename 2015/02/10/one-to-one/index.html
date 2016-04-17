@@ -1,0 +1,638 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="one-to-one mapping," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="何谓一对一
+看 ER 图:
+比如我们在京东(京东不逃税)买东西下订单后, 就会针对该订单生成一张发票, 从订单的角度来看, 发票是[1]每张发票又必然会对应[1]个订单. 所以说这种关系是1对1
+那么是订单属于发票更贴切还是反过来说更贴切, 个人认为后者更为合适, 所以我在订单这边使用has_one, 发票一边使用belongs_to.
+
+添加引用的外键
+首先, 我们在belongs_to这边的表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 中实现model的一对一关系映射">
+<meta property="og:url" content="http://yoursite.com/2015/02/10/one-to-one/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="何谓一对一
+看 ER 图:
+比如我们在京东(京东不逃税)买东西下订单后, 就会针对该订单生成一张发票, 从订单的角度来看, 发票是[1]每张发票又必然会对应[1]个订单. 所以说这种关系是1对1
+那么是订单属于发票更贴切还是反过来说更贴切, 个人认为后者更为合适, 所以我在订单这边使用has_one, 发票一边使用belongs_to.
+
+添加引用的外键
+首先, 我们在belongs_to这边的表">
+<meta property="og:image" content="http://i2.tietuku.com/93bcd2a5efd818f4.png">
+<meta property="og:updated_time" content="2015-02-13T14:02:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 中实现model的一对一关系映射">
+<meta name="twitter:description" content="何谓一对一
+看 ER 图:
+比如我们在京东(京东不逃税)买东西下订单后, 就会针对该订单生成一张发票, 从订单的角度来看, 发票是[1]每张发票又必然会对应[1]个订单. 所以说这种关系是1对1
+那么是订单属于发票更贴切还是反过来说更贴切, 个人认为后者更为合适, 所以我在订单这边使用has_one, 发票一边使用belongs_to.
+
+添加引用的外键
+首先, 我们在belongs_to这边的表">
+<meta name="twitter:image" content="http://i2.tietuku.com/93bcd2a5efd818f4.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails 中实现model的一对一关系映射 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails 中实现model的一对一关系映射
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-10T16:32:42+08:00" content="2015-02-10">
+              2015-02-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="何谓一对一"><a href="#何谓一对一" class="headerlink" title="何谓一对一"></a>何谓一对一</h2><blockquote>
+<p>看 ER 图:<br><img src="http://i2.tietuku.com/93bcd2a5efd818f4.png" alt=""></p>
+<p>比如我们在京东(京东不逃税)买东西下订单后, 就会针对该订单生成一张发票, 从订单的角度来看, 发票是[1]<br>每张发票又必然会对应[1]个订单. 所以说这种关系是1对1</p>
+<p>那么是订单属于发票更贴切还是反过来说更贴切, 个人认为后者更为合适, 所以我在订单这边使用<code>has_one</code>, 发票一边使用<code>belongs_to</code>.</p>
+</blockquote>
+<h2 id="添加引用的外键"><a href="#添加引用的外键" class="headerlink" title="添加引用的外键"></a>添加引用的外键</h2><blockquote>
+<p>首先, 我们在belongs_to这边的表(invoices表)添加 order_id</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 生成Order model和orders表</span><br><span class="line">rails g model Order order_date:date</span><br><span class="line">rake db:migrate</span><br><span class="line"></span><br><span class="line"># 生成Invoice model 和 invoices表</span><br><span class="line">rails g model Invoice order_id:integer</span><br><span class="line">rake db:migrate</span><br><span class="line"></span><br><span class="line"># 如果已经存在了 Invoice model 和 invoices 表, 可以添加外键order_id</span><br><span class="line">rails g migration add_order_id_to_invoices order_id:integer</span><br><span class="line">rake migrate</span><br></pre></td></tr></table></figure>
+<h2 id="使用-has-one和-belongs-to-处理-model-的对应关系"><a href="#使用-has-one和-belongs-to-处理-model-的对应关系" class="headerlink" title="使用 has_one和 belongs_to 处理 model 的对应关系"></a>使用 has_one和 belongs_to 处理 model 的对应关系</h2><blockquote>
+<p>完成了参加数据库, 然后处理 model 直接的关联关系</p>
+<p>向订单中添加<code>has_one</code>, 读作”Order has_one :invoice”, 并且, 还可以添加<code>dependent: :destroy</code>选项, 如果删除了订单, 那么与之关联的发票也一起删除.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Order &lt; ActiveRecord::Base</span><br><span class="line">  has_one :invoice, dependent: :destroy</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>想发票中添加<code>belongs_to</code>, 读作: “发票属于订单”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Invoice &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :order</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="可以使用的方法"><a href="#可以使用的方法" class="headerlink" title="可以使用的方法"></a>可以使用的方法</h2><blockquote>
+<p>model 中具备了以上关系, 我们就可以使用以下的方法了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 新建对象</span><br><span class="line">order = Order.create(order_date: Time.now)</span><br><span class="line">invoice = Invoice.create</span><br><span class="line"></span><br><span class="line">order.invoice # =&gt; nil</span><br><span class="line">invoice.order # =&gt; nil</span><br><span class="line"></span><br><span class="line"># 关联到一起</span><br><span class="line">order.invoice = invoice</span><br><span class="line"></span><br><span class="line">order.invoice # =&gt; 返回 invoice</span><br><span class="line">invoice.order # =&gt; 返回 order</span><br><span class="line"></span><br><span class="line"># 删除</span><br><span class="line"></span><br><span class="line">Invoice.count # =&gt; 1</span><br><span class="line">order.destroy # =&gt; 由于设置了 dependent: :destroy, invoice也被删掉了</span><br><span class="line">Invoice.count # =&gt; 0</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/one-to-one-mapping/" rel="tag">#one-to-one mapping</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/10/many2many/" rel="next" title="Rails 中实现model的多对多关系映射">
+                <i class="fa fa-chevron-left"></i> Rails 中实现model的多对多关系映射
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/10/sti/" rel="prev" title="Rails实现单一表继承STI(Single Table Inheritance)">
+                Rails实现单一表继承STI(Single Table Inheritance) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#何谓一对一"><span class="nav-number">1.</span> <span class="nav-text">何谓一对一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加引用的外键"><span class="nav-number">2.</span> <span class="nav-text">添加引用的外键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-has-one和-belongs-to-处理-model-的对应关系"><span class="nav-number">3.</span> <span class="nav-text">使用 has_one和 belongs_to 处理 model 的对应关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可以使用的方法"><span class="nav-number">4.</span> <span class="nav-text">可以使用的方法</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,677 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="STI," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="现在有一个需求, Book 和Computer 是Product 的子类, Book 和 Computer有一部分列相同, 一部分不同, 如下面2个示意图, 我们让3个 model 共用一个表 products. Rails 这边来看, 好像我们已经创建了 books 表和computers 表, 从而处理好Book对象和Computer 对象.
+type 字段代表的是”Book” 还是”Com">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails实现单一表继承STI(Single Table Inheritance)">
+<meta property="og:url" content="http://yoursite.com/2015/02/10/sti/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="现在有一个需求, Book 和Computer 是Product 的子类, Book 和 Computer有一部分列相同, 一部分不同, 如下面2个示意图, 我们让3个 model 共用一个表 products. Rails 这边来看, 好像我们已经创建了 books 表和computers 表, 从而处理好Book对象和Computer 对象.
+type 字段代表的是”Book” 还是”Com">
+<meta property="og:image" content="http://i2.tietuku.com/1fe41c4fd78847e2.png">
+<meta property="og:image" content="http://i2.tietuku.com/61db191e5f8490ba.png">
+<meta property="og:image" content="http://i2.tietuku.com/f4623f154e98115f.png">
+<meta property="og:image" content="http://i2.tietuku.com/65de7595adc2b341.png">
+<meta property="og:image" content="http://i2.tietuku.com/e8c4654e9aba8f85.png">
+<meta property="og:updated_time" content="2015-04-26T04:37:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails实现单一表继承STI(Single Table Inheritance)">
+<meta name="twitter:description" content="现在有一个需求, Book 和Computer 是Product 的子类, Book 和 Computer有一部分列相同, 一部分不同, 如下面2个示意图, 我们让3个 model 共用一个表 products. Rails 这边来看, 好像我们已经创建了 books 表和computers 表, 从而处理好Book对象和Computer 对象.
+type 字段代表的是”Book” 还是”Com">
+<meta name="twitter:image" content="http://i2.tietuku.com/1fe41c4fd78847e2.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails实现单一表继承STI(Single Table Inheritance) | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails实现单一表继承STI(Single Table Inheritance)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-10T18:50:44+08:00" content="2015-02-10">
+              2015-02-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>现在有一个需求, Book 和Computer 是Product 的子类, Book 和 Computer有一部分列相同, 一部分不同, 如下面2个示意图, 我们让3个 model 共用一个表 products. Rails 这边来看, 好像我们已经创建了 books 表和computers 表, 从而处理好Book对象和Computer 对象.<br><img src="http://i2.tietuku.com/1fe41c4fd78847e2.png" alt=""><br><img src="http://i2.tietuku.com/61db191e5f8490ba.png" alt=""></p>
+<p>type 字段代表的是”Book” 还是”Computer”, 所以:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Product.all # =&gt; 从 products 中获取含有 Book和 Computer model的全部记录</span><br><span class="line">Computer.all # =&gt; 从 products 中只获取type 是&quot;Computer&quot;的记录</span><br><span class="line">Book.all # =&gt; 从 products 中只获取 type 是&quot;Book&quot; 的记录</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样的好处是:</p>
+<ul>
+<li>透明化处理了Computer 和 Book, 无需分别建立表</li>
+<li>可以单独处理Book 或 Computer</li>
+</ul>
+</blockquote>
+<h2 id="创建新的项目"><a href="#创建新的项目" class="headerlink" title="创建新的项目"></a>创建新的项目</h2><blockquote>
+<p>首先我们先新建一个Rails项目</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails new sti_test</span><br><span class="line">cd sti_test</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用generator 生成Product, Maker, Cpu, Author, 然后migrate.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rails g scaffold Product name price:integer maker_id:integer cpu_id:integer author_id:integer</span><br><span class="line"></span><br><span class="line">rails g model maker name</span><br><span class="line">rails g model cpu name</span><br><span class="line">rails g model author name</span><br><span class="line"></span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>初始化数据</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># db/seeds.rb</span><br><span class="line"></span><br><span class="line">Init Data</span><br><span class="line"></span><br><span class="line">%w(Pentium Core Xeno).each &#123; |name| Cpu.create! name: name  &#125;</span><br><span class="line">%w(Lenovo HP Apple).each &#123; |name| Maker.create! name: name  &#125;</span><br><span class="line">%w(Daniel Lucy Nigo).each &#123; |name| Author.create! name: name  &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>向各个 model 中加入关联关系和验证.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># app/models/cpu.rb</span><br><span class="line">class Cpu &lt; ActiveRecord::Base</span><br><span class="line">  has_many :products</span><br><span class="line">  validates :name, presence: true</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># app/models/maker.rb</span><br><span class="line">class Maker &lt; ActiveRecord::Base</span><br><span class="line">  has_many :products</span><br><span class="line">  validates :name, presence: true</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># app/models/author.rb</span><br><span class="line">class Author &lt; ActiveRecord::Base</span><br><span class="line">  has_many :products</span><br><span class="line">  validates :name, presence: true</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># app/models/product.rb</span><br><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :cpu</span><br><span class="line">  belongs_to :maker</span><br><span class="line">  belongs_to :author</span><br><span class="line"></span><br><span class="line">  validates :name,  presence: true</span><br><span class="line">  validates :price, presence: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="实现-STI"><a href="#实现-STI" class="headerlink" title="实现 STI"></a>实现 STI</h2><blockquote>
+<p>首先, 在products中加入<code>type</code> 字段, 很重要, 这是 rails 的约定.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rails g migration add_type_to_products type:string</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>获取Book 和Computer 对象时, rails 会搜索<code>type</code> 字段, 所以我们使用<code>type</code> 作为索引(提高效率)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class AddTypeToProducts &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    add_column :products, :type, :string</span><br><span class="line">    add_index :products, :type</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 移植(应用到数据库. p.s. 到底该如何翻译才贴切?)</span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure></p>
+<p>为 type 添加存在性验证<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :maker</span><br><span class="line">  belongs_to :cpu</span><br><span class="line">  belongs_to :author</span><br><span class="line"></span><br><span class="line">  validates :name, presence: true</span><br><span class="line">  validates :price, presence: true</span><br><span class="line">  validates :type, presence: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>接着, 新建<code>Product</code> 的两个子类 model <code>Computer</code> 和 <code>Book</code>, 并加入验证:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># app/models/computer.rb</span><br><span class="line"></span><br><span class="line">class Computer &lt; Product</span><br><span class="line">  validates :maker_id, presence: true</span><br><span class="line">  validates :cpu_id, presence: true</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/book.rb</span><br><span class="line"></span><br><span class="line">class Book &lt; Product</span><br><span class="line">  validates :author_id, presence: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>我们在 console 中做实验看看是否实现了 STI :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 设定`type` 为&quot;Computer&quot;, Product 会自动创建 Computer 的对象</span><br><span class="line"></span><br><span class="line">Product.new(type: &quot;Computer&quot;)</span><br><span class="line"># =&gt; &lt;Computer id: nil, name: nil, price: nil, type: &quot;Computer&quot;, maker_id: nil, cpu_id: nil, author_id: nil, created_at: nil, updated_at: nil&gt;</span><br><span class="line"></span><br><span class="line"># 设定`type` 为&quot;Book&quot;, Product 会自动创建Book 对象</span><br><span class="line">Product.new(type: &quot;Book&quot;)</span><br><span class="line"># =&gt; &lt;Book id: nil, name: nil, price: nil, type: &quot;Book&quot;, maker_id: nil, cpu_id: nil, author_id: nil, created_at: nil, updated_at: nil&gt;</span><br><span class="line"></span><br><span class="line"># 设定`type` 为&quot;&quot;, 会生成Product对象(本身) (p.s. nil, false, [], &#123;&#125;等都可以创建 Product对象)</span><br><span class="line"># =&gt; &lt;Product id: nil, name: nil, price: nil, type: &quot;&quot;, maker_id: nil, cpu_id: nil, author_id: nil, created_at: nil, updated_at: nil&gt;</span><br><span class="line"></span><br><span class="line"># 如果设定`type` 为一个非 Product( 或子类 )的类型, 就会发生异常</span><br><span class="line">Product.new type: &quot;hello&quot;</span><br><span class="line"># =&gt; ActiveRecord::SubclassNotFound: Invalid single-table inheritance type: hello is not a subclass of Product</span><br></pre></td></tr></table></figure>
+<h2 id="相应的控制器-视图和路由"><a href="#相应的控制器-视图和路由" class="headerlink" title="相应的控制器, 视图和路由"></a>相应的控制器, 视图和路由</h2><blockquote>
+<p>首先, 调整一下视图. 我们先从index视图着手, 由于一开始我们使用 scaffold 生成了Product, 生成了一些没有用的属性.比如 外键 id.我们需要删除这些属性, 将<code>name</code>, <code>type</code>添加进去.</p>
+<p><code>try</code> 方法是个好东西, 如果接收者(maker, cpu, author) 为 nil, 它会返回nil, 而不是抛异常.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/index.html.erb</span><br><span class="line"></span><br><span class="line">&lt;h1&gt;Listing products&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;table&gt;</span><br><span class="line">&lt;thead&gt;</span><br><span class="line">&lt;tr&gt;</span><br><span class="line">&lt;th&gt;Name&lt;/th&gt;</span><br><span class="line">&lt;th&gt;Price&lt;/th&gt;</span><br><span class="line">&lt;!-- 已修改 --&gt;</span><br><span class="line">&lt;th&gt;Type&lt;/th&gt;</span><br><span class="line">&lt;!-- 修改结束 --&gt;</span><br><span class="line">&lt;th&gt;Maker&lt;/th&gt;</span><br><span class="line">&lt;th&gt;Cpu&lt;/th&gt;</span><br><span class="line">&lt;th&gt;Author&lt;/th&gt;</span><br><span class="line">&lt;th colspan=&quot;3&quot;&gt;&lt;/th&gt;</span><br><span class="line">&lt;/tr&gt;</span><br><span class="line">&lt;/thead&gt;</span><br><span class="line"></span><br><span class="line">&lt;tbody&gt;</span><br><span class="line">&lt;% @products.each do |product| %&gt;</span><br><span class="line">&lt;tr&gt;</span><br><span class="line">&lt;td&gt;&lt;%= product.name %&gt;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;&lt;%= product.price %&gt;&lt;/td&gt;</span><br><span class="line">&lt;!--  已修改 --&gt;</span><br><span class="line">&lt;td&gt;&lt;%= product.type %&gt;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;&lt;%= product.maker.try(:name) %&gt;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;&lt;%= product.cpu.try(:name) %&gt;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;&lt;%= product.author.try(:name) %&gt;&lt;/td&gt;</span><br><span class="line">&lt;!-- 修改结束 --&gt;</span><br><span class="line"></span><br><span class="line">&lt;td&gt;&lt;%= link_to &apos;Show&apos;, product %&gt;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;&lt;%= link_to &apos;Edit&apos;, edit_product_path(product) %&gt;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;&lt;%= link_to &apos;Destroy&apos;, product, method: :delete, data: &#123; confirm: &apos;Are you sure?&apos;  &#125; %&gt;&lt;/td&gt;</span><br><span class="line">&lt;/tr&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line">&lt;/tbody&gt;</span><br><span class="line">&lt;/table&gt;</span><br><span class="line"></span><br><span class="line">&lt;br&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= link_to &apos;New Product&apos;, new_product_path %&gt;</span><br></pre></td></tr></table></figure></p>
+<p>show 页面去掉id, 添加 name</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/show.html.erb</span><br><span class="line"></span><br><span class="line">&lt;p id=&quot;notice&quot;&gt;&lt;%= notice %&gt;&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Name:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.name %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Price:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.price %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 已修改 --&gt;</span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Type:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.type %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Maker:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.maker.try(:name) %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Cpu:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.cpu.try(:name) %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Author:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.author.try(:name) %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;!--  修改结束 --&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= link_to &apos;Edit&apos;, edit_product_path(@product) %&gt; |</span><br><span class="line">&lt;%= link_to &apos;Back&apos;, products_path %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后, 修改新建和编辑页面的表单,  把Maker, CPU, Author的text field 变成 select box.<br>而且, 需要把 form_for方法中加入 <code>as: :product</code>. 这是因为: <code>@product</code> 可能是 Book 对象也可能是Computer, 那么name属性的值就可能是book[nane], 或者computer[name], 控制器的StrongParameters的方法就不会认识这样的名字, 因为它指认识product[name], <code>as: :product</code> 设置之后起到了统一名称的作用.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/_form.html.erb</span><br><span class="line"></span><br><span class="line">&lt;!--  已修改 --&gt;</span><br><span class="line">&lt;%= form_for(@product, as: :product) do |f| %&gt;</span><br><span class="line">&lt;% if @product.errors.any? %&gt;</span><br><span class="line">&lt;div id=&quot;error_explanation&quot;&gt;</span><br><span class="line">&lt;h2&gt;&lt;%= pluralize(@product.errors.count, &quot;error&quot;) %&gt; prohibited this product from being saved:&lt;/h2&gt;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">&lt;% @product.errors.full_messages.each do |message| %&gt;</span><br><span class="line">&lt;li&gt;&lt;%= message %&gt;&lt;/li&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line">&lt;/ul&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :name %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.text_field :name %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :price %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.number_field :price %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;!--  已修改 --&gt;</span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :type %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.select :type, [&quot;Computer&quot;, &quot;Book&quot;].map &#123; |t| [t, t]  &#125;, include_blank: true %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :maker_id, &quot;Maker(only for computer)&quot; %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.select :maker_id, Maker.all.map &#123; |m| [m.name, m.id]  &#125;, include_blank: true %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :cpu_id, &quot;CPU(only for Computer)&quot; %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.select :cpu_id, Cpu.all.map &#123; |c| [c.name, c.id]  &#125;, include_blank: true %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :author_id, &quot;Author only for author&quot; %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.select :author_id, Author.all.map &#123; |a| [a.name, a.id]  &#125;, include_blank: true %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;!--  修改完毕 --&gt;</span><br><span class="line">&lt;div class=&quot;actions&quot;&gt;</span><br><span class="line">&lt;%= f.submit %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>由于添加了<code>type</code> 所以需要把该字段加入到controller 中的StrongParameters 方法中.</p>
+<p>最后设定路由, 当用户访问books_path 和computer_path时, 将其交由products controller 处理.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Rails.application.routes.draw do</span><br><span class="line">resources :products</span><br><span class="line"></span><br><span class="line">resources :books,     controller: :products</span><br><span class="line">resources :computers, controller: :products</span><br><span class="line"></span><br><span class="line">root &quot;products#index&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>我们看一下效果:<br><img src="http://i2.tietuku.com/f4623f154e98115f.png" alt=""><br><img src="http://i2.tietuku.com/65de7595adc2b341.png" alt=""></p>
+<p>如果还有一些属性相似的物品, 我们也可以通过这种办法来添加, 只需要继承 <code>Product</code>即可, 比如衣服, 文具, 体育器材等等. 但是, 如果差异比较大的对象我们是否继续用这种办法还是新建表和 model(不继承Product) 就需要慎重考虑了.</p>
+</blockquote>
+<h2 id="对-model-单独处理-同名虚属性"><a href="#对-model-单独处理-同名虚属性" class="headerlink" title="对 model 单独处理(同名虚属性)"></a>对 model 单独处理(同名虚属性)</h2><blockquote>
+<p>到现在已经很好了, 不过我想让 name 这一列显示的更具各自的特点, 对书来说我想让其显示出来的是”书名 written by author#name”, 对于computer 来说我想让其显示”name /cpu.name/maker.name”.</p>
+<p>想要达到这个目的我需要在两个子类(Book &amp; Computer)中分别定义一个同名方法, 然后按照需求实现该方法, 在 view 上用该方法代替<code>name</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># app/models/book.rb</span><br><span class="line"></span><br><span class="line">class Book &lt; Product</span><br><span class="line">validates :author_id, presence: true</span><br><span class="line"></span><br><span class="line">def full_name</span><br><span class="line">&quot;#&#123;name&#125; written by #&#123;author.name&#125;&quot;</span><br><span class="line">end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># app/models/coumputer.rb</span><br><span class="line"></span><br><span class="line">class Computer &lt; Product</span><br><span class="line">validates :cpu_id,   presence: true</span><br><span class="line">validates :maker_id, presence: true</span><br><span class="line"></span><br><span class="line">def full_name</span><br><span class="line">&quot;#&#123;name&#125;(#&#123;cpu.name&#125;/#&#123;maker.name&#125;)&quot;</span><br><span class="line">end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 在 index.html.erb 中把 &lt;td&gt;&lt;%= product.name %&gt;&lt;/td&gt; 替换为</span><br><span class="line">&lt;td&gt;&lt;%= product.full_name %&gt;&lt;/td&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>效果如下<br><img src="http://i2.tietuku.com/e8c4654e9aba8f85.png" alt=""></p>
+</blockquote>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="不需要STI"><a href="#不需要STI" class="headerlink" title="不需要STI"></a>不需要STI</h3><blockquote>
+<p>如果model中恰好有一个<code>type</code> 属性, 但是并不希望使用单表继承, 可以使用下面的方法禁用:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 在model中 </span><br><span class="line">self.inheritance_column = nil</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/STI/" rel="tag">#STI</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/10/one-to-one/" rel="next" title="Rails 中实现model的一对一关系映射">
+                <i class="fa fa-chevron-left"></i> Rails 中实现model的一对一关系映射
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/11/polymorphic/" rel="prev" title="Rails 实现多态(polymorphic) 关系">
+                Rails 实现多态(polymorphic) 关系 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建新的项目"><span class="nav-number">1.</span> <span class="nav-text">创建新的项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现-STI"><span class="nav-number">2.</span> <span class="nav-text">实现 STI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相应的控制器-视图和路由"><span class="nav-number">3.</span> <span class="nav-text">相应的控制器, 视图和路由</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对-model-单独处理-同名虚属性"><span class="nav-number">4.</span> <span class="nav-text">对 model 单独处理(同名虚属性)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充"><span class="nav-number">5.</span> <span class="nav-text">补充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不需要STI"><span class="nav-number">5.1.</span> <span class="nav-text">不需要STI</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

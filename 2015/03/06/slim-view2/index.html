@@ -1,0 +1,764 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="slim template view," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本文对slim进行深入讲解
+
+Mac下安装slim
+我们可以在Mac中安装slim, 不再局限于rails应用中使用slim.
+
+1gem install slim
+把slim文件转换成html
+现有一个test.slim文件:
+
+123456doctype htmlhtml  head    title test.slim  body    h1 Slim Sample
+
+可以通过下面的命令转">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails中使用slim模板文件入门介绍(二)">
+<meta property="og:url" content="http://yoursite.com/2015/03/06/slim-view2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文对slim进行深入讲解
+
+Mac下安装slim
+我们可以在Mac中安装slim, 不再局限于rails应用中使用slim.
+
+1gem install slim
+把slim文件转换成html
+现有一个test.slim文件:
+
+123456doctype htmlhtml  head    title test.slim  body    h1 Slim Sample
+
+可以通过下面的命令转">
+<meta property="og:updated_time" content="2015-03-07T03:51:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails中使用slim模板文件入门介绍(二)">
+<meta name="twitter:description" content="本文对slim进行深入讲解
+
+Mac下安装slim
+我们可以在Mac中安装slim, 不再局限于rails应用中使用slim.
+
+1gem install slim
+把slim文件转换成html
+现有一个test.slim文件:
+
+123456doctype htmlhtml  head    title test.slim  body    h1 Slim Sample
+
+可以通过下面的命令转">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails中使用slim模板文件入门介绍(二) | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails中使用slim模板文件入门介绍(二)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-06T19:57:34+08:00" content="2015-03-06">
+              2015-03-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文对slim进行深入讲解</p>
+</blockquote>
+<h2 id="Mac下安装slim"><a href="#Mac下安装slim" class="headerlink" title="Mac下安装slim"></a>Mac下安装slim</h2><blockquote>
+<p>我们可以在Mac中安装slim, 不再局限于rails应用中使用slim.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem install slim</span><br></pre></td></tr></table></figure>
+<h2 id="把slim文件转换成html"><a href="#把slim文件转换成html" class="headerlink" title="把slim文件转换成html"></a>把slim文件转换成html</h2><blockquote>
+<p>现有一个<code>test.slim</code>文件:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">doctype html</span><br><span class="line">html</span><br><span class="line">  head</span><br><span class="line">    title test.slim</span><br><span class="line">  body</span><br><span class="line">    h1 Slim Sample</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>可以通过下面的命令转化为html文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ slimrb test.slim test.html</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># test.html</span><br><span class="line">&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;test.slim&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Slim Sample&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>转换完的文件没有换行, 如果需要转换成带有换行格式的html需要加上-p</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ slimrb -p  test.slim test.html</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># test.html</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;title&gt;test.slim&lt;/title&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;h1&gt;</span><br><span class="line">      Slim Sample</span><br><span class="line">    &lt;/h1&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="基本表示方法"><a href="#基本表示方法" class="headerlink" title="基本表示方法"></a>基本表示方法</h2><blockquote>
+<p>slim的写法非常简单, 只需要除去html的<code>&lt;, &gt;, /&gt;</code>和闭合标签, 需要注意缩进的问题</p>
+<p>slim:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p aaa</span><br><span class="line">&lt;p&gt;bbb&lt;/p&gt;</span><br></pre></td></tr></table></figure></p>
+<p>会被转成:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;</span><br><span class="line">  aaa</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;p&gt;bbb&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="处理文本"><a href="#处理文本" class="headerlink" title="处理文本"></a>处理文本</h2><blockquote>
+<p>Slim文件中<code>|</code>后面的内容都会被转换成非html文本, 比如需要产生下面的HTML代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;</span><br><span class="line">aaa</span><br><span class="line">&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>slim的写法有如下几种:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p aaa</span><br></pre></td></tr></table></figure>
+<p>&gt;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p</span><br><span class="line">  | aaa</span><br></pre></td></tr></table></figure>
+<p>&gt;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p</span><br><span class="line">  |</span><br><span class="line">    aaa</span><br></pre></td></tr></table></figure>
+<h2 id="嵌套"><a href="#嵌套" class="headerlink" title="嵌套"></a>嵌套</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">div</span><br><span class="line">  | aaaa</span><br><span class="line">  p</span><br><span class="line">    span</span><br><span class="line">      | foo</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">  aaaa</span><br><span class="line">  &lt;p&gt;</span><br><span class="line">  &lt;span&gt;foo&lt;/span&gt;</span><br><span class="line">  &lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="控制标签前后的空格"><a href="#控制标签前后的空格" class="headerlink" title="控制标签前后的空格"></a>控制标签前后的空格</h2><blockquote>
+<p>在标签后面使用<code>&gt;``&lt;``&lt;&gt;</code>分别表示在HTML前, 后, 前后, 添加空格</p>
+<p><code>&gt;</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a&gt; href=&quot;url&quot; Link1</span><br><span class="line">a&gt; href=&quot;url&quot; Link2</span><br></pre></td></tr></table></figure></p>
+<p>html:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;url1&quot;&gt;Link1&lt;/a&gt; &lt;a href=&quot;url2&quot;&gt;Link2&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p><code>&lt;</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a&lt; href=&quot;url&quot; Link1</span><br><span class="line">a&lt; href=&quot;url&quot; Link2</span><br></pre></td></tr></table></figure></p>
+<p>html:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;url&quot;&gt;Link1&lt;/a&gt; &lt;a href=&quot;url&quot;&gt;Link2&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>&lt;&gt;</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a&lt;&gt; href=&quot;url&quot; Link1</span><br><span class="line">a&lt;&gt; href=&quot;url&quot; Link2</span><br></pre></td></tr></table></figure></p>
+<p>html:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;url&quot;&gt;Link1&lt;/a&gt;  &lt;a href=&quot;url&quot;&gt;Link2&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><blockquote>
+<p>对于src, href, name, title这些属性来说,我可以将其括在<code>[]</code>,<code>{}</code>, <code>()</code>中:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a href=&quot;foo/abc.html&quot; title=&quot;abc_def&quot;</span><br><span class="line">  | hello</span><br><span class="line"></span><br><span class="line">a(href=&quot;foo/abc.html&quot; title=&quot;abc_def&quot;)</span><br><span class="line">  | hello</span><br><span class="line"></span><br><span class="line">a(href=&quot;foo/abc.html&quot; </span><br><span class="line">title=&quot;abc_def&quot;)</span><br><span class="line">  | hello</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>三者均生成:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;foo/abc.html&quot; title=&quot;abc_def&quot;&gt;hello&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="id和class"><a href="#id和class" class="headerlink" title="id和class"></a>id和class</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">div#aaa abc</span><br><span class="line">#bbb abc</span><br><span class="line">p.ccc abc </span><br><span class="line">p class=&quot;ddd&quot; abc</span><br><span class="line">p(class=&quot;eee&quot;) abc</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;aaa&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div id=&quot;bbb&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;p class=&quot;ccc&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;p class=&quot;ddd&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;p class=&quot;eee&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><h3 id="HTML注释"><a href="#HTML注释" class="headerlink" title="HTML注释"></a>HTML注释</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/!</span><br><span class="line">  This is comment</span><br><span class="line"></span><br><span class="line">/! This is also comment</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--This is comment--&gt;&lt;!--This is also comment--&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="IE条件注释"><a href="#IE条件注释" class="headerlink" title="IE条件注释"></a>IE条件注释</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/[if lt IE9]</span><br><span class="line">  script src=&quot;html5.js&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--[if lt IE9]&gt;</span><br><span class="line">&lt;script src=&quot;html5.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;![endif]--&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Slim专属注释"><a href="#Slim专属注释" class="headerlink" title="Slim专属注释"></a>Slim专属注释</h3><blockquote>
+<p>不会被解析成html代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/ Only in Slim</span><br></pre></td></tr></table></figure>
+<h2 id="DOCTYPE"><a href="#DOCTYPE" class="headerlink" title="DOCTYPE"></a>DOCTYPE</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">doctype html </span><br><span class="line">doctype 5</span><br><span class="line">doctype 1.1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.1//EN&quot; &quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd&quot;&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="textarea"><a href="#textarea" class="headerlink" title="textarea"></a>textarea</h2><blockquote>
+<p>textarea中的文字可以随便换行</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">textarea </span><br><span class="line">  | abc </span><br><span class="line">    def</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;textarea&gt;abc</span><br><span class="line">def&lt;/textarea&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="escape和换行"><a href="#escape和换行" class="headerlink" title="escape和换行"></a>escape和换行</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pre</span><br><span class="line">  code</span><br><span class="line">    - str = &quot;&lt;div&gt;test1&lt;/div&gt;\n\</span><br><span class="line">      &lt;div&gt;test2&lt;/div&gt;&quot;</span><br><span class="line">    = str</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;test1&amp;lt;/div&amp;gt;</span><br><span class="line">&amp;lt;div&amp;gt;test2&amp;lt;/div&amp;gt;&lt;/code&gt;&lt;/pre&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong><em> 注意: 这里str变量中含有换行 </em></strong></p>
+</blockquote>
+<h2 id="使用变量"><a href="#使用变量" class="headerlink" title="使用变量"></a>使用变量</h2><blockquote>
+<p><code>-</code>后面的表示ruby代码, <code>=</code>表示escape html代码输出, <code>==</code>表示原样输出, <code>#{...}</code>表示变量的值</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- foo = &apos;baz&apos;</span><br><span class="line">div title=&quot;foo&quot; class=&quot;abc#&#123;foo&#125;&quot;</span><br><span class="line">  | class为abcbaz</span><br><span class="line">  = foo</span><br><span class="line"></span><br><span class="line">pre</span><br><span class="line">  code</span><br><span class="line">    - hello = &quot;&lt;div&gt;hh&lt;/div&gt;&quot;</span><br><span class="line">    = hello</span><br><span class="line">    == hello</span><br></pre></td></tr></table></figure>
+<h2 id="if-else"><a href="#if-else" class="headerlink" title="if else"></a>if else</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- foo = &apos;baz&apos;</span><br><span class="line">div title=&quot;foo&quot; class=&quot;abc#&#123;foo&#125;&quot;</span><br><span class="line">  | class为abcbaz</span><br><span class="line">  = foo</span><br><span class="line"></span><br><span class="line">pre</span><br><span class="line">  code</span><br><span class="line">    - hello = &quot;&lt;div&gt;hh&lt;/div&gt;&quot;</span><br><span class="line">    = hello</span><br><span class="line">    == hello</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;strong&gt;test1&lt;/strong&gt;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="switch-case-when"><a href="#switch-case-when" class="headerlink" title="switch case when"></a>switch case when</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">div</span><br><span class="line">  - b = 33</span><br><span class="line">  - case b</span><br><span class="line">  - when 22</span><br><span class="line">    = &quot;NOT&quot;</span><br><span class="line"></span><br><span class="line">  - when 33</span><br><span class="line">    = &quot;YEs&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;YEs&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="collection-each"><a href="#collection-each" class="headerlink" title="collection each"></a>collection each</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (3..7).each do |i|</span><br><span class="line">  p id=&quot;ee_#&#123;i&#125;&quot; test#&#123;i + 10&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;p id=&quot;ee_3&quot;&gt;test13&lt;/p&gt;&lt;p id=&quot;ee_4&quot;&gt;test14&lt;/p&gt;&lt;p id=&quot;ee_5&quot;&gt;test15&lt;/p&gt;&lt;p id=&quot;ee_6&quot;&gt;test16&lt;/p&gt;&lt;p id=&quot;ee_7&quot;&gt;test17&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="使用sass"><a href="#使用sass" class="headerlink" title="使用sass"></a>使用sass</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sass:</span><br><span class="line">  $wid: 300px</span><br><span class="line">  $col: red</span><br><span class="line">  div#ggg</span><br><span class="line">    width: $wid</span><br><span class="line">    height: $wid/3</span><br><span class="line">    color: $col</span><br><span class="line">    text-align: justify</span><br><span class="line">    span.ddd</span><br><span class="line">      display: block</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line">div#ggg &#123;</span><br><span class="line">    width: 300px;</span><br><span class="line">        height: 100px;</span><br><span class="line">            color: red;</span><br><span class="line">                text-align: justify;</span><br><span class="line">                  </span><br><span class="line">&#125;</span><br><span class="line">div#ggg span.ddd &#123;</span><br><span class="line">    display: block;</span><br><span class="line">      </span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong><em> 其他类型的资源文件</em></strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">JavaScript: javascript:</span><br><span class="line">Ruby: ruby:</span><br><span class="line">CSS: css:</span><br><span class="line">SCSS: scss:</span><br><span class="line">Less: less:</span><br><span class="line">CoffeeScript: coffee:</span><br></pre></td></tr></table></figure>
+<h2 id="包含外部文件"><a href="#包含外部文件" class="headerlink" title="包含外部文件"></a>包含外部文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">== Slim::Engine.new(File.read(&apos;header.slim&apos;)).render</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/slim-template-view/" rel="tag">#slim template view</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/06/slim-view/" rel="next" title="Rails中使用slim模板文件入门介绍(一)">
+                <i class="fa fa-chevron-left"></i> Rails中使用slim模板文件入门介绍(一)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/07/slim-view3/" rel="prev" title="使用`html2slim`把erb格式的文件转成slim格式">
+                使用`html2slim`把erb格式的文件转成slim格式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mac下安装slim"><span class="nav-number">1.</span> <span class="nav-text">Mac下安装slim</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#把slim文件转换成html"><span class="nav-number">2.</span> <span class="nav-text">把slim文件转换成html</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本表示方法"><span class="nav-number">3.</span> <span class="nav-text">基本表示方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理文本"><span class="nav-number">4.</span> <span class="nav-text">处理文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#嵌套"><span class="nav-number">5.</span> <span class="nav-text">嵌套</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制标签前后的空格"><span class="nav-number">6.</span> <span class="nav-text">控制标签前后的空格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性"><span class="nav-number">7.</span> <span class="nav-text">属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#id和class"><span class="nav-number">8.</span> <span class="nav-text">id和class</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注释"><span class="nav-number">9.</span> <span class="nav-text">注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTML注释"><span class="nav-number">9.1.</span> <span class="nav-text">HTML注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IE条件注释"><span class="nav-number">9.2.</span> <span class="nav-text">IE条件注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Slim专属注释"><span class="nav-number">9.3.</span> <span class="nav-text">Slim专属注释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOCTYPE"><span class="nav-number">10.</span> <span class="nav-text">DOCTYPE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#textarea"><span class="nav-number">11.</span> <span class="nav-text">textarea</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#escape和换行"><span class="nav-number">12.</span> <span class="nav-text">escape和换行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用变量"><span class="nav-number">13.</span> <span class="nav-text">使用变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if-else"><span class="nav-number">14.</span> <span class="nav-text">if else</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#switch-case-when"><span class="nav-number">15.</span> <span class="nav-text">switch case when</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#collection-each"><span class="nav-number">16.</span> <span class="nav-text">collection each</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用sass"><span class="nav-number">17.</span> <span class="nav-text">使用sass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包含外部文件"><span class="nav-number">18.</span> <span class="nav-text">包含外部文件</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

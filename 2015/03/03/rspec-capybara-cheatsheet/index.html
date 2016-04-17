@@ -1,0 +1,669 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="RSpec Capybara Capybara-Webkit," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Rspec Matcher判断值是否相等12expect(actual).to eq expectedexpect(actual).not_to eq expected
+判断是否为同一对象1234expect(actual).to be expected# 注意String类型并非同一对象expect(&amp;quot;test&amp;quot;).to be &amp;quot;test&amp;quot; # =&amp;gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RSpec Capybara 方法总结">
+<meta property="og:url" content="http://yoursite.com/2015/03/03/rspec-capybara-cheatsheet/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Rspec Matcher判断值是否相等12expect(actual).to eq expectedexpect(actual).not_to eq expected
+判断是否为同一对象1234expect(actual).to be expected# 注意String类型并非同一对象expect(&amp;quot;test&amp;quot;).to be &amp;quot;test&amp;quot; # =&amp;gt;">
+<meta property="og:updated_time" content="2015-03-04T12:09:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RSpec Capybara 方法总结">
+<meta name="twitter:description" content="Rspec Matcher判断值是否相等12expect(actual).to eq expectedexpect(actual).not_to eq expected
+判断是否为同一对象1234expect(actual).to be expected# 注意String类型并非同一对象expect(&amp;quot;test&amp;quot;).to be &amp;quot;test&amp;quot; # =&amp;gt;">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> RSpec Capybara 方法总结 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                RSpec Capybara 方法总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-03T19:21:03+08:00" content="2015-03-03">
+              2015-03-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Rspec-Matcher"><a href="#Rspec-Matcher" class="headerlink" title="Rspec Matcher"></a>Rspec Matcher</h2><h3 id="判断值是否相等"><a href="#判断值是否相等" class="headerlink" title="判断值是否相等"></a>判断值是否相等</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">expect(actual).to eq expected</span><br><span class="line">expect(actual).not_to eq expected</span><br></pre></td></tr></table></figure>
+<h3 id="判断是否为同一对象"><a href="#判断是否为同一对象" class="headerlink" title="判断是否为同一对象"></a>判断是否为同一对象</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">expect(actual).to be expected</span><br><span class="line"></span><br><span class="line"># 注意String类型并非同一对象</span><br><span class="line">expect(&quot;test&quot;).to be &quot;test&quot; # =&gt; Failure/Error</span><br></pre></td></tr></table></figure>
+<h3 id="比较-gt-gt-lt-lt-be-within"><a href="#比较-gt-gt-lt-lt-be-within" class="headerlink" title="比较(&gt;, &gt;=, &lt;=, &lt;, be_within)"></a>比较(&gt;, &gt;=, &lt;=, &lt;, be_within)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">expect(actual).to be &gt; expected</span><br><span class="line">expect(actual).to be &gt;= expected</span><br><span class="line">expect(actual).to be &lt; expected</span><br><span class="line">expect(actual).to be &lt;= expected</span><br><span class="line">expected(actual).to be_within(delta).of(expected)</span><br><span class="line"># i.e. 2.99在2.9-0.2到2.9+0.2的范围内</span><br><span class="line">expect(2.99).to be_within(0.2).of(2.9)</span><br></pre></td></tr></table></figure>
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">expect(actual).to match(/expression/)</span><br><span class="line"># i.e.</span><br><span class="line">expect(&quot;hello daniel&quot;).to match(/^hel/)</span><br></pre></td></tr></table></figure>
+<h3 id="实例所属类型"><a href="#实例所属类型" class="headerlink" title="实例所属类型"></a>实例所属类型</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 判断是否为某个类的实例</span><br><span class="line">expect(actual).to be_an_instance_of(expected)</span><br><span class="line"># i.e.</span><br><span class="line">expect(&quot;hell&quot;).to be_instance_of(String) # 不包括继承关系</span><br><span class="line"></span><br><span class="line"># 含继承关系的所属关系</span><br><span class="line">expect(actual).to be_a(expected)</span><br><span class="line">expect(actual).to be_an(expected)</span><br><span class="line">expect(actual).to be_a_kind_of(expected)</span><br><span class="line"></span><br><span class="line"># i.e.</span><br><span class="line">expect(&quot;1.11&quot;).to be_an Object</span><br></pre></td></tr></table></figure>
+<h3 id="true-false-和-nil"><a href="#true-false-和-nil" class="headerlink" title="true, false 和 nil"></a>true, false 和 nil</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">expect(actual).to be(true)</span><br><span class="line">expect(actual).not_to be(false)</span><br><span class="line">expect(actual).to be_nil</span><br><span class="line">expect(actual).not_to be_nil</span><br></pre></td></tr></table></figure>
+<h3 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">expect &#123; code where exception happens &#125;.to raise_error</span><br><span class="line">expect &#123; code where exception happens &#125;.to raise_error ErrorClass</span><br><span class="line">expect &#123; code where exception happens &#125;.to raise_error &quot;message&quot;</span><br><span class="line">expect &#123; code where exception happens &#125;.to raise_error(ErrorClass, &quot;message&quot;)</span><br><span class="line"></span><br><span class="line"># i.e.</span><br><span class="line">expect &#123; Post.find(-1)  &#125;.to raise_error ActiveRecord::RecordNotFound</span><br></pre></td></tr></table></figure>
+<h3 id="Predicate-machers"><a href="#Predicate-machers" class="headerlink" title="Predicate machers"></a>Predicate machers</h3><blockquote>
+<p>Rails中 <code>xxx?</code>的方法在RSpec中对于的匹配器为<code>be_xxx</code>, Rails中<code>has_xxx?</code>这种形式的方法在RSpec中对应的匹配器为<code>have_xxx</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">expect(actual).to be_xxx(expected)</span><br><span class="line">expect(actual).to have_xxx(expected)</span><br><span class="line"></span><br><span class="line">expect([1, 3]).to be_include(1)</span><br><span class="line">expect([]).to be_empty</span><br><span class="line"></span><br><span class="line">expect(a: 1).to have_key(:a)</span><br></pre></td></tr></table></figure>
+<h3 id="范围-Range"><a href="#范围-Range" class="headerlink" title="范围(Range)"></a>范围(Range)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">expect(1..10).to cover(3)</span><br><span class="line">expect(1..10).not_to cover(30)</span><br></pre></td></tr></table></figure>
+<h3 id="数值变化-change-by-from-to"><a href="#数值变化-change-by-from-to" class="headerlink" title="数值变化(change, by, from, to)"></a>数值变化(change, by, from, to)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># 增加2个Post</span><br><span class="line"></span><br><span class="line">it do</span><br><span class="line">  Post.create title: &quot;first&quot;, content: &quot;first&quot;</span><br><span class="line">    expect &#123;</span><br><span class="line">      2.times do |i|</span><br><span class="line">        Post.create title: &quot;MyPost#&#123;i&#125;&quot;, content: &quot;MyContent#&#123;i&#125;&quot;</span><br><span class="line">      end</span><br><span class="line"></span><br><span class="line">    &#125;.to change &#123; Post.count  &#125;.by(2)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 删除一个Post</span><br><span class="line">it do</span><br><span class="line">  Post.create title: &quot;first&quot;, content: &quot;first&quot;</span><br><span class="line">    expect &#123;</span><br><span class="line">      Post.first.destroy</span><br><span class="line">    &#125;.to change &#123; Post.count  &#125;.by(-1)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 数值从...变化到...</span><br><span class="line">it do</span><br><span class="line">  Post.create title: &quot;first&quot;, content: &quot;first&quot;</span><br><span class="line">    expect &#123;</span><br><span class="line">      2.times do |i|</span><br><span class="line">        Post.create title: &quot;MyPost#&#123;i&#125;&quot;, content: &quot;MyContent#&#123;i&#125;&quot;</span><br><span class="line">      end</span><br><span class="line">    &#125;.to change &#123; Post.count  &#125;.from(1).to(3)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="数组和字符串以及Hash包含的元素相关测试"><a href="#数组和字符串以及Hash包含的元素相关测试" class="headerlink" title="数组和字符串以及Hash包含的元素相关测试"></a>数组和字符串以及Hash包含的元素相关测试</h3><blockquote>
+<p>其实字符串可以理解为一种数组.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># 包含</span><br><span class="line">expect(actual).to include(expected)</span><br><span class="line"></span><br><span class="line"># 开始元素结束元素</span><br><span class="line">expect(actual).to start_with(expected)</span><br><span class="line">expect(actual).to end_with(expected)</span><br><span class="line"></span><br><span class="line"># 判断两个数组元素(不含顺序)是否相同</span><br><span class="line">expect(actual).to match_array(expected)</span><br><span class="line"></span><br><span class="line"># i.e.</span><br><span class="line">expect([1, 2, 3]).to include(1)</span><br><span class="line">expect([1, 2, 3]).to include(1, 2)</span><br><span class="line">expect([1, 2, 3]).to start_with(1)</span><br><span class="line">expect([1, 2, 3]).to start_with(1, 2)</span><br><span class="line">expect([1, 2, 3]).to end_with(3)</span><br><span class="line">expect([1, 2, 3]).to end_with(2, 3)</span><br><span class="line">expect(&#123;:a =&gt; &apos;b&apos;&#125;).to include(:a =&gt; &apos;b&apos;)</span><br><span class="line">expect(&quot;this string&quot;).to include(&quot;is str&quot;)</span><br><span class="line">expect(&quot;this string&quot;).to start_with(&quot;this&quot;)</span><br><span class="line">expect(&quot;this string&quot;).to end_with(&quot;ring&quot;)</span><br><span class="line">expect([1, 2, 3]).to contain_exactly(2, 3, 1)</span><br><span class="line">expect([1, 2, 3]).to match_array([3, 2, 1])</span><br></pre></td></tr></table></figure>
+<h2 id="自定义-Matcher-匹配器"><a href="#自定义-Matcher-匹配器" class="headerlink" title="自定义 Matcher(匹配器)"></a>自定义 Matcher(匹配器)</h2><blockquote>
+<p>可以在spec/support 目录下新建一个文件用于定义匹配器, 使用<code>RSpec::Matchers.define</code>来定义Matcher.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">RSpec::Matchers.define :be_a_multiple_of do |expected|</span><br><span class="line">  match do |actual|</span><br><span class="line">    actual % expected == 0</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 使用</span><br><span class="line">expect(9).to be_a_multiple_of(3)</span><br></pre></td></tr></table></figure>
+<h2 id="RSpec-Mock"><a href="#RSpec-Mock" class="headerlink" title="RSpec Mock"></a>RSpec Mock</h2><h3 id="Mock基础"><a href="#Mock基础" class="headerlink" title="Mock基础"></a>Mock基础</h3><blockquote>
+<p>在RSpec中, 使用<code>allow</code>, <code>receive</code>, <code>and_return</code>方法, 可以调用mock的类方法或者实例方法.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 设置对象的实例方法及其返回值</span><br><span class="line">post = double(:post)</span><br><span class="line">allow(post).to receive(:title).and_return(&quot;Mock Name&quot;) # 可以理解为在post对象上快捷的定义了方法title和返回值</span><br><span class="line">puts post.title # =&gt; &quot;Mock Name&quot;</span><br><span class="line"></span><br><span class="line"># 上面的写法等价于</span><br><span class="line">allow(post).to receive(:title) &#123; &quot;Mock Name&quot; &#125;</span><br><span class="line"></span><br><span class="line"># 设定类方法及其返回值</span><br><span class="line">allow(Post).to receive(:count).and_return(4)</span><br></pre></td></tr></table></figure>
+<h3 id="连续返回值"><a href="#连续返回值" class="headerlink" title="连续返回值"></a>连续返回值</h3><blockquote>
+<p><code>and_return</code>方法传入多个参数, 连续调用方法会依次返回这些值</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">allow(Product).to receive(:increment).and_return(1, 2, 3)</span><br><span class="line">puts Product.increment # =&gt; 1</span><br><span class="line">puts Product.increment # =&gt; 2</span><br><span class="line">puts Product.increment # =&gt; 3</span><br><span class="line">puts Product.increment # =&gt; 3</span><br><span class="line">puts Product.increment # =&gt; 3</span><br></pre></td></tr></table></figure>
+<h3 id="返回异常"><a href="#返回异常" class="headerlink" title="返回异常"></a>返回异常</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allow(double).to receive(:msg).and_raise(error)</span><br></pre></td></tr></table></figure>
+<h2 id="Capybara"><a href="#Capybara" class="headerlink" title="Capybara"></a>Capybara</h2><blockquote>
+<p>Capybara可以模拟用户的行为, 比如点击按钮, 链接, 填写表单等</p>
+</blockquote>
+<h3 id="访问路径"><a href="#访问路径" class="headerlink" title="访问路径"></a>访问路径</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">visit &quot;/posts&quot;</span><br><span class="line">visit posts_path(post)</span><br></pre></td></tr></table></figure>
+<h3 id="鼠标点击按钮或者超链接"><a href="#鼠标点击按钮或者超链接" class="headerlink" title="鼠标点击按钮或者超链接"></a>鼠标点击按钮或者超链接</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">click_link &quot;new&quot;</span><br><span class="line"></span><br><span class="line">click_button &quot;Ceate User&quot;</span><br><span class="line"></span><br><span class="line">click_on &quot;Create User&quot; # 该方法表示点击链接或者按钮</span><br></pre></td></tr></table></figure>
+<h3 id="填写表单"><a href="#填写表单" class="headerlink" title="填写表单"></a>填写表单</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># 输入textfield或者textarea</span><br><span class="line">fill_in &quot;可以是id属性, name属性或者label名称&quot;, with: &quot;值&quot;</span><br><span class="line"></span><br><span class="line"># radio 选择</span><br><span class="line">choose &quot;id属性, name属性或者label名称&quot;</span><br><span class="line"></span><br><span class="line"># checkbox 的选择</span><br><span class="line">check &quot;id属性, name属性或者label名称&quot;</span><br><span class="line">uncheck &quot;id属性, name属性或者label名称&quot;</span><br><span class="line"></span><br><span class="line"># 上传</span><br><span class="line">attach_file &quot;id属性, name属性或者label名称&quot;, &quot;/path/to/image.jpg&quot;  </span><br><span class="line"></span><br><span class="line"># selectbox</span><br><span class="line"></span><br><span class="line">select &quot;选择option的属性值&quot;, &quot;id属性, name属性或者label名称&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="验证当前路径current-path"><a href="#验证当前路径current-path" class="headerlink" title="验证当前路径current_path"></a>验证当前路径current_path</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">expect(current_path).to eq new_post_path</span><br><span class="line">expect(page.current_path).to eq new_post_path</span><br></pre></td></tr></table></figure>
+<h3 id="验证页面的文字内容"><a href="#验证页面的文字内容" class="headerlink" title="验证页面的文字内容"></a>验证页面的文字内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">expect(page).to have_content &quot;foo&quot;</span><br><span class="line">expect(page).to have_no_content &quot;bar&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="验证css和xpath"><a href="#验证css和xpath" class="headerlink" title="验证css和xpath"></a>验证css和xpath</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">expect(page).to have_css &quot;table tr.foo&quot;</span><br><span class="line">expect(page).to have_path &quot;//table/tr&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="验证一些HTML元素是否存在"><a href="#验证一些HTML元素是否存在" class="headerlink" title="验证一些HTML元素是否存在"></a>验证一些HTML元素是否存在</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">find_link(&quot;Hello&quot;).visible?</span><br><span class="line">expect(find(&apos;#navigation&apos;)).to have_button(&apos;Sign out&apos;)</span><br></pre></td></tr></table></figure>
+<h3 id="特定范围内验证"><a href="#特定范围内验证" class="headerlink" title="特定范围内验证"></a>特定范围内验证</h3><blockquote>
+<p>在页面中圈出一个范围来进行测试, 使用的方法是<code>within</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 可以使用CSS和XPath来圈定范围</span><br><span class="line">within &quot;li#employee&quot; do</span><br><span class="line">  fill_in &apos;Name&apos;, :with =&gt; &apos;Jimmy&apos;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">within :xpath, &apos;//div[contains(., &quot;bar&quot;)]&apos; do</span><br><span class="line">...</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">within &quot;li&quot;, text: &quot;hello&quot; do</span><br><span class="line">...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="操作其他窗口"><a href="#操作其他窗口" class="headerlink" title="操作其他窗口"></a>操作其他窗口</h3><blockquote>
+<p>Capybara还可以操作弹出的窗口, 比如使用facebook第三方登录:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">facebook_window = window_opened_by do</span><br><span class="line">  click_button &apos;Login with FB&apos;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 操作弹出的窗口</span><br><span class="line">within_window facebook_window do</span><br><span class="line">  find(&apos;#login_email&apos;).set(&apos;d@f.com&apos;)</span><br><span class="line">  find(&apos;#login_password&apos;).set(&apos;pwd&apos;)</span><br><span class="line">  click_button &apos;Login&apos;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h3><blockquote>
+<p>笨方法是打印出页面的html代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">puts page.body</span><br></pre></td></tr></table></figure></p>
+<p>另外, 使用<code>launchy</code>这个gem, 在测试中调用<code>save_and_open_page</code>, 具体请参阅<a href="https://github.com/copiousfreetime/launchy" target="_blank" rel="external">https://github.com/copiousfreetime/launchy</a></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">it &apos;find_link&apos; do</span><br><span class="line">  find_link(&quot;hello&quot;).visible?</span><br><span class="line">  save_and_open_page</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="Javascript的测试"><a href="#Javascript的测试" class="headerlink" title="Javascript的测试"></a>Javascript的测试</h2><blockquote>
+<p>上篇文章已经说过, 测试js时需要指定选项<code>js: true</code>; 还要在<code>rails_helper.rb</code>中配置Database Cleaner清除数据的策略</p>
+</blockquote>
+<h3 id="点击js的alert-confirm对话框的确定按钮"><a href="#点击js的alert-confirm对话框的确定按钮" class="headerlink" title="点击js的alert, confirm对话框的确定按钮"></a>点击js的alert, confirm对话框的确定按钮</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 点击OK按钮</span><br><span class="line">page.driver.browser.accept_js_confirms</span><br><span class="line"></span><br><span class="line"># 点击NO按钮</span><br><span class="line">page.driver.browser.dismiss_js_confirms</span><br><span class="line"></span><br><span class="line"># 获取对话框的消息</span><br><span class="line">page.driver.browser.alert_messages</span><br><span class="line">page.driver.browser.confirm_messages</span><br><span class="line">page.driver.browser.console_messages</span><br></pre></td></tr></table></figure>
+<h2 id="测试错误页面"><a href="#测试错误页面" class="headerlink" title="测试错误页面"></a>测试错误页面</h2><blockquote>
+<p>测试404, 500等错误页面首先需要修改<code>test.rb</code>的配置信息, 这样发生找不到资源时会跳转的错误页面.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Show full error reports.</span><br><span class="line">config.consider_all_requests_local       = false</span><br><span class="line"># Raise exceptions instead of rendering exception templates.</span><br><span class="line">config.action_dispatch.show_exceptions = true</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>测试代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"># spec/features/applications_spec.rb</span><br><span class="line">require &apos;rails_helper&apos;</span><br><span class="line"></span><br><span class="line">RSpec.feature &quot;Applications&quot;, type: :feature do</span><br><span class="line">  describe &quot;404 error&quot; do</span><br><span class="line"></span><br><span class="line">    context &quot;Routing Error&quot; do</span><br><span class="line">      before do</span><br><span class="line">        visit &quot;/undefined_routing_path&quot;</span><br><span class="line">      end</span><br><span class="line"></span><br><span class="line">      it &quot;moves to 404 page&quot; do</span><br><span class="line">        expect(page).to have_content(&quot;The page you were looking for doesn&apos;t exist.&quot;)</span><br><span class="line">      end</span><br><span class="line"></span><br><span class="line">      it &quot;status code is 404&quot; do</span><br><span class="line">        expect(page.status_code).to eq 404</span><br><span class="line">      end</span><br><span class="line"></span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    context &quot;RecordNotFound&quot; do</span><br><span class="line">      before do</span><br><span class="line">        visit edit_post_path(100000)</span><br><span class="line">        save_and_open_page</span><br><span class="line">      end</span><br><span class="line"></span><br><span class="line">      it &quot;move to 404 page&quot; do</span><br><span class="line">        expect(page).to have_content(&quot;The page you were looking for doesn&apos;t exist.&quot;)</span><br><span class="line">      end</span><br><span class="line"></span><br><span class="line">      it &quot;has status code 404&quot; do</span><br><span class="line">        expect(page.status_code).to eq 404</span><br><span class="line">      end</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  describe &quot;500 error&quot; do</span><br><span class="line">    context &quot;RecordNotFound&quot; do</span><br><span class="line">      before do</span><br><span class="line">        expect_any_instance_of(PostsController).to receive(:index).and_throw(Exception)</span><br><span class="line">        visit posts_path</span><br><span class="line">      end</span><br><span class="line"></span><br><span class="line">      it &quot;move to 500 page&quot; do</span><br><span class="line">        expect(page).to have_content(&quot;We&apos;re sorry, but something went wrong.&quot;)</span><br><span class="line">      end</span><br><span class="line"></span><br><span class="line">      it &quot;has status code 500&quot; do</span><br><span class="line">        expect(page.status_code).to eq 500</span><br><span class="line">      end</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RSpec-Capybara-Capybara-Webkit/" rel="tag">#RSpec Capybara Capybara-Webkit</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/03/rspec-capybara/" rel="next" title="RSpec, Capybara, FactoryGirl的使用方法介绍">
+                <i class="fa fa-chevron-left"></i> RSpec, Capybara, FactoryGirl的使用方法介绍
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/04/test-js-with-jasmine/" rel="prev" title="Rails中使用Jasmine测试javascript">
+                Rails中使用Jasmine测试javascript <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Rspec-Matcher"><span class="nav-number">1.</span> <span class="nav-text">Rspec Matcher</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#判断值是否相等"><span class="nav-number">1.1.</span> <span class="nav-text">判断值是否相等</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断是否为同一对象"><span class="nav-number">1.2.</span> <span class="nav-text">判断是否为同一对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#比较-gt-gt-lt-lt-be-within"><span class="nav-number">1.3.</span> <span class="nav-text">比较(>, >=, <=, <, be_within)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式"><span class="nav-number">1.4.</span> <span class="nav-text">正则表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例所属类型"><span class="nav-number">1.5.</span> <span class="nav-text">实例所属类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#true-false-和-nil"><span class="nav-number">1.6.</span> <span class="nav-text">true, false 和 nil</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常"><span class="nav-number">1.7.</span> <span class="nav-text">异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Predicate-machers"><span class="nav-number">1.8.</span> <span class="nav-text">Predicate machers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#范围-Range"><span class="nav-number">1.9.</span> <span class="nav-text">范围(Range)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数值变化-change-by-from-to"><span class="nav-number">1.10.</span> <span class="nav-text">数值变化(change, by, from, to)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组和字符串以及Hash包含的元素相关测试"><span class="nav-number">1.11.</span> <span class="nav-text">数组和字符串以及Hash包含的元素相关测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义-Matcher-匹配器"><span class="nav-number">2.</span> <span class="nav-text">自定义 Matcher(匹配器)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSpec-Mock"><span class="nav-number">3.</span> <span class="nav-text">RSpec Mock</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mock基础"><span class="nav-number">3.1.</span> <span class="nav-text">Mock基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连续返回值"><span class="nav-number">3.2.</span> <span class="nav-text">连续返回值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回异常"><span class="nav-number">3.3.</span> <span class="nav-text">返回异常</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Capybara"><span class="nav-number">4.</span> <span class="nav-text">Capybara</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#访问路径"><span class="nav-number">4.1.</span> <span class="nav-text">访问路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#鼠标点击按钮或者超链接"><span class="nav-number">4.2.</span> <span class="nav-text">鼠标点击按钮或者超链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#填写表单"><span class="nav-number">4.3.</span> <span class="nav-text">填写表单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证当前路径current-path"><span class="nav-number">4.4.</span> <span class="nav-text">验证当前路径current_path</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证页面的文字内容"><span class="nav-number">4.5.</span> <span class="nav-text">验证页面的文字内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证css和xpath"><span class="nav-number">4.6.</span> <span class="nav-text">验证css和xpath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证一些HTML元素是否存在"><span class="nav-number">4.7.</span> <span class="nav-text">验证一些HTML元素是否存在</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特定范围内验证"><span class="nav-number">4.8.</span> <span class="nav-text">特定范围内验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作其他窗口"><span class="nav-number">4.9.</span> <span class="nav-text">操作其他窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Debug"><span class="nav-number">4.10.</span> <span class="nav-text">Debug</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Javascript的测试"><span class="nav-number">5.</span> <span class="nav-text">Javascript的测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#点击js的alert-confirm对话框的确定按钮"><span class="nav-number">5.1.</span> <span class="nav-text">点击js的alert, confirm对话框的确定按钮</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试错误页面"><span class="nav-number">6.</span> <span class="nav-text">测试错误页面</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

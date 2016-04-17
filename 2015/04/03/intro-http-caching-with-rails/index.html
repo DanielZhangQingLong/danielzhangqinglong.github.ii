@@ -1,0 +1,655 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="缓存," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="引自https://robots.thoughtbot.com/introduction-to-conditional-http-caching-with-rails
+HTTP提供给开发者了开发者强大的工具来缓存响应. 一般来讲我们不希望客户端盲目缓存已经获取的内容, 也不希望依赖指定的expiration headers. 我们需要一种方法让客户端来问服务器一个资源是否被更新过了.HTTP提供">
+<meta property="og:type" content="article">
+<meta property="og:title" content="译 ~ 介绍Rails中的条件HTTP缓存">
+<meta property="og:url" content="http://yoursite.com/2015/04/03/intro-http-caching-with-rails/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="引自https://robots.thoughtbot.com/introduction-to-conditional-http-caching-with-rails
+HTTP提供给开发者了开发者强大的工具来缓存响应. 一般来讲我们不希望客户端盲目缓存已经获取的内容, 也不希望依赖指定的expiration headers. 我们需要一种方法让客户端来问服务器一个资源是否被更新过了.HTTP提供">
+<meta property="og:updated_time" content="2015-04-03T23:59:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="译 ~ 介绍Rails中的条件HTTP缓存">
+<meta name="twitter:description" content="引自https://robots.thoughtbot.com/introduction-to-conditional-http-caching-with-rails
+HTTP提供给开发者了开发者强大的工具来缓存响应. 一般来讲我们不希望客户端盲目缓存已经获取的内容, 也不希望依赖指定的expiration headers. 我们需要一种方法让客户端来问服务器一个资源是否被更新过了.HTTP提供">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 译 ~ 介绍Rails中的条件HTTP缓存 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                译 ~ 介绍Rails中的条件HTTP缓存
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-04-03T13:48:33+08:00" content="2015-04-03">
+              2015-04-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>引自<a href="https://robots.thoughtbot.com/introduction-to-conditional-http-caching-with-rails" target="_blank" rel="external">https://robots.thoughtbot.com/introduction-to-conditional-http-caching-with-rails</a></p>
+<p>HTTP提供给开发者了开发者强大的工具来缓存响应. 一般来讲我们不希望客户端盲目缓存已经获取的内容, 也不希望依赖指定的expiration headers. 我们需要一种方法让客户端来问服务器一个资源是否被更新过了.<br>HTTP提供了这种条件性的缓存方法. 客户端可以发送请求给服务器来找出服务器中是不是有一个资源的新版本.<br>Rails又提供了强大的工具来利用这一特点. 接下来看看一些普通的方法检查客户端缓存是新的还是过时的.</p>
+</blockquote>
+<h2 id="ETags"><a href="#ETags" class="headerlink" title="ETags"></a>ETags</h2><blockquote>
+<p>ETags是entity tags的缩写, 是一种普遍的方式来条件下的验证HTTP缓存. ETags是代表所给内容的摘要.服务器返回的响应包含了ETag, 代表资源的状态, 作为HTTP响应头的一部分. 后续的HTTP请求想知道上次请求之后资源是否已经改变, 可以通过发送<code>If-None-Match</code>请求头. 然后服务器会去比较所请求资源的Etag和请求中提供的是否相同, 若相同, 客户端缓存会被认为是新的服务器会返回”304 Not Modified”状态.如果不相同服务器就会响应一个新的Etag和已经更新的资源.</p>
+</blockquote>
+<h2 id="Last-Modified-Timestamp"><a href="#Last-Modified-Timestamp" class="headerlink" title="Last-Modified Timestamp"></a>Last-Modified Timestamp</h2><blockquote>
+<p>另一个服务器提供的header是<code>Last-Modified</code>, 它会返回资源上次被修改的时间.然后客户端会包含<code>If-Modified-Since</code> header 和<code>Last-Modified</code> 时间戳值来询问服务器前一次请求后该资源是否被修改过.<br>同样, 如果上次请求之后资源没有被修改, 服务器就会响应一个”304 Not Modified”状态. 否则它会更新资源和新的<code>Last-Modified</code>时间戳.</p>
+</blockquote>
+<h2 id="Caching-with-fresh-when"><a href="#Caching-with-fresh-when" class="headerlink" title="Caching with fresh_when"></a>Caching with fresh_when</h2><blockquote>
+<p>现在看看Rails对这两个header是如果处理的(<code>ETags and Last-Modified HTTP</code>)<br>ActionController提供了一个强大的方法叫做<code>fresh_when</code>. 它会使用ETag或者Last-Modified时间戳来资源是否是最新的.<br>假设有一个简单的Rails 博客应用:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/posts_controller.rb</span><br><span class="line">class PostsController &lt; ApplicationController</span><br><span class="line">  def show</span><br><span class="line">    @post = Post.find(params[:id])</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># config/routes.rb</span><br><span class="line">Rails.application.routes.draw do</span><br><span class="line">  resources :posts</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果使用curl请求一个单独的post, 应该可以看到这些东西返回:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -i http://localhost:3000/posts/1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>返回的内容:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Content-Type: text/html; charset=utf-8</span><br><span class="line">Etag: &quot;4af7e17fc369c6d1af99f8994d8fd387&quot;</span><br><span class="line">Server: WEBrick/1.3.1 (Ruby/2.1.2/2014-05-08)</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h1&gt;Blog post 1&lt;/h1&gt;</span><br><span class="line">&lt;p&gt;lorem ipsum&lt;/p&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意, 现在我们还没做什么特别的事情, 注意一下响应中ETag, 它代表了被返回的资源.<br>如果我继续使用这条curl命令去请求资源发现每一次的ETag都是不同的.那就与刚才的讨论相违背了, 因为资源没有发生变化.<br>我需要修改controller通知它: 从上一次被修改到post没有被修改. 所以再次发生请求, ETag的值是没有改变的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">curl -i http://localhost:3000/posts/1</span><br><span class="line"></span><br><span class="line"># =&gt;</span><br><span class="line">Content-Length: 667</span><br><span class="line">Content-Type: text/html; charset=utf-8</span><br><span class="line">Etag: &quot;534279bfc931d4236713095ffd3efb28&quot;</span><br><span class="line">Last-Modified: Wed, 12 Nov 2014 15:44:46 GMT</span><br><span class="line">Server: WEBrick/1.3.1 (Ruby/2.1.3/2014-09-19)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这时发现响应中多了post <code>Last-Modified</code>时间戳. 我们还需要通过ETag或者last modified时间戳(对应的HTTP请求header分别为<code>If-None-Match</code>和<code>If-Modified-Since</code>)验证缓存是否有效:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -i -H &apos;If-None-Match: &quot;534279bfc931d4236713095ffd3efb28&quot;&apos; http://localhost:3000/posts/1</span><br><span class="line"></span><br><span class="line"># =&gt;</span><br><span class="line">HTTP/1.1 304 Not Modified</span><br><span class="line">Etag: &quot;534279bfc931d4236713095ffd3efb28&quot;</span><br><span class="line">Last-Modified: Wed, 12 Nov 2014 15:44:46 GMT</span><br><span class="line">Server: WEBrick/1.3.1 (Ruby/2.1.3/2014-09-19)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果是<code>If-Modified-Since</code>header:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -i -H &apos;If-Modified-Since: Wed, 12 Nov 2014 15:44:46 GMT&apos; http://localhost:3000/posts/1</span><br><span class="line"></span><br><span class="line"># =&gt;</span><br><span class="line">HTTP/1.1 304 Not Modified</span><br><span class="line">Etag: &quot;534279bfc931d4236713095ffd3efb28&quot;</span><br><span class="line">Last-Modified: Wed, 12 Nov 2014 15:44:46 GMT</span><br><span class="line">Server: WEBrick/1.3.1 (Ruby/2.1.3/2014-09-19)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当然上面两种方式的结果是一样的.</p>
+</blockquote>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><blockquote>
+<p>为了弄清楚缓存到底为我们带来了什么, 先看看在没有使用cache的情况下Rails的日志:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Started GET &quot;/posts/1&quot; for 127.0.0.1 at 2014-11-12 11:33:57 -0500</span><br><span class="line">Processing by PostsController#show as */*</span><br><span class="line">Parameters: &#123;&quot;id&quot;=&gt;&quot;1&quot;&#125;</span><br><span class="line">Post Load (0.3ms)  SELECT  &quot;posts&quot;.* FROM &quot;posts&quot;  WHERE &quot;posts&quot;.&quot;id&quot; = $1</span><br><span class="line">LIMIT 1  [[&quot;id&quot;, 1]]</span><br><span class="line">Rendered posts/show.html.erb within layouts/application (0.1ms)</span><br><span class="line">Rendered application/_flashes.html.erb (0.0ms)</span><br><span class="line">Rendered application/_analytics.html.erb (0.1ms)</span><br><span class="line">Rendered application/_javascript.html.erb (16.1ms)</span><br><span class="line">Completed 200 OK in 35ms (Views: 33.4ms | ActiveRecord: 0.3ms)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们发现请求耗费了33ms, render了很多模板以及局部文件. 不难发现, 多数时间耗费在了render处理.而ActiveRecord花费的时间还不足1ms.<br>下面再来看看替换成条件性缓存的日志, 使用<code>If-None-Match</code> :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Started GET &quot;/posts/1&quot; for 127.0.0.1 at 2014-11-12 11:39:52 -0500</span><br><span class="line">Processing by PostsController#show as */*</span><br><span class="line">Parameters: &#123;&quot;id&quot;=&gt;&quot;1&quot;&#125;</span><br><span class="line">Post Load (0.3ms)  SELECT  &quot;posts&quot;.* FROM &quot;posts&quot;  WHERE &quot;posts&quot;.&quot;id&quot; = $1</span><br><span class="line">LIMIT 1  [[&quot;id&quot;, 1]]</span><br><span class="line">Completed 304 Not Modified in 2ms (ActiveRecord: 0.3ms)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意我已经砍掉了request中的整个render处理. 既然客户端已经缓存了最新响应内容, Rails就没有必要再去render处理. 它可以通过ActiveRecord来载入post, 并且验证自从上一次请求之后是否有被修改过.<br>我们的请求从33ms减少到了2ms. 这在性能上是94%的提高. 不只是跳过了render处理, 我们的响应由于不需要返回body变得更加轻量级了.<br>例子中的数据很小, 如果是在一个背后有许多复杂的逻辑的大的项目中, 那么就会节省很多时间.<br>此外, 这些请求还可以被放到公共的缓存如: “Rack::Cache”中, 来为普通的资源提供共享. 与此相对的就是用户浏览器中的私有缓存.</p>
+</blockquote>
+<h2 id="Getting-more"><a href="#Getting-more" class="headerlink" title="Getting more"></a>Getting more</h2><blockquote>
+<p>单单一个<code>fresh_when</code>方法也不是没有局限性, 它不能处理用户指定的内容. 如果我们想展示每个用户上的不同内容, 是办不到的.<br>另外, 这种缓存是不被用户们共享的, 只有当用户反复去访问同一篇post时这种缓存才能发挥作用.<br>最后, 目前我只是局限于<code>render</code>调用, 如果需要定制化别的格式<code>render xml:</code> 或者<code>render json:</code>又该如何提高访问效率呢? 请参见(<a href="https://robots.thoughtbot.com/how-to-evaluate-your-rails-json-api-for-performance-improvements" target="_blank" rel="external">https://robots.thoughtbot.com/how-to-evaluate-your-rails-json-api-for-performance-improvements</a>) (p.s.我以后会找个时间翻译)</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/缓存/" rel="tag">#缓存</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/04/01/elastic-search/" rel="next" title="Rails中Elasticsearch + tire 进行全文检索">
+                <i class="fa fa-chevron-left"></i> Rails中Elasticsearch + tire 进行全文检索
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/04/sidekiq/" rel="prev" title="Rails使用sidekiq进行异步任务处理">
+                Rails使用sidekiq进行异步任务处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ETags"><span class="nav-number">1.</span> <span class="nav-text">ETags</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Last-Modified-Timestamp"><span class="nav-number">2.</span> <span class="nav-text">Last-Modified Timestamp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Caching-with-fresh-when"><span class="nav-number">3.</span> <span class="nav-text">Caching with fresh_when</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">4.</span> <span class="nav-text">Conclusion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Getting-more"><span class="nav-number">5.</span> <span class="nav-text">Getting more</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

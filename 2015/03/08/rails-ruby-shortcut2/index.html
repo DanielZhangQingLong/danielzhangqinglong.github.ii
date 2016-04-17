@@ -1,0 +1,674 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Rails Ruby shortcut Refactoring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Rails
+以下的语法都是Rails 对ruby的扩展, ruby中无法使用. 而且, 多半的方法使用ActiveSupport这个gem提供的.安装gem, 并导入:
+
+123456$ gem install activesupportrequire &amp;apos;active_support/all&amp;apos;nil.blank? # =&amp;gt; true
+使用Object#try(:metho">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails代码技巧总结(二) Rails相关">
+<meta property="og:url" content="http://yoursite.com/2015/03/08/rails-ruby-shortcut2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Rails
+以下的语法都是Rails 对ruby的扩展, ruby中无法使用. 而且, 多半的方法使用ActiveSupport这个gem提供的.安装gem, 并导入:
+
+123456$ gem install activesupportrequire &amp;apos;active_support/all&amp;apos;nil.blank? # =&amp;gt; true
+使用Object#try(:metho">
+<meta property="og:updated_time" content="2015-03-09T03:04:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails代码技巧总结(二) Rails相关">
+<meta name="twitter:description" content="Rails
+以下的语法都是Rails 对ruby的扩展, ruby中无法使用. 而且, 多半的方法使用ActiveSupport这个gem提供的.安装gem, 并导入:
+
+123456$ gem install activesupportrequire &amp;apos;active_support/all&amp;apos;nil.blank? # =&amp;gt; true
+使用Object#try(:metho">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails代码技巧总结(二) Rails相关 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails代码技巧总结(二) Rails相关
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-08T13:43:07+08:00" content="2015-03-08">
+              2015-03-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Rails"><a href="#Rails" class="headerlink" title="Rails"></a>Rails</h2><blockquote>
+<p>以下的语法都是Rails 对ruby的扩展, ruby中无法使用. 而且, 多半的方法使用ActiveSupport这个gem提供的.<br>安装gem, 并导入:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ gem install activesupport</span><br><span class="line"></span><br><span class="line">require &apos;active_support/all&apos;</span><br><span class="line"></span><br><span class="line">nil.blank? </span><br><span class="line"># =&gt; true</span><br></pre></td></tr></table></figure>
+<h3 id="使用Object-try-method-代替nil检查"><a href="#使用Object-try-method-代替nil检查" class="headerlink" title="使用Object#try(:method)代替nil检查"></a>使用Object#try(:method)代替nil检查</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if parent.children &amp;&amp; parent.children.singleton?</span><br><span class="line">  singleton = parent.children.first</span><br><span class="line">  send_mail_to(singleton)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># children是nil的话, 返回nil</span><br><span class="line"># 不是nil, 正常调用children</span><br><span class="line">if parent.children.try(:singleton?)</span><br><span class="line">  singleton = parent.children.first</span><br><span class="line">  send_mail_to(singleton)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="使用blank-present-进行空检查"><a href="#使用blank-present-进行空检查" class="headerlink" title="使用blank?, present? 进行空检查"></a>使用blank?, present? 进行空检查</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># String</span><br><span class="line">name = nil</span><br><span class="line">name.blank? # =&gt; true</span><br><span class="line">name = &quot;&quot;</span><br><span class="line">name.blank? # =&gt; true</span><br><span class="line">name = &quot; &quot;</span><br><span class="line">name.blank? # =&gt; true</span><br><span class="line">name = &quot;Tom&quot;</span><br><span class="line">name.blank? # =&gt; false</span><br><span class="line"></span><br><span class="line"># Array</span><br><span class="line">numbers = nil</span><br><span class="line">numbers.blank? # =&gt; true</span><br><span class="line">numbers = []</span><br><span class="line">numbers.blank? # =&gt; true</span><br><span class="line">numbers = [1, 2, 3]</span><br><span class="line">numbers.blank? # =&gt; false</span><br><span class="line"></span><br><span class="line"># Hash</span><br><span class="line">params = nil</span><br><span class="line">params.blank? # =&gt; true</span><br><span class="line">params = &#123;&#125;</span><br><span class="line">params.blank? # =&gt; true</span><br><span class="line">params = &#123; name: &quot;Tom&quot;, email: &quot;hoge@hoge.com&quot;  &#125;</span><br><span class="line">params.blank? # =&gt; false</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong><em> <code>present?</code>是blank?的反义方法 </em></strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># String</span><br><span class="line">name = &quot;&quot;</span><br><span class="line">name.present? # =&gt; false</span><br><span class="line">name = &quot;Tom&quot;</span><br><span class="line">name.present? # =&gt; true</span><br></pre></td></tr></table></figure>
+<h3 id="使用presence方法赋值"><a href="#使用presence方法赋值" class="headerlink" title="使用presence方法赋值"></a>使用<code>presence</code>方法赋值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if user.name.blank?</span><br><span class="line">  name = &quot;What is your name?&quot;</span><br><span class="line">else</span><br><span class="line">  name = user.name</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>“”.presence , [].presence 返回的nil不是false<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name = user.name.presence || &quot;What is your name?&quot;</span><br></pre></td></tr></table></figure></p>
+<p>再比如下面的技巧:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 只有有一条news存在, 就发送邮件和微博</span><br><span class="line">good_news = company.good_news</span><br><span class="line">if good_new.count &gt; 0</span><br><span class="line">  send_mail(good_news)</span><br><span class="line">  tweet(good_news)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if good_news = company.good_news.presence</span><br><span class="line"> send_mail(good_news)</span><br><span class="line"> tweet(good_news)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong><em> <code>company.good_news.count</code> 为0的时候, <code>company.good_news.presence</code>会返回nil, 这样if就不会执行, 这段代码的好处就是不必去进行数值判断 </em></strong></p>
+<p>同样也适用于字符串</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">name = blog.user.name</span><br><span class="line">if name.present?</span><br><span class="line">  show_msg(&quot;Hello, #&#123;name&#125;&quot;)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if name = blog.user.name.presence</span><br><span class="line">  show_msg(&quot;Hello, #&#123;name&#125;&quot;)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>总结: presence 的好处是对于空值(nil, 元素个数为0, 空白字符串)返回nil, 用于条件判断语句可以减少一行代码</p>
+</blockquote>
+<h3 id="尽量使用blank-present-确认对象是否存在"><a href="#尽量使用blank-present-确认对象是否存在" class="headerlink" title="尽量使用blank?, present?确认对象是否存在"></a>尽量使用<code>blank?</code>, <code>present?</code>确认对象是否存在</h3><blockquote>
+<p>Ruby只有<code>nil</code>和<code>empty?</code>判断存在性:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if user</span><br><span class="line">  </span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if users.empty?</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Rails 使用<code>present?</code>来判断存在性</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if user.present?</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">if users.present?</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong><em> 同理: 在检验model可否为空时, 最好使用<code>:allow_blank</code> 而不是<code>:allow_nil</code> </em></strong></p>
+</blockquote>
+<h3 id="使用-where-提高查找效率"><a href="#使用-where-提高查找效率" class="headerlink" title="使用(where)提高查找效率"></a>使用(where)提高查找效率</h3><blockquote>
+<p>在查询中使用SQL语句来过滤, 而不是从数据库中取出所有, 再从代码逻辑层过滤:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def admin_users</span><br><span class="line">  User.all.select(&amp;:admin?)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def admin_users</span><br><span class="line">  User.where(admin: true)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="使用pluck方法直接从数据库中取出列"><a href="#使用pluck方法直接从数据库中取出列" class="headerlink" title="使用pluck方法直接从数据库中取出列"></a>使用<code>pluck</code>方法直接从数据库中取出列</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def admin_user_ids</span><br><span class="line">  User.where(admin: true).map(&amp;:id)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def admin_user_ids</span><br><span class="line">  User.where(admin: true).pluck(:id)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="Rails-TimeZone知识梳理"><a href="#Rails-TimeZone知识梳理" class="headerlink" title="Rails TimeZone知识梳理"></a>Rails TimeZone知识梳理</h3><p>####TODO</p>
+<h3 id="camel-下划线-单复数等名称转换"><a href="#camel-下划线-单复数等名称转换" class="headerlink" title="camel, 下划线, 单复数等名称转换"></a>camel, 下划线, 单复数等名称转换</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&quot;my_book&quot;.camelize # =&gt; &quot;MyBook&quot;</span><br><span class="line"></span><br><span class="line">&quot;MyBook&quot;.underscore # =&gt; &quot;my_book&quot;</span><br><span class="line"></span><br><span class="line">&quot;my_book&quot;.dasherize # =&gt; &quot;my-book&quot;</span><br><span class="line"></span><br><span class="line">&quot;book&quot;.pluralize            # =&gt; &quot;books&quot;</span><br><span class="line">&quot;person&quot;.pluralize          # =&gt; &quot;people&quot;</span><br><span class="line">&quot;fish&quot;.pluralize            # =&gt; &quot;fish&quot;</span><br><span class="line">&quot;book_and_person&quot;.pluralize # =&gt; &quot;book_and_people&quot;</span><br><span class="line">&quot;book and person&quot;.pluralize # =&gt; &quot;book and people&quot;</span><br><span class="line">&quot;BookAndPerson&quot;.pluralize   # =&gt; &quot;BookAndPeople&quot;</span><br><span class="line"></span><br><span class="line">&quot;books&quot;.singularize            # =&gt; &quot;book&quot;</span><br><span class="line">&quot;people&quot;.singularize           # =&gt; &quot;person&quot;</span><br><span class="line">&quot;books_and_people&quot;.singularize # =&gt; &quot;books_and_person&quot;</span><br><span class="line">&quot;books and people&quot;.singularize # =&gt; &quot;books and person&quot;</span><br><span class="line">&quot;BooksAndPeople&quot;.singularize   # =&gt; &quot;BooksAndPerson&quot;</span><br><span class="line"></span><br><span class="line">&quot;my_books&quot;.humanize # =&gt; &quot;My books&quot;</span><br><span class="line"></span><br><span class="line">&quot;my_books&quot;.titleize # =&gt; &quot;My Books&quot;</span><br><span class="line"></span><br><span class="line">&quot;my_book&quot;.classify  # =&gt; &quot;MyBook&quot;</span><br><span class="line">&quot;my_books&quot;.classify # =&gt; &quot;MyBook&quot;</span><br><span class="line"></span><br><span class="line">&quot;my_book&quot;.tableize # =&gt; &quot;my_books&quot;</span><br><span class="line">&quot;MyBook&quot;.tableize  # =&gt; &quot;my_books&quot;</span><br><span class="line"></span><br><span class="line">Module&apos;.constantize     # =&gt; Module</span><br></pre></td></tr></table></figure>
+<h3 id=""><a href="#" class="headerlink" title="?,"></a><code>?,</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;index,new,create&quot;.split(&apos;,&apos;) # =&gt; [&quot;index&quot;, &quot;new&quot;, &quot;create&quot;]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;index,new,create&quot;.split(?,) # =&gt; [&quot;index&quot;, &quot;new&quot;, &quot;create&quot;]</span><br></pre></td></tr></table></figure>
+<h3 id="遍历数组元素时使用-amp-method-name"><a href="#遍历数组元素时使用-amp-method-name" class="headerlink" title="遍历数组元素时使用&amp;:method(:name)"></a>遍历数组元素时使用<code>&amp;:method(:name)</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def process_users(users)</span><br><span class="line">  users.each do |user|</span><br><span class="line">    process_user(user)</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">private</span><br><span class="line">  def process_user</span><br><span class="line">    send_mail_to(user)</span><br><span class="line">    user.mail_sent_at = Time.now</span><br><span class="line">    user.save</span><br><span class="line">  end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def process_users(users)</span><br><span class="line">  users.each(&amp;method(:process_user))</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">private</span><br><span class="line">  def process_user</span><br><span class="line">    send_mail_to(user)</span><br><span class="line">    user.mail_sent_at = Time.now</span><br><span class="line">    user.save</span><br><span class="line">  end</span><br></pre></td></tr></table></figure>
+<h3 id="使用lambda代替block"><a href="#使用lambda代替block" class="headerlink" title="使用lambda代替block"></a>使用lambda代替block</h3><blockquote>
+<p>为了block使一行代码过长, 可以使用lambda将block单独抽取</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def destroy_aged_admins(users, limit_age)</span><br><span class="line">  users.select &#123; |user| user.admin? &amp;&amp; user.age &gt; limit_age &#125;.each(&amp;:destroy)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def destroy_aged_admins(users, limit_age)</span><br><span class="line">  aged_admins = -&gt; (user) &#123; user.admin? &amp;&amp; user.age &gt; limit_age &#125;</span><br><span class="line">  users.select(&amp;aged_admins).each(&amp;:destroy)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>有时候不能为了耍酷, 觉得lambda很吸引眼球就去使用, 比如上面的代码这样写会更好</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def destroy_aged_admins(users, limit_age)</span><br><span class="line">  aged_admins = users.select &#123; |user| user.admin? &amp;&amp; user.age &gt; limit_age &#125;</span><br><span class="line">  aged_admins.each(&amp;:destroy)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails-Ruby-shortcut-Refactoring/" rel="tag">#Rails Ruby shortcut Refactoring</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/07/simple-form/" rel="next" title="使用simple_form简化form_for中的代码">
+                <i class="fa fa-chevron-left"></i> 使用simple_form简化form_for中的代码
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/08/rails-ruby-shortcut/" rel="prev" title="Rails代码技巧总结(一) Ruby相关">
+                Rails代码技巧总结(一) Ruby相关 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Rails"><span class="nav-number">1.</span> <span class="nav-text">Rails</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Object-try-method-代替nil检查"><span class="nav-number">1.1.</span> <span class="nav-text">使用Object#try(:method)代替nil检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用blank-present-进行空检查"><span class="nav-number">1.2.</span> <span class="nav-text">使用blank?, present? 进行空检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用presence方法赋值"><span class="nav-number">1.3.</span> <span class="nav-text">使用presence方法赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#尽量使用blank-present-确认对象是否存在"><span class="nav-number">1.4.</span> <span class="nav-text">尽量使用blank?, present?确认对象是否存在</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-where-提高查找效率"><span class="nav-number">1.5.</span> <span class="nav-text">使用(where)提高查找效率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用pluck方法直接从数据库中取出列"><span class="nav-number">1.6.</span> <span class="nav-text">使用pluck方法直接从数据库中取出列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rails-TimeZone知识梳理"><span class="nav-number">1.7.</span> <span class="nav-text">Rails TimeZone知识梳理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#camel-下划线-单复数等名称转换"><span class="nav-number">1.8.</span> <span class="nav-text">camel, 下划线, 单复数等名称转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.9.</span> <span class="nav-text">?,</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遍历数组元素时使用-amp-method-name"><span class="nav-number">1.10.</span> <span class="nav-text">遍历数组元素时使用&:method(:name)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用lambda代替block"><span class="nav-number">1.11.</span> <span class="nav-text">使用lambda代替block</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

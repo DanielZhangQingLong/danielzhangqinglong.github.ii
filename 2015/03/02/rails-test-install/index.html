@@ -1,0 +1,627 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Cucumber RSpec BDD TDD Test," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="什么是TDD ?
+TDD就是测试驱动开发, 也就是说先写测试代码, 然后运行, 测试不会通过, 然后为了通过测试而实现代码. 最后需要重构重复代码, 而且需要保证重构代码后测试还可以通过.从设计而言, 由于先写了测试, 从测试的角度去定义实现方法要比仅仅去实现功能而定义方法要好. TDD可以消除更多的重复代码, 使结构更加清晰, 但是也有人不同意这种开发手法, 认为浪费时间.使用TDD需要注意:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Rails中使用Cucumber和RSpec搭建BDD/TDD测试环境">
+<meta property="og:url" content="http://yoursite.com/2015/03/02/rails-test-install/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="什么是TDD ?
+TDD就是测试驱动开发, 也就是说先写测试代码, 然后运行, 测试不会通过, 然后为了通过测试而实现代码. 最后需要重构重复代码, 而且需要保证重构代码后测试还可以通过.从设计而言, 由于先写了测试, 从测试的角度去定义实现方法要比仅仅去实现功能而定义方法要好. TDD可以消除更多的重复代码, 使结构更加清晰, 但是也有人不同意这种开发手法, 认为浪费时间.使用TDD需要注意:">
+<meta property="og:updated_time" content="2015-03-02T03:20:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Rails中使用Cucumber和RSpec搭建BDD/TDD测试环境">
+<meta name="twitter:description" content="什么是TDD ?
+TDD就是测试驱动开发, 也就是说先写测试代码, 然后运行, 测试不会通过, 然后为了通过测试而实现代码. 最后需要重构重复代码, 而且需要保证重构代码后测试还可以通过.从设计而言, 由于先写了测试, 从测试的角度去定义实现方法要比仅仅去实现功能而定义方法要好. TDD可以消除更多的重复代码, 使结构更加清晰, 但是也有人不同意这种开发手法, 认为浪费时间.使用TDD需要注意:">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 在Rails中使用Cucumber和RSpec搭建BDD/TDD测试环境 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                在Rails中使用Cucumber和RSpec搭建BDD/TDD测试环境
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-02T09:57:46+08:00" content="2015-03-02">
+              2015-03-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="什么是TDD"><a href="#什么是TDD" class="headerlink" title="什么是TDD ?"></a>什么是TDD ?</h2><blockquote>
+<p>TDD就是测试驱动开发, 也就是说先写测试代码, 然后运行, 测试不会通过, 然后为了通过测试而实现代码. 最后需要重构重复代码, 而且需要保证重构代码后测试还可以通过.<br>从设计而言, 由于先写了测试, 从测试的角度去定义实现方法要比仅仅去实现功能而定义方法要好. TDD可以消除更多的重复代码, 使结构更加清晰, 但是也有人不同意这种开发手法, 认为浪费时间.<br>使用TDD需要注意:  一开始的测试必须要写, 测试需要覆盖到每一个要实现的功能, 但是需要灵活运用TDD, 比如在不确定一个问题的解决方法时, 先不要忙着写测试, 而是先试着去写实现代码, 得到正确的结果后再去写测试会更加清晰.</p>
+</blockquote>
+<h2 id="本文使用的环境"><a href="#本文使用的环境" class="headerlink" title="本文使用的环境"></a>本文使用的环境</h2><ul>
+<li>Mac OSX 10.10</li>
+<li>ruby 2.2.0p0</li>
+<li>Rails 4.2.0</li>
+<li>cucumber-rails 1.4.2</li>
+<li>rspec-rails 3.2.1</li>
+</ul>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="创建rails项目"><a href="#创建rails项目" class="headerlink" title="创建rails项目"></a>创建rails项目</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rails new test_rspec_cucumber --skip-test-unit </span><br><span class="line"># --skip-test-unit 不使用Rails默认提供的test unit</span><br></pre></td></tr></table></figure>
+<h3 id="添加gem"><a href="#添加gem" class="headerlink" title="添加gem"></a>添加gem</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">group :development, :test do</span><br><span class="line">  gem &apos;sqlite3&apos;</span><br><span class="line">  gem &apos;rspec-rails&apos;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">group :test do</span><br><span class="line">  gem &apos;selenium-webdriver&apos;</span><br><span class="line">  gem &apos;capybara&apos;</span><br><span class="line">  gem &apos;factory_girl_rails&apos;</span><br><span class="line">  gem &apos;cucumber-rails&apos;, :require =&gt; false</span><br><span class="line">  gem &apos;database_cleaner&apos;, github: &apos;bmabey/database_cleaner&apos;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">group :production do</span><br><span class="line">  gem &apos;pg&apos;</span><br><span class="line">  gem &apos;rails_12factor&apos;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><blockquote>
+<p>bundle install –without production</p>
+</blockquote>
+<h3 id="在项目中安装RSpec"><a href="#在项目中安装RSpec" class="headerlink" title="在项目中安装RSpec"></a>在项目中安装RSpec</h3><blockquote>
+<p>生成RSpec相关的文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ rails g rspec:install</span><br><span class="line">  create  .rspec</span><br><span class="line">  create  spec</span><br><span class="line">  create  spec/spec_helper.rb</span><br><span class="line">  create  spec/rails_helper.rb</span><br></pre></td></tr></table></figure>
+<h3 id="安装cucumber"><a href="#安装cucumber" class="headerlink" title="安装cucumber"></a>安装cucumber</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ rails generate cucumber:install</span><br><span class="line">  create  config/cucumber.yml</span><br><span class="line">  create  script/cucumber</span><br><span class="line">  chmod  script/cucumber</span><br><span class="line">  create  features/step_definitions</span><br><span class="line">  create  features/step_definitions/.gitkeep</span><br><span class="line">  create  features/support</span><br><span class="line">  create  features/support/env.rb</span><br><span class="line">  exist  lib/tasks</span><br><span class="line">  create  lib/tasks/cucumber.rake</span><br><span class="line">  gsub  config/database.yml</span><br><span class="line">  gsub  config/database.yml</span><br><span class="line">  force  config/database.yml</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>本文只介绍安装过程, 下篇文章会总结关于RSpec和Cucumber的具体使用方法.</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Cucumber-RSpec-BDD-TDD-Test/" rel="tag">#Cucumber RSpec BDD TDD Test</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/25/log-logger/" rel="next" title="Rails log 总结">
+                <i class="fa fa-chevron-left"></i> Rails log 总结
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/02/rails-test-samples/" rel="prev" title="在实际开发中使用RSpec和Cucumber进行TDD/BDD测试">
+                在实际开发中使用RSpec和Cucumber进行TDD/BDD测试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是TDD"><span class="nav-number">1.</span> <span class="nav-text">什么是TDD ?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本文使用的环境"><span class="nav-number">2.</span> <span class="nav-text">本文使用的环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装步骤"><span class="nav-number">3.</span> <span class="nav-text">安装步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建rails项目"><span class="nav-number">3.1.</span> <span class="nav-text">创建rails项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加gem"><span class="nav-number">3.2.</span> <span class="nav-text">添加gem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">3.3.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在项目中安装RSpec"><span class="nav-number">3.4.</span> <span class="nav-text">在项目中安装RSpec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装cucumber"><span class="nav-number">3.5.</span> <span class="nav-text">安装cucumber</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

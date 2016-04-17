@@ -1,0 +1,709 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Rails Postgresql," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="一直都对Postgresql不理解, 今天在YouTube上找了一个视频, 学习了一下, 原视频地址https://www.youtube.com/watch?v=pf5jPUJAeU4
+
+安装
+使用Homebrew 安装:
+
+1$ brew install postgres
+初始化
+等安装完成之后, 我们来初始化数据库:
+
+1$ initdb /usr/local/var/postgres
+使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Postgresql with Rails on OSX">
+<meta property="og:url" content="http://yoursite.com/2015/01/24/postgresql-with-rails/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一直都对Postgresql不理解, 今天在YouTube上找了一个视频, 学习了一下, 原视频地址https://www.youtube.com/watch?v=pf5jPUJAeU4
+
+安装
+使用Homebrew 安装:
+
+1$ brew install postgres
+初始化
+等安装完成之后, 我们来初始化数据库:
+
+1$ initdb /usr/local/var/postgres
+使">
+<meta property="og:updated_time" content="2015-04-24T06:44:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Postgresql with Rails on OSX">
+<meta name="twitter:description" content="一直都对Postgresql不理解, 今天在YouTube上找了一个视频, 学习了一下, 原视频地址https://www.youtube.com/watch?v=pf5jPUJAeU4
+
+安装
+使用Homebrew 安装:
+
+1$ brew install postgres
+初始化
+等安装完成之后, 我们来初始化数据库:
+
+1$ initdb /usr/local/var/postgres
+使">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Postgresql with Rails on OSX | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Postgresql with Rails on OSX
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-01-24T12:50:41+08:00" content="2015-01-24">
+              2015-01-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Postgresql/" itemprop="url" rel="index">
+                    <span itemprop="name">Postgresql</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>一直都对Postgresql不理解, 今天在YouTube上找了一个视频, 学习了一下, 原视频地址<a href="https://www.youtube.com/watch?v=pf5jPUJAeU4" target="_blank" rel="external">https://www.youtube.com/watch?v=pf5jPUJAeU4</a></p>
+</blockquote>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><blockquote>
+<p>使用Homebrew 安装:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install postgres</span><br></pre></td></tr></table></figure>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><blockquote>
+<p>等安装完成之后, 我们来初始化数据库:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ initdb /usr/local/var/postgres</span><br></pre></td></tr></table></figure>
+<h2 id="使用lunchy-简单地开关数据库"><a href="#使用lunchy-简单地开关数据库" class="headerlink" title="使用lunchy 简单地开关数据库"></a>使用lunchy 简单地开关数据库</h2><blockquote>
+<p>安装完成之后, 你会看到postgres启动关闭服务相关的帮助信息:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postgres -D /usr/local/var/postgres</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但是比较麻烦, 能不能像在Linux下service命令简单地开关服务呢? OSX下可以使用lunchy实现类似的效果, 我们来安装并配置它.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gem install lunchy</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>新建自动启动代理目录:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p ~/Library/LaunchAgents</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>把postgres的plist拷贝到该目录中:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/local/Cellar/postgresql/9.4.1/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>以后, 我们就可以简单地使用lunchy来启动, 关闭 postgres服务了:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ lunchy start postgres</span><br><span class="line">$ lunchy stop postgres</span><br></pre></td></tr></table></figure>
+<h2 id="创建数据库用户-角色-和-数据库实例"><a href="#创建数据库用户-角色-和-数据库实例" class="headerlink" title="创建数据库用户(角色) 和 数据库实例"></a>创建数据库用户(角色) 和 数据库实例</h2><blockquote>
+<p>事实上, postgres有一个默认的用户就是当前Mac OSX的用户, 该用户是一个超级用户, 拥有下面的权限:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List of roles</span><br><span class="line"> Role name |                   Attributes                   | Member of</span><br><span class="line"> -----------+------------------------------------------------+-----------</span><br><span class="line">  daniel    | Superuser, Create role, Create DB, Replication | &#123;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>从安全的角度考虑, 我们可以创建一个新的普通用户, 只赋予其必要的权限:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ createuser -d -r -l user1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>-d</code> 表示允许该用户创建数据库, <code>-r</code> 表示可以创建新的用户(角色), <code>-l</code> 表示允许登录, 具体帮助请查阅帮助文档<code>man createuser</code></p>
+<p>这时候如果查看数据库用户, 发现多了一个user1的用户以及它的相关的权限:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List of roles</span><br><span class="line"> Role name |                   Attributes                   | Member of</span><br><span class="line"> -----------+------------------------------------------------+-----------</span><br><span class="line">  daniel    | Superuser, Create role, Create DB, Replication | &#123;&#125;</span><br><span class="line">   user1     | Create role, Create DB                         | &#123;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其实这里面用户和角色是等价的, 可能说成角色更准确一些.<br>这里在多提一个内容: 原视频中是采用命令行创建数据库的, 包括相应的编码, 以及所属角色. 使用的命令时<code>createdb</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">createdb -Ouser1 -Eutf8 emptyapp_development</span><br><span class="line">createdb -Ouser1 -Eutf8 emptyapp_test</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后可以访问数据库:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ psql -U user1 emptyapp_development</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样做固然可以, 但是如果要和Rails集成, 那么直接配置Rails中<code>config/database.yml</code>就可以了, 然后rake命令什么都帮你做完了, 下面就介绍一下具体方法:</p>
+</blockquote>
+<h2 id="Postgres-和-Rails-集成"><a href="#Postgres-和-Rails-集成" class="headerlink" title="Postgres 和 Rails 集成"></a>Postgres 和 Rails 集成</h2><blockquote>
+<p>首先需要安装<code>pg</code> gem :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem install pg -- --with-pg-config=/usr/local/bin/pg_config</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后创建一个默认数据库为Postgres的数据库:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rails new emptyapp --database=postgresql</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后我们scaffold 一个Post:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$  rails g scaffold Post title author body:text</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后修改<code>config/database.yml</code>, 添加数据库信息:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">default: &amp;default</span><br><span class="line">  adapter: postgresql</span><br><span class="line">  encoding: unicode</span><br><span class="line">  pool: 5</span><br><span class="line">  username: user1</span><br><span class="line">  password:</span><br><span class="line"></span><br><span class="line">development:</span><br><span class="line">  &lt;&lt;: *default</span><br><span class="line">  database: emptyapp_development1</span><br><span class="line"></span><br><span class="line">test:</span><br><span class="line">  &lt;&lt;: *default</span><br><span class="line">  database: emptyapp_test1</span><br><span class="line"></span><br><span class="line">production:</span><br><span class="line">  &lt;&lt;: *default</span><br><span class="line">  database: emptyapp_production</span><br><span class="line">  username: emptyapp</span><br><span class="line">  password: &lt;%= ENV[&apos;EMPTYAPP_DATABASE_PASSWORD&apos;] %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后使用rake创建数据库, 并migrate</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rake db:create</span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后启动服务器, 插几条数据, 再查看一下数据库, 测试一下</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails-Postgresql/" rel="tag">#Rails Postgresql</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/01/18/ruby-concurrency-explained/" rel="next" title="Ruby concurrency explained">
+                <i class="fa fa-chevron-left"></i> Ruby concurrency explained
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/01/30/rails-data-read-write-seperate/" rel="prev" title="Rails 实现数据库读写分离">
+                Rails 实现数据库读写分离 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">2.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用lunchy-简单地开关数据库"><span class="nav-number">3.</span> <span class="nav-text">使用lunchy 简单地开关数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建数据库用户-角色-和-数据库实例"><span class="nav-number">4.</span> <span class="nav-text">创建数据库用户(角色) 和 数据库实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Postgres-和-Rails-集成"><span class="nav-number">5.</span> <span class="nav-text">Postgres 和 Rails 集成</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

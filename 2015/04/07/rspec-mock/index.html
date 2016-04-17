@@ -1,0 +1,728 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Rspec Mock," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="其实回家也很无聊, 我就来总结一下RSpec 中的Mock.
+
+Mock是什么? stub是什么? test double是什么? …
+以我的理解, Mock是对一个真实的对象的冒充, 当我们无法使用真正的对象时, 就使用mock. 为此我去查了维基百科, 它是这么解释的:
+
+
+test stub : 用于提供有间接输入的测试代码
+test spy : 用于检验测试对象的间接的输出, 后断言期待">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rspec 中对mock的理解和使用">
+<meta property="og:url" content="http://yoursite.com/2015/04/07/rspec-mock/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="其实回家也很无聊, 我就来总结一下RSpec 中的Mock.
+
+Mock是什么? stub是什么? test double是什么? …
+以我的理解, Mock是对一个真实的对象的冒充, 当我们无法使用真正的对象时, 就使用mock. 为此我去查了维基百科, 它是这么解释的:
+
+
+test stub : 用于提供有间接输入的测试代码
+test spy : 用于检验测试对象的间接的输出, 后断言期待">
+<meta property="og:updated_time" content="2015-04-09T06:12:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rspec 中对mock的理解和使用">
+<meta name="twitter:description" content="其实回家也很无聊, 我就来总结一下RSpec 中的Mock.
+
+Mock是什么? stub是什么? test double是什么? …
+以我的理解, Mock是对一个真实的对象的冒充, 当我们无法使用真正的对象时, 就使用mock. 为此我去查了维基百科, 它是这么解释的:
+
+
+test stub : 用于提供有间接输入的测试代码
+test spy : 用于检验测试对象的间接的输出, 后断言期待">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rspec 中对mock的理解和使用 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rspec 中对mock的理解和使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-04-07T15:24:50+08:00" content="2015-04-07">
+              2015-04-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Test/" itemprop="url" rel="index">
+                    <span itemprop="name">Test</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>其实回家也很无聊, 我就来总结一下RSpec 中的Mock.</p>
+</blockquote>
+<h2 id="Mock是什么-stub是什么-test-double是什么-…"><a href="#Mock是什么-stub是什么-test-double是什么-…" class="headerlink" title="Mock是什么? stub是什么? test double是什么? …"></a>Mock是什么? stub是什么? test double是什么? …</h2><blockquote>
+<p>以我的理解, Mock是对一个真实的对象的冒充, 当我们无法使用真正的对象时, 就使用mock. 为此我去查了<a href="http://en.wikipedia.org/wiki/Test_double" target="_blank" rel="external">维基百科</a>, 它是这么解释的:</p>
+</blockquote>
+<ul>
+<li>test stub : 用于提供有间接输入的测试代码</li>
+<li>test spy : 用于检验测试对象的间接的输出, 后断言期待的值, 在测试执行之前, 不会去事先定义期待值</li>
+<li>mock object 用于检验测试代码的间接输出, 在测试代码执行前事先定义期待值</li>
+<li>Fake object 用作简化的实现, 比如使用内存数据库代替真正的数据库访问</li>
+<li>Dummy object 用于一个参数被被测试的方法需要, 但是这个参数根据没有被用到</li>
+</ul>
+<blockquote>
+<p>对不住大家了, 这段翻译的有写不恰当, 但是想不出更好的办法了, 读不懂建议去读原文, 再不行就忽略吧, 继续往下看, 如何选择合适的方法.</p>
+</blockquote>
+<h2 id="mock的使用方法"><a href="#mock的使用方法" class="headerlink" title="mock的使用方法"></a>mock的使用方法</h2><blockquote>
+<p>比如说, 现在要去测试一下Twitter是不是成功发了一条推文:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">require &apos;twitter&apos;</span><br><span class="line">class TwitterEmotion</span><br><span class="line">  def tweet</span><br><span class="line">    twitter_client.update &quot;I am very happy&quot;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def twitter_client</span><br><span class="line">    Twitter::REST::Client.new</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>测试代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">it &quot;should tweet successfully&quot; do</span><br><span class="line">  emotion = TwitterEmotion.new</span><br><span class="line">  expect&#123; emotion.tweet &#125;.not_to raise_error</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但是这真的会把你的推文发生出去, 还有, 如果网络环境不好或者Twitter的服务器没有及时处理请求, 那么我这边的测试就会跑不通, 等等问题.<br>正因为如此, 才需要把使用Twitter服务的部分用mock代替. 这样测试就不会和Twitter进行交互了.下面是使用mock后的测试:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">it &quot;should tweet successfully&quot; do</span><br><span class="line">  # mock Twitter client</span><br><span class="line">  twitter_client_mock = double(&apos;Twitter client&apos;)</span><br><span class="line">  # 让update方法可以在mock对象上调用</span><br><span class="line">  allow(twitter_client_mock).to receive(:update)</span><br><span class="line">  emotion = TwitterEmotion.new</span><br><span class="line">  allow(emotion).to receive(:twitter_client).and_return(twitter_client_mock)</span><br><span class="line"></span><br><span class="line">  # 如果在emotion上调用了twitter_client, 那么就返回twitter_client_mock</span><br><span class="line">  expect&#123; emotion.tweet &#125;.not_to raise_error</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>接下来就分析这几个步骤:</p>
+</blockquote>
+<h3 id="创建空的mock对象"><a href="#创建空的mock对象" class="headerlink" title="创建空的mock对象"></a>创建空的mock对象</h3><blockquote>
+<p>先创建了假的<code>Twitter::REST::Client</code> :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">twitter_client_mock = double(&apos;Twitter client&apos;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用的方法是<code>double</code> , 参数可以是任意字符串, 但是该字符串在测试失败时候会被返回, 所以尽量使用相关的字符串, 下面就是失败时返回的信息:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RSpec::Mocks::MockExpectationError: Double &quot;Twitter client&quot; received unexpected message :update with (&quot;I am very happy&quot;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>另外, double这个词在英文中有替身的意思.</p>
+</blockquote>
+<h3 id="告诉mock对象如何回应"><a href="#告诉mock对象如何回应" class="headerlink" title="告诉mock对象如何回应"></a>告诉mock对象如何回应</h3><blockquote>
+<p>可以将double方法生成的mock对象比喻成什么都不懂的婴儿, 需要我来教他, 再看看应用代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def tweet</span><br><span class="line">  twitter_client.update &quot;I am very happy&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">def twitter_client</span><br><span class="line">  Twitter::REST::Client.new</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>一旦调用<code>tweet</code>方法, 方法内部就会执行<code>twitter_client.update</code>. 所以, twitter_client的复制品twitter_client_mock也必须可以调用<code>update</code>方法(或者接收update消息) :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allow(twitter_client_mock).to receive(:update)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在RSpec中, 对于mock对象设定可以调用的方法的就可以采用这样的形式: <code>allow(mock_object).to receive(:method_name)</code></p>
+<p>这时, <code>twitter_client_mock</code>对象上就可以调用<code>update</code>方法了, 但只能调用该方法.<br>一旦调用时错误发生了, 测试失败.</p>
+</blockquote>
+<h3 id="暗中把mock对象传入mock"><a href="#暗中把mock对象传入mock" class="headerlink" title="暗中把mock对象传入mock"></a>暗中把mock对象传入mock</h3><blockquote>
+<p>现在还是会把Twitter真正的发送出去, 所以需要偷偷地把真正可以发生Twitter的对象<code>twitter_client</code> 换成这个假的<code>twitter_client_mock</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">emotion = TwitterEmotion.new</span><br><span class="line">allow(emotion).to receive(:twitter_client).and_return(twitter_client_mock)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>也就是:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allow(想要替换方法的对象).to receive(所要替换的方法).and_return(返回值对象)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="调用想测试的方法"><a href="#调用想测试的方法" class="headerlink" title="调用想测试的方法"></a>调用想测试的方法</h3><blockquote>
+<p>现在已经做了如下的准备:</p>
+</blockquote>
+<ul>
+<li>告诉mock对象(twitter_client_mock) 可以接收<code>update</code>方法</li>
+<li>在所测试对象返回这个mock对象</li>
+</ul>
+<blockquote>
+<p>然后正常测试代码即可:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expect &#123; emotion.tweet &#125;.not_to raise_error</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这时候并不会真的发一条推文.</p>
+</blockquote>
+<h2 id="检查mock的方法是否正常执行"><a href="#检查mock的方法是否正常执行" class="headerlink" title="检查mock的方法是否正常执行"></a>检查mock的方法是否正常执行</h2><blockquote>
+<p>把上面的测试代码做一个改动:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">it &quot;should tweet successfully&quot; do</span><br><span class="line">  # mock Twitter client</span><br><span class="line">  twitter_client_mock = double(&apos;Twitter client&apos;)</span><br><span class="line">  # 让update方法可以在mock对象上调用</span><br><span class="line">  expect(twitter_client_mock).to receive(:update)</span><br><span class="line">  emotion = TwitterEmotion.new</span><br><span class="line">  allow(emotion).to receive(:twitter_client).and_return(twitter_client_mock)</span><br><span class="line"></span><br><span class="line">  # 如果在emotion上调用了twitter_client, 那么就返回twitter_client_mock</span><br><span class="line">  expect&#123; emotion.tweet &#125;.not_to raise_error</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>把原来的<code>allow(twitter_client_mock).to receive(:update)</code> 改成<code>expect(twitter_client_mock).to receive(:update)</code>, 也就是把<code>allow</code>换成了<code>expect</code>.<br><code>allow</code>只是让mock对象可以接收某个方法, <code>expect</code>则是验证该对象是否可以接收这个方法, 不能接收会返回错误.</p>
+</blockquote>
+<h2 id="mock使用方法补充知识"><a href="#mock使用方法补充知识" class="headerlink" title="mock使用方法补充知识"></a>mock使用方法补充知识</h2><h3 id="测试中错误的处理"><a href="#测试中错误的处理" class="headerlink" title="测试中错误的处理"></a>测试中错误的处理</h3><blockquote>
+<p>如果刚才待测代码添加了异常处理: </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">require &apos;twitter&apos;</span><br><span class="line">class TwitterEmotion</span><br><span class="line">  def tweet</span><br><span class="line">    twitter_client.update &quot;I am very happy&quot;</span><br><span class="line">  rescue =&gt; e</span><br><span class="line">    notice(e)</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def twitter_client</span><br><span class="line">    Twitter::REST::Client.new</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def notice(e)</span><br><span class="line">    # 异常处理</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>同样的在需要添加针对错误发生的情况下的测试:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">it &quot;shoud raise exception if error happens&quot; do</span><br><span class="line">   twitter_client_mock = double(&apos;Twitter client&apos;)</span><br><span class="line">   allow(twitter_client_mock).to receive(:update).and_raise(&apos;Error!&apos;)</span><br><span class="line">   emotion = TwitterEmotion.new</span><br><span class="line">   allow(emotion).to receive(:twitter_client).and_return(twitter_client_mock)</span><br><span class="line">   expect(emotion).to receive(:notice)</span><br><span class="line">   emotion.tweet</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>首先需要注意这行代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allow(twitter_client_mock).to receive(:update).and_raise(&apos;Error!&apos;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>可以总结为:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allow(mock对象).to receive(方法).and_raise(异常)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>的形式. 人为让错误发生.</p>
+<p>接下来需要注意这行代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expect(emotion).to receive(:notice)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>异常处理发生了的话那么emotion就会调用<code>notice</code>.<br>最后<code>emotion.tweet</code> 让程序在正常情况下执行.<br>同样, 如果把<code>allow</code>换成<code>expect</code>, 即<code>expect(twitter_client_mock).to receive(:update).and_raise(&#39;Error!&#39;)</code> 验证某个mock对象调用了某个方法后是否可以发生异常.</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rspec-Mock/" rel="tag">#Rspec Mock</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/04/06/deploy-with-capistrano-and-sunzi/" rel="next" title="deploy_with_capistrano_and_sunzi">
+                <i class="fa fa-chevron-left"></i> deploy_with_capistrano_and_sunzi
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/15/jquery/" rel="prev" title="jQuery Review 1">
+                jQuery Review 1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mock是什么-stub是什么-test-double是什么-…"><span class="nav-number">1.</span> <span class="nav-text">Mock是什么? stub是什么? test double是什么? …</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mock的使用方法"><span class="nav-number">2.</span> <span class="nav-text">mock的使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建空的mock对象"><span class="nav-number">2.1.</span> <span class="nav-text">创建空的mock对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#告诉mock对象如何回应"><span class="nav-number">2.2.</span> <span class="nav-text">告诉mock对象如何回应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#暗中把mock对象传入mock"><span class="nav-number">2.3.</span> <span class="nav-text">暗中把mock对象传入mock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用想测试的方法"><span class="nav-number">2.4.</span> <span class="nav-text">调用想测试的方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查mock的方法是否正常执行"><span class="nav-number">3.</span> <span class="nav-text">检查mock的方法是否正常执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mock使用方法补充知识"><span class="nav-number">4.</span> <span class="nav-text">mock使用方法补充知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试中错误的处理"><span class="nav-number">4.1.</span> <span class="nav-text">测试中错误的处理</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,676 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MySQL master slave," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="环境: 我使用的环境是Ubuntu Linux, 一台服务器用87指代，作为master，另外一台用89指代，作为slave
+
+
+安装MySQL，这里就不细说。不过需要强调的是87我使用的是多实例的MySQL，本例中使用的实例是3308端口
+配置master① 编辑 my.cnf(my_multi.cnf) ,首先取消ip绑定 注释掉 bind-address = 127.0.0.1② ser">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql 做master 和 slave 总结">
+<meta property="og:url" content="http://yoursite.com/2015/01/30/mysql-master-slave/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="环境: 我使用的环境是Ubuntu Linux, 一台服务器用87指代，作为master，另外一台用89指代，作为slave
+
+
+安装MySQL，这里就不细说。不过需要强调的是87我使用的是多实例的MySQL，本例中使用的实例是3308端口
+配置master① 编辑 my.cnf(my_multi.cnf) ,首先取消ip绑定 注释掉 bind-address = 127.0.0.1② ser">
+<meta property="og:updated_time" content="2015-02-13T14:02:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql 做master 和 slave 总结">
+<meta name="twitter:description" content="环境: 我使用的环境是Ubuntu Linux, 一台服务器用87指代，作为master，另外一台用89指代，作为slave
+
+
+安装MySQL，这里就不细说。不过需要强调的是87我使用的是多实例的MySQL，本例中使用的实例是3308端口
+配置master① 编辑 my.cnf(my_multi.cnf) ,首先取消ip绑定 注释掉 bind-address = 127.0.0.1② ser">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> mysql 做master 和 slave 总结 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                mysql 做master 和 slave 总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-01-30T13:11:30+08:00" content="2015-01-30">
+              2015-01-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p> 环境: 我使用的环境是Ubuntu Linux, 一台服务器用87指代，作为master，另外一台用89指代，作为slave</p>
+</blockquote>
+<ol>
+<li>安装MySQL，这里就不细说。不过需要强调的是87我使用的是多实例的MySQL，本例中使用的实例是3308端口</li>
+<li>配置master<br>① 编辑 my.cnf(my_multi.cnf) ,首先取消ip绑定 注释掉 bind-address = 127.0.0.1<br>② server-id = 1<br>③ log_bin = /var/log/mysql-bin.log # 该文件保存了master的变化，slave会拷贝所有这些变化<br>④ binlog_do_db = newdb # 指定需要同步的数据库</li>
+</ol>
+<ol>
+<li>重启MySQL sudo service mysql restart</li>
+<li><p>登录MySQL  mysql -uroot -p</p>
+</li>
+<li><p>为slave数据库服务器的用户（slave_user）赋予同步权限,并刷新权限<br><code>grant replication slave on *.* to ‘slave_user’@‘%’ identified by ‘root’;
+flush privileges;</code></p>
+</li>
+<li><p>切换到需要同步的数据库</p>
+</li>
+</ol>
+<p><code>use newdb;</code></p>
+<ol>
+<li><p>为表加上只读锁，这样做的目的是防止导出数据库的过程中表被更改.<br><code>flush tables with read lock;</code></p>
+</li>
+<li><p>查看master的状态<br><code>show master status;</code></p>
+</li>
+</ol>
+<p><code>mysql&gt; SHOW MASTER STATUS;</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+------------------+----------+--------------+------------------+</span><br><span class="line">| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |</span><br><span class="line">+------------------+----------+--------------+------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line">| mysql-bin.000001 |      107 | newdatabase  |                  |</span><br><span class="line">+------------------+----------+--------------+------------------+</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>记住这个表中的数据，因为接下来配置slave的时候会用得到</p>
+</blockquote>
+<ol>
+<li><p>退回shell，导出数据库<br><code>mysql -u root -p --opt newdb &gt; newdatabase.sql</code></p>
+</li>
+<li><p>回到mysql，解锁表</p>
+</li>
+</ol>
+<p><code>unlock tables;</code><br><code>quit;</code></p>
+<h3 id="设置slave-（89）服务器"><a href="#设置slave-（89）服务器" class="headerlink" title="设置slave （89）服务器"></a>设置slave （89）服务器</h3><ol>
+<li>登录到mysql，创建这个数据库。退回到shell</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">create database newdb; </span><br><span class="line">exit;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>导出数据库</li>
+</ol>
+<p><code>mysql -uroot -p newdb &lt; /path/to/newdatabase.sql</code></p>
+<p>这里需要说明，newdatabse.sql 是由87传过来的，是由scp这个工具，用法自己去google</p>
+<ol>
+<li>编辑my.cnf</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">server-id = 2</span><br><span class="line">relay-log = /var/log/mysql/mysql-relay-bin.log</span><br><span class="line">log_bin = /var/log/mysql/mysql-bin.log</span><br><span class="line">binlog_do_db = newdb</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>重启 mysql.</p>
+</li>
+<li><p>登录到mysql. 执行:</p>
+</li>
+</ol>
+<p><code>change master to master_host=&#39;159.226.67.87&#39;, master_user=&#39;daniel&#39;,master_password=&#39;123456&#39;,master_port=3308,master_log_file=&#39;mysql-bin.000006&#39;,master_log_pos=633;</code></p>
+<p>这里需要注意一点，master_port需要根据自己的具体实例的端口来填写 然后可以start salve</p>
+<ol>
+<li>master 配置如下:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[mysqld2]</span><br><span class="line">socket     = /Data/mysqlcnd/mysqlcn/mysqldcn3308.sock</span><br><span class="line">port       = 3308</span><br><span class="line">pid-file   = /Data/mysqlcnd/mysqlcn/mysqldcn3308.pid</span><br><span class="line">datadir    = /Data/mysqlcnd/mysqlcn/</span><br><span class="line">#datadir    = /Data/newdb/data/mysql/</span><br><span class="line">log-bin    = /Data/mysqlcnd/mysqlcn/mysql-bin.log</span><br><span class="line">server-id  = 1</span><br><span class="line">binlog_do_db  = testmirror</span><br><span class="line">binlog_format=mixed</span><br><span class="line">log        = /Data/mysqlcnd/mysqlcn/mysql-bin.000001</span><br><span class="line">log-error  = /Data/mysqlcnd/mysqlcn/mysqlcn3308.err</span><br><span class="line">user       = daniel</span><br></pre></td></tr></table></figure>
+<p>slave 配置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">server-id               = 2</span><br><span class="line">relay-log               = /var/log/mysql/mysql-reply-bin.log</span><br><span class="line">log_bin                 = /var/log/mysql/mysql-bin.log</span><br><span class="line">binlog_do_db            = testmirror</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL-master-slave/" rel="tag">#MySQL master slave</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/01/30/rails-data-read-write-seperate/" rel="next" title="Rails 实现数据库读写分离">
+                <i class="fa fa-chevron-left"></i> Rails 实现数据库读写分离
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/01/30/mysql-multiple-instances/" rel="prev" title="MySQL 多实例 配置">
+                MySQL 多实例 配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置slave-（89）服务器"><span class="nav-number">1.</span> <span class="nav-text">设置slave （89）服务器</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

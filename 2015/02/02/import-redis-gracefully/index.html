@@ -1,0 +1,661 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis Rails Code  Refactoring TDD," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="上一节我们使用了一个小例子来说明 Redis 在项目中是如何使用的,  我们回顾一下所使用记录文章被浏览次数和访问过该文章的 ip 的集合的这段代码:1234def show  $redis.incr &amp;quot;#&amp;#123;Date.year&amp;#125;:#&amp;#123;Date.month&amp;#125;:#&amp;#123;Date.day&amp;#125;:posts:@post.id:views&amp;qu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="优雅地将 Redis 引入你的 Rails 项目(代码重构)">
+<meta property="og:url" content="http://yoursite.com/2015/02/02/import-redis-gracefully/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="上一节我们使用了一个小例子来说明 Redis 在项目中是如何使用的,  我们回顾一下所使用记录文章被浏览次数和访问过该文章的 ip 的集合的这段代码:1234def show  $redis.incr &amp;quot;#&amp;#123;Date.year&amp;#125;:#&amp;#123;Date.month&amp;#125;:#&amp;#123;Date.day&amp;#125;:posts:@post.id:views&amp;qu">
+<meta property="og:updated_time" content="2015-03-20T12:23:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="优雅地将 Redis 引入你的 Rails 项目(代码重构)">
+<meta name="twitter:description" content="上一节我们使用了一个小例子来说明 Redis 在项目中是如何使用的,  我们回顾一下所使用记录文章被浏览次数和访问过该文章的 ip 的集合的这段代码:1234def show  $redis.incr &amp;quot;#&amp;#123;Date.year&amp;#125;:#&amp;#123;Date.month&amp;#125;:#&amp;#123;Date.day&amp;#125;:posts:@post.id:views&amp;qu">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 优雅地将 Redis 引入你的 Rails 项目(代码重构) | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                优雅地将 Redis 引入你的 Rails 项目(代码重构)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-02T10:45:27+08:00" content="2015-02-02">
+              2015-02-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>上一节我们使用了一个小例子来说明 Redis 在项目中是如何使用的,  我们回顾一下所使用记录文章被浏览次数和访问过该文章的 ip 的集合的这段代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def show</span><br><span class="line">  $redis.incr &quot;#&#123;Date.year&#125;:#&#123;Date.month&#125;:#&#123;Date.day&#125;:posts:@post.id:views&quot;</span><br><span class="line">  $redis.sadd &quot;#&#123;Date.year&#125;:#&#123;Date.month&#125;:#&#123;Date.day&#125;:posts:@post.id:uniques&quot;, request.remote_ip </span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>怎么样? 这代码看起来简单粗暴, 通俗易懂吧, 首先 <code>$redis</code> 全局变量直接写到对外暴露的 action 方法中, 还有那么长的字符串, 乱七八糟, 这两行代码是不是有很多相似之处呢? 我们是不是可以用方法包装一下呢? 这些问题就是这一节需要解决的!</p>
+</blockquote>
+<h2 id="整理思路"><a href="#整理思路" class="headerlink" title="整理思路"></a>整理思路</h2><blockquote>
+<p>我们要写的这个方法是作用是什么? 方法归给谁? 方法的结构应该是什么样的呢?</p>
+<p>既然要追踪某文章被访问的情况, 该方法应该属于文章(@post), 假设方法名为<code>track</code>, 该方法的参数应该接收几个参数? 这就要看 <code>incr</code> 和 <code>sadd</code> 这两个方法的具体作用了, <code>incr</code> 接收 的参数作为 redis 内部的 key, 其值为该页面被访问的次数, <code>sadd</code> 接收2个参数, 第一个参数类似于<code>incr</code> 的参数, redis 作为该页面的标志, 同样作为 key, 而第二个参数就有所不同了, 我们传入了访问者的 ip 地址, redis 会将其作为 value. </p>
+<p>通过上面的分析, 我们可以确定: 方法形式应该是这样的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def track (:views, [:uniques, request.remote_ip])</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>这样, 我只需要在 show 方法中这样来调用, <code>@post.track(:views, [:uniques, request.remote_ip])</code></p>
+</blockquote>
+<h2 id="生成-KEY"><a href="#生成-KEY" class="headerlink" title="生成 KEY"></a>生成 KEY</h2><blockquote>
+<p>需要说明一点, 我并没有加入前面一长串 key, 因为 key 是一样的, 我想用一个方法来生成 key.</p>
+<p>所以我们先生成 key, 在 lib 目录下创建一个文件 <code>analytix.rb</code>, 我为什么选择该目录? 因为在该目录下的文件是被自动加载到 rails 环境中的, 详情请参见<code>config/application.rb</code>. </p>
+<p>由于生成 key 这样的方法属于一种功能性方法(我也不会表达了), 所以将其写入 module 比较合适, 然后在 class 中mixin, 就可以给当前对象使用该方法了, 这里确实需要理解 module Mixin 等知识. 我先把方法的大致轮廓写一下, 然后再分析: </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">module Analytix</span><br><span class="line"></span><br><span class="line">  module Key</span><br><span class="line">  ¦</span><br><span class="line">  ¦ def self.build_for stat, object</span><br><span class="line">  ¦ ¦</span><br><span class="line">  ¦ end</span><br><span class="line"></span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用这个方法, 我们需要得到 key, 对吧, 像这样:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$redis.incr &quot;#&#123;Date.today.year&#125;:#&#123;Date.today.month&#125;:#&#123;Date.today.day&#125;:posts:#&#123;@post.id&#125;:views&quot;</span><br><span class="line"></span><br><span class="line">$redis.sadd &quot;#&#123;Date.today.year&#125;:#&#123;Date.today.month&#125;:#&#123;Date.today.day&#125;:posts:#&#123;@post.id&#125;:uniques&quot;, request.remote_ip</span><br></pre></td></tr></table></figure></p>
+<p>看这两个参数, stat 容易理解, 指的是要追踪的对象, 比如 <code>views</code>, <code>uniques</code> 等等. 那么 <code>object</code> 这个参数指的是什么呢? 指的是资源, 也就是 post, 这点很重要, 我们不能用 hard-coding 把让这个方法只能为 post 生成 key, 假如应用中还有 video 资源, 我们要去追踪某个视频被点播的次数, 难道再写一个为 video 生成 key 的方法吗? 那样的话, 代码就显得太冗余了. (题外话, java 出身的我忽然意识到这很像java 中的反射技术), 我们可以通过 object 动态获得类的相关信息.<br>那么现在既然已经知道了我们需要的结果, 我所期待的, 所以我觉得使用 TDD 比较合适. 所以, 我们在 创建一个 <code>spec/lib/analytix_spec.rb</code> 文件来写测试驱动方法的实现.</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># spec/lib/analytix_spec.rb</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">require</span> <span class="string">'rails_helper'</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'spec_helper'</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'analytix'</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">module</span> <span class="title">Analytix</span></span></span><br><span class="line">  describe Key <span class="keyword">do</span></span><br><span class="line">  ¦ let(<span class="symbol">:klass_name</span>) &#123; double(<span class="string">"Object"</span>, &#123; <span class="symbol">name:</span> <span class="string">"Post"</span>  &#125;)  &#125;</span><br><span class="line">  ¦ let(<span class="symbol">:post</span>) &#123; double(<span class="string">'Post'</span>, &#123;<span class="symbol">id:</span> <span class="number">1</span>, <span class="class"><span class="keyword">class</span>: <span class="title">klass_name</span>&#125;)  &#125;</span></span><br><span class="line">  ¦ let(<span class="symbol">:date</span>) &#123; Date.today  &#125;</span><br><span class="line"></span><br><span class="line">  ¦ let(<span class="symbol">:views_key</span>) &#123; <span class="string">"<span class="subst">#&#123;date.year&#125;</span>:<span class="subst">#&#123;date.month&#125;</span>:<span class="subst">#&#123;date.day&#125;</span>:posts:1:views"</span>  &#125;</span><br><span class="line"></span><br><span class="line">  ¦ describe <span class="string">"#build_for"</span> <span class="keyword">do</span></span><br><span class="line">  ¦ ¦ it <span class="string">'should create key for :views'</span> <span class="keyword">do</span></span><br><span class="line">  ¦ ¦ ¦ expect(Key.build_for(<span class="symbol">:views</span>, post)).to eq views_key</span><br><span class="line">  ¦ ¦ <span class="keyword">end</span></span><br><span class="line">  ¦ <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后我们写方法实现, 让其测试通过</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">require</span> <span class="string">'active_support/inflector'</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">module</span> <span class="title">Analytix</span></span></span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">module</span> <span class="title">Key</span></span></span><br><span class="line">  ¦</span><br><span class="line">  ¦ <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">build_for</span> <span class="title">stat</span>, <span class="title">object</span></span></span><br><span class="line">  ¦ ¦ date = Date.today</span><br><span class="line">  ¦ ¦ key = [ date.year, date.month, date.day, object.<span class="keyword">class</span>.name.underscore.pluralize, object.id, stat  ].join(<span class="string">':'</span>)</span><br><span class="line">  ¦ <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h2 id="实现真正的-track-方法"><a href="#实现真正的-track-方法" class="headerlink" title="实现真正的 track 方法."></a>实现真正的 track 方法.</h2><blockquote>
+<p>到此为止, 我们仅仅构造好了 key, build_for 只是个辅助的方法, 那么我们看看最重要的 track 方法的实现.</p>
+<p>参数需要被定义成方法, 方法中使用 redis 来存储数据:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">views</span></span></span><br><span class="line">  $redis.incr(Key.build_for(<span class="symbol">:views</span>, <span class="keyword">self</span>))</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">uniques</span><span class="params">(data)</span></span></span><br><span class="line">  $redis.sadd(Key.build_for(<span class="symbol">:uniques</span>, <span class="keyword">self</span>), data)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>文章开始已经分析过了, 方法应该是这样的<code>track(:views, [:uniques, &#39;127.0.0.1&#39;])</code>, 那么既然是两种类型的参数, 可以使用 ruby 的 splat 进行处理, 这样无论传的是 symbol 还是数组或者两者都有, 都可以接收:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">track</span><span class="params">(*stats)</span></span></span><br><span class="line">  <span class="comment"># ...</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>好, <code>track</code> 方法一个如何实现? 首先, 参数是不固定的, 我使用了splat 将参数强行压入数组, 然后在方法内遍历<code>stats</code>, 对每个参数使用 send 来进行动态方法调用, 也就是定义的<code>views</code>, <code>uniques</code>. 思路就是这样, 我们来使用 TDD.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">describe Model do</span><br><span class="line">  let(:klass_name) &#123; double(&quot;Object&quot;, &#123;name: &quot;Post&quot;&#125;) &#125;</span><br><span class="line">  let(:post) &#123; double(&apos;Post&apos;, &#123;id: 1, class: klass_name&#125;).extend(Model) &#125;</span><br><span class="line"></span><br><span class="line">  before do</span><br><span class="line">    keys = $analytix.keys(&apos;*&apos;)</span><br><span class="line">    $analytix.del(keys) if keys.present?</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  describe &quot;#track&quot; do</span><br><span class="line">    it &apos;should return call the correct method when just symbol&apos; do</span><br><span class="line">      post.track(:views).should eq [1]</span><br><span class="line">      post.track(:views).should eq [2]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    it &apos;should return call the correct method when just array&apos; do</span><br><span class="line">      post.track([:uniques, &apos;127.0.0.1&apos;]).should eq [true]</span><br><span class="line">      post.track([:uniques, &apos;127.0.0.1&apos;]).should eq [false]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    it &apos;should return mutiple results with multiple stats&apos; do</span><br><span class="line">      post.track(:views, [:uniques, &apos;127.0.0.1&apos;]).should eq [1, true]</span><br><span class="line">      post.track(:views, [:uniques, &apos;127.0.0.1&apos;]).should eq [2, false]</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里需要补充关于 <code>$analytix</code> 的知识点, Rails中有3种环境, dev, pro 和 test, 我们需要对不同的环境创建不同的全局变量, 这样才不至于互相干扰. 这时我们需要一个 gem <code>redis-namespace</code>, 通过它, 我可以为 redis 的 key 指定命名空间, 也就是添加前缀, 区别于其他的变量.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">r = Redis.new</span><br><span class="line">$analytix = Redis::Namespace.new([Rails.env, &apos;analytics&apos;].join(&apos;:&apos;), redis: r)</span><br></pre></td></tr></table></figure></p>
+<p>当然, 这只是个小插曲, 我们来实现 track 方法代码, 让测试通过. 如下:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def track(*stats)</span><br><span class="line"></span><br><span class="line">  stats.each do |stat|</span><br><span class="line">    send(*stat)</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>是不是很巧妙呢! 它可以处理任意个数参数, 不但可以兼容 symbol 类型还可以兼容数组.</p>
+<ul>
+<li>如果 参数:views, send 直接调用views方法</li>
+<li>如果参数是[:uniques, request.remote_ip], 就会组合成这种形式:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">send(*[:uniques, request.remote_ip])</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>request.remote_ip 会作为 uniques 方法的参数.</p>
+</blockquote>
+<h2 id="应用到-controller-中"><a href="#应用到-controller-中" class="headerlink" title="应用到 controller 中"></a>应用到 controller 中</h2><blockquote>
+<p>还记得开头我们说<code>PostController#show</code> 中的方法写得太邋遢吗? 看看经过重构之后的 show 方法成什么样了吧!</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># After</span><br><span class="line">def show</span><br><span class="line">  track(:views, [:uniques, request.remote_ip])</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># Before</span><br><span class="line">def show</span><br><span class="line">  $analytix.incr(&quot;#&#123;Date.year&#125;:#&#123;Date.month&#125;:#&#123;Date.day&#125;:posts:@post.id:views&quot;)</span><br><span class="line"></span><br><span class="line">  $analytix.sadd(&quot;#&#123;Date.year&#125;:#&#123;Date.month&#125;:#&#123;Date.day&#125;:posts:@post.id:uniques&quot;, request.remote_ip)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="不足之处"><a href="#不足之处" class="headerlink" title="不足之处"></a>不足之处</h2><blockquote>
+<p>我需要表达一下歉意, 实际上在测试部分我介绍的很敷衍, 主要是因为我认为如果写得太过于细致文章主题就不够突出, 会显得很乱. 另外, 我的TDD 水平也不敢恭维, 不过我个人也希望和大家一起切磋, 从中受益. 如果有不理解的地方或是不当之处, 欢迎指正!</p>
+<p>我会在近期从项目的源码中抽取一些Redis 的具体应用场合. 精彩还在后面…</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis-Rails-Code-Refactoring-TDD/" rel="tag">#Redis Rails Code  Refactoring TDD</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/01/using-redis-in-rails/" rel="next" title="在 Rails 中使用 Redis">
+                <i class="fa fa-chevron-left"></i> 在 Rails 中使用 Redis
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/03/install-postgresSQL-osx/" rel="prev" title="OSX 下安装PostgresSQL">
+                OSX 下安装PostgresSQL <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#整理思路"><span class="nav-number">1.</span> <span class="nav-text">整理思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成-KEY"><span class="nav-number">2.</span> <span class="nav-text">生成 KEY</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现真正的-track-方法"><span class="nav-number">3.</span> <span class="nav-text">实现真正的 track 方法.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用到-controller-中"><span class="nav-number">4.</span> <span class="nav-text">应用到 controller 中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不足之处"><span class="nav-number">5.</span> <span class="nav-text">不足之处</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,648 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ruby thread multiple process forking fibers concurrency," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="这两天在看 ruby 并发的内容, 发现自身存在的很多问题, 比如概念混淆不清, 以前学习 java 语言的适合这些内容都被我忽略了, 现在看看还是很有意思的. 也许是 ruby 语言简练语法的功劳. 的确有些难度, 我不能再回避这些问题了. 
+我找了一个大牛的文章, 然后翻译过来, 看看自己对于这些内容的理解是否正确.
+[原文地址:] (http://merbist.com/2011/02/2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ruby concurrency explained">
+<meta property="og:url" content="http://yoursite.com/2015/01/18/ruby-concurrency-explained/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="这两天在看 ruby 并发的内容, 发现自身存在的很多问题, 比如概念混淆不清, 以前学习 java 语言的适合这些内容都被我忽略了, 现在看看还是很有意思的. 也许是 ruby 语言简练语法的功劳. 的确有些难度, 我不能再回避这些问题了. 
+我找了一个大牛的文章, 然后翻译过来, 看看自己对于这些内容的理解是否正确.
+[原文地址:] (http://merbist.com/2011/02/2">
+<meta property="og:updated_time" content="2015-02-13T14:02:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ruby concurrency explained">
+<meta name="twitter:description" content="这两天在看 ruby 并发的内容, 发现自身存在的很多问题, 比如概念混淆不清, 以前学习 java 语言的适合这些内容都被我忽略了, 现在看看还是很有意思的. 也许是 ruby 语言简练语法的功劳. 的确有些难度, 我不能再回避这些问题了. 
+我找了一个大牛的文章, 然后翻译过来, 看看自己对于这些内容的理解是否正确.
+[原文地址:] (http://merbist.com/2011/02/2">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Ruby concurrency explained | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ruby concurrency explained
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-01-18T08:37:39+08:00" content="2015-01-18">
+              2015-01-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ruby/" itemprop="url" rel="index">
+                    <span itemprop="name">Ruby</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>这两天在看 ruby 并发的内容, 发现自身存在的很多问题, 比如概念混淆不清, 以前学习 java 语言的适合这些内容都被我忽略了, 现在看看还是很有意思的. 也许是 ruby 语言简练语法的功劳. 的确有些难度, 我不能再回避这些问题了. </p>
+<p>我找了一个大牛的文章, 然后翻译过来, 看看自己对于这些内容的理解是否正确.</p>
+<p>[原文地址:] (<a href="http://merbist.com/2011/02/22/concurrency-in-ruby-explained/" target="_blank" rel="external">http://merbist.com/2011/02/22/concurrency-in-ruby-explained/</a>) </p>
+</blockquote>
+<h2 id="译文"><a href="#译文" class="headerlink" title="译文"></a>译文</h2><blockquote>
+<p>并发当然不是一个新的问题, 但是当机器处理器多于一个核心并且 web 流量急剧增加时,  就需要注意这个问题了. 一些新的技术站出来说它们更好因为可以将并发处理得更好.</p>
+<p>为了帮助理解, 你可以把并发想象成多任务. 当人们说他们想要并发的时候, 他们的意思是想让代码同时做多件事情. 当你使用电脑时, 你不会希望在上网和听音乐直接来回切换(要买只能上网, 要么只能听音乐). 你更希望可以同时做两件事. 对于你的代码来说也是一样的. 当你运行一个 web 服务器时, 你并不希望它一次只能处理一个请求. 这篇文章的目的尽可能简单地来解释 ruby 中并发的概念, 为什么并发是个复杂的问题, 最后使用不同的办法来实现办法.</p>
+<p>首先, 你还不熟悉并发, 花一分钟时间看看[维基百科的这篇文章] (<a href="http://en.wikipedia.org/wiki/Concurrency_%28computer_science%29" target="_blank" rel="external">http://en.wikipedia.org/wiki/Concurrency_%28computer_science%29</a>), 对其有一个整体理解. 但是现在, 你应该已经注意到了, 我上面的例子更多还是关于平行编程, 但是一会儿会回来的.</p>
+<blockquote>
+<p>对于并发来说的核心问题”如何来增加吞吐量”.</p>
+</blockquote>
+<p>我们想让代码运动得更好, 想让代码在更少的时间内做得更多. 我们看下两个简单具体的例子来描述并发. </p>
+<p>第一个, 假设你正在写一个 Twitter 客户度,  在更新微博时, 你可能想让用户拉动滚动条查看微博. 换句话说, 当你的代码正在等待来自于 Twitter 的 API 响应时, 你不想阻断主循环打断用户的交互. 所以你就需要一种很普遍的解决方案就是多线程. 线程是同一内存环境的基本的程序. 我们需要用一个线程跑主循环, 另一个线程来处理远程 API 请求. 这两个线程共享一块内存所以当 Twitter API 线程完成取数据后就可以更新然后显示了. 幸运的是, 这已经被异步 API 透明化处理了(由操作系统或者编程语言的标准库提供), 避免了阻塞主线程.</p>
+<p>第二个例子是 webserver. 假设你想跑一个 Rails 应用. 你希望看到很多流量. 很可能1 QPS(请求/秒). 你测试了你的应用发现平均响应时间大概是 100ms. 因此你的应用可以处理10 QPS, 使用单进程.</p>
+<p>但是如果你的应用增长到每秒多于10次请求了, 会发生什么? 很简单, 请求会被备份, 花更长的时间, 直到它们中一些开始超时. 这就是你需要提高你应用并发能力的原因了. 有几种方法来做这件事. 很多人对一些不同的解决方案强烈反对但是他们经常忘了解释为什么不喜欢某些方案而更偏爱一些方案的原因. 你可能听过一些人的结论:Rails 无法伸缩, 你只能从 JRuby 中得到并行, 线程差劲, 只有线程才能实现并发, 我们应该切换到 Erlang/Node.js/Scala, 应该使用 fiber, 多加几台服务器, forking&gt;threading. 由于很多人在会经常在 Twitter 上, 一些论坛上, 个人博客上讨论, 你可能就相信了. 但是, 你真的明白为什么人们那样说, 你确定他们就是对的吗? </p>
+<p>事实上, 原因很复杂, 但是也并没那么复杂.</p>
+<p>需要牢记一点, 并发模型定义在了编程语言中. 拿 java 来说, 线程是普遍的解决方法, 如果你想要让你的 java 应用并发性更强, 只需要运行每个请求在它自己的线程上. 对于 PHP, 没有线程, 而是你在每个请求上开始了一个新的进程. 两者有利有弊, java 线程化的方法的好处是内存在两个线程间共享, 这样就节约了大量的内存空间, 通过共享内存两线程之间可以很容易地进行通讯. PHP 的好处是你不需要担心锁, 死锁, 线程安全代码和多线程背后的混乱.</p>
+<p>说起来很简单, 但你可能想知道为什么 PHP 没有线程, 为什么 java 开发者不开启多进程. 答案可能关系到语言的设计初衷. PHP 被设计用于web, 和短期存活的进程. PHP 代码应该很快去加载不使用太多的内存. java 代码启动更慢, 再到趋于稳定运行, 它通常会消耗很多内存. 最后, java 不是为了 Internet 设计的. 其他编程语言如 Erlang 和 Scala 使用第3种方式: 参与者模式(the actor model). 参与者模式有点像2者的混合, 不同在于参与者像不共享相同内存环境的线程.参与者之间的通讯是通过交换信息来完成的, 确保每个参与者处理自己的状态, 这样避免了数据损坏(两个线程可能会修改同时修改相同的数据, 但是一个参与者在同一时间不会接收两条消息).</p>
+<p>那么 ruby 是如何处理的呢? ruby 开发者应该使用线程, 多进程还是参与者模式或者其他的什么? 答案是” yes”.</p>
+</blockquote>
+<h3 id="Threads"><a href="#Threads" class="headerlink" title="Threads"></a>Threads</h3><blockquote>
+<p>从 ruby1.9开始, ruby 已经有本地线程了(在这之前 ruby 使用的是<code>green threads</code>). 所以理论上来讲, 如果我们愿意, 可以想 java 开发者那样在任何地方使用线程. 但问题是ruby 像 Python 一样使用”全局编译器锁(Global Interpreter Lock (GIL))”, 这是一种锁机制可以保护你数据的完整. 它只允许数据同时被一个线程修改, 因此, 不会让别的线程过来损坏数据 但是这也不会让这些线程真正的并发运行. 这就是人们经常说 Ruby 和 Python 不能并发的原因了.</p>
+<p>但是这些人并没有提及 GIL 使单线程程序运行更快, 多线程程序更加容易开发因为数据结构更加安全, 许多 C 的扩展不是线程安全的也没有 GIL, 这些 C 扩展就会出现问题. 这些争论不会说服每个人, 这就是你为什么听到一些人说你应该看看其他 没有 GIL 的 Ruby 实现, 比如 JRuby, Rubinius(hydra branch)或者 MacRuby(Rubinius 和 MacRuby 也提供其他并发方法). 如果你在用一个没有 GIL 的实现, 在 Ruby 中使用多线程就会和在 java 中一样有好处也有坏处. 也就是说, 你必须要处理好多线程带来的噩梦: 确定你数据是安全的, 不会被锁, 检查代码, 你的lib, plugin和 gem 是否线程安全. 并且, 跑太多的线程会影响性能, 因为你的操作系统没有足够的资源来分配, 可能会死掉, 由于把时间花费在环境的切换上. 这就要取决于你了, 是否值得为你的项目这么做.</p>
+</blockquote>
+<h3 id="Multiple-processes-amp-forking"><a href="#Multiple-processes-amp-forking" class="headerlink" title="Multiple processes &amp; forking"></a>Multiple processes &amp; forking</h3><blockquote>
+<p>这是 Ruby 和 Python 中最常见实现并发的手段了. 因为默认的语言不能真正实现并发或者因为你想避免多线程编程带来的挑战, 你可能会开启更多的进程. 只要你不想在两个进程之间共享状态, 那么这就很简单了. 如果你想要共享状态, 你可能需要 DRb, 一种类似于RabbitMQ 的消息总线, 或者一种共享的数据存储像 memcached 或者一个数据库. 但是这将会占用你更多的内存. 如果你想跑5个 rails 进程, 你的应用需要100Mb, 你现在就得准备500Mb, 靠, 这是多大的内存开销! rails 的一些服务器比如 Mongrel 就是这么做的. 现在一些别的服务器像Passenger和 Unicorn 使用 unix forking 作为一种变通. forking 的优点是在 UNIX 系统中实现即写即拷语义, 具体说就是我们创建了主进程的一个新副本, 但是它们共享相同的物理内存. 但是, 每个进程可以修改其自己的内存而不影响到其他的进程. 所以现在, Passenger 能在一个进程中载入你100mb 的 rails app, 然后把这个进程做5个分支, 那么一共的台面空间只会比100mb 多一点而已, 你却能处理5倍的并发请求.注意, 如果你正在在你的请求处理代码(读 controller/view) 分配内存, 你总体的内存会增加但是你还是可以在用光内存之前运行许多的进程.  这个办法还是很吸引人的, 因为它既简单有安全. 如果分支进程运行有问题或者内存泄露, 只需要摧毁它然后从主进程上再创建一个分支即可. 注意这种做法也被用于Resque, Github 提供的异步处理解决方案.</p>
+<p>如果你想要复制出像 webserver 注意完全的进程这种办法还是不错的, 然而, 当你只是想执行一些在后台运行的代码那么这就显得没意思了. Resque 这么做因为本质上, 异步任务可以产生奇怪的结果, 内存溢出和假死. 处理分支允许对进程有一个外部的控制, 分支的花费不是什么大事因为我们已经处于异步处理方法之中了. </p>
+</blockquote>
+<h3 id="Actors-Fibers"><a href="#Actors-Fibers" class="headerlink" title="Actors/Fibers"></a>Actors/Fibers</h3><blockquote>
+<p>刚才我们提了一下”参与者模型( Actor Model )”. Ruby1.9之后, 开发者有了一种新的类型的轻量级线程叫做 “Fibers”. Fibers 不是 actor, Ruby 没有本地的 actor model 实现, 但是一些人还是写了一些在 fibers 上层actor的 lib. fiber 像是简化过的线程, 被程序员操作而不是被虚拟机. fiber像 block 可以被暂停并且还可以从外部恢复到自己内部. 相比于线程, 它运行更快使用更少内存, [这篇文章有对比] (<a href="http://oldmoe.blogspot.jp/2008/08/ruby-fibers-vs-ruby-threads.html" target="_blank" rel="external">http://oldmoe.blogspot.jp/2008/08/ruby-fibers-vs-ruby-threads.html</a>) . 可是由于 GIL 的原因, 你还是不能真正通过线程跑多个并发的 fiber, 如果你想使用多 CPU 核心, 你得在多线程上运行 fiber. 那么 fiber 如何并发呢? 答案是 fiber 是更大的解决方案的一部分. fiber 允许开发者手动来控制并发代码时序安排( scheduling ), 同时也要在 fiber 中有安排自身的代码. 说这个方案大是因为你现在可以包装进来的 web 请求 在其自己的 fiber 中, 当处理完成后告诉它发一个响应回去. 同时, 你可以继续下一次请求. 无论什么时候fiber 中的一个请求完成, 它会自动继续重复自身并返回.听起来不错, 但是唯一的问题是如果你在 fiber 中阻塞 IO, 那么整个的线程就会被阻塞, 其他的 fiber 也不会运行. 阻塞操作是指比如数据库或者缓存查询, http 请求… 基本上可能你从 controller 上上引起的. 好消息是这个问题已经可以通过避免阻塞 IO 来解决. 那么看看是如何做的吧.</p>
+</blockquote>
+<h3 id="Non-blocking-IOs-Reactors-pattern"><a href="#Non-blocking-IOs-Reactors-pattern" class="headerlink" title="Non blocking IOs/Reactors pattern"></a>Non blocking IOs/Reactors pattern</h3><blockquote>
+<p>反应器模式( reactor pattern ) 非常容易理解. 阻塞 IO 调用这样重量级的工作被委托给了外部服务( reactor ), 可以接收并发请求. 根据接收到的响应的类型, 服务处理器( reactor ) 被给与了一个回调方法, 被异步触发.  我用类比的方式来看看是否可以将这个问题解释的更明了. 假如 你问别人一个很难的问题, 这个人要花一点时间来回复, 但是他的答案将决定你是否举起一面旗. 你有两个选择, 选择等待响应, 然后决定举起更具响应的旗, 或者你旗的逻辑已被定义, 然后你告诉这个人该做什么根据他的答案然后我可以继续而不需要担心等待答案. 第二种方法就是反应器模式. 很明显有一点更加复杂但是关键是允许你的代码定义了方法或者 block 基于将来过来的响应被调用.</p>
+<p>在单线程 web 服务器中, 这是很重要的. 当一个请求进来, 你的代码做了一个 db 查询, 那么你就阻塞了任何其他被处理的请求. 为了避免这种情况, 我们可以将请求包装在 fiber 中, 触发异步数据库调用, 然后暂停 fiber, 这样另一个请求可以得到处理, 因为我们正在等待数据库.数据库查询回来, 它会唤醒 fiber, 然后再把响应发回客户端. 技术上来讲, 服务器还是一次发送一个响应, 但是现在 fibers 可以平行运行, 不会因为 IO 操作来阻塞主线程(因为IO 操作委托给了反应器)</p>
+<p>这种方法被用于 Twisted, EventMachine 和 Node.js. Ruby 开发者可以使用 EventMachine 或者基于它的服务器向 Thin 和 EM clients/drivers 来实现 非阻塞式异步调用. 再加入 Fiber 就可以得到 Ruby 版的并发了. 需要小心, 使用 Thin, 非阻塞式驱动和  线程安全模式下的Rails并不意味着你就是在并发请求. Thin/EM 只会使用一个线程, 当我们正在等待的时候你就应该让它知道可以处理下一次请求了. 使用推迟响应, 让反应器知道可以实现.</p>
+<p>正在办法明显的问题是改变了你写代码的方式. 你需要建立很多回调, 理解 fiber 语法, 并且使用可推迟响应, 我必须承认这很痛苦. 如果你看一些 node.js 的代码你就会发现这不是一种很优雅的办法. 好消息是这种处理可以被包装起来, 在包装下, 尽管在处理异步你的代码可以像是写同步时一样. 如果没有代码来解释会很复杂, 所以这个问题以后再说.</p>
+</blockquote>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><blockquote>
+<p>Ruby 中的高并发是可行的, 也被次使用. 可是, 还是可以更简单些, Ruby1.9为我们提供了 fiber, 可以更加细粒度控制并发, 结合非阻塞 IO, 高并发可以实现. 还有一种简单的方法就是分支出一个正在运行的进程来增加处理的能力. 但是在这个争论的背后是 Ruby 中的全局解释器锁将来会如何. 我们应该把它移除来提高并发能力而把精力花费在处理一些主要的线程问题上, 不安全的 C 扩张等等问题上吗? 两者选其一, Ruby 的开发者似乎也是这么认为的, 但是 Rails还在使用排它锁, 只允许一次被处理一个, 许多使用 Rails 不写线程安全的代码, 许多插件也不是线程安全的. 并发的将来会不会更像是 libdispatch/GCD , 线程只会被内核处理, 开发者只去处理更简单/安全的 API 呢?</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ruby-thread-multiple-process-forking-fibers-concurrency/" rel="tag">#ruby thread multiple process forking fibers concurrency</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/01/10/ruby-2-0-works-hard-so-you-can-be-lazy-tranlation/" rel="next" title="Ruby 2.0 Works Hard So You Can Be Lazy">
+                <i class="fa fa-chevron-left"></i> Ruby 2.0 Works Hard So You Can Be Lazy
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/01/24/postgresql-with-rails/" rel="prev" title="Postgresql with Rails on OSX">
+                Postgresql with Rails on OSX <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#译文"><span class="nav-number">1.</span> <span class="nav-text">译文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Threads"><span class="nav-number">1.1.</span> <span class="nav-text">Threads</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multiple-processes-amp-forking"><span class="nav-number">1.2.</span> <span class="nav-text">Multiple processes & forking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Actors-Fibers"><span class="nav-number">1.3.</span> <span class="nav-text">Actors/Fibers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Non-blocking-IOs-Reactors-pattern"><span class="nav-number">1.4.</span> <span class="nav-text">Non blocking IOs/Reactors pattern</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Conclusion"><span class="nav-number">1.5.</span> <span class="nav-text">Conclusion</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

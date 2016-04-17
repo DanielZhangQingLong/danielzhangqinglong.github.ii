@@ -1,0 +1,613 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="helper," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Rails 为View提供了日期, 数值和文本的帮助方法, 下面就来看看这些帮助方法的使用.
+
+文本相关123456789101112131415161718192021222324# 显示debug信息&amp;lt;%= debug(params) %&amp;gt;&amp;lt;%= debug(cookies) %&amp;gt;# 转义成HTMLmy_text = &amp;quot;Here is some basic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Format Helper">
+<meta property="og:url" content="http://yoursite.com/2015/02/20/format-helper/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Rails 为View提供了日期, 数值和文本的帮助方法, 下面就来看看这些帮助方法的使用.
+
+文本相关123456789101112131415161718192021222324# 显示debug信息&amp;lt;%= debug(params) %&amp;gt;&amp;lt;%= debug(cookies) %&amp;gt;# 转义成HTMLmy_text = &amp;quot;Here is some basic">
+<meta property="og:updated_time" content="2015-02-20T14:37:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Format Helper">
+<meta name="twitter:description" content="Rails 为View提供了日期, 数值和文本的帮助方法, 下面就来看看这些帮助方法的使用.
+
+文本相关123456789101112131415161718192021222324# 显示debug信息&amp;lt;%= debug(params) %&amp;gt;&amp;lt;%= debug(cookies) %&amp;gt;# 转义成HTMLmy_text = &amp;quot;Here is some basic">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Format Helper | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Format Helper
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-20T20:48:16+08:00" content="2015-02-20">
+              2015-02-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Rails 为View提供了日期, 数值和文本的帮助方法, 下面就来看看这些帮助方法的使用.</p>
+</blockquote>
+<h2 id="文本相关"><a href="#文本相关" class="headerlink" title="文本相关"></a>文本相关</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># 显示debug信息</span><br><span class="line">&lt;%= debug(params) %&gt;</span><br><span class="line">&lt;%= debug(cookies) %&gt;</span><br><span class="line"></span><br><span class="line"># 转义成HTML</span><br><span class="line">my_text = &quot;Here is some basic text...\n...with a line break.&quot;</span><br><span class="line">simple_format(my_text)</span><br><span class="line"># =&gt; &quot;&lt;p&gt;Here is some basic text...\n&lt;br /&gt;...with a line break.&lt;/p&gt;&quot;</span><br><span class="line"></span><br><span class="line"># 高亮</span><br><span class="line">&lt;%= highlight( &quot;This is Daniel&quot;, &quot;Daniel&quot;  ) %&gt;</span><br><span class="line"></span><br><span class="line"># 指定高亮的格式</span><br><span class="line">&lt;%= highlight(&quot;This is Daniel, I am a brilliant boy! This is true&quot;, [&apos;Daniel&apos;, &apos;am&apos;], highlighter: &apos;    &lt;a href=&quot;search?q=\1&quot;&gt;\1&lt;/a&gt;&apos;) %&gt;</span><br><span class="line"></span><br><span class="line"># 省略</span><br><span class="line">&lt;%= truncate(&quot;This is something I hated that people who drank the fucking wine&quot;, lenth: 8) %&gt;</span><br><span class="line"></span><br><span class="line"># 掐头去尾省略</span><br><span class="line"> &lt;%= excerpt(&quot;西望大家不要再喝完酒后批评别人了&quot;, &quot;喝完酒&quot;, radius: 2) %&gt;</span><br><span class="line"></span><br><span class="line"># 英文复数变形</span><br><span class="line">&lt;%= pluralize(1, &apos;person&apos;) %&gt; # =&gt; 1 person</span><br><span class="line">&lt;%= pluralize(2, &apos;person&apos;) %&gt; # =&gt; 2 people</span><br></pre></td></tr></table></figure>
+<h2 id="数值相关"><a href="#数值相关" class="headerlink" title="数值相关"></a>数值相关</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 货币</span><br><span class="line"></span><br><span class="line">&lt;%= number_to_currency( 1234.56  ) %&gt; #=&gt; $1,234.56 </span><br><span class="line">&lt;%= number_to_currency( 1234.56, unit: &quot;¥&quot;, precision: 0  ) %&gt; #=&gt; ¥1,235</span><br><span class="line"></span><br><span class="line"># Byte</span><br><span class="line">&lt;%= number_to_human_size( 1200  ) %&gt; #=&gt; 1.17 KB</span><br><span class="line"></span><br><span class="line"># 百分数</span><br><span class="line">&lt;%= number_to_percentage( 66.666666, precision: 1  ) %&gt; #=&gt; 66.7%</span><br><span class="line"></span><br><span class="line"># 数字3位分割</span><br><span class="line">&lt;%= number_with_delimiter( 1234567890  ) %&gt; #=&gt; 1,234,567,890</span><br><span class="line">&lt;%= number_with_delimiter( 1234567890, delimiter: &quot;_&quot;  ) %&gt; #=&gt; 1_234_567_890</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 四舍五入</span><br><span class="line">&lt;%= number_with_precision( 12.3456, precision: 2  ) %&gt; #=&gt; 12.35</span><br></pre></td></tr></table></figure>
+<h2 id="日期时间相关"><a href="#日期时间相关" class="headerlink" title="日期时间相关"></a>日期时间相关</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 从现在开始多久前</span><br><span class="line">&lt;%= time_ago_in_words(3.minutes.from_now)  %&gt;   # =&gt; 3 minutes</span><br><span class="line">&lt;%= time_ago_in_words(3.minutes.ago)  %&gt;            # =&gt; 3 minutes</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/helper/" rel="tag">#helper</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/17/view-helper/" rel="next" title="Rails中View Helper总结">
+                <i class="fa fa-chevron-left"></i> Rails中View Helper总结
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/21/multi-form-submit/" rel="prev" title="一个表单中配置多个Submit">
+                一个表单中配置多个Submit <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#文本相关"><span class="nav-number">1.</span> <span class="nav-text">文本相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数值相关"><span class="nav-number">2.</span> <span class="nav-text">数值相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日期时间相关"><span class="nav-number">3.</span> <span class="nav-text">日期时间相关</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

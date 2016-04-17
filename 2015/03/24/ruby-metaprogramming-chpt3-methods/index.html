@@ -1,0 +1,852 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Methods," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="不同于Java, C这样的静态语言, Ruby没有编译器, 不会进行拼写检查.比如说在某个对象上调用一个不存在的方法, 直到程序运行到那行错误的调用代码时才会报错.
+学习过Java的人可能都知道setter和getter方法, 它们是一种间接访问属性的形式, 一种代理模式, 其本身没有任何意义, 只是为了让编译器可以通过. 而Ruby通过自己的技术手段巧妙避免了这些无聊的方法.本章就来关注这些技">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ruby 元编程 第三章 方法">
+<meta property="og:url" content="http://yoursite.com/2015/03/24/ruby-metaprogramming-chpt3-methods/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="不同于Java, C这样的静态语言, Ruby没有编译器, 不会进行拼写检查.比如说在某个对象上调用一个不存在的方法, 直到程序运行到那行错误的调用代码时才会报错.
+学习过Java的人可能都知道setter和getter方法, 它们是一种间接访问属性的形式, 一种代理模式, 其本身没有任何意义, 只是为了让编译器可以通过. 而Ruby通过自己的技术手段巧妙避免了这些无聊的方法.本章就来关注这些技">
+<meta property="og:updated_time" content="2015-03-26T02:38:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ruby 元编程 第三章 方法">
+<meta name="twitter:description" content="不同于Java, C这样的静态语言, Ruby没有编译器, 不会进行拼写检查.比如说在某个对象上调用一个不存在的方法, 直到程序运行到那行错误的调用代码时才会报错.
+学习过Java的人可能都知道setter和getter方法, 它们是一种间接访问属性的形式, 一种代理模式, 其本身没有任何意义, 只是为了让编译器可以通过. 而Ruby通过自己的技术手段巧妙避免了这些无聊的方法.本章就来关注这些技">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Ruby 元编程 第三章 方法 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ruby 元编程 第三章 方法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-24T16:33:43+08:00" content="2015-03-24">
+              2015-03-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ruby/" itemprop="url" rel="index">
+                    <span itemprop="name">Ruby</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>不同于Java, C这样的静态语言, Ruby没有编译器, 不会进行拼写检查.比如说在某个对象上调用一个不存在的方法, 直到程序运行到那行错误的调用代码时才会报错.</p>
+<p>学习过Java的人可能都知道<code>setter</code>和<code>getter</code>方法, 它们是一种间接访问属性的形式, 一种代理模式, 其本身没有任何意义, 只是为了让编译器可以通过. 而Ruby通过自己的技术手段巧妙避免了这些无聊的方法.本章就来关注这些技术.</p>
+</blockquote>
+<h2 id="A-Duplication-Problem-重复代码"><a href="#A-Duplication-Problem-重复代码" class="headerlink" title="A Duplication Problem(重复代码)"></a>A Duplication Problem(重复代码)</h2><blockquote>
+<p>假设现在需要程序来统计电脑各个部件的信息(价格, 描述…), 返回价格大于99的部件. 首先有个数据源类<code>DS</code>它存储了各个部件的信息, 暂且当作数据库使用.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class DS</span><br><span class="line">  def initialize # connect to data source... </span><br><span class="line">  def get_cpu_info(workstation_id) # ...</span><br><span class="line">  def get_cpu_price(workstation_id) # ...</span><br><span class="line">  def get_mouse_info(workstation_id) # ...</span><br><span class="line">  def get_mouse_price(workstation_id) # ... </span><br><span class="line">  def get_keyboard_info(workstation_id) # ... </span><br><span class="line">  def get_keyboard_price(workstation_id) # ... </span><br><span class="line">  def get_display_info(workstation_id) # ... </span><br><span class="line">  def get_display_price(workstation_id) # ... </span><br><span class="line">  # ...and so on</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>DS#initialize</code>方法会连接到数据系统, 当你创建DS对象的时候, 其他的方法通过接受<code>workstation_id</code>来返回电脑组件的描述以及价格:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># irb</span><br><span class="line">ds = DS.new</span><br><span class="line">ds.get_cpu_info(42) # =&gt; &quot;2.9 Ghz quad-core&quot;</span><br><span class="line">ds.get_cpu_price(42) # =&gt; 120</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>接着写Computer类, 返回价格大于99的部件, 需要传入刚才的数据源: </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">class Computer</span><br><span class="line">  def initialize(computer_id, data_source)</span><br><span class="line">    @id = computer_id</span><br><span class="line">    @data_source = data_source</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def mouse</span><br><span class="line">    info = @data_source.get_mouse_info(@id)</span><br><span class="line">    price = @data_source.get_mouse_price(@id)</span><br><span class="line">    result = &quot;Mouse: #&#123;info&#125; ($#&#123;price&#125;)&quot;</span><br><span class="line">    return &quot;* #&#123;result&#125;&quot; if price &gt;= 100</span><br><span class="line">    result</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def cpu</span><br><span class="line">    info = @data_source.get_cpu_info(@id)</span><br><span class="line">    price = @data_source.get_cpu_price(@id)</span><br><span class="line">    result = &quot;Cpu: #&#123;info&#125; ($#&#123;price&#125;)&quot;</span><br><span class="line">    return &quot;* #&#123;result&#125;&quot; if price &gt;= 100</span><br><span class="line">    result</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def keyboard</span><br><span class="line">    info = @data_source.get_keyboard_info(@id)</span><br><span class="line">    price = @data_source.get_keyboard_price(@id)</span><br><span class="line">    result = &quot;Keyboard: #&#123;info&#125; ($#&#123;price&#125;)&quot;</span><br><span class="line">    return &quot;* #&#123;result&#125;&quot; if price &gt;= 100</span><br><span class="line">    result</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>很显然, 这些代码只需要写一个其他的复制粘贴就可以了, 下一节就要研究下如何去掉这些重复的部分</p>
+</blockquote>
+<h2 id="Dynamic-Methods-动态方法"><a href="#Dynamic-Methods-动态方法" class="headerlink" title="Dynamic Methods(动态方法)"></a>Dynamic Methods(动态方法)</h2><blockquote>
+<p>调用方法可以理解为给对象传递一个消息.</p>
+</blockquote>
+<h3 id="Calling-Methods-Dynamically"><a href="#Calling-Methods-Dynamically" class="headerlink" title="Calling Methods Dynamically"></a>Calling Methods Dynamically</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  def my_method(my_arg)</span><br><span class="line">    my_method * 2</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = MyClass.new</span><br><span class="line">obj.my_method(3)   # =&gt; 6</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上面的例子说明了方法调用其实就是一直<code>.</code>操作符的使用.<br>我们还可以使用<code>Object#send</code>方法来替换掉<code>MyClass#my_method</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.send(:my_method, 3) # =&gt; 6</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>send</code>的第一个参数代表对obj发送的消息, 使用的是Symbol或者String的形式来代表方法名. 剩下的参数(或者block)只是简单地传给了方法.</p>
+<p>为什么使用<code>send</code>代替<code>.</code>操作符?<br><strong><em> 因为使用<code>send</code>方法, 你所要调用的方法名变成了一个规则的参数. 在程序运行的时候,你可以等到最后一刻来决定来调用哪一个方法,  这种技术叫做动态派遣(Dynamic Dispatch) </em></strong></p>
+<p>这个技术非常实用, 来看看几个真实的案例:</p>
+</blockquote>
+<h4 id="The-Pry-Example"><a href="#The-Pry-Example" class="headerlink" title="The Pry Example"></a>The Pry Example</h4><blockquote>
+<p>pry gem可以作为irb(Ruby的command-line interpreter)的替代品. Pry对象存储了解释器的配置信息, 作为自己的属性, 比如说: <code>memory_size</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">require &quot;pry&quot;</span><br><span class="line"></span><br><span class="line">pry = Pry.new</span><br><span class="line">pry.memory_size = 101</span><br><span class="line">pry.memory_size # =&gt; 101</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于每个实例方法<code>Pry#memory_size</code>都有一个对应的类方法<code>Pry.memory_size</code>, 类方法返回的是默认值:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pry.memory_size # =&gt; 100</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们来深入到Pry的源码, 你可以使用<code>Pry#refresh</code>来配置一个Pry的实例. 该方法接受hash来映射属性名到新的值上:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pry.refresh(:memory_size =&gt; 99, :quiet =&gt; false)</span><br><span class="line">pry.memory_size # =&gt; 99</span><br><span class="line">pry.quiet # =&gt; false</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>Pry#refresh</code>有很多工作要做, 首先需要检查每个属性(比如 <code>self.memory_size</code>), 使用默认值初始化属性(比如<code>Pry.memory_size</code>); 最后检查对于同一属性来说, hash参数是否有一个新值, 有, 就设置该新值.<br>刚刚的这段描述如果使用代码来表述, 可能会是这样的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def refresh(options=&#123;&#125;)</span><br><span class="line">  defaults[:memory_size] = Pry.memory_size</span><br><span class="line">  self.memory_size = options[:memory_size] if options[:memory_size]</span><br><span class="line">  defaults[:quiet] = Pry.quiet</span><br><span class="line">  self.quiet = options[:quiet] if options[:quiet]</span><br><span class="line"></span><br><span class="line">  # same for all the other attributes...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但是这样的代码并不简洁, 需要判断很多属性, 这时候使用<code>send</code>方法就会灵活很多了</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def refresh(options)</span><br><span class="line">  default = &#123;&#125;</span><br><span class="line">  attributes = [ :input, :output, :commands, :print, :quiet,</span><br><span class="line">                   :exception_handler, :hooks, :custom_completions,</span><br><span class="line">                   :prompt, :memory_size, :extra_sticky_locals ]</span><br><span class="line">  attributes.each do |attribute|</span><br><span class="line">    defaults[attribute] = Pry.send(attribute)</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  defaults.merge!(options).each do |key, value|</span><br><span class="line">    send(&quot;#&#123;key&#125;=&quot;, value) if respond_to?(&quot;#&#123;key&#125;=&quot;)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上面的代码使用<code>send</code>把先把默认值读取到一个hash中(<code>defaults</code>), 然后将这个hash与传入参数options合并, 注意: 使用merge! 方法options会覆盖掉defaults原来的值. 最后又一次使用send方法来调用属性的访问器(赋值)方法, 比如说<code>memory_size=</code>, <code>Kernel#respond_to?</code>方法判断方法是否存在, 如<code>Pry#memory_size=</code>. 所以Pry中不存在的属性就会被忽略.</p>
+</blockquote>
+<h4 id="Privacy-Matters"><a href="#Privacy-Matters" class="headerlink" title="Privacy Matters"></a>Privacy Matters</h4><blockquote>
+<p><code>send</code>方法过于强悍, 以至于私有方法都可以调用. 这样似乎不尊重接收者的隐私, 如果你不想调用这些私有方法, 可以使用<code>public_send</code>代替.</p>
+</blockquote>
+<h3 id="Defining-Methods-Dynamically-动态地定义方法"><a href="#Defining-Methods-Dynamically-动态地定义方法" class="headerlink" title="Defining Methods Dynamically (动态地定义方法)"></a>Defining Methods Dynamically (动态地定义方法)</h3><blockquote>
+<p>刚刚说的<code>send</code>方法可以动态调用方法, 如果要想动态定义一个方法应该使用<code>Module#define_method</code>方法, 你需要提供方法名称的symbol和一个block作为方法体, block的参数作为方法的参数:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  define_method :my_method do |my_arg|</span><br><span class="line">    my_arg * 3</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = MyClass.new</span><br><span class="line">obj.new(2)  #=&gt; 6</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>define_method</code>被执行于<code>MyClass</code>中, 所以<code>my_method</code>是实例方法. 这种在运行时定义方法的技术就是动态方法定义.<br>相对于<code>def</code>关键字定义的方法, <code>define_method</code>可以让你在程序运行时决定被定义方法的名称, 具体例子看后面的例子.</p>
+</blockquote>
+<h3 id="Refactoring-the-Computer-Class"><a href="#Refactoring-the-Computer-Class" class="headerlink" title="Refactoring the Computer Class"></a>Refactoring the Computer Class</h3><blockquote>
+<p>回忆之前的Computer 类, 做了很多复制粘贴, 现在已经学过了动态方法定义的知识, 使用<code>define_method</code>来替换掉<code>def</code>关键字:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">class Computer</span><br><span class="line">  def initialize(computer_id, data_source)</span><br><span class="line">    @id = computer_id</span><br><span class="line">    @data_source = data_source</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def mouse</span><br><span class="line">    info = @data_source.get_mouse_info(@id)</span><br><span class="line">    price = @data_source.get_mouse_price(@id)</span><br><span class="line">    result = &quot;Mouse: #&#123;info&#125; ($#&#123;price&#125;)&quot;</span><br><span class="line">    return &quot;* #&#123;result&#125;&quot; if price &gt;= 100</span><br><span class="line">    result</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def cpu</span><br><span class="line">    info = @data_source.get_cpu_info(@id)</span><br><span class="line">    price = @data_source.get_cpu_price(@id)</span><br><span class="line">    result = &quot;Cpu: #&#123;info&#125; ($#&#123;price&#125;)&quot;</span><br><span class="line">    return &quot;* #&#123;result&#125;&quot; if price &gt;= 100</span><br><span class="line">    result</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def keyboard</span><br><span class="line">    info = @data_source.get_keyboard_info(@id)</span><br><span class="line">    price = @data_source.get_keyboard_price(@id)</span><br><span class="line">    result = &quot;Keyboard: #&#123;info&#125; ($#&#123;price&#125;)&quot;</span><br><span class="line">    return &quot;* #&#123;result&#125;&quot; if price &gt;= 100</span><br><span class="line">    result</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="Step-1-Adding-Dynamic-Dispatches-添加动态派遣"><a href="#Step-1-Adding-Dynamic-Dispatches-添加动态派遣" class="headerlink" title="Step 1: Adding Dynamic Dispatches (添加动态派遣)"></a>Step 1: Adding Dynamic Dispatches (添加动态派遣)</h4><blockquote>
+<p>不难发现, <code>mouse, cpu, keyboard</code>这几个方法里面的内容结果是相同的, 我们先把重复代码抽取到自己的消息传递方法中:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Computer</span></span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(computer_id, data_source)</span></span></span><br><span class="line">    @id = computer_id</span><br><span class="line">    @data_source = data_source</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">mouse</span></span></span><br><span class="line">    component <span class="symbol">:mouse</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">cpu</span></span></span><br><span class="line">    component <span class="symbol">:cpu</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">keyboard</span></span></span><br><span class="line">    component <span class="symbol">:keyboard</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">component</span><span class="params">(name)</span></span></span><br><span class="line">    info = @data_source.send <span class="string">"get_<span class="subst">#&#123;name&#125;</span>_info"</span>, @id</span><br><span class="line">    price = @data_source.send <span class="string">"get_<span class="subst">#&#123;name&#125;</span>_price"</span>, @id</span><br><span class="line">    result = <span class="string">"<span class="subst">#&#123;name.capitalize&#125;</span>: <span class="subst">#&#123;info&#125;</span> ($<span class="subst">#&#123;price&#125;</span>)"</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"* <span class="subst">#&#123;result&#125;</span>"</span> <span class="keyword">if</span> price &gt;= <span class="number">100</span></span><br><span class="line">    result</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样重构之后, 所有对于<code>mouse</code>的调用就代理给了<code>component</code>, 在<code>component</code>方法中, 依次调用了<code>DS#get_mouse_info</code> 和 <code>get_mouse_price</code>.</p>
+</blockquote>
+<h4 id="Step-2-Generating-Methods-Dynamically-动态生成方法"><a href="#Step-2-Generating-Methods-Dynamically-动态生成方法" class="headerlink" title="Step 2: Generating Methods Dynamically (动态生成方法)"></a>Step 2: Generating Methods Dynamically (动态生成方法)</h4><blockquote>
+<p>但是还是可以看到相似代码, 那么就要使用<code>define_method</code>来动态生成<code>cpu</code>, <code>keyboard</code>等这些方法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Computer </span><br><span class="line">  def initialize(computer_id, data_source)</span><br><span class="line">    @id = computer_id</span><br><span class="line">    @data_source = data_source</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def self.define_component(name)</span><br><span class="line">    define_method(name) do</span><br><span class="line">      info = @data_source.send &quot;get_#&#123;name&#125;_info&quot;, @id</span><br><span class="line">      price = @data_source.send &quot;get_#&#123;name&#125;_price&quot;, @id</span><br><span class="line">      result = &quot;#&#123;name.capitalize&#125;: #&#123;info&#125; ($#&#123;price&#125;)&quot;</span><br><span class="line">      return &quot;* #&#123;result&#125;&quot; if price &gt; 100</span><br><span class="line">      result</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  # 下面的方法省略了self, 并且会在类定义中执行</span><br><span class="line">  define_component :mouse</span><br><span class="line">  define_component :cpu</span><br><span class="line">  define_component :keyboard</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong><em> 这里面必须要注意, 3次对于<code>define_component</code>这个方法的调用被执行于Computer这个类的内部, 事实上Computer已经暗示接收者为<code>self</code>, 即: <code>self.define_component :mouse</code>. 由于是在类中调用的方法, 而非方法的定义, 所以我们必须让<code>define_component</code>这个方法为类方法: <code>Computer.define_component</code> </em></strong></p>
+</blockquote>
+<h4 id="Step-3-Sprinkling-the-Code-with-Introspection-使用内省点缀一下代码"><a href="#Step-3-Sprinkling-the-Code-with-Introspection-使用内省点缀一下代码" class="headerlink" title="Step 3: Sprinkling the Code with Introspection (使用内省点缀一下代码)"></a>Step 3: Sprinkling the Code with Introspection (使用内省点缀一下代码)</h4><blockquote>
+<p>我们可以看到还是有重复的代码–调用了3次<code>define_component</code>. 现在就来将其合并</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Computer</span><br><span class="line">  def initialize(computer_id, data_source)</span><br><span class="line">    @id = computer_id</span><br><span class="line">    @data_source = data_source</span><br><span class="line">    data_source.methods.grep(/^get_(.*)_info$/) &#123; Computer.define_component $1 &#125;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">   def self.define_component(name)</span><br><span class="line">     define_method(name) do</span><br><span class="line">       info = @data_source.send &quot;get_#&#123;name&#125;_info&quot;, @id</span><br><span class="line">       price = @data_source.send &quot;get_#&#123;name&#125;_price&quot;, @id</span><br><span class="line">       result = &quot;#&#123;name.capitalize&#125;: #&#123;info&#125; ($#&#123;price&#125;)&quot;</span><br><span class="line">       return &quot;* #&#123;result&#125;&quot; if price &gt; 100</span><br><span class="line">       result</span><br><span class="line">     end</span><br><span class="line">   end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>initialize</code>方法中新添加的代码就是奇迹发生的地方, 以下是对这行代码的理解:</p>
+<p>首先如果你将一个block传递给<code>Array#grep</code>这个方法, 每当有一个元素匹配正则表达式, block就会被执行一次. 第二, 正则表达式的<code>(.*)</code>部分被存到了全局变量<code>$1</code>中.<br>所以, 如果<code>data_source</code>有两个方法名为<code>get_cpu_info</code>和<code>get_mouse_info</code>, <code>Computer.define_method $1</code>会被执行2次, $1分别为<code>&quot;cpu&quot;</code>和<code>&quot;mouse&quot;</code></p>
+<p>如果DS添加了新的组件, 如<code>get_scanner_info</code>, Computer不需要做任何修改.</p>
+</blockquote>
+<h3 id="Methods-Names-and-Symbols"><a href="#Methods-Names-and-Symbols" class="headerlink" title="Methods Names and Symbols"></a>Methods Names and Symbols</h3><blockquote>
+<p>研究一下Symbol 和 String 有什么区别:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:x.class # =&gt; Symbol</span><br><span class="line">&quot;x&quot;.class # =&gt; String</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>虽然属于不同的类, 但是symbol和string有着很多的相似之处, 你可能会好奇为什么不能使用string代替symbol呢?</p>
+</blockquote>
+<h4 id="使用symbol的原因"><a href="#使用symbol的原因" class="headerlink" title="使用symbol的原因"></a>使用symbol的原因</h4><blockquote>
+<p>大多数情况下, symbol用作事物的名称, 尤其是元编程相关的名称, 比如方法的名称一般使用symbol. 这是由于symbol是不可变的, 但是string的值你是可以改变的, 你定义了一个方法, 它的名字当然是固定的.比如:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1.send(:+, 2) #=&gt; 3</span><br><span class="line"># 当然可以使用&quot;x&quot;, 但是使用symbol看起来更加简练</span><br></pre></td></tr></table></figure>
+<h4 id="Symbol和String的转换"><a href="#Symbol和String的转换" class="headerlink" title="Symbol和String的转换"></a>Symbol和String的转换</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;abc&quot; #=&gt; :abc</span><br><span class="line">:abc.to_sa # =? &quot;abc&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="method-missing"><a href="#method-missing" class="headerlink" title="method_missing"></a>method_missing</h2><blockquote>
+<p>对于<code>Computer</code>的重构还有第二种解决方法: 使用Ghost Methods 和 dynamic proxies.</p>
+<p>由于Ruby设计时就是没有编译器的, 所以他不会进行语法检查, 你可以调用不存在的方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Lawyer; end</span><br><span class="line">nick = Lawyer.new</span><br><span class="line">nick.talk_simple</span><br><span class="line"></span><br><span class="line"> NoMethodError: undefined method `talk_simple&apos; for #&lt;Lawyer:0x007f801aa81938&gt;`</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Ruby如果找不到<code>talk_simple</code>这个方法, 就会调用<code>BasicObject</code>的私有方法<code>method_missing</code>. 由于是私有方法, 我们使用send来做个实验:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nick.send(:talk_simple, :my_method)</span><br><span class="line">❮ NoMethodError: undefined method `my_method&apos; for #&lt;Lawyer:0x007f801b0f4978&gt;`</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这个方法以抛异常(NoMethodError)的形式处理对象不存在方法的情况.</p>
+</blockquote>
+<h3 id="Overriding-method-missing-重写method-missing"><a href="#Overriding-method-missing-重写method-missing" class="headerlink" title="Overriding method_missing (重写method_missing)"></a>Overriding method_missing (重写method_missing)</h3><blockquote>
+<p>我们都知道发生了异常程序就会中断, 由于<code>method_missing</code>就是抛异常的, 那么我可以通过重写该方法, 覆盖掉<code>BasicObject</code>中定义的这个方法, 避免抛异常, 然后我就可以在重写方法所在类的任意对象上调用不存在的方法了.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Lawyer</span><br><span class="line">  def method_missing(method, *args)</span><br><span class="line">    puts &quot;You called: #&#123;method&#125;(#&#123;args.join(&apos;, &apos;)&#125;)&quot;</span><br><span class="line">    puts &quot;(You also passed it a block)&quot; if block_given?</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">bob = Lawyer.new</span><br><span class="line">bob.talk_simple(&apos;a&apos;, &apos;b&apos;) do</span><br><span class="line">  # block</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">You called: talk_simple(a, b) </span><br><span class="line">(You also passed it a block)</span><br></pre></td></tr></table></figure>
+<h3 id="Ghost-Methods-幽灵方法"><a href="#Ghost-Methods-幽灵方法" class="headerlink" title="Ghost Methods (幽灵方法)"></a>Ghost Methods (幽灵方法)</h3><blockquote>
+<p>当你需要定义许多相似的方法时, 先不要急着定义, 想想<code>method_missing</code>这个方法, 因为如果方法不存在, 就会把调用请求交给<code>method_missing</code>. 可以通过重写method_missing这个方法来处理本来你想在新方法中定义处理的问题. 好像是在对象说”如果你不知道怎么办(没有定义方法), 做这个(method_missing)”. 这种技巧叫做Ghost Methods. 看下面这个实际的例子:</p>
+</blockquote>
+<h4 id="The-Hashie-Example"><a href="#The-Hashie-Example" class="headerlink" title="The Hashie Example"></a>The Hashie Example</h4><blockquote>
+<p>Hashie gem 有一个很神奇的类<code>Hashie::Mash</code>. Mash是一种类Hash对象, 它的属性很像Ruby的类. 如果你想要一个新的属性, 只需要直接赋值, 这个属性就自动加进去了:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">require &apos;hashie&apos;</span><br><span class="line">icecream = Hashie::Mash.new</span><br><span class="line">icecream.flavor = &quot;strawberry&quot;</span><br><span class="line">icecream.flavor # =&gt; &quot;strawberry&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其实它内部就重写了这个<code>method_missing</code>方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">module Hashie</span><br><span class="line">  class Hash &lt; Hashie::Hash</span><br><span class="line">    def method_missing(method_name, *args, &amp;blk)</span><br><span class="line">      return self.[](method_name, &amp;blk) if key?(method_name)</span><br><span class="line">      match = method_name.to_s.match(/(.*?)([?=!]?)$/)</span><br><span class="line">      case match[2]</span><br><span class="line">      when &quot;=&quot;</span><br><span class="line">        self.[match[1]] = args.first</span><br><span class="line">        # ...</span><br><span class="line">      else</span><br><span class="line">        default(method_name, *args, &amp;blk)</span><br><span class="line">      end</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="Dynamic-Proxies-动态代理"><a href="#Dynamic-Proxies-动态代理" class="headerlink" title="Dynamic Proxies (动态代理)"></a>Dynamic Proxies (动态代理)</h3><blockquote>
+<p>我们不可能在每一个类中重写<code>method_missing</code>方法, 我们可以将这个方法重写到一个类中, 然后让需要<code>method_missing</code>这个方法的类来继承这个类, 这个类就是代理类. 拿Ghee这个gem来举例:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Ghee</span><br><span class="line">  class ResourceProxy</span><br><span class="line">    def method_missing(message, *args, &amp;block)</span><br><span class="line">      subject.send(message, *args, &amp;block)</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    def subject</span><br><span class="line">      @subject ||= connection.get(path_prefix)&#123;|req| req.params.merge!params &#125;.body</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class Ghee</span><br><span class="line">  module API</span><br><span class="line">    module Gists</span><br><span class="line">      class Proxy &lt; ::Ghee::ResourceProxy</span><br><span class="line">        def star</span><br><span class="line">          connection.put(&quot;#&#123;path_prefix&#125;/star&quot;).status == 204</span><br><span class="line">        end</span><br><span class="line"></span><br><span class="line">        # ... some other methods</span><br><span class="line">      end</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当你调用<code>Ghee::API::Gists#star</code>方法时, 由于它存在, 会正常执行, 但是假如你调用<code>Ghee::API::Gists#description</code>, 由于不存在, Ruby会直接到<code>::Ghee::ResourceProxy</code>和祖先链中寻找,都没有发现, 而<code>::Ghee::ResourceProxy</code>中重写了method_missing,  就会执行该方法, 这个方法中, 又把调用转给了<code>subject</code>方法返回的对象. </p>
+<p>简单理解, 代理类就是一个方法调用的收集器.</p>
+</blockquote>
+<h3 id="Refactoring-the-Computer-Class-Again-再次重构Computer"><a href="#Refactoring-the-Computer-Class-Again-再次重构Computer" class="headerlink" title="Refactoring the Computer Class (Again) (再次重构Computer)"></a>Refactoring the Computer Class (Again) (再次重构Computer)</h3><blockquote>
+<p>Computer是一个收集调用的包装, 把这些调用拧到一起, 再来调用data_source上相应的方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Computer</span><br><span class="line">  def initialize(computer_id, data_source)</span><br><span class="line">    @id = computer_id</span><br><span class="line">    @data_source = data_source</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def method_missing(name)</span><br><span class="line">    super unless @data_source.respond_to(&quot;get_#&#123;name&#125;_info&quot;)</span><br><span class="line">    info = @data_source.send(&quot;get_#&#123;name&#125;_info&quot;, @id)</span><br><span class="line">    price = @data_source.send(&quot;get_#&#123;name&#125;_price&quot;)</span><br><span class="line">    result = &quot;#&#123;name.capitalize&#125;: #&#123;info&#125; ($#&#123;price&#125;)&quot;</span><br><span class="line">    return &quot;* #&#123;result&#125;&quot; if price &gt;= 100</span><br><span class="line">    result</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="respond-to-missing"><a href="#respond-to-missing" class="headerlink" title="respond_to_missing?"></a>respond_to_missing?</h3><blockquote>
+<p>如果你问<code>Computer</code>是否可以响应Ghost Method, 它的回答是不可以:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmp = Computer.new(0, DS.new)</span><br><span class="line">cmp.respond_to?(:mouse) # =&gt; false</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这是个严重的问题, 我们经常会使用<code>respond_to?</code>判断对象是否包含某个方法, 幸运的是, Ruby为我们提供了简单的方法让<code>respond_to?</code>可以响应Ghost Methods. 如果一个方法是Ghost Method, <code>respond_to?</code>会去调用一个叫做<code>respond_to_missing?</code>的方法, 所以现在需要做的是重写<code>respond_to_missing?</code>方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class Computer</span><br><span class="line">  [...]</span><br><span class="line">  def respond_to_missing?(method, include_private = false)</span><br><span class="line">    @data_source.respond_to?(&quot;get_#&#123;method&#125;_info&quot;) || super</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这段代码和<code>method_missing</code>的第一行很相似, 它先看这个方法是不是Ghost, 是, 返回true, 不是调用super, 这里super调用的是<code>Object#respond_to_missing?</code>, 它一直返回false.<br>这时候<code>respond_to?</code>就会认识Ghost Method了:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmp.respond_to?(:mouse) #=&gt; true</span><br></pre></td></tr></table></figure>
+<h2 id="const-missing"><a href="#const-missing" class="headerlink" title="const_missing"></a>const_missing</h2><blockquote>
+<p>之前学习的是<code>method_missing</code>, 它接受方法名, 来处理Ghost Methods. 这里的<code>const_missing</code>可以理解为接收常量, 来处理”Ghost Constants”(这个名字是我起的, 不知道存在不)</p>
+<p>还记得之前说过关于Rake版本升级的问题吗? Rake重命名了一些类为了避免冲突, 但是需要对于几个版本来说用户可以自由选择使用新的名字还是之前的名字, Rake就是使用<code>Module#const_missing</code>方法实现的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Module</span><br><span class="line">  def const_missing(const_name)</span><br><span class="line">    case const_name</span><br><span class="line">    when :Task</span><br><span class="line">      Rake.application.const_warning(const_name)</span><br><span class="line">      Rake::Task</span><br><span class="line">    when :FileTask</span><br><span class="line">      Rake.application.const_warning(const_name)</span><br><span class="line">      Rake::FileTask</span><br><span class="line">    when :FileCreationTaks</span><br><span class="line">      # ...</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当你引用了一个不再使用(不存在)的常量, Ruby会把常量的名字以symbol的形式传给<code>const_missing</code>方法, 又因为<code>Class names</code>也是常量, 引用到了一个未知Rake class比如说”Rake”, 就会交给<code>Module#const_missing</code>处理:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">require</span><br><span class="line">task_class = Task</span><br><span class="line"></span><br><span class="line"># =&gt; </span><br><span class="line">WARNING: Deprecated reference to top-level constant &apos;Task&apos; found [...]</span><br><span class="line">Use --classic-namespace on rake command</span><br><span class="line">or &apos;require &quot;rake/classic_namespace&quot;&apos; in Rakefile</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>返回新的Rake 名:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">task_class # =&gt; Rake::Task</span><br></pre></td></tr></table></figure>
+<h3 id="关于method-missing的错误提示"><a href="#关于method-missing的错误提示" class="headerlink" title="关于method_missing的错误提示"></a>关于<code>method_missing</code>的错误提示</h3><blockquote>
+<p>需要格外小心的一点是<code>method_missing</code>方法中很可能出现这样的bug: 你使用了一个没有定义的方法, 又一次触发了<code>method_missing</code>的调用, 导致发生了递归调用:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">class Roulette</span><br><span class="line"></span><br><span class="line">  def method_missing(name, *args)</span><br><span class="line">    person = name.to_s.capitalize</span><br><span class="line">    3.times do</span><br><span class="line">      number = rand(10) + 1</span><br><span class="line">      puts &quot;#&#123;number&#125;...&quot;</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    &quot;&#123;person&#125; got a #&#123;number&#125;&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">number_of = Roulette.new</span><br><span class="line">puts number_of.bob</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>发生<code>method_missing</code>不断被调用的递归错误:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">2...</span><br><span class="line">7... </span><br><span class="line">1... </span><br><span class="line">5...</span><br><span class="line">(...more numbers here...)</span><br><span class="line"> roulette_failure.rb:7:in `method_missing&apos;: stack level too deep (SystemStackError)</span><br><span class="line">    `</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>原因在于: <code>number</code>在block中被定义, 在block外部被调用触发了<code>method_missing</code>的调用, 方法中调用了本方法, 发生了无限递归. 所以需要将<code>number</code>的定义从block中提取出来:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Roulette</span><br><span class="line">  def method_missing(name, *args)</span><br><span class="line">    person = name.to_s.capitalize</span><br><span class="line">    # 不要引入太多的Ghost Methods</span><br><span class="line">    super unless %w(Bob Frank Bill).include? person</span><br><span class="line">    number = 0</span><br><span class="line">    3.times do</span><br><span class="line">      number = rand(10) + 1</span><br><span class="line">      puts &quot;#&#123;number&#125;...&quot;</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    &quot;#&#123;person&#125; got A #&#123;number&#125;&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">number_of = Roulette.new</span><br><span class="line">puts number_of.Bob</span><br></pre></td></tr></table></figure>
+<h2 id="Blank-Slates-一片空白"><a href="#Blank-Slates-一片空白" class="headerlink" title="Blank Slates (一片空白)"></a>Blank Slates (一片空白)</h2><blockquote>
+<p>当Ghost 方法和 实际存在的方法重名时, Ruby会优先选择实际存在的方法调用. 比如 Computer有一个<code>display</code>的Ghost方法, 它是由<code>method_missing</code>代理产生的. 而Object有一个实际存在的<code>display</code>方法, 那么Ruby会优先选择Object的<code>display</code>方法. 原因是Ruby中方法调用的查找顺序, 在Object上找到<code>display</code>后, <code>method_missing</code>永远不会被执行到.</p>
+</blockquote>
+<h3 id="BasicObject"><a href="#BasicObject" class="headerlink" title="BasicObject"></a>BasicObject</h3><blockquote>
+<p>Ruby继承关系的根类—BasicObject, 仅有几个必要的实例方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">im = BasicObject.instance_methods</span><br><span class="line">im # =&gt; [:==, :equal?, :!, :!=, :instance_eval, :instance_exec, :__send__, :__id__]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>所以上面的问题有了解决的办法, 可以直接让Computer继承BasicObject :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class Computer &lt; BasicObject</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>事实上Ruby为我们提供了方法来移除一些对象不想继承的方法:</p>
+</blockquote>
+<ul>
+<li><code>undef_method</code>移除的任何方法包含了被继承的方法</li>
+<li><code>remove_method</code>从接收者中移除方法, 保留被继承的方法</li>
+</ul>
+<blockquote>
+<p>看下面例子:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Parent</span><br><span class="line">  def hello</span><br><span class="line">    puts &quot;In Parent&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class Child &lt; Parent</span><br><span class="line">  def hello</span><br><span class="line">    puts &quot;In Child&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">c = Child.new</span><br><span class="line">c.hello</span><br><span class="line"></span><br><span class="line">class Child</span><br><span class="line">  remove_method :hello #  remove from child, still in parent</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">c.hello</span><br><span class="line"></span><br><span class="line">class Child</span><br><span class="line">  undef_method :hello</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">c.hello</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>produces:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In Child</span><br><span class="line">In Parent</span><br><span class="line">remove_method.rb:26:in `&lt;main&gt;&apos;: undefined method `hello&apos; for #&lt;Child:0x007febc688be40&gt; (NoMethodError)`&apos;`</span><br></pre></td></tr></table></figure>
+<h4 id="The-Builder-Example"><a href="#The-Builder-Example" class="headerlink" title="The Builder Example"></a>The Builder Example</h4><blockquote>
+<p> Builder gem 可以方便地生成XML:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">require &apos;builder&apos;</span><br><span class="line">xml = Builder::XmlMarkup.new(:target=&gt;STDOUT, :indent=&gt;2)</span><br><span class="line">xml.coder &#123;</span><br><span class="line">xml.name &apos;Matsumoto&apos;, :nickname =&gt; &apos;Matz&apos; </span><br><span class="line">xml.language &apos;Ruby&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>生成:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;coder&gt;</span><br><span class="line">  &lt;name nickname=&quot;Matz&quot;&gt;Matsumoto&lt;/name&gt;</span><br><span class="line">  &lt;language&gt;Ruby&lt;/language&gt;</span><br><span class="line">&lt;coder/&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Builder会分析Ruby的语法, 生成相应的XML, 它支持嵌套标签, 属性和其他一些细节. Builder的核心就是使用了<code>XmlMarkup#method_missing</code>, 对于每一次调用都生成了XML标签. 比如想要得到下面的XML:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;semester&gt;</span><br><span class="line">  &lt;class&gt;Egyptology&lt;/class&gt; </span><br><span class="line">  &lt;class&gt;Ornithology&lt;/class&gt;</span><br><span class="line">&lt;/semester&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>那么Ruby程序必须是这样的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xml.semester &#123;</span><br><span class="line">  xml.class &apos;Egyptology&apos;</span><br><span class="line">  xml.class &apos;Ornithology&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>一般来讲 <code>xml.class</code>应该得到的是<code>Builder::XmlMarkup</code>, 也就是说xml的class 和 Object的class冲突了, 为了避免冲突, XmlMarkup继承了一个BlankSlate, 这个类去掉了Object’s class和其他大多数来自于Object的方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class BlankSlate</span><br><span class="line">  def self.hide(name)</span><br><span class="line">    if instance_methods.include?(name._blankslate_as_name) &amp;&amp;</span><br><span class="line">      name !~ /^(__|instance_eval$)/</span><br><span class="line">      undef_method name # 包含了`class`方法</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="Fixing-the-Computer-Class"><a href="#Fixing-the-Computer-Class" class="headerlink" title="Fixing the Computer Class"></a>Fixing the Computer Class</h3><blockquote>
+<p>所以对于<code>display</code>方法的冲突是让Computer继承BasicObject:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class Computer &lt; BasicObject</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>由于BasicObject没有<code>display</code>方法, 所以现在在Computer的对象上调用<code>display</code>就会执行<code>method_missing</code>这个Ghost方法了.<br>现在可以删掉Computer中定义的 <code>respond_to_missing?</code>方法了, 因为BasicObject没有<code>respond_to?</code>方法. 到此为止, 就完成了基于<code>method_missing</code>的Computer了.</p>
+</blockquote>
+<h2 id="Wrap-Up-总结"><a href="#Wrap-Up-总结" class="headerlink" title="Wrap-Up 总结"></a>Wrap-Up 总结</h2><blockquote>
+<p>让我们再看看这两种重构Computer的代码:</p>
+</blockquote>
+<ul>
+<li><p>基于Dynamic Methods 和 Dynamic Dispatch:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Computer</span><br><span class="line">  def initialize(computer_id, data_source)</span><br><span class="line">    @id = computer_id</span><br><span class="line">    @data_source = data_source</span><br><span class="line">    data_source.methods.grep(/^get_#(.*?)_info$/) &#123; Computer.define_component($1) &#125; </span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def self.define_component(name)</span><br><span class="line">    define_method(name) do</span><br><span class="line">      info = @data_source.send &quot;get_#&#123;name&#125;_info&quot;, @id</span><br><span class="line">      price = @data_source.send &quot;get_#&#123;name&#125;_price&quot;, @id</span><br><span class="line">      result = &quot;#&#123;name.capitalize&#125;: #&#123;info&#125; ($#&#123;price&#125;)&quot;</span><br><span class="line">      return &quot;* #&#123;result&#125;&quot; if price &gt;= 100</span><br><span class="line">      result</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>基于Ghost Methods(Dynamic Proxy) + BlankSlate , 比上面一种更加简洁:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Computer &lt; BasicObject</span><br><span class="line">  def initialize(computer_id, data_source)</span><br><span class="line">    @id = computer_id</span><br><span class="line">    @data_source = data_source</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def method_missing(name, *args)</span><br><span class="line">    super unless @data_source.respond_to?(&quot;get_#&#123;name&#125;_info&quot;)</span><br><span class="line">    info = @data_source.send &quot;get_#&#123;name&#125;_info&quot;, @id</span><br><span class="line">    price = @data_source.send &quot;get_#&#123;name&#125;_price&quot;, @id</span><br><span class="line">    result = &quot;#&#123;name.capitalize&#125;: #&#123;info&#125; ($#&#123;price&#125;)&quot;</span><br><span class="line">    return &quot;* #&#123;result&#125;&quot; if price &gt; 100</span><br><span class="line">    result</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Dynamic-Methods-v-s-Ghost-Methods"><a href="#Dynamic-Methods-v-s-Ghost-Methods" class="headerlink" title="Dynamic Methods v.s. Ghost Methods"></a>Dynamic Methods v.s. Ghost Methods</h3><blockquote>
+<p>如果Ruby没有这种动态的能力这两种方法都无法使用. 具体应该使用哪种方法呢?</p>
+<p>Ghost方法有一定的危险性, 但是你可以通过调用<code>super</code>, 重新定义<code>respond_to_missing?</code>来避免. 出现这些问题的根本原因是它不是真正的方法, 而是一种拦截方法调用的方式, 所以它和实际的方法表现迥异, 比如: 不会出现在<code>Object</code>的方法列表中.<br>与此相反, Dynamic 方法就是实际的方法了, 它通过使用<code>define_method</code>代替<code>def</code>关键字来定义的方法, 和普通方法没什么不同.<br>有些情况下只能选择Ghost方法. 比如, 你需要进行大量的方法调用或者不清楚在运行时你需要什么方法调用.例如, Builder gem就不能使用Dynamic 方法, 很可能会出现无数的XML标签, 所以使用了<code>method_missing</code>拦截了方法调用.<br>如何在两者之间取舍呢? 一般来说取决于你的经验和代码风格, 但是有下面的原则可以作参考: 能使用Dynamic方法尽量使用, 实在没辙了, 再使用Ghost方法.</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Methods/" rel="tag">#Methods</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/22/ruby-metaprogramming-chpt2/" rel="next" title="Ruby 元编程 第二章 对象模型">
+                <i class="fa fa-chevron-left"></i> Ruby 元编程 第二章 对象模型
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/26/ruby-metaprogramming-chpt4-blocks/" rel="prev" title="Ruby 元编程 第四章 Blocks">
+                Ruby 元编程 第四章 Blocks <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#A-Duplication-Problem-重复代码"><span class="nav-number">1.</span> <span class="nav-text">A Duplication Problem(重复代码)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dynamic-Methods-动态方法"><span class="nav-number">2.</span> <span class="nav-text">Dynamic Methods(动态方法)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Calling-Methods-Dynamically"><span class="nav-number">2.1.</span> <span class="nav-text">Calling Methods Dynamically</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Pry-Example"><span class="nav-number">2.1.1.</span> <span class="nav-text">The Pry Example</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Privacy-Matters"><span class="nav-number">2.1.2.</span> <span class="nav-text">Privacy Matters</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Defining-Methods-Dynamically-动态地定义方法"><span class="nav-number">2.2.</span> <span class="nav-text">Defining Methods Dynamically (动态地定义方法)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Refactoring-the-Computer-Class"><span class="nav-number">2.3.</span> <span class="nav-text">Refactoring the Computer Class</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Step-1-Adding-Dynamic-Dispatches-添加动态派遣"><span class="nav-number">2.3.1.</span> <span class="nav-text">Step 1: Adding Dynamic Dispatches (添加动态派遣)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step-2-Generating-Methods-Dynamically-动态生成方法"><span class="nav-number">2.3.2.</span> <span class="nav-text">Step 2: Generating Methods Dynamically (动态生成方法)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step-3-Sprinkling-the-Code-with-Introspection-使用内省点缀一下代码"><span class="nav-number">2.3.3.</span> <span class="nav-text">Step 3: Sprinkling the Code with Introspection (使用内省点缀一下代码)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Methods-Names-and-Symbols"><span class="nav-number">2.4.</span> <span class="nav-text">Methods Names and Symbols</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用symbol的原因"><span class="nav-number">2.4.1.</span> <span class="nav-text">使用symbol的原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Symbol和String的转换"><span class="nav-number">2.4.2.</span> <span class="nav-text">Symbol和String的转换</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method-missing"><span class="nav-number">3.</span> <span class="nav-text">method_missing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overriding-method-missing-重写method-missing"><span class="nav-number">3.1.</span> <span class="nav-text">Overriding method_missing (重写method_missing)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ghost-Methods-幽灵方法"><span class="nav-number">3.2.</span> <span class="nav-text">Ghost Methods (幽灵方法)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Hashie-Example"><span class="nav-number">3.2.1.</span> <span class="nav-text">The Hashie Example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dynamic-Proxies-动态代理"><span class="nav-number">3.3.</span> <span class="nav-text">Dynamic Proxies (动态代理)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Refactoring-the-Computer-Class-Again-再次重构Computer"><span class="nav-number">3.4.</span> <span class="nav-text">Refactoring the Computer Class (Again) (再次重构Computer)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#respond-to-missing"><span class="nav-number">3.5.</span> <span class="nav-text">respond_to_missing?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#const-missing"><span class="nav-number">4.</span> <span class="nav-text">const_missing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于method-missing的错误提示"><span class="nav-number">4.1.</span> <span class="nav-text">关于method_missing的错误提示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Blank-Slates-一片空白"><span class="nav-number">5.</span> <span class="nav-text">Blank Slates (一片空白)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BasicObject"><span class="nav-number">5.1.</span> <span class="nav-text">BasicObject</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Builder-Example"><span class="nav-number">5.1.1.</span> <span class="nav-text">The Builder Example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fixing-the-Computer-Class"><span class="nav-number">5.2.</span> <span class="nav-text">Fixing the Computer Class</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wrap-Up-总结"><span class="nav-number">6.</span> <span class="nav-text">Wrap-Up 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dynamic-Methods-v-s-Ghost-Methods"><span class="nav-number">6.1.</span> <span class="nav-text">Dynamic Methods v.s. Ghost Methods</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Rails 重定向 redirect_to," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Rails controller 使用 redirect_to() 跳转到其他 url.
+
+什么是重定向?
+HTTP 重定向: 服务器无法处理浏览器发送来的请求(request), 服务器告诉浏览器跳转到可以处理请求的 url 上.
+具体来讲, 对于服务器响应给浏览器这个过程来说, 服务器把要跳转的URL地址和状态码返回给浏览器, 浏览器会自动访问该 URL 地址. 以至于用户几乎无法分辨是否重">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 重定向(redirect_to)">
+<meta property="og:url" content="http://yoursite.com/2015/02/08/rails-redirect/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Rails controller 使用 redirect_to() 跳转到其他 url.
+
+什么是重定向?
+HTTP 重定向: 服务器无法处理浏览器发送来的请求(request), 服务器告诉浏览器跳转到可以处理请求的 url 上.
+具体来讲, 对于服务器响应给浏览器这个过程来说, 服务器把要跳转的URL地址和状态码返回给浏览器, 浏览器会自动访问该 URL 地址. 以至于用户几乎无法分辨是否重">
+<meta property="og:updated_time" content="2015-02-13T14:02:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 重定向(redirect_to)">
+<meta name="twitter:description" content="Rails controller 使用 redirect_to() 跳转到其他 url.
+
+什么是重定向?
+HTTP 重定向: 服务器无法处理浏览器发送来的请求(request), 服务器告诉浏览器跳转到可以处理请求的 url 上.
+具体来讲, 对于服务器响应给浏览器这个过程来说, 服务器把要跳转的URL地址和状态码返回给浏览器, 浏览器会自动访问该 URL 地址. 以至于用户几乎无法分辨是否重">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails 重定向(redirect_to) | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails 重定向(redirect_to)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-08T15:30:15+08:00" content="2015-02-08">
+              2015-02-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Rails controller 使用 redirect_to() 跳转到其他 url.</p>
+</blockquote>
+<h2 id="什么是重定向"><a href="#什么是重定向" class="headerlink" title="什么是重定向?"></a>什么是重定向?</h2><blockquote>
+<p>HTTP 重定向: 服务器无法处理浏览器发送来的请求(request), 服务器告诉浏览器跳转到可以处理请求的 url 上.</p>
+<p>具体来讲, 对于服务器响应给浏览器这个过程来说, 服务器把要跳转的URL地址和状态码返回给浏览器, 浏览器会自动访问该 URL 地址. 以至于用户几乎无法分辨是否重定向了.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class SomeController &lt; ApplicationController</span><br><span class="line">  redirect_to(some_url, status: 301)</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="何时用-redirect-to-何时用-render"><a href="#何时用-redirect-to-何时用-render" class="headerlink" title="何时用 redirect_to, 何时用 render?"></a>何时用 redirect_to, 何时用 render?</h2><blockquote>
+<p>基本上:</p>
+<ul>
+<li>对数据进行添加, 更新, 删除时, <code>redirect_to</code></li>
+<li>取得数据, 然后我们要想将数据表示出来时, 使用<code>render</code></li>
+</ul>
+<p>看下面的代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># POST /products</span><br><span class="line"># 你现在在产品的新建页面, 点击创建按钮会触发下面的方法.</span><br><span class="line">def create</span><br><span class="line">  @product = Product.new(product_params)</span><br><span class="line"></span><br><span class="line">  if @product.save # product 保存成功, redirect 到查看商品页面</span><br><span class="line">    redirect_to @product, notice: &apos;Created successfully.&apos;</span><br><span class="line">  else # product 保存失败, 渲染新建页面</span><br><span class="line">    render :new</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>如果我把 redirect_to 换作 render, 点击 create 按钮后, 浏览器地址栏不会变化, 也就是说, 你要是继续按 F5, 那么浏览器还会请求 create 这个 action, 就会反复创建, 如果要是在电商系统中, 比如你将一件商品加入购物车, 再次刷新, … 最后, 购物车就会重复加入很多商品, 会带来很多不便. 如果要是 redirect_to 方法就不同了, 前后浏览器发送了两次请求, 第二次请求就是显示购物车页面(比如说), 所以, 无论用户如何按刷新键, 都不会调用 create 方法. (p.s. 这个问题很经典, 记得当前学习j2ee 时, 就讨论过什么时候使用请求转发, 什么时候使用重定向^^)</p>
+</blockquote>
+<h2 id="redirect-to-方法的使用方法"><a href="#redirect-to-方法的使用方法" class="headerlink" title="redirect_to 方法的使用方法"></a><code>redirect_to</code> 方法的使用方法</h2><h3 id="向-URL重定向"><a href="#向-URL重定向" class="headerlink" title="向 URL重定向"></a>向 URL重定向</h3><blockquote>
+<p>重定向到指定的路径. 这时, 我们一个使用 <em>_url 而不是</em>_path, 而且, 我们还可以设置:notice, alert: 选项来设置相应的flash消息.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redirect_to products_url, notice: &apos;blabla...&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="重定向到HTTP-REFERER"><a href="#重定向到HTTP-REFERER" class="headerlink" title="重定向到HTTP_REFERER"></a>重定向到HTTP_REFERER</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 从哪个页面请求过来, 再回到那个页面去.</span><br><span class="line">redirect_to(:back)</span><br></pre></td></tr></table></figure>
+<h3 id="永久重定向"><a href="#永久重定向" class="headerlink" title="永久重定向"></a>永久重定向</h3><blockquote>
+<p>默认来讲, 重定向都是临时性重定向, 状态码为307, 如果需要永久重定向就需要显示指定状态码 301</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redirect_to(&apos;http://www.google.com&apos;, status: 301)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails-重定向-redirect-to/" rel="tag">#Rails 重定向 redirect_to</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/08/rails-view-render/" rel="next" title="Rails 中render 方法的用法">
+                <i class="fa fa-chevron-left"></i> Rails 中render 方法的用法
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/08/rails-strong-parameters/" rel="prev" title="Rails Strong Parameters">
+                Rails Strong Parameters <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是重定向"><span class="nav-number">1.</span> <span class="nav-text">什么是重定向?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#何时用-redirect-to-何时用-render"><span class="nav-number">2.</span> <span class="nav-text">何时用 redirect_to, 何时用 render?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redirect-to-方法的使用方法"><span class="nav-number">3.</span> <span class="nav-text">redirect_to 方法的使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#向-URL重定向"><span class="nav-number">3.1.</span> <span class="nav-text">向 URL重定向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重定向到HTTP-REFERER"><span class="nav-number">3.2.</span> <span class="nav-text">重定向到HTTP_REFERER</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#永久重定向"><span class="nav-number">3.3.</span> <span class="nav-text">永久重定向</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

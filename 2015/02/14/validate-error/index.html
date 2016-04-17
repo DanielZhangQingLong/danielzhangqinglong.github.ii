@@ -1,0 +1,636 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="validation-errors i18n," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Model的校验错误消息对象errors的使用方法
+Model中发生了验证错误时, 具体的错误信息会被保存在errors对象中, 而且, 可以通过full_messages取出所以错误消息的数组, 看下面的例子:
+
+12345678910111213141516171819202122232425262728# app/models/product.rbclass Product &amp;lt; Act">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 中model的校验错误消息相关">
+<meta property="og:url" content="http://yoursite.com/2015/02/14/validate-error/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Model的校验错误消息对象errors的使用方法
+Model中发生了验证错误时, 具体的错误信息会被保存在errors对象中, 而且, 可以通过full_messages取出所以错误消息的数组, 看下面的例子:
+
+12345678910111213141516171819202122232425262728# app/models/product.rbclass Product &amp;lt; Act">
+<meta property="og:image" content="http://i2.tietuku.com/9bba27b8227d8572.png">
+<meta property="og:image" content="http://i2.tietuku.com/104e8ee52c2ae9ac.png">
+<meta property="og:updated_time" content="2015-02-14T15:50:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 中model的校验错误消息相关">
+<meta name="twitter:description" content="Model的校验错误消息对象errors的使用方法
+Model中发生了验证错误时, 具体的错误信息会被保存在errors对象中, 而且, 可以通过full_messages取出所以错误消息的数组, 看下面的例子:
+
+12345678910111213141516171819202122232425262728# app/models/product.rbclass Product &amp;lt; Act">
+<meta name="twitter:image" content="http://i2.tietuku.com/9bba27b8227d8572.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails 中model的校验错误消息相关 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails 中model的校验错误消息相关
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-14T22:11:54+08:00" content="2015-02-14">
+              2015-02-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Model的校验错误消息对象errors的使用方法"><a href="#Model的校验错误消息对象errors的使用方法" class="headerlink" title="Model的校验错误消息对象errors的使用方法"></a>Model的校验错误消息对象<code>errors</code>的使用方法</h2><blockquote>
+<p>Model中发生了验证错误时, 具体的错误信息会被保存在<code>errors</code>对象中, 而且, 可以通过<code>full_messages</code>取出所以错误消息的数组, 看下面的例子:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app/models/product.rb</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Product</span> &lt; ActiveRecord::Base</span></span><br><span class="line">  validate <span class="symbol">:name</span>, <span class="symbol">presence:</span> <span class="literal">true</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 发生验证错误</span></span><br><span class="line">&gt; product = Product.new</span><br><span class="line">&gt; =&gt; #&lt;Product id: nil, name: nil, price: nil, discontinued: nil, created_at: nil, updated_at: nil&gt;</span><br><span class="line">&gt; &gt; product.valid?</span><br><span class="line">&gt; =&gt; <span class="literal">false</span></span><br><span class="line">&gt; &gt; product.errors.messages</span><br><span class="line">&gt; =&gt; &#123;<span class="symbol">:name=&gt;</span>[<span class="string">"can't be blank"</span>]&#125;</span><br><span class="line">&gt; &gt; product.errors.full_messages</span><br><span class="line">&gt; =&gt; [<span class="string">"Name can't be blank"</span>]</span><br><span class="line">&gt; &gt; product.save</span><br><span class="line">&gt; =&gt; <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 未发生验证错误</span></span><br><span class="line">product = Product.new( <span class="symbol">name:</span> <span class="string">"Pname"</span>  )</span><br><span class="line">=&gt; #&lt;Product id: nil, name: "Pname", price: nil, discontinued: nil, created_at: nil, updated_at: nil&gt;</span><br><span class="line"><span class="meta">irb(main):017:0&gt;</span> product.valid?</span><br><span class="line">=&gt; true</span><br><span class="line">&gt; product.errors.messages</span><br><span class="line">&gt; =&gt; &#123;&#125;</span><br><span class="line">&gt; &gt; product.errors.full_messages</span><br><span class="line">&gt; =&gt; []</span><br><span class="line">&gt; &gt; product.save</span><br><span class="line">&gt; =&gt; <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h2 id="添加错误消息到model"><a href="#添加错误消息到model" class="headerlink" title="添加错误消息到model"></a>添加错误消息到model</h2><blockquote>
+<p>使用 <code>errors.add</code>和<code>errors[:base]</code> 可以自己添加错误消息</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line"></span><br><span class="line">validate :add_error_sample</span><br><span class="line"></span><br><span class="line">  def add_error_sample</span><br><span class="line">    if name.blank?</span><br><span class="line">      errors.add(:name, &quot;is empty!&quot;)</span><br><span class="line">      errors[:base] &lt;&lt; &quot;for all columns errors&quot;</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如下图, errors[:base]是公共错误信息, 只要有验证错误, 它就会被显示<br><img src="http://i2.tietuku.com/9bba27b8227d8572.png" alt=""></p>
+<p>我们也可以清除这些错误信息:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">product = Product.new</span><br><span class="line">product.valid? # =&gt; false</span><br><span class="line">product.errors.full_messages # =&gt; [&quot;Name can&apos;t be blank&quot;]</span><br><span class="line">product.errors.clear</span><br><span class="line">product.erros.empty? # =&gt; true</span><br></pre></td></tr></table></figure>
+<h2 id="在视图中显示错误消息"><a href="#在视图中显示错误消息" class="headerlink" title="在视图中显示错误消息"></a>在视图中显示错误消息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;% if @product.errors.any? %&gt;</span><br><span class="line">  &lt;div id=&quot;error_explanation&quot;&gt;</span><br><span class="line">    &lt;h2&gt;&lt;%= pluralize(@product.errors.count, &quot;error&quot;) %&gt; prohibited this product from being saved:&lt;/h2&gt;</span><br><span class="line"></span><br><span class="line">    &lt;ul&gt;</span><br><span class="line">    &lt;% @product.errors.full_messages.each do |message| %&gt;</span><br><span class="line">    &lt;li&gt;&lt;%= message %&gt;&lt;/li&gt;</span><br><span class="line">    &lt;% end %&gt;</span><br><span class="line">    &lt;/ul&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="国际化"><a href="#国际化" class="headerlink" title="国际化"></a>国际化</h2><ol>
+<li>在config/locales/ 下添加 <code>zh-CN.yml</code></li>
+<li>在 config/application.rb 添加 <code>config.i18n.default_locale = :&quot;zh-CN&quot;</code></li>
+<li>重启服务器<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># config/locales/zh-CN.yml</span><br><span class="line">zh-CN:</span><br><span class="line">  attributes:</span><br><span class="line">      name: &quot;名字&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>效果如下:<br><img src="http://i2.tietuku.com/104e8ee52c2ae9ac.png" alt=""></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/validation-errors-i18n/" rel="tag">#validation-errors i18n</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/13/validation/" rel="next" title="对Model校验">
+                <i class="fa fa-chevron-left"></i> 对Model校验
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/15/mac-mysql-install/" rel="prev" title="OSX下使用Homebrew安装MySQL数据库">
+                OSX下使用Homebrew安装MySQL数据库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Model的校验错误消息对象errors的使用方法"><span class="nav-number">1.</span> <span class="nav-text">Model的校验错误消息对象errors的使用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加错误消息到model"><span class="nav-number">2.</span> <span class="nav-text">添加错误消息到model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在视图中显示错误消息"><span class="nav-number">3.</span> <span class="nav-text">在视图中显示错误消息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#国际化"><span class="nav-number">4.</span> <span class="nav-text">国际化</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

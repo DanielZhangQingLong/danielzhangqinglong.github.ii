@@ -1,0 +1,809 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Rails command genetate destroy," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="rails generate 命令生成的文件
+
+
+命令
+概要
+controller
+view
+helper
+model
+migration
+
+
+
+
+scaffold
+视图到数据库全部生成
+有
+有
+有
+有
+有
+
+
+controller
+生成 controller 和 view
+有
+无
+有
+无
+无
+
+
+model
+生成model
+无
+无
+无
+有
+有
+
+
+migrate
+生成移植文件
+无
+无
+无
+无
+有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 常用命令(二)">
+<meta property="og:url" content="http://yoursite.com/2015/02/06/rails-command-2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="rails generate 命令生成的文件
+
+
+命令
+概要
+controller
+view
+helper
+model
+migration
+
+
+
+
+scaffold
+视图到数据库全部生成
+有
+有
+有
+有
+有
+
+
+controller
+生成 controller 和 view
+有
+无
+有
+无
+无
+
+
+model
+生成model
+无
+无
+无
+有
+有
+
+
+migrate
+生成移植文件
+无
+无
+无
+无
+有">
+<meta property="og:updated_time" content="2015-02-13T14:02:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 常用命令(二)">
+<meta name="twitter:description" content="rails generate 命令生成的文件
+
+
+命令
+概要
+controller
+view
+helper
+model
+migration
+
+
+
+
+scaffold
+视图到数据库全部生成
+有
+有
+有
+有
+有
+
+
+controller
+生成 controller 和 view
+有
+无
+有
+无
+无
+
+
+model
+生成model
+无
+无
+无
+有
+有
+
+
+migrate
+生成移植文件
+无
+无
+无
+无
+有">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails 常用命令(二) | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails 常用命令(二)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-06T07:53:17+08:00" content="2015-02-06">
+              2015-02-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="rails-generate-命令生成的文件"><a href="#rails-generate-命令生成的文件" class="headerlink" title="rails generate 命令生成的文件"></a>rails generate 命令生成的文件</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>概要</th>
+<th>controller</th>
+<th>view</th>
+<th>helper</th>
+<th>model</th>
+<th>migration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scaffold</td>
+<td>视图到数据库全部生成</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>controller</td>
+<td>生成 controller 和 view</td>
+<td>有</td>
+<td>无</td>
+<td>有</td>
+<td>无</td>
+<td>无</td>
+</tr>
+<tr>
+<td>model</td>
+<td>生成model</td>
+<td>无</td>
+<td>无</td>
+<td>无</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>migrate</td>
+<td>生成移植文件</td>
+<td>无</td>
+<td>无</td>
+<td>无</td>
+<td>无</td>
+<td>有</td>
+</tr>
+</tbody>
+</table>
+<h2 id="scaffold"><a href="#scaffold" class="headerlink" title="scaffold"></a>scaffold</h2><blockquote>
+<p><code>rails g scaffold</code> 可以创建 <code>controller view model migration</code> 所有组件, 我们可以指定 model , 其字段类型和索引, 但是不可以指定 action. 比如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rails g scaffold NAME [field[:type][:index] field[:type][:index]] [options]</span><br><span class="line"></span><br><span class="line"># sample</span><br><span class="line">$ rails generate scaffold post title body:text published:boolean</span><br><span class="line">$ rails generate scaffold purchase amount:decimal tracking_id:integer:uniq</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="rails-g-controller"><a href="#rails-g-controller" class="headerlink" title="rails g controller"></a>rails g controller</h2><blockquote>
+<p>用于生成控制器, 我个人更偏向于使用该命令, 因为 scaffold 生成一大堆文件, 感觉乱七八糟的.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ rails g controller NAME [action action] [options]</span><br><span class="line"></span><br><span class="line"># sample</span><br><span class="line">rails g controller CreditCards open debit credit close</span><br><span class="line"># =&gt; </span><br><span class="line"># 在route中添加了:</span><br><span class="line"># get &apos;credit_cards/open&apos;</span><br><span class="line"># get &apos;credit_cards/debit&apos;</span><br><span class="line"># get &apos;credit_cards/credit&apos;</span><br><span class="line"></span><br><span class="line"># 新建: `app/controllers/credit_cards_controller.rb` (相应的 test 也会创建test/controllers/credit_cards_controller_test.rb)</span><br><span class="line"># 新建视图文件: &apos;app/views/credit_cards/open(debit, credit).html.erb&apos;</span><br><span class="line"># 新建帮助文件: &apos;app/helpers/credit_cards_helper.rb&apos;</span><br><span class="line"># 新建js(coffee)css(scss) 等资源文件</span><br></pre></td></tr></table></figure>
+<h2 id="rails-g-model"><a href="#rails-g-model" class="headerlink" title="rails g model"></a>rails g model</h2><blockquote>
+<p>生成 model 和<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 使用方法</span><br><span class="line">rails g model NAME [field[:type][:index] field[:type][:index]] [options]</span><br><span class="line"></span><br><span class="line"># sample:</span><br><span class="line">$ rails g post title:string body:text published:boolean</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="rails-g-migration"><a href="#rails-g-migration" class="headerlink" title="rails g migration"></a>rails g migration</h2><blockquote>
+<p>生成移植文件, 这是 rails 为了方便修改数据库提供的一种简单方法, 只需要写 ruby 代码就可以修改数据库, 比如创建表, 添加column 等等.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 使用方法</span><br><span class="line">rails g model NAME [field[:type][:index] field[:type][:index]] [options]</span><br><span class="line"></span><br><span class="line"># sample:</span><br><span class="line">$ rails g migration add_image_url_to_post image_url:string</span><br><span class="line"># =&gt;  向 posts 表中添加类型为 string的 column</span><br></pre></td></tr></table></figure>
+<h2 id="rails-generate-使用到的类型"><a href="#rails-generate-使用到的类型" class="headerlink" title="rails generate 使用到的类型:"></a>rails generate 使用到的类型:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">integer</span><br><span class="line">primary_key</span><br><span class="line">decimal</span><br><span class="line">float</span><br><span class="line">boolean</span><br><span class="line">binary</span><br><span class="line">string</span><br><span class="line">text</span><br><span class="line">date</span><br><span class="line">time</span><br><span class="line">datetime</span><br><span class="line">timestamp</span><br><span class="line">references</span><br></pre></td></tr></table></figure>
+<h2 id="查看帮助信息"><a href="#查看帮助信息" class="headerlink" title="查看帮助信息"></a>查看帮助信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rails g -h # 查看 generate 的提示信息</span><br><span class="line">$ rails g controller -h # 与生成 controller 相关的帮助信息</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails-command-genetate-destroy/" rel="tag">#Rails command genetate destroy</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/05/rails-command/" rel="next" title="Rails 常用命令(一)">
+                <i class="fa fa-chevron-left"></i> Rails 常用命令(一)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/06/setup-rails-production/" rel="prev" title="在本地以 production 模式启动rails">
+                在本地以 production 模式启动rails <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#rails-generate-命令生成的文件"><span class="nav-number">1.</span> <span class="nav-text">rails generate 命令生成的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scaffold"><span class="nav-number">2.</span> <span class="nav-text">scaffold</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rails-g-controller"><span class="nav-number">3.</span> <span class="nav-text">rails g controller</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rails-g-model"><span class="nav-number">4.</span> <span class="nav-text">rails g model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rails-g-migration"><span class="nav-number">5.</span> <span class="nav-text">rails g migration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rails-generate-使用到的类型"><span class="nav-number">6.</span> <span class="nav-text">rails generate 使用到的类型:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看帮助信息"><span class="nav-number">7.</span> <span class="nav-text">查看帮助信息</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

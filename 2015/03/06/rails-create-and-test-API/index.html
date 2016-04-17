@@ -1,0 +1,703 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="API Test," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本文主要讲解Rails中创建JSON格式的API及API的测试方法, Rails是通过使用一个叫做jbuilder的gem提供的to_json方法来返回JSON格式的API的.同样也使用RSpec3来测试API
+
+准备工作
+scaffolding Product并且创建Category Model, 并使其具备多对一的关系.
+
+123456789101112rails g scaffold Pr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 创建API和测试API">
+<meta property="og:url" content="http://yoursite.com/2015/03/06/rails-create-and-test-API/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要讲解Rails中创建JSON格式的API及API的测试方法, Rails是通过使用一个叫做jbuilder的gem提供的to_json方法来返回JSON格式的API的.同样也使用RSpec3来测试API
+
+准备工作
+scaffolding Product并且创建Category Model, 并使其具备多对一的关系.
+
+123456789101112rails g scaffold Pr">
+<meta property="og:image" content="http://i3.tietuku.com/3536abf6dc3355e3.png">
+<meta property="og:updated_time" content="2015-03-06T08:00:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 创建API和测试API">
+<meta name="twitter:description" content="本文主要讲解Rails中创建JSON格式的API及API的测试方法, Rails是通过使用一个叫做jbuilder的gem提供的to_json方法来返回JSON格式的API的.同样也使用RSpec3来测试API
+
+准备工作
+scaffolding Product并且创建Category Model, 并使其具备多对一的关系.
+
+123456789101112rails g scaffold Pr">
+<meta name="twitter:image" content="http://i3.tietuku.com/3536abf6dc3355e3.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails 创建API和测试API | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails 创建API和测试API
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-06T08:53:31+08:00" content="2015-03-06">
+              2015-03-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文主要讲解Rails中创建JSON格式的API及API的测试方法, Rails是通过使用一个叫做<code>jbuilder</code>的gem提供的<code>to_json</code>方法来返回JSON格式的API的.<br>同样也使用RSpec3来测试API</p>
+</blockquote>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><blockquote>
+<p>scaffolding Product并且创建Category Model, 并使其具备多对一的关系.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">rails g scaffold Product name:string price:integer category_id:integer</span><br><span class="line">rails g model Category name</span><br><span class="line"></span><br><span class="line"># app/models/category.rb</span><br><span class="line">class Category &lt; ActiveRecord::Base</span><br><span class="line">  has_many :products</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">  # app/models/product.rb</span><br><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :category</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="生成API"><a href="#生成API" class="headerlink" title="生成API"></a>生成API</h2><h3 id="Controller中返回HTML-JSON等API"><a href="#Controller中返回HTML-JSON等API" class="headerlink" title="Controller中返回HTML JSON等API"></a>Controller中返回HTML JSON等API</h3><blockquote>
+<p>既然是返回给客户端(浏览器), 那么就需要使用Controller的<code>respond_to</code>方法.<br>首先根据管理设置routing:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># config/routes.rb</span><br><span class="line">Rails.application.routes.draw do</span><br><span class="line">  resources :products</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>确认路由:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ bin/rake routes</span><br><span class="line">  Prefix Verb   URI Pattern                  Controller#Action</span><br><span class="line">  products GET    /products(.:format)          products#index</span><br><span class="line">  POST   /products(.:format)          products#create</span><br><span class="line">  new_product GET    /products/new(.:format)      products#new</span><br><span class="line">  edit_product GET    /products/:id/edit(.:format) products#edit</span><br><span class="line">  product GET    /products/:id(.:format)      products#show</span><br><span class="line">  PATCH  /products/:id(.:format)      products#update</span><br><span class="line">  PUT    /products/:id(.:format)      products#update</span><br><span class="line">  DELETE /products/:id(.:format)      products#destroy</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后在使用<code>respond_to</code>方法, 返回相应的格式.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class ProductsController &lt; ApplicationController</span><br><span class="line">  def index</span><br><span class="line">    @products = Product.all</span><br><span class="line"></span><br><span class="line">    respond_to do |format|</span><br><span class="line">      format.html # 请求为一般url时, 返回index.html.erb</span><br><span class="line">      format.json &#123;render json: @products&#125; # 请求url为json时, 返回@products.to_json</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>默认返回HTML给浏览器, 如果请求/products.json, 就会返回<code>@products</code>的json格式给浏览器</p>
+<p><code>to_json</code>方法可以简单地将model转成json格式, 请注意: 这里我是通过在Controller中将json数据放入response中通过URL返回的, 这里只返回了一种model对象, 如果需要返回几种有关联的model, 这样的处理方法就不可取了.<br>这时我们可以使用<code>jbuilder</code>处理器来返回json格式的内容, 我们需要创建以单独的jbuilder视图文件:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/index.json.jbuilder</span><br><span class="line">json.array!(@products) do |product|</span><br><span class="line">  json.extract! product, :id, :name, :price, :publised_at, :category_id</span><br><span class="line">  json.url product_url(product, format: :json)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在Controller中返回相应的格式:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">respond_to do |format|</span><br><span class="line">  format.html # app/views/products/index.html.erb</span><br><span class="line">  format.json # app/views/products/index.json.jbuilder</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后我们在浏览器中请求<code>/products.json</code>, 会返回jbuilder定义的json数据:</p>
+</blockquote>
+<p><img src="http://i3.tietuku.com/3536abf6dc3355e3.png" alt=""></p>
+<blockquote>
+<p>参考自<a href="https://github.com/rails/jbuilder" target="_blank" rel="external">https://github.com/rails/jbuilder</a></p>
+</blockquote>
+<h3 id="只返回json格式"><a href="#只返回json格式" class="headerlink" title="只返回json格式"></a>只返回json格式</h3><blockquote>
+<p>首先在routing中添加<code>namespace :api { format: &#39;json&#39; }</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># config/routes.rb</span><br><span class="line">Rails.application.routes.draw do</span><br><span class="line">  namespace :api, &#123; format: &apos;json&apos; &#125; do</span><br><span class="line">    resources :products</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>rake routes</code> :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ rake routes</span><br><span class="line">  Prefix Verb   URI Pattern                      Controller#Action</span><br><span class="line">  api_products GET    /api/products(.:format)          api/products#index &#123;:format=&gt;&quot;json&quot;&#125;</span><br><span class="line">  POST   /api/products(.:format)          api/products#create &#123;:format=&gt;&quot;json&quot;&#125;</span><br><span class="line">  new_api_product GET    /api/products/new(.:format)      api/products#new &#123;:format=&gt;&quot;json&quot;&#125;</span><br><span class="line">  edit_api_product GET    /api/products/:id/edit(.:format) api/products#edit &#123;:format=&gt;&quot;json&quot;&#125;</span><br><span class="line">  api_product GET    /api/products/:id(.:format)      api/products#show &#123;:format=&gt;&quot;json&quot;&#125;</span><br><span class="line">  PATCH  /api/products/:id(.:format)      api/products#update &#123;:format=&gt;&quot;json&quot;&#125;</span><br><span class="line">  PUT    /api/products/:id(.:format)      api/products#update &#123;:format=&gt;&quot;json&quot;&#125;</span><br><span class="line">  DELETE /api/products/:id(.:format)      api/products#destroy &#123;:format=&gt;&quot;json&quot;&#125;</span><br><span class="line">  .....</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样就通过命名空间的方法将通常Controller和API Controller区别开来, 而且, 由于设置了<code>{ format: &#39;json&#39;  }</code>即便是我们在url(/products)不添加<code>.json</code>后缀, 也会默认返回json格式的数据.</p>
+<p>然后创建命名空间的Controller, 需要<code>app/controllers/api/products_controller.rb</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/api/products_controller.rb</span><br><span class="line">module Api</span><br><span class="line">  class ProductsController &lt; ApplicationController</span><br><span class="line"></span><br><span class="line">    def index</span><br><span class="line">      @products = Product.all</span><br><span class="line">      render json: @products</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="API-版本"><a href="#API-版本" class="headerlink" title="API 版本"></a>API 版本</h3><blockquote>
+<p>实际上就是再套一层namespace, Controller多加一层module和目录.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Rails.application.routes.draw do</span><br><span class="line"></span><br><span class="line">  namespace :api, &#123; format: &apos;json&apos;  &#125; do</span><br><span class="line">    namespace :v2 do</span><br><span class="line">      resources :products</span><br><span class="line">    end</span><br><span class="line">    namespace :v1 do</span><br><span class="line">      resources :products</span><br><span class="line">    end</span><br><span class="line">    end</span><br><span class="line">  resources :products</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Controller:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/api/v1/products_controller.rb</span><br><span class="line">module Api</span><br><span class="line">  module V1</span><br><span class="line">    class ProductsController &lt; ApplicationController</span><br><span class="line">      def index</span><br><span class="line">        @products = Product.all</span><br><span class="line">        render json: @products</span><br><span class="line">      end</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/controllers/api/v2/products_controller.rb</span><br><span class="line">module Api</span><br><span class="line">  module V2</span><br><span class="line">    class ProductsController &lt; ApplicationController</span><br><span class="line">      def index</span><br><span class="line">        @products = Product.all</span><br><span class="line">        render json: @products</span><br><span class="line">      end</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="API-测试"><a href="#API-测试" class="headerlink" title="API 测试"></a>API 测试</h2><h3 id="生成测试文件"><a href="#生成测试文件" class="headerlink" title="生成测试文件"></a>生成测试文件</h3><blockquote>
+<p>关于API 的测试我们使用<code>spec/requests</code>, 因为如果使用<code>spec/controllers</code>测试验证返回值是很困难的, 使用<code>spec/features</code>又需要启动Capybara, 会占用很长的时间, 具体请参见<a href="http://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec" target="_blank" rel="external">http://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec</a></p>
+<p>生成RSpec的请求测试文件:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ rails g rspec:integration Product</span><br><span class="line"></span><br><span class="line">  identical  spec/requests/products_spec.rb</span><br></pre></td></tr></table></figure>
+<h2 id="index-API的测试"><a href="#index-API的测试" class="headerlink" title="index API的测试"></a>index API的测试</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">require &apos;rails_helper&apos;</span><br><span class="line"></span><br><span class="line">RSpec.describe &quot;Products&quot;, type: :request do</span><br><span class="line"></span><br><span class="line">  describe &quot;GET /products.json&quot; do</span><br><span class="line">    before do</span><br><span class="line">      @products = FactoryGirl.create_list(:product, 3)</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    it &quot;get the list in json&quot; do</span><br><span class="line">      get products_path format: :json</span><br><span class="line"></span><br><span class="line">      expect(response.status).to eq 200</span><br><span class="line"></span><br><span class="line">      # JSON</span><br><span class="line">      json = JSON.parse(response.body)</span><br><span class="line">      expect(json.size).to eq @products.count</span><br><span class="line">      expect(json[0][&quot;id&quot;]).to eq @products[0].id # 注意json[0][:id]的写法是错误的</span><br><span class="line">      expect(json[0][&quot;name&quot;]).to eq @products[0].name</span><br><span class="line">      expect(json[1][&quot;id&quot;]).to eq @products[1].id </span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Controller:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/products_controller.rb</span><br><span class="line">class ProductsController &lt; ApplicationController</span><br><span class="line">  # GET /products</span><br><span class="line">  # GET /products.json</span><br><span class="line">  def index</span><br><span class="line">    @products = Product.all</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># index.json.jbuilder</span><br><span class="line">json.array!(@products) do |product|</span><br><span class="line">  json.extract! product, :id, :name, :price</span><br><span class="line">  json.url product_url(product, format: :json)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="show-API的测试"><a href="#show-API的测试" class="headerlink" title="show API的测试"></a>show API的测试</h3><blockquote>
+<p>测试:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># spec/requests/products_spec.rb</span><br><span class="line">  describe  &quot;GET /products/:id.json&quot; do</span><br><span class="line">    before do</span><br><span class="line">      @product = FactoryGirl.create(:product)</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    it &quot;gets specified product&quot; do</span><br><span class="line">      get product_path(@product, format: :json)</span><br><span class="line"></span><br><span class="line">      expect(response.status).to eq 200</span><br><span class="line"></span><br><span class="line">      json = JSON.parse(response.body)</span><br><span class="line"></span><br><span class="line">      expect(json[&quot;id&quot;]).to eq @product.id</span><br><span class="line">      expect(json[&quot;name&quot;]).to eq @product.name</span><br><span class="line">    end</span><br><span class="line">  end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Controller:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># show</span><br><span class="line">def show</span><br><span class="line">  @product = Product.find(params[:id])</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># show.json.jbuilder</span><br><span class="line">json.extract! @product, :id, :name, :price, :publised_at, :category_id, :created_at, :updated_at</span><br></pre></td></tr></table></figure>
+<h3 id="create-update-的测试"><a href="#create-update-的测试" class="headerlink" title="create/update 的测试"></a>create/update 的测试</h3><blockquote>
+<p>这两个基本相同, 以create为例</p>
+<p>测试:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># spec/requests/products_spec.rb</span><br><span class="line"># test create/update product</span><br><span class="line"># POST请求也会给浏览器一个响应, 重点就是要测试post请求后, 是否得到了成功的响应</span><br><span class="line">describe &quot;POST /products.json&quot; do</span><br><span class="line">  it &quot;creates new product&quot; do</span><br><span class="line"></span><br><span class="line">    params = &#123; product: FactoryGirl.attributes_for(:product) &#125; </span><br><span class="line">    # 测试product的数量是否增加了1</span><br><span class="line">    expect &#123;</span><br><span class="line">      post products_path(format: :json), params</span><br><span class="line">    &#125;.to change &#123; Product.count &#125;.from(0).to(1)</span><br><span class="line"></span><br><span class="line">    # status code is 201 (post)</span><br><span class="line">    expect(response.status).to eq 201</span><br><span class="line"></span><br><span class="line">    # JSON ( the same as show )</span><br><span class="line">    json = JSON.parse(response.body)</span><br><span class="line">    expect(json[&quot;name&quot;]).to eq params[:product][:name]</span><br><span class="line">    expect(json[&quot;price&quot;]).to eq params[:product][:price]</span><br><span class="line"></span><br><span class="line">    # current url location test</span><br><span class="line">    expect(response.location).to eq product_url(Product.last)</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>Controller:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># POST /products</span></span><br><span class="line"><span class="comment"># POST /products.json</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span></span></span><br><span class="line">  @product = Product.new(product_params)</span><br><span class="line"></span><br><span class="line">  respond_to <span class="keyword">do</span> <span class="params">|format|</span></span><br><span class="line">    <span class="keyword">if</span> @product.save</span><br><span class="line">      format.html &#123; redirect_to @product, <span class="symbol">notice:</span> <span class="string">'Product was successfully created.'</span> &#125;</span><br><span class="line">      format.json &#123; render <span class="symbol">:show</span>, <span class="symbol">status:</span> <span class="symbol">:created</span>, <span class="symbol">location:</span> @product &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      format.html &#123; render <span class="symbol">:new</span> &#125;</span><br><span class="line">      format.json &#123; render <span class="symbol">json:</span> @product.errors, <span class="symbol">status:</span> <span class="symbol">:unprocessable_entity</span> &#125;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># show.json.jbuilder</span></span><br><span class="line">json.extract! @product, <span class="symbol">:id</span>, <span class="symbol">:name</span>, <span class="symbol">:price</span>, <span class="symbol">:publised_at</span>, <span class="symbol">:category_id</span>, <span class="symbol">:created_at</span>, <span class="symbol">:updated_at</span></span><br></pre></td></tr></table></figure>
+<h2 id="destroy的测试"><a href="#destroy的测试" class="headerlink" title="destroy的测试"></a>destroy的测试</h2><blockquote>
+<p>测试:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># test destroy</span><br><span class="line">describe &quot;DELETE /products/:id.json&quot; do</span><br><span class="line">    before do</span><br><span class="line">      @product = FactoryGirl.create(:product)</span><br><span class="line">    end</span><br><span class="line">  it &quot;deletes a product&quot; do</span><br><span class="line"></span><br><span class="line">    # Product count should decrease by 1</span><br><span class="line">    expect &#123;</span><br><span class="line">      delete product_path(@product, format: :json)</span><br><span class="line">    &#125;.to change &#123; Product.count &#125;.by(-1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # state code should be 204</span><br><span class="line">    expect(response.status).to eq 204</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>Controller:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># DELETE /products/1</span></span><br><span class="line"><span class="comment"># DELETE /products/1.json</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">destroy</span></span></span><br><span class="line">  @product.destroy</span><br><span class="line">  respond_to <span class="keyword">do</span> <span class="params">|format|</span></span><br><span class="line">    format.html &#123; redirect_to products_url, <span class="symbol">notice:</span> <span class="string">'Product was successfully destroyed.'</span> &#125;</span><br><span class="line">    format.json &#123; head <span class="symbol">:no_content</span> &#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/API-Test/" rel="tag">#API Test</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/05/debug/" rel="next" title="Rails Debug">
+                <i class="fa fa-chevron-left"></i> Rails Debug
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/06/slim-view/" rel="prev" title="Rails中使用slim模板文件入门介绍(一)">
+                Rails中使用slim模板文件入门介绍(一) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成API"><span class="nav-number">2.</span> <span class="nav-text">生成API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Controller中返回HTML-JSON等API"><span class="nav-number">2.1.</span> <span class="nav-text">Controller中返回HTML JSON等API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#只返回json格式"><span class="nav-number">2.2.</span> <span class="nav-text">只返回json格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API-版本"><span class="nav-number">2.3.</span> <span class="nav-text">API 版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-测试"><span class="nav-number">3.</span> <span class="nav-text">API 测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成测试文件"><span class="nav-number">3.1.</span> <span class="nav-text">生成测试文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#index-API的测试"><span class="nav-number">4.</span> <span class="nav-text">index API的测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#show-API的测试"><span class="nav-number">4.1.</span> <span class="nav-text">show API的测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#create-update-的测试"><span class="nav-number">4.2.</span> <span class="nav-text">create/update 的测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#destroy的测试"><span class="nav-number">5.</span> <span class="nav-text">destroy的测试</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,749 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="form_for simple_form," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="simple_form 可以简化表单的代码. 本文主要讲解如何安装使用, 定制化simple_form和验证错误的方法.
+
+环境搭建创建rails 项目12rails new simple_form_testcd simple_form_test
+创建model, 数据库和scaffolding
+为了说明simple_form 够 simple, 我尽量让这个项目比较复杂一些:
+
+
+
+如上面的E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用simple_form简化form_for中的代码">
+<meta property="og:url" content="http://yoursite.com/2015/03/07/simple-form/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="simple_form 可以简化表单的代码. 本文主要讲解如何安装使用, 定制化simple_form和验证错误的方法.
+
+环境搭建创建rails 项目12rails new simple_form_testcd simple_form_test
+创建model, 数据库和scaffolding
+为了说明simple_form 够 simple, 我尽量让这个项目比较复杂一些:
+
+
+
+如上面的E">
+<meta property="og:image" content="http://i3.tietuku.com/460887f273a316f1.png">
+<meta property="og:image" content="http://ntu.so/di/DZ8K5/Screen_Shot_2015-03-07_at_4.png">
+<meta property="og:image" content="http://ntu.so/di/Q61LJ/Screen_Shot_2015-03-07_at_4.png">
+<meta property="og:image" content="http://i2.tietuku.com/68216b02ac6f5141.png">
+<meta property="og:image" content="http://i2.tietuku.com/0b0073d3ea5f77a7t.jpg">
+<meta property="og:image" content="http://i2.tietuku.com/6a77dded16dafab6t.jpg">
+<meta property="og:image" content="http://i2.tietuku.com/a89708824bf8203a.png">
+<meta property="og:updated_time" content="2015-04-25T04:03:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用simple_form简化form_for中的代码">
+<meta name="twitter:description" content="simple_form 可以简化表单的代码. 本文主要讲解如何安装使用, 定制化simple_form和验证错误的方法.
+
+环境搭建创建rails 项目12rails new simple_form_testcd simple_form_test
+创建model, 数据库和scaffolding
+为了说明simple_form 够 simple, 我尽量让这个项目比较复杂一些:
+
+
+
+如上面的E">
+<meta name="twitter:image" content="http://i3.tietuku.com/460887f273a316f1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 使用simple_form简化form_for中的代码 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用simple_form简化form_for中的代码
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-07T14:10:21+08:00" content="2015-03-07">
+              2015-03-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ruby-Gems/" itemprop="url" rel="index">
+                    <span itemprop="name">Ruby Gems</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>simple_form 可以简化表单的代码. 本文主要讲解如何安装使用, 定制化simple_form和验证错误的方法.</p>
+</blockquote>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><h3 id="创建rails-项目"><a href="#创建rails-项目" class="headerlink" title="创建rails 项目"></a>创建rails 项目</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails new simple_form_test</span><br><span class="line">cd simple_form_test</span><br></pre></td></tr></table></figure>
+<h3 id="创建model-数据库和scaffolding"><a href="#创建model-数据库和scaffolding" class="headerlink" title="创建model, 数据库和scaffolding"></a>创建model, 数据库和scaffolding</h3><blockquote>
+<p>为了说明simple_form 够 simple, 我尽量让这个项目比较复杂一些:</p>
+</blockquote>
+<p><img src="http://i3.tietuku.com/460887f273a316f1.png" alt=""></p>
+<blockquote>
+<p>如上面的ER图, 为了实现Category和Product之间的多对多关系, 我建立了中间model(db)Categorization.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rails g model Category name:string</span><br><span class="line">rails g model Publisher name:string</span><br><span class="line">rails g scaffold Product name:string price:integer released_on:date rating:integer discontinued:boolean publisher:references</span><br><span class="line">rails g model Categorization product:references category:references</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里需要解释一下Product的discontinued字段表示暂停销售, 我需要修改其默认值为<code>false</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># db/migrate/yyyymmddhhmmss_create_products.rb</span><br><span class="line">t.boolean :discontinued, default: false, null: false</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>创建数据库: <code>rake db:migrate</code></p>
+</blockquote>
+<h3 id="添加关联"><a href="#添加关联" class="headerlink" title="添加关联"></a>添加关联</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># app/models/categorization.rb</span><br><span class="line">class Categorization &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :category</span><br><span class="line">  belongs_to :product</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/category.rb</span><br><span class="line">class Category &lt; ActiveRecord::Base</span><br><span class="line">  has_many :categorizastions</span><br><span class="line">  has_many :products, through: :categorizations</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/product.rb</span><br><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :publisher</span><br><span class="line">  has_many :categorizations</span><br><span class="line">  has_many :categories, through: :categorizations</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/publisher.rb</span><br><span class="line">class Publisher &lt; ActiveRecord::Base</span><br><span class="line">  has_many :products</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="初始化数据"><a href="#初始化数据" class="headerlink" title="初始化数据"></a>初始化数据</h3><blockquote>
+<p>通过<code>rake db:seed</code>来生成Category和Publisher的数据:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># db/seeds.rb</span><br><span class="line">literature = Category.create! name: &quot;文学&quot;</span><br><span class="line">history = Category.create! name: &quot;历史&quot;</span><br><span class="line">business = Category.create! name: &quot;经商&quot;</span><br><span class="line">science = Category.create! name: &quot;科学&quot;</span><br><span class="line">comic = Category.create! name: &quot;喜剧&quot;</span><br><span class="line"></span><br><span class="line">xinhua = Publisher.create! name: &quot;新华出版社&quot;</span><br><span class="line">renmin = Publisher.create! name: &quot;人民出版社&quot;</span><br><span class="line">guangming = Publisher.create! name: &quot;光明出版社&quot;</span><br><span class="line">jixie = Publisher.create! name: &quot;机械出版社&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>rake db:seed</code></p>
+</blockquote>
+<h3 id="修改form"><a href="#修改form" class="headerlink" title="修改form"></a>修改form</h3><blockquote>
+<p>运行scaffold生成的表单不符合需求, 故进行如下修正:</p>
+</blockquote>
+<ul>
+<li><code>rating</code>由NumberField改为RadioButton</li>
+<li><code>publisher_id</code>由TextField改为 SelecBox</li>
+<li>category添加为CheckBox</li>
+</ul>
+<blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app/views/products/_form.html.slim</span></span><br><span class="line"></span><br><span class="line">= form_for @product <span class="keyword">do</span> <span class="params">|f|</span></span><br><span class="line">  - <span class="keyword">if</span> @product.errors.any?</span><br><span class="line">    <span class="comment">#error_explanation</span></span><br><span class="line">      h2 = <span class="string">"<span class="subst">#&#123;pluralize(@product.errors.count, <span class="string">"error"</span>)&#125;</span> prohibited this product from being saved:"</span></span><br><span class="line">      ul</span><br><span class="line">        - @product.errors.full_messages.each <span class="keyword">do</span> <span class="params">|message|</span></span><br><span class="line">          li = message</span><br><span class="line"></span><br><span class="line">  .field</span><br><span class="line">    = f.label <span class="symbol">:name</span></span><br><span class="line">    = f.text_field <span class="symbol">:name</span></span><br><span class="line">  .field</span><br><span class="line">    = f.label <span class="symbol">:price</span></span><br><span class="line">    = f.number_field <span class="symbol">:price</span></span><br><span class="line">  .field</span><br><span class="line">    = f.label <span class="symbol">:released_on</span></span><br><span class="line">    = f.date_select <span class="symbol">:released_on</span></span><br><span class="line">  .field</span><br><span class="line">    = f.label <span class="symbol">:rating</span></span><br><span class="line">    = f.radio_button <span class="symbol">:rating</span>, <span class="number">1</span></span><br><span class="line">    <span class="params">| 1</span><br><span class="line">    = f.radio_button :rating, 2</span><br><span class="line">    |</span> <span class="number">2</span></span><br><span class="line">    = f.radio_button <span class="symbol">:rating</span>, <span class="number">3</span></span><br><span class="line">    <span class="params">| 3</span><br><span class="line">    = f.radio_button :rating, 4</span><br><span class="line">    |</span> <span class="number">4</span></span><br><span class="line">    = f.radio_button <span class="symbol">:rating</span>, <span class="number">5</span></span><br><span class="line">    <span class="params">| 5</span><br><span class="line"></span><br><span class="line">  .field</span><br><span class="line">    = f.label :discontinued</span><br><span class="line">    = f.check_box :discontinued</span><br><span class="line">  .field</span><br><span class="line">    = f.label :publisher</span><br><span class="line">    = f.collection_select :publisher_id, Publisher.all, :id, :name, include_blank: <span class="literal">false</span></span><br><span class="line">  .field</span><br><span class="line">    - Category.all.each <span class="keyword">do</span> |</span>category<span class="params">|</span><br><span class="line">      = check_box_tag "product[category_ids][]", category.id, @product.category_ids.<span class="keyword">include</span>?(category.id), id: dom_id(category)</span><br><span class="line">      = label_tag dom_id(category), category.name</span><br><span class="line">  .actions = f.submit</span></span><br></pre></td></tr></table></figure>
+<p>不要忘了StrongParameter, 添加<code>category_ids: []</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def product_params</span><br><span class="line">  params.require(:product).permit(:name, :price, :released_on, :rating, :discontinued, :publisher_id, category_ids: [])</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="验证添加"><a href="#验证添加" class="headerlink" title="验证添加"></a>验证添加</h3><blockquote>
+<p>接下来验证一下是否可以添加成功, 一下是我的截图:</p>
+</blockquote>
+<p><img src="http://ntu.so/di/DZ8K5/Screen_Shot_2015-03-07_at_4.png" alt=""><br><img src="http://ntu.so/di/Q61LJ/Screen_Shot_2015-03-07_at_4.png" alt=""></p>
+<blockquote>
+<p>好的, 准备工作完成!</p>
+</blockquote>
+<h2 id="安装使用simple-form"><a href="#安装使用simple-form" class="headerlink" title="安装使用simple_form"></a>安装使用simple_form</h2><h3 id="安装simple-form"><a href="#安装simple-form" class="headerlink" title="安装simple_form"></a>安装simple_form</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line">gem &apos;simple_form&apos;</span><br><span class="line"></span><br><span class="line">$ bundle install</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在Rails项目中生成simple_form的相关文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rails g simple_form:install</span><br><span class="line">  create  config/initializers/simple_form.rb</span><br><span class="line">  exist  config/locales</span><br><span class="line">  create  config/locales/simple_form.en.yml</span><br><span class="line">  create  lib/templates/erb/scaffold/_form.html.erb</span><br></pre></td></tr></table></figure>
+<h3 id="重写form-for"><a href="#重写form-for" class="headerlink" title="重写form_for"></a>重写form_for</h3><blockquote>
+<p>安装完了simple_form, 我来替换掉使用form_for生成的表单, 有以下几个要点:</p>
+</blockquote>
+<ul>
+<li><code>simple_form_for</code>方法替换掉<code>form_for</code>方法</li>
+<li>input元素使用<code>= f.input :xxx</code></li>
+<li>相关联的input元素使用<code>= f.association :yyy</code></li>
+</ul>
+<blockquote>
+<p>修改后的代码</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">= simple_form_for(@product) do |f|</span><br><span class="line">  = f.input :name</span><br><span class="line">  = f.input :price</span><br><span class="line">  = f.input :released_on</span><br><span class="line">  = f.input :rating</span><br><span class="line">  = f.input :discontinued</span><br><span class="line">  = f.association :publisher</span><br><span class="line">  = f.association :categories</span><br><span class="line">  = f.button :submit</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>启动服务, 观察页面有了一些变化, 过一会在处理:</p>
+</blockquote>
+<p><img src="http://i2.tietuku.com/68216b02ac6f5141.png" alt=""></p>
+<blockquote>
+<p>不难发现, 大致上还是相同的, 但是代码却简化了二分之一左右.</p>
+<p><strong><em> simple_form是是根据数据库中的字段类型来决定如何显示这些html元素</em></strong><br>比如:</p>
+<ul>
+<li>String类型使用TextField表示</li>
+<li>Integer等数字类型使用NumberField表示</li>
+<li>Date类型使用Date Select表示</li>
+<li>Boolean类型使用Check Box表示</li>
+</ul>
+<p>更多内容请参见<a href="http://simple-form.plataformatec.com.br/#available-input-types-and-defaults-for-each-column-type" target="_blank" rel="external">http://simple-form.plataformatec.com.br/#available-input-types-and-defaults-for-each-column-type</a></p>
+</blockquote>
+<h3 id="simple-form的定制化"><a href="#simple-form的定制化" class="headerlink" title="simple_form的定制化"></a>simple_form的定制化</h3><blockquote>
+<p>刚才的页面可以看出还有一些小问题, rating应该为Radio, Category应该是checkbox, 接下来就看看如何定制化这些filed</p>
+</blockquote>
+<h4 id="指定input-类型-as"><a href="#指定input-类型-as" class="headerlink" title="指定input 类型 (:as)"></a>指定input 类型 (:as)</h4><blockquote>
+<p>使用as选项, 可以指定input类型, 下面的代码将categories的input类型修改为checkbox</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">= f.association :categories, as: :check_boxes</span><br></pre></td></tr></table></figure>
+<h4 id="设定label-label"><a href="#设定label-label" class="headerlink" title="设定label (:label)"></a>设定label (:label)</h4><blockquote>
+<p>使用<code>:label</code>选项可以指定标签的名称:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">= f.input :name, label: &quot;商品名称&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="添加hint-hint"><a href="#添加hint-hint" class="headerlink" title="添加hint (:hint)"></a>添加hint (:hint)</h4><blockquote>
+<p>添加hint提示文字</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">= f.input :price, hint: &quot;请填写价格&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="指定范围-collection"><a href="#指定范围-collection" class="headerlink" title="指定范围(:collection)"></a>指定范围(:collection)</h4><blockquote>
+<p>通过设定collection选项的值为一个数组(Range)来指定该html的范围, 如果指定了collection, 那么该处的html元素是select box, 下面的代码又通过设置<code>as: :radio_buttons</code>选项来设置html元素为Radio Button</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">= f.input :rating, collection: (1..5), as: :radio_buttons</span><br></pre></td></tr></table></figure>
+<h4 id="label-和-input的html属性指定-label-html-input-html"><a href="#label-和-input的html属性指定-label-html-input-html" class="headerlink" title="label 和 input的html属性指定 (:label_html , :input_html)"></a>label 和 input的html属性指定 (:label_html , :input_html)</h4><blockquote>
+<p>设置<code>name</code>的标签元素为红色, 输入框的边角为圆角</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">= f.input :name, label: &quot;商品名称&quot;, label_html: &#123; style: &apos;color:red;&apos; &#125;, input_html: &#123; style: &apos;border-radius: 5px&apos; &#125;</span><br></pre></td></tr></table></figure>
+<p><a href="http://i2.tietuku.com/0b0073d3ea5f77a7.png" title="点击显示原始图片" target="_blank" rel="external"><img src="http://i2.tietuku.com/0b0073d3ea5f77a7t.jpg"></a></p>
+<h3 id="simple-form显示错误验证消息"><a href="#simple-form显示错误验证消息" class="headerlink" title="simple_form显示错误验证消息"></a>simple_form显示错误验证消息</h3><blockquote>
+<p>显示验证错误消息也很容易, 只需要正常验证即可, 在<code>app/models/product.rb</code>加入验证代码</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">validates :price, presence: true</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当不填写该字段提交时:</p>
+<p><a href="http://i2.tietuku.com/6a77dded16dafab6.png" title="点击显示原始图片" target="_blank" rel="external"><img src="http://i2.tietuku.com/6a77dded16dafab6t.jpg"></a></p>
+<p>另外还可以显示错误通知(flash)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">= simple_form_for(@product) do |f|</span><br><span class="line">  = f.error_notification</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><img src="http://i2.tietuku.com/a89708824bf8203a.png"></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/form-for-simple-form/" rel="tag">#form_for simple_form</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/07/slim-view3/" rel="next" title="使用`html2slim`把erb格式的文件转成slim格式">
+                <i class="fa fa-chevron-left"></i> 使用`html2slim`把erb格式的文件转成slim格式
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/08/rails-ruby-shortcut2/" rel="prev" title="Rails代码技巧总结(二) Rails相关">
+                Rails代码技巧总结(二) Rails相关 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境搭建"><span class="nav-number">1.</span> <span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建rails-项目"><span class="nav-number">1.1.</span> <span class="nav-text">创建rails 项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建model-数据库和scaffolding"><span class="nav-number">1.2.</span> <span class="nav-text">创建model, 数据库和scaffolding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加关联"><span class="nav-number">1.3.</span> <span class="nav-text">添加关联</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化数据"><span class="nav-number">1.4.</span> <span class="nav-text">初始化数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改form"><span class="nav-number">1.5.</span> <span class="nav-text">修改form</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证添加"><span class="nav-number">1.6.</span> <span class="nav-text">验证添加</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装使用simple-form"><span class="nav-number">2.</span> <span class="nav-text">安装使用simple_form</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装simple-form"><span class="nav-number">2.1.</span> <span class="nav-text">安装simple_form</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重写form-for"><span class="nav-number">2.2.</span> <span class="nav-text">重写form_for</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#simple-form的定制化"><span class="nav-number">2.3.</span> <span class="nav-text">simple_form的定制化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指定input-类型-as"><span class="nav-number">2.3.1.</span> <span class="nav-text">指定input 类型 (:as)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设定label-label"><span class="nav-number">2.3.2.</span> <span class="nav-text">设定label (:label)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加hint-hint"><span class="nav-number">2.3.3.</span> <span class="nav-text">添加hint (:hint)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指定范围-collection"><span class="nav-number">2.3.4.</span> <span class="nav-text">指定范围(:collection)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#label-和-input的html属性指定-label-html-input-html"><span class="nav-number">2.3.5.</span> <span class="nav-text">label 和 input的html属性指定 (:label_html , :input_html)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#simple-form显示错误验证消息"><span class="nav-number">2.4.</span> <span class="nav-text">simple_form显示错误验证消息</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

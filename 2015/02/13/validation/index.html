@@ -1,0 +1,723 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="validation," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Rails中, 我们可以将用户输入数据在被保存到数据库前进行校验, 成为Validation.
+
+Rails校验流程
+我要一步步说明Rails的校验流程
+
+使用validates方法, 对Model进行校验的条件的设定12345678# app/models/product.rbclass Product &amp;lt; ActiveRecord::Base  # title必须存在  validat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对Model校验">
+<meta property="og:url" content="http://yoursite.com/2015/02/13/validation/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Rails中, 我们可以将用户输入数据在被保存到数据库前进行校验, 成为Validation.
+
+Rails校验流程
+我要一步步说明Rails的校验流程
+
+使用validates方法, 对Model进行校验的条件的设定12345678# app/models/product.rbclass Product &amp;lt; ActiveRecord::Base  # title必须存在  validat">
+<meta property="og:updated_time" content="2015-02-14T09:50:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="对Model校验">
+<meta name="twitter:description" content="Rails中, 我们可以将用户输入数据在被保存到数据库前进行校验, 成为Validation.
+
+Rails校验流程
+我要一步步说明Rails的校验流程
+
+使用validates方法, 对Model进行校验的条件的设定12345678# app/models/product.rbclass Product &amp;lt; ActiveRecord::Base  # title必须存在  validat">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 对Model校验 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                对Model校验
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-13T08:13:21+08:00" content="2015-02-13">
+              2015-02-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Rails中, 我们可以将用户输入数据在被保存到数据库前进行校验, 成为Validation.</p>
+</blockquote>
+<h2 id="Rails校验流程"><a href="#Rails校验流程" class="headerlink" title="Rails校验流程"></a>Rails校验流程</h2><blockquote>
+<p>我要一步步说明Rails的校验流程</p>
+</blockquote>
+<h3 id="使用validates方法-对Model进行校验的条件的设定"><a href="#使用validates方法-对Model进行校验的条件的设定" class="headerlink" title="使用validates方法, 对Model进行校验的条件的设定"></a>使用validates方法, 对Model进行校验的条件的设定</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># app/models/product.rb</span><br><span class="line"></span><br><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  # title必须存在</span><br><span class="line">  validates :title, presence: true</span><br><span class="line">  # price的值为integer类型, 取值范围大于0</span><br><span class="line">  validates :price, numericality: &#123; only_integer: true, greater_than_or_equal_to: 0 &#125;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="在controller中保存或更新model"><a href="#在controller中保存或更新model" class="headerlink" title="在controller中保存或更新model"></a>在controller中保存或更新model</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">def create</span><br><span class="line">  # product_params 以hash形式封装了用户在表单中输入的值</span><br><span class="line">¦ @product = Product.new(product_params)</span><br><span class="line"></span><br><span class="line">¦ respond_to do |format|</span><br><span class="line">    # 在保存前Product 类会参照验证定义.</span><br><span class="line">    # 未发生验证错误, 则将记录保存到数据库, 否则再次渲染new action</span><br><span class="line">¦ ¦ if @product.save</span><br><span class="line">¦ ¦ ¦ format.html &#123; redirect_to @product, notice: &apos;Product was successfully created.&apos;  &#125;</span><br><span class="line">¦ ¦ ¦ format.json &#123; render :show, status: :created, location: @product  &#125;</span><br><span class="line">¦ ¦ else</span><br><span class="line">¦ ¦ ¦ format.html &#123; render :new  &#125;</span><br><span class="line">¦ ¦ ¦ format.json &#123; render json: @product.errors, status: :unprocessable_entity  &#125;</span><br><span class="line">¦ ¦ end</span><br><span class="line">¦ end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="验证错误会被保存在errors中"><a href="#验证错误会被保存在errors中" class="headerlink" title="验证错误会被保存在errors中"></a>验证错误会被保存在<code>errors</code>中</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= form_for(@product) do |f| %&gt;</span><br><span class="line">  &lt;% if @product.errors.any? %&gt;</span><br><span class="line">  &lt;div id=&quot;error_explanation&quot;&gt;</span><br><span class="line">  &lt;!-- 取出错误消息， 显示在页面上 --&gt;</span><br><span class="line">  &lt;h2&gt;&lt;%= pluralize(@product.errors.count, &quot;error&quot;) %&gt; prohibited this product from being saved:&lt;/h2&gt;</span><br><span class="line"></span><br><span class="line">  &lt;ul&gt;</span><br><span class="line">  &lt;% @product.errors.full_messages.each do |message| %&gt;</span><br><span class="line">  &lt;li&gt;&lt;%= message %&gt;&lt;/li&gt;</span><br><span class="line">  &lt;% end %&gt;</span><br><span class="line">  &lt;/ul&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;% end %&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">  &lt;%= f.label :title %&gt;&lt;br&gt;</span><br><span class="line">  &lt;%= f.text_field :title %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">  &lt;%= f.label :price %&gt;&lt;br&gt;</span><br><span class="line">  &lt;%= f.number_field :price %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;actions&quot;&gt;</span><br><span class="line">  &lt;%= f.submit %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="定义验证"><a href="#定义验证" class="headerlink" title="定义验证"></a>定义验证</h2><h3 id="存在性检查"><a href="#存在性检查" class="headerlink" title="存在性检查"></a>存在性检查</h3><blockquote>
+<p>使用<code>prensence</code> 对字段进行非空检查.<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">validates <span class="symbol">:name</span>, <span class="symbol">presence:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># RSpec检查的方法</span></span><br><span class="line"></span><br><span class="line">it &#123; is_expected.to validate_presence_of(<span class="symbol">:name</span>) &#125;</span><br></pre></td></tr></table></figure></p>
+<p>boolean类型的验证, 使用inclusion 选项</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 其实即使保持字符串也是可以的, ruby会作为true来处理</span></span><br><span class="line">validates <span class="symbol">:flag</span>, <span class="symbol">inclusion:</span> &#123; <span class="symbol">in:</span> [<span class="literal">true</span>, flase] &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="唯一性验证"><a href="#唯一性验证" class="headerlink" title="唯一性验证"></a>唯一性验证</h2><blockquote>
+<p>使用<code>uniqueness</code>选项检查属性值是否唯一</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">validates <span class="symbol">:email</span>, <span class="symbol">uniqueness:</span> <span class="literal">true</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line">it &#123; is_expected.to validate_uniqueness_of(<span class="symbol">:email</span>) &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>需要注意的是: 如果服务器的并发很高时, 比如在注册新用户时, 连续两次点击创建按钮, 还是有可能跳过rails的验证在数据库中创建两条相同的记录.<br>这时候有必要再加一道防线: 数据库中添加唯一性索引:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">rails g migration add_index_to_users_email</span><br><span class="line"># db/migrate/YYYYMNDDHHMMSS_add_index_to_users_email.rb</span><br><span class="line"></span><br><span class="line">class AddIndexToUsersEmail &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    add_index :users, :email, unique: true</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure></p>
+<p>当然也可以对多个属性的唯一性, 比如用户发表不可以发表相同题目的文章:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span> &lt; ActiveRecord::Base</span></span><br><span class="line">  belongs_to <span class="symbol">:user</span></span><br><span class="line">  validates <span class="symbol">:title</span>, <span class="symbol">uniqueness:</span> &#123; <span class="symbol">scope:</span> [<span class="symbol">:user_id</span>] &#125;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># rspec</span></span><br><span class="line">it &#123; is_expected.to validate_uniqueness_of(<span class="symbol">:title</span>).scoped_to(<span class="symbol">:user_id</span>) &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># db migration</span></span><br><span class="line">add_index <span class="symbol">:articles</span>, [<span class="symbol">:title</span>, <span class="symbol">:user_id</span>], <span class="symbol">uniqueness:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<p>一般在验证Email时, 都是统一转化为小写, 再进行唯一性检查:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> &lt; ActiveRecord::Base</span></span><br><span class="line">  before_save &#123; <span class="keyword">self</span>.downcase! &#125;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h3 id="长度检查-length"><a href="#长度检查-length" class="headerlink" title="长度检查(length)"></a>长度检查(length)</h3><blockquote>
+<p>使用<code>length</code>进行长度验证</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">validates <span class="symbol">:name</span>, <span class="symbol">length:</span> &#123; <span class="symbol">minumum:</span> <span class="number">2</span> &#125;</span><br><span class="line">validates <span class="symbol">:bio</span>, <span class="symbol">length:</span> &#123; <span class="symbol">maximum:</span> <span class="number">500</span> &#125;</span><br><span class="line">validates <span class="symbol">:password</span>, <span class="symbol">length:</span> &#123; <span class="symbol">in:</span> <span class="number">6</span>..<span class="number">20</span> &#125;</span><br><span class="line">validates <span class="symbol">:registration_number</span>, <span class="symbol">length:</span> &#123; <span class="symbol">is:</span> <span class="number">5</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># rspec</span></span><br><span class="line">it &#123; is_expected_to ensure_length_of(<span class="symbol">:name</span>).is_at_least(<span class="number">2</span>) &#125;</span><br><span class="line">it &#123; is_expected_to ensure_length_of(<span class="symbol">:bio</span>).is_at_most(<span class="number">500</span>) &#125;</span><br><span class="line">it &#123; is_expected_to ensure_length_of(<span class="symbol">:password</span>).is_at_least(<span class="number">6</span>).is_at_most(<span class="number">20</span>) &#125;</span><br><span class="line">it &#123; is_expected_to ensure_length_of(<span class="symbol">:registration_number</span>).is_equal_to(<span class="number">6</span>) &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="格式检查-format"><a href="#格式检查-format" class="headerlink" title="格式检查(format)"></a>格式检查(format)</h3><blockquote>
+<p>使用<code>format</code> option可以对格式进行检查, 一般使用正则表达式比较多一些:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">VALID_EMAIL_REGEX =  <span class="regexp">/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i</span></span><br><span class="line">validates <span class="symbol">:email</span>, <span class="symbol">format:</span> &#123; <span class="symbol">with:</span> VALID_EMAIL_REGEX &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># rspec</span></span><br><span class="line"></span><br><span class="line">it <span class="string">"valid emails"</span> <span class="keyword">do</span></span><br><span class="line">  valid_emails = <span class="string">%w(</span><br><span class="line">    user@foo.COM</span><br><span class="line">    A_US-ER@f.b.org</span><br><span class="line">    frst.lst@foo.jp</span><br><span class="line">    a+b@baz.cn</span><br><span class="line">  )</span></span><br><span class="line">  is_expected_to allow_value(*valid_emails).<span class="keyword">for</span>(<span class="symbol">:email</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">it <span class="string">"invalid emails"</span> <span class="keyword">do</span></span><br><span class="line">  invalid_emails = <span class="string">%w(</span><br><span class="line">    user@foo,com</span><br><span class="line">    user_at_foo.org</span><br><span class="line">    example.user@foo.</span><br><span class="line">    foo@bar_baz.com</span><br><span class="line">    foo@bar+baz.com</span><br><span class="line">    foo@bar..com</span><br><span class="line">  )</span></span><br><span class="line">  is_expected_not_to allow_value(*invalid_emails).<span class="keyword">for</span>(<span class="symbol">:email</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h3 id="数值检查"><a href="#数值检查" class="headerlink" title="数值检查"></a>数值检查</h3><blockquote>
+<p><code>numericality</code>选项可以对数值类型进行验证</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Player</span> &lt; ActiveRecord::Base</span></span><br><span class="line">  validates <span class="symbol">:points</span>, <span class="symbol">numericality:</span> <span class="literal">true</span> <span class="comment"># 整数或者小数有效</span></span><br><span class="line">  validates <span class="symbol">:counts</span>, <span class="symbol">numericality:</span> &#123; <span class="symbol">only_integer:</span> <span class="literal">true</span> &#125; <span class="comment"># 只有整数有效</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># rspec</span></span><br><span class="line"></span><br><span class="line">it &#123; is_expected.to validate_numericality_of(<span class="symbol">:points</span>) &#125;</span><br><span class="line">it &#123; is_expected.to validate_numericality_of(<span class="symbol">:counts</span>).only_integer &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>only_integer: true</code>指定后, 可以追加下面选项来对数值本身进行限制</p>
+</blockquote>
+<ul>
+<li>greater_than</li>
+<li>greater_than_or_equal_to</li>
+<li>equal_to</li>
+<li>less_than</li>
+<li>less_than_or_equal_to</li>
+<li>odd</li>
+<li><p>even</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">validates :counts, numericality: &#123;</span><br><span class="line"> only_integer: true, greater_than_or_equal_to: 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># rspec</span><br><span class="line">it &#123; is_expected.to validate_numericality_of(:counts).only_integer.is_greater_or_equal_to(0) &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="包含在集合内的验证"><a href="#包含在集合内的验证" class="headerlink" title="包含在集合内的验证"></a>包含在集合内的验证</h3><blockquote>
+<p><code>inclusion</code> option中使用<code>in</code>来定义一个集合, 指定的值需要包含在集合内(属于集合的元素之一)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">validates :size, inclusion: &#123; in: %w(small medium large) &#125;</span><br><span class="line"></span><br><span class="line"># rspec</span><br><span class="line">it &#123; is_expected.to ensure_inclusion_of(:size).in_array(%w(small medium large)) &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="不包含在集合内的验证"><a href="#不包含在集合内的验证" class="headerlink" title="不包含在集合内的验证"></a>不包含在集合内的验证</h3><blockquote>
+<p><code>exclusion</code>option指定属性不应该是集合中的元素, 同样, 集合使用<code>in</code>定义</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">validates :subdomain, exclusion: &#123; in: %(www us cn jp) &#125;</span><br><span class="line"></span><br><span class="line"># rspec</span><br><span class="line">it &#123; is_expected.to ensure_exclusion_of(:subdomain).in_array(%(www us cn jp)) &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="跳过验证"><a href="#跳过验证" class="headerlink" title="跳过验证"></a>跳过验证</h2><blockquote>
+<p>以下方法需要先通过验证才可以成功保存到数据库中</p>
+</blockquote>
+<ul>
+<li>create</li>
+<li>create!</li>
+<li>save</li>
+<li>save!</li>
+<li>update</li>
+<li>update!</li>
+</ul>
+<blockquote>
+<p>如果不要经过验证, 可以使用<code>validate</code> option<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">save(<span class="symbol">valiate:</span> <span class="literal">false</span>)</span><br></pre></td></tr></table></figure></p>
+<p>或者使用以下方法也同样可以绕过验证:</p>
+</blockquote>
+<ul>
+<li>decrement!</li>
+<li>decrement_counter</li>
+<li>increment!</li>
+<li>increment_counter</li>
+<li>toggle!</li>
+<li>update_all</li>
+<li>update_attribute</li>
+<li>update_column</li>
+<li>update_columns</li>
+<li>update_counters</li>
+</ul>
+<blockquote>
+<p>这些方法都是直接使用SQL更新数据库, 未经过ActiveRecord</p>
+</blockquote>
+<h2 id="定义校验条件"><a href="#定义校验条件" class="headerlink" title="定义校验条件"></a>定义校验条件</h2><blockquote>
+<p>有些验证需要在某种特定的情况下才会发生, 这时候就需要使用带有条件的验证了, 可以指定<code>if</code>或<code>unless</code>选项.比如下面的例子, 当使用银行卡支付时才会验证卡号存在:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Order &lt; ActiveRecord::Base</span><br><span class="line">  validates :card_number, presence: true, if: :paid_with_card?</span><br><span class="line"></span><br><span class="line">  def paid_with_card?</span><br><span class="line">    payment_type == &quot;card&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="保存前确定数值是否有效"><a href="#保存前确定数值是否有效" class="headerlink" title="保存前确定数值是否有效"></a>保存前确定数值是否有效</h2><blockquote>
+<p>我们可以使用<code>valid?</code> <code>invalid?</code> 检查要保存的属性值是否有效(能否通过验证), 如果调用完该方法返回的结果是false, rails就会把错误消息设定到当前对象的errors中:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># app/models/article.rb</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span> &lt; ActiveRecord::Base</span></span><br><span class="line">  validates <span class="symbol">:title</span>, <span class="symbol">presence:</span> <span class="literal">true</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">article = Article.new(<span class="symbol">title:</span> <span class="literal">nil</span>)</span><br><span class="line">article.valid?</span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; false # 这时候向errors中添加错误消息</span></span><br><span class="line"></span><br><span class="line">article.errors.full_messages</span><br><span class="line"><span class="comment"># =&gt; ["Title can't be blank"]</span></span><br><span class="line"></span><br><span class="line">article = Article.new(<span class="symbol">title:</span> <span class="literal">nil</span>)</span><br><span class="line">article.invalid?</span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; true # 这时候向errors中添加错误信息</span></span><br><span class="line"></span><br><span class="line">article.errors.full_messages</span><br><span class="line"><span class="comment"># =&gt; ["Title can't be blank"]</span></span><br></pre></td></tr></table></figure>
+<h2 id="定义自己的验证类和方法"><a href="#定义自己的验证类和方法" class="headerlink" title="定义自己的验证类和方法"></a>定义自己的验证类和方法</h2><blockquote>
+<p>当rails提供的验证方法无法满足需求时, 可以自己定义一些验证</p>
+</blockquote>
+<h3 id="定制化校验方法-ValidatE"><a href="#定制化校验方法-ValidatE" class="headerlink" title="定制化校验方法(ValidatE)"></a>定制化校验方法(ValidatE)</h3><blockquote>
+<p><code>validate</code>(注意是原形) 可以创建自己的校验方法. 我们可以定义自己的方法进行校验逻辑的实现, 然后将方法名symbol化, 作为参数传递给<code>validate</code><br>需要注意的是: 验证错误消息需要自己添加上.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># app/models/invoice.rb</span><br><span class="line">class Invoice &lt; ActiveRecord::Base</span><br><span class="line">  validate :expiration_date_cannot_be_in_the_past,</span><br><span class="line">  :discount_cannot_be_greater_than_total_value</span><br><span class="line"></span><br><span class="line">  def expiration_date_cannot_be_in_the_past</span><br><span class="line">  if expiration_date.present? &amp;&amp; expiration_date &lt; Date.today</span><br><span class="line">  errors.add(:expiration_date, &quot;can&apos;t be in the past&quot;)</span><br><span class="line">  end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def discount_cannot_be_greater_than_total_value</span><br><span class="line">  if discount &gt; total_value</span><br><span class="line">  errors.add(:discount, &quot;can&apos;t be greater than total value&quot;)</span><br><span class="line">  end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="定制化校验类-Validator"><a href="#定制化校验类-Validator" class="headerlink" title="定制化校验类(Validator)"></a>定制化校验类(Validator)</h3><blockquote>
+<p>通过继承<code>ActiveModel::Validator</code> 创建自己的验证类, 并且, 我们必须实现<code>validate</code>方法, 然后把自己的验证类Mixin进Model类中</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">class MyValidator &lt; ActiveModel::Validator</span><br><span class="line">  def validate(record)</span><br><span class="line">    unless record.name.starts_with? &apos;X&apos;</span><br><span class="line">      record.errors[:name] &lt;&lt; &apos;Need a name starting with X please!&apos;</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  # app/models/person.rb</span><br><span class="line">  class Person</span><br><span class="line"></span><br><span class="line">    include ActiveModel::Validations</span><br><span class="line">    validates_with MyValidator</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/validation/" rel="tag">#validation</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/12/accept-nested-attributes-for/" rel="next" title="在表单中提交相关实体">
+                <i class="fa fa-chevron-left"></i> 在表单中提交相关实体
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/14/validate-error/" rel="prev" title="Rails 中model的校验错误消息相关">
+                Rails 中model的校验错误消息相关 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Rails校验流程"><span class="nav-number">1.</span> <span class="nav-text">Rails校验流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用validates方法-对Model进行校验的条件的设定"><span class="nav-number">1.1.</span> <span class="nav-text">使用validates方法, 对Model进行校验的条件的设定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在controller中保存或更新model"><span class="nav-number">1.2.</span> <span class="nav-text">在controller中保存或更新model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证错误会被保存在errors中"><span class="nav-number">1.3.</span> <span class="nav-text">验证错误会被保存在errors中</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义验证"><span class="nav-number">2.</span> <span class="nav-text">定义验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#存在性检查"><span class="nav-number">2.1.</span> <span class="nav-text">存在性检查</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#唯一性验证"><span class="nav-number">3.</span> <span class="nav-text">唯一性验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#长度检查-length"><span class="nav-number">3.1.</span> <span class="nav-text">长度检查(length)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格式检查-format"><span class="nav-number">3.2.</span> <span class="nav-text">格式检查(format)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数值检查"><span class="nav-number">3.3.</span> <span class="nav-text">数值检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包含在集合内的验证"><span class="nav-number">3.4.</span> <span class="nav-text">包含在集合内的验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不包含在集合内的验证"><span class="nav-number">3.5.</span> <span class="nav-text">不包含在集合内的验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跳过验证"><span class="nav-number">4.</span> <span class="nav-text">跳过验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义校验条件"><span class="nav-number">5.</span> <span class="nav-text">定义校验条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保存前确定数值是否有效"><span class="nav-number">6.</span> <span class="nav-text">保存前确定数值是否有效</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义自己的验证类和方法"><span class="nav-number">7.</span> <span class="nav-text">定义自己的验证类和方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定制化校验方法-ValidatE"><span class="nav-number">7.1.</span> <span class="nav-text">定制化校验方法(ValidatE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定制化校验类-Validator"><span class="nav-number">7.2.</span> <span class="nav-text">定制化校验类(Validator)</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,689 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="coffeescript," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="什么是coffescript
+coffeescript 是一种ruby/python风格的语言可以被编译成js, 相比于js来讲, 它使用更少的代码.而且可读性更好. http://coffeescript.org/ OVERVIEW 部分可以看出只相当于js的三分之二的代码.
+
+安装coffeescript
+前提需要安装nodejs环境, 然后执行下面的命令:
+
+1$ sudo npm inst">
+<meta property="og:type" content="article">
+<meta property="og:title" content="coffeescript入门教程">
+<meta property="og:url" content="http://yoursite.com/2015/03/17/coffeescript/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="什么是coffescript
+coffeescript 是一种ruby/python风格的语言可以被编译成js, 相比于js来讲, 它使用更少的代码.而且可读性更好. http://coffeescript.org/ OVERVIEW 部分可以看出只相当于js的三分之二的代码.
+
+安装coffeescript
+前提需要安装nodejs环境, 然后执行下面的命令:
+
+1$ sudo npm inst">
+<meta property="og:updated_time" content="2015-03-17T06:21:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="coffeescript入门教程">
+<meta name="twitter:description" content="什么是coffescript
+coffeescript 是一种ruby/python风格的语言可以被编译成js, 相比于js来讲, 它使用更少的代码.而且可读性更好. http://coffeescript.org/ OVERVIEW 部分可以看出只相当于js的三分之二的代码.
+
+安装coffeescript
+前提需要安装nodejs环境, 然后执行下面的命令:
+
+1$ sudo npm inst">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> coffeescript入门教程 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                coffeescript入门教程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-17T08:19:30+08:00" content="2015-03-17">
+              2015-03-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/CoffeeScript/" itemprop="url" rel="index">
+                    <span itemprop="name">CoffeeScript</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="什么是coffescript"><a href="#什么是coffescript" class="headerlink" title="什么是coffescript"></a>什么是coffescript</h2><blockquote>
+<p>coffeescript 是一种ruby/python风格的语言可以被编译成js, 相比于js来讲, 它使用更少的代码.而且可读性更好. <a href="http://coffeescript.org/" target="_blank" rel="external">http://coffeescript.org/</a> OVERVIEW 部分可以看出只相当于js的三分之二的代码.</p>
+</blockquote>
+<h2 id="安装coffeescript"><a href="#安装coffeescript" class="headerlink" title="安装coffeescript"></a>安装coffeescript</h2><blockquote>
+<p>前提需要安装nodejs环境, 然后执行下面的命令:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo npm install -g coffee-script</span><br></pre></td></tr></table></figure>
+<h2 id="编译coffeescript"><a href="#编译coffeescript" class="headerlink" title="编译coffeescript"></a>编译coffeescript</h2><blockquote>
+<p>新建一个script.coffee的文件, 使用 <code>--wantch --compile</code> 监视并编译该文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ coffeescript --watch --compile script.coffee</span><br></pre></td></tr></table></figure>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><h3 id="变量声明与赋值"><a href="#变量声明与赋值" class="headerlink" title="变量声明与赋值"></a>变量声明与赋值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># script.coffee</span><br><span class="line"></span><br><span class="line">name = &quot;Daniel&quot;</span><br><span class="line"></span><br><span class="line">person = true</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>编译成的js 代码</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(function() &#123;</span><br><span class="line">  var name, person;</span><br><span class="line">  name = &quot;Daniel&quot;;</span><br><span class="line">  person = true;</span><br><span class="line">&#125;).all(this)</span><br></pre></td></tr></table></figure>
+<h3 id="函数的定义"><a href="#函数的定义" class="headerlink" title="函数的定义"></a>函数的定义</h3><blockquote>
+<p>使用 <code>-&gt;</code> 来定义函数, 而且需要注意使用缩进:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># script.coffee</span><br><span class="line">yell = -&gt;</span><br><span class="line">  alert name</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yell = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> alert(name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="函数的调用"><a href="#函数的调用" class="headerlink" title="函数的调用"></a>函数的调用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yell()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意括号不可以省略.</p>
+</blockquote>
+<h3 id="向函数传递参数"><a href="#向函数传递参数" class="headerlink" title="向函数传递参数"></a>向函数传递参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yell = (a) -&gt;</span><br><span class="line">  age = a</span><br><span class="line">  alert name</span><br><span class="line">  alert a</span><br></pre></td></tr></table></figure>
+<h2 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">is            ===</span><br><span class="line">isnt          !==</span><br><span class="line">not           !</span><br><span class="line">and           &amp;&amp;</span><br><span class="line">or            ||</span><br><span class="line">true, yes, on true</span><br><span class="line">false, no, off                  false</span><br><span class="line">@, this                         this</span><br><span class="line">of                              in</span><br></pre></td></tr></table></figure>
+<h2 id="条件控制语句"><a href="#条件控制语句" class="headerlink" title="条件控制语句"></a>条件控制语句</h2><blockquote>
+<p>非常接近于ruby的语法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yell(22) if person is true</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(person === <span class="literal">true</span>) &#123;</span><br><span class="line">  yell(<span class="number">22</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">age = <span class="number">22</span></span><br><span class="line">yell(<span class="number">33</span>) unless age &lt; <span class="number">33</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight coffee"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> person <span class="keyword">isnt</span> <span class="literal">false</span> <span class="keyword">then</span> yell(<span class="string">"Daniel"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (person === <span class="literal">true</span> &amp;&amp; name !== <span class="string">"Daniel"</span>) &#123;</span><br><span class="line">  yell(<span class="string">"Daniel"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight coffee"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> name?</span><br><span class="line">  yell()</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (name != <span class="literal">null</span>)&#123;</span><br><span class="line">  yell(<span class="string">"Daniel"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># coffee</span><br><span class="line">if gender?</span><br><span class="line">  yell()</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line">if (typeof gender !== &quot;undefined&quot; &amp;&amp; gender !== null) &#123;</span><br><span class="line">  yell();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>检查是否为null, 如果是 就 : <code>?=</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># coffee</span><br><span class="line">gender = &quot;&quot;</span><br><span class="line">gender ?= &quot;Male&quot;</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line">if (gender == null)</span><br><span class="line">  gender = &quot;Male&quot;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="Array-和-Object"><a href="#Array-和-Object" class="headerlink" title="Array 和 Object"></a>Array 和 Object</h2><blockquote>
+<p>对于数组来讲, coffee 的形式和js形式是相同的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># coffeescript</span><br><span class="line">type = [&quot;Rice&quot;, &quot;Crab&quot;, &quot;Cumcumber&quot;]</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line">type = [&quot;Rice&quot;, &quot;Crab&quot;, &quot;Cumcumber&quot;]</span><br></pre></td></tr></table></figure></p>
+<p>Obejct的声明:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># coffee</span><br><span class="line">sushi =</span><br><span class="line">  kind: &quot;Roll&quot;</span><br><span class="line">  roll: -&gt;</span><br><span class="line">    &quot;Rolled&quot;</span><br><span class="line">  fish: &quot;Salmon&quot;</span><br><span class="line">  ing:</span><br><span class="line">    rice: &quot;White&quot;</span><br><span class="line">    veg: &quot;Green&quot;</span><br><span class="line"># js</span><br><span class="line">sushi = &#123;</span><br><span class="line">  kind: &quot;Roll&quot;,</span><br><span class="line">  roll: function() &#123;</span><br><span class="line">    return &quot;Rolled&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  fish: &quot;Salmon&quot;,</span><br><span class="line">  ing:</span><br><span class="line">    rice: &quot;White&quot;,</span><br><span class="line">    veg: &quot;Green&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果带有关键字, coffee会自动加上 “”</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># coffee</span><br><span class="line">sushi =</span><br><span class="line">  class: &quot;Yellow&quot;</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line">sushi = &#123;</span><br><span class="line">  &quot;class&quot;: &quot;Yellow&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="类似于ruby的字符串插入变量"><a href="#类似于ruby的字符串插入变量" class="headerlink" title="类似于ruby的字符串插入变量"></a>类似于ruby的字符串插入变量</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># coffee</span><br><span class="line"></span><br><span class="line">alert(&quot;hello #&#123;name&#125;&quot;)</span><br><span class="line"></span><br><span class="line">#js</span><br><span class="line"></span><br><span class="line">alert(&quot;hello &quot; + name)</span><br></pre></td></tr></table></figure>
+<h2 id="Block-comments"><a href="#Block-comments" class="headerlink" title="Block comments"></a>Block comments</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">###</span><br><span class="line">可以在coffee中写多行注释</span><br><span class="line">###</span><br><span class="line"></span><br><span class="line">js中会变成:</span><br><span class="line">/*</span><br><span class="line">可以在coffee中写多行注释</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># coffee</span><br><span class="line">for item in type</span><br><span class="line">  alert(item)</span><br><span class="line"># 还可以写成一行</span><br><span class="line">alert(item) for item in type</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line">for (i=0, len=type.length; i&lt;len; i++)</span><br><span class="line">  item = type[i]</span><br><span class="line">  alert(item)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意if和when的区别</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">alert(item) for item in type if item isnt &quot;Crab&quot;</span><br><span class="line"></span><br><span class="line">if (item !== &quot;Crab&quot;) &#123;</span><br><span class="line">  for(i = 0, len = type.length; i &lt; len; i++) &#123;</span><br><span class="line">    item = type[i]</span><br><span class="line">    alert(item)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># when 用在循环里面做判断:</span><br><span class="line"></span><br><span class="line">alert(item) for item in type when item isnt &quot;Crab&quot;</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line">for (i=0, len = type.length; i &lt; len; i++)</span><br><span class="line">  item = type[i] </span><br><span class="line">  if (item !== &quot;Crab&quot;) &#123;</span><br><span class="line">    alert(item)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Splats"><a href="#Splats" class="headerlink" title="Splats"></a>Splats</h2><blockquote>
+<p>基本和ruby的splats相同, splats参数最后赋值, 先去赋值明确的参数</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">letters = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;]</span><br><span class="line"></span><br><span class="line">iLike = (first, second, rest...) -&gt;</span><br><span class="line">  alert(first)</span><br><span class="line">  alert(second)</span><br><span class="line">  alert(rest)</span><br><span class="line"></span><br><span class="line"># js</span><br><span class="line"></span><br><span class="line">  letters = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;];</span><br><span class="line"></span><br><span class="line">  iLike = function() &#123;</span><br><span class="line">      var most, rest, second;</span><br><span class="line">      most = arguments[0], second = arguments[1], rest = 3 &lt;= arguments.length ? slice.call(arguments, 2) : [];</span><br><span class="line">      alert(most);</span><br><span class="line">      alert(second);</span><br><span class="line">      return alert(rest);</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="分割数组"><a href="#分割数组" class="headerlink" title="分割数组"></a>分割数组</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">first = letters[0..3]</span><br><span class="line">rest = letters[4..]</span><br><span class="line">copy = letters[..]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">first = letters.slice(0, 4);</span><br><span class="line">rest = letters.slice(4);</span><br><span class="line">copy = letters.slice(0);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>替换元素</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">letters[2..4] = [&quot;M&quot;, &quot;N&quot;, &quot;Q&quot;]</span><br><span class="line"></span><br><span class="line">[].splice.apply(letters, [2, 3].concat(ref = [&quot;M&quot;, &quot;N&quot;, &quot;Q&quot;])), ref;</span><br></pre></td></tr></table></figure>
+<h2 id="Switch-语句"><a href="#Switch-语句" class="headerlink" title="Switch 语句"></a>Switch 语句</h2><blockquote>
+<p>switch when then</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">switch colors</span><br><span class="line">  when &quot;Blue&quot; then &quot;Blue&quot;</span><br><span class="line">  when &quot;Green&quot; then name = &quot;Green&quot;</span><br><span class="line">  when &quot;Black&quot;, &quot;Brown&quot;</span><br><span class="line">    if colors == &quot;Black&quot;</span><br><span class="line">      alert &quot;Black&quot;</span><br><span class="line">    name = &quot;Brown/Black&quot;</span><br><span class="line">  else alert &quot;No Colors&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># js</span><br><span class="line">switch (colors) &#123;</span><br><span class="line">  case &quot;Blue&quot;:</span><br><span class="line">    &quot;Blue&quot;;</span><br><span class="line">    break;</span><br><span class="line">  case &quot;Green&quot;:</span><br><span class="line">    name = &quot;Green&quot;;</span><br><span class="line">    break;</span><br><span class="line">  case &quot;Black&quot;:</span><br><span class="line">  case &quot;Brown&quot;:</span><br><span class="line">    if (colors === &quot;Black&quot;) &#123;</span><br><span class="line">      alert(&quot;Black&quot;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    name = &quot;Brown/Black&quot;;</span><br><span class="line">    break;</span><br><span class="line">  default:</span><br><span class="line">  alert(&quot;No Colors&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/coffeescript/" rel="tag">#coffeescript</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/16/angularjs00/" rel="next" title="angularjs00">
+                <i class="fa fa-chevron-left"></i> angularjs00
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/17/angular-examples/" rel="prev" title="看例子学习angular">
+                看例子学习angular <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是coffescript"><span class="nav-number">1.</span> <span class="nav-text">什么是coffescript</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装coffeescript"><span class="nav-number">2.</span> <span class="nav-text">安装coffeescript</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译coffeescript"><span class="nav-number">3.</span> <span class="nav-text">编译coffeescript</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#语法"><span class="nav-number">4.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#变量声明与赋值"><span class="nav-number">4.1.</span> <span class="nav-text">变量声明与赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数的定义"><span class="nav-number">4.2.</span> <span class="nav-text">函数的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数的调用"><span class="nav-number">4.3.</span> <span class="nav-text">函数的调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#向函数传递参数"><span class="nav-number">4.4.</span> <span class="nav-text">向函数传递参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作符"><span class="nav-number">5.</span> <span class="nav-text">操作符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条件控制语句"><span class="nav-number">6.</span> <span class="nav-text">条件控制语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Array-和-Object"><span class="nav-number">7.</span> <span class="nav-text">Array 和 Object</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类似于ruby的字符串插入变量"><span class="nav-number">8.</span> <span class="nav-text">类似于ruby的字符串插入变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Block-comments"><span class="nav-number">9.</span> <span class="nav-text">Block comments</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#循环"><span class="nav-number">10.</span> <span class="nav-text">循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Splats"><span class="nav-number">11.</span> <span class="nav-text">Splats</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分割数组"><span class="nav-number">12.</span> <span class="nav-text">分割数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Switch-语句"><span class="nav-number">13.</span> <span class="nav-text">Switch 语句</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

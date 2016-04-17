@@ -1,0 +1,838 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Class-Definitions," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Class Definitions Demystified(解开类定义的神秘)Inside Class Definitions
+不同于Java的类, 我们不仅可以在Ruby的类中定义方法, 还可以任何东西:
+
+123class MyClass  puts &amp;quot;Hello&amp;quot;end
+
+类定义还可以返回值:
+
+12345result = class MyClass  selfendre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ruby 元编程 第五章 Class Definitions">
+<meta property="og:url" content="http://yoursite.com/2015/03/29/ruby-metaprogramming-chpt5-class-definitions/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Class Definitions Demystified(解开类定义的神秘)Inside Class Definitions
+不同于Java的类, 我们不仅可以在Ruby的类中定义方法, 还可以任何东西:
+
+123class MyClass  puts &amp;quot;Hello&amp;quot;end
+
+类定义还可以返回值:
+
+12345result = class MyClass  selfendre">
+<meta property="og:image" content="http://i3.tietuku.com/c30f1a17e6aff01b.png">
+<meta property="og:image" content="http://i2.tietuku.com/b161c0e3d108e867.png">
+<meta property="og:image" content="http://i2.tietuku.com/ea88a1ff55723a40.png">
+<meta property="og:updated_time" content="2015-03-30T10:57:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ruby 元编程 第五章 Class Definitions">
+<meta name="twitter:description" content="Class Definitions Demystified(解开类定义的神秘)Inside Class Definitions
+不同于Java的类, 我们不仅可以在Ruby的类中定义方法, 还可以任何东西:
+
+123class MyClass  puts &amp;quot;Hello&amp;quot;end
+
+类定义还可以返回值:
+
+12345result = class MyClass  selfendre">
+<meta name="twitter:image" content="http://i3.tietuku.com/c30f1a17e6aff01b.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Ruby 元编程 第五章 Class Definitions | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ruby 元编程 第五章 Class Definitions
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-29T08:31:02+08:00" content="2015-03-29">
+              2015-03-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ruby/" itemprop="url" rel="index">
+                    <span itemprop="name">Ruby</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Class-Definitions-Demystified-解开类定义的神秘"><a href="#Class-Definitions-Demystified-解开类定义的神秘" class="headerlink" title="Class Definitions Demystified(解开类定义的神秘)"></a>Class Definitions Demystified(解开类定义的神秘)</h2><h3 id="Inside-Class-Definitions"><a href="#Inside-Class-Definitions" class="headerlink" title="Inside Class Definitions"></a>Inside Class Definitions</h3><blockquote>
+<p>不同于Java的类, 我们不仅可以在Ruby的类中定义方法, 还可以任何东西:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  puts &quot;Hello&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>类定义还可以返回值:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">result = class MyClass</span><br><span class="line">  self</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">result #=&gt; MyClass</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这个例子说明了, 在class或者module的定义中, class自己承担当前对象self的角色.</p>
+</blockquote>
+<h3 id="The-Current-Class"><a href="#The-Current-Class" class="headerlink" title="The Current Class"></a>The Current Class</h3><blockquote>
+<p>无论你在Ruby程序的哪个位置, 你总会有当前class或者module, 在class中定义的方法就是当前class的实例方法.<br>在程序中如何确定当前class:</p>
+</blockquote>
+<ul>
+<li>在程序顶层, 当前class是<code>Object</code>, main的class, 联想一下irb.如果你在程序的顶层定义一个方法, 这个方法就是Object的实例方法</li>
+<li>在一个方法中, 当前class就是当前对象的class</li>
+<li>使用<code>class</code>关键字打开一个类, 那个class就变成了当前class.</li>
+</ul>
+<blockquote>
+<p>有些情况下, 我不知道一个类的名字, 如何在里面加入一个方法呢?</p>
+</blockquote>
+<h4 id="class-eval"><a href="#class-eval" class="headerlink" title="class_eval()"></a>class_eval()</h4><blockquote>
+<p><code>class_eval</code>方法可以帮助我, 在未知类名的情况下, 为这个类添加方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def add_method_to(a_class)</span><br><span class="line">  a_class.class_eval do</span><br><span class="line">    def m; puts &quot;#&#123;self&#125; hello&quot;; end</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">add_method_to String</span><br><span class="line">&quot;abd&quot;.m   #=&gt; abd hello</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>class_eval</code>在当前class环境中计算block的值. <code>class_eval</code>修改当前类和self(当前对象, 例如上面”abd”), <code>instance_eval</code>修改当前对象(self)</p>
+<p>可以看出<code>class_eval</code>要比使用<code>class</code>关键字打开类更加灵活, 它可以使用变量引用一个类, <code>class</code>关键字.另外, <code>class</code>关键字打开了一个新的scope, 丢失了当前的绑定, 而<code>class_eval</code>可以把外界scope的变量引入.<br>最后, <code>class_eval</code>也有一个类似方法可以把额外参数传入到block中.<br>多数情况下, 使用<code>instance_eval</code>打开一个对象(非class), <code>class_eval</code>打开一个类的定义, 然后使用<code>def</code>在里面定义方法.</p>
+</blockquote>
+<h3 id="Current-Class-Wrap-up"><a href="#Current-Class-Wrap-up" class="headerlink" title="Current Class Wrap-up"></a>Current Class Wrap-up</h3><blockquote>
+<p>关键点回顾:</p>
+</blockquote>
+<ul>
+<li>Ruby解释器一直在引用这当前的class. 使用<code>def</code>定义的方法就是当前class的实例方法.</li>
+<li>在class定义中, 当前object和当前class是一个东西, 被定义的类</li>
+<li>如果你有一个class的引用, 你就可以使用<code>class_eval</code>(或者module_eval)打开这个类.</li>
+</ul>
+<h3 id="Class-Instance-Variables"><a href="#Class-Instance-Variables" class="headerlink" title="Class Instance Variables"></a>Class Instance Variables</h3><blockquote>
+<p>Ruby解释器认为所有的变量属于当前对象self, 对于类定义来说也是这样. 类的实例变量和类对象的实例变量是不同的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  @my_var = 1    # 类的实例变量</span><br><span class="line">  def self.read; @my_var; end</span><br><span class="line">  def write; @my_var = 2; end    # 类的对象的实例变量</span><br><span class="line">  def read; @my_var; end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = MyClass.new</span><br><span class="line">obj.read       # =&gt; nil</span><br><span class="line">obj.write</span><br><span class="line">obj.read       # =&gt; 2</span><br><span class="line"></span><br><span class="line">MyClass.read   # =&gt; 1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Class Instance Variables 实际上属于<code>Class</code>的对象, 正是因为这样, 它只能被class本身访问, 不能被子类访问, 因为即使是子类, 也是不同的<code>Class</code>对象.</p>
+<p>例子中@my_var是不同的, 类实例变量的是<code>MyClass</code>作为self, 而对象实例变量是以<code>obj</code>作为self.</p>
+</blockquote>
+<h3 id="Class-Variables"><a href="#Class-Variables" class="headerlink" title="Class Variables"></a>Class Variables</h3><blockquote>
+<p>还有一种存储变量的方法是使用Class Variables, 使用2个<code>@</code>定义如<code>@@var</code>, 与Class Instance Variables不同的是, 它可以被子类或者实例方法访问到, 这一点和Java静态成员变量相似:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class C</span><br><span class="line">  @@v = 10</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class D &lt; C</span><br><span class="line">  def my_method; @@v += 1; end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">puts D.new.my_method # =&gt; 11</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但是它有一个非常不好的特点:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@@v = 1</span><br><span class="line">class MyClass</span><br><span class="line">  @@v = 2</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">@@v  #=&gt; 2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>class variable不属于类, 它属于类继承关系, @@v被定义与main中, 它属于main的class— Object, MyClass又是Object的子类, 这样就造成了麻烦, 所以还是尽量避免使用class variable.</p>
+</blockquote>
+<h2 id="Singleton-Methods-单例方法"><a href="#Singleton-Methods-单例方法" class="headerlink" title="Singleton Methods (单例方法)"></a>Singleton Methods (单例方法)</h2><h3 id="Introducing-Singleton-Methods"><a href="#Introducing-Singleton-Methods" class="headerlink" title="Introducing Singleton Methods"></a>Introducing Singleton Methods</h3><blockquote>
+<p>Ruby允许给某个对象单独添加方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">str = &quot;just a regular string&quot;</span><br><span class="line">def str.title?</span><br><span class="line">  self.upcase == self</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">str.title? # =&gt; false</span><br><span class="line">str.methods.grep(/title?/) # =&gt; [:title?]</span><br><span class="line">str.singleton_methods # =&gt; [:title?]</span><br></pre></td></tr></table></figure>
+<h3 id="Duck-Typing"><a href="#Duck-Typing" class="headerlink" title="Duck Typing"></a>Duck Typing</h3><blockquote>
+<p>在Ruby这样的动态语言中, 一个对象的类型并不是严格和它的类关联的, 类型只不过是一些方法的集合, 对象可以响应, 这种更加灵活的对类型的定义被称作<code>duck typing</code>, 如果一个东西走起来叫起来像鸭子, 那么它就是鸭子.换言之, 你不必担心一个对象是不是class Duck的实例, 你只需要关心它是否可以响应<code>walk</code>和<code>quack</code>方法, 至于该方法是正常的方法, 还是单例方法, 还是Ghost 方法都无所谓.</p>
+</blockquote>
+<h3 id="The-Truth-About-Class-Methods-类方法的真正含义"><a href="#The-Truth-About-Class-Methods-类方法的真正含义" class="headerlink" title="The Truth About Class Methods (类方法的真正含义)"></a>The Truth About Class Methods (类方法的真正含义)</h3><blockquote>
+<p>由于类是对象, 类名是常量, 所以在对象上调用一个方法相当于在类上调用一个方法.:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">an_object.a_method</span><br><span class="line">AClass.a_class_method</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>所以我们一直使用的是一个类的单例方法, 看这两个方法定义:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def obj.singleton_method; end</span><br><span class="line">def MyClass.singleton_method; end</span><br><span class="line">def self.singleton_method; end</span><br></pre></td></tr></table></figure>
+<h3 id="Class-Macros-类宏"><a href="#Class-Macros-类宏" class="headerlink" title="Class Macros (类宏)"></a>Class Macros (类宏)</h3><h4 id="The-attr-accessor-Example"><a href="#The-attr-accessor-Example" class="headerlink" title="The attr_accessor() Example"></a>The attr_accessor() Example</h4><blockquote>
+<p>Ruby对象是没有属性的, 但是可以模拟属性: 通过两个方法, reader和writer</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  def my_attribute=(value)</span><br><span class="line">    @my_attribute = value</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def my_attribute</span><br><span class="line">    @my_attribute</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = MyClass.new</span><br><span class="line">obj.my_attribute = &apos;x&apos;</span><br><span class="line">obj.my_attribute # =&gt; &quot;x&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样写没有问题就是太麻烦, Ruby提供了方法可以快捷生成这些方法, <code>Module#attr_reader</code>, <code>Module#attr_writer</code>和<code>Module#attr_accessor</code>, 分别可以产生reader, writer, reader+writer, 上面的代码可以替换为下面的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  attr_accessor :my_attribute</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h4 id="Class-Macros-Applied"><a href="#Class-Macros-Applied" class="headerlink" title="Class Macros Applied"></a>Class Macros Applied</h4><blockquote>
+<p>我们可以利用 Class Macros来修改一些方法命名, 而不影响调用者. 比如现有<code>GetTitle</code>, <code>title2</code>和 <code>LEND_TO_USER</code> 这些方法, 但是名字不规范, 需要替换掉, 但是又不能影响其他调用者:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">class Book</span><br><span class="line">  def title</span><br><span class="line">    puts &quot;Title&quot;</span><br><span class="line">  end</span><br><span class="line">  </span><br><span class="line">  def subtitle</span><br><span class="line">    puts &quot;Subtitle&quot;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def lend_to(user)</span><br><span class="line">    puts &quot;Lending to #&#123;user&#125;&quot;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def self.deprecate(old_method, new_method)</span><br><span class="line">    define_method(old_method) do |*args, &amp;block|</span><br><span class="line">      warn &quot;Warning: #&#123;old_method&#125;() is deprecated. Use #&#123;new_method&#125;().&quot;</span><br><span class="line">      send new_method, *args, &amp;block</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  deprecate :GetTitle, :title</span><br><span class="line">  deprecate :title2, :subtitle</span><br><span class="line">  deprecate :LEND_TO_USER, :lend_to</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">b = Book.new</span><br><span class="line">b.LEND_TO_USER(&quot;Bill&quot;)</span><br><span class="line">Warning: LEND_TO_USER() is deprecated. Use lend_to(). </span><br><span class="line">Lending to Bill</span><br></pre></td></tr></table></figure>
+<h2 id="Singleton-Classes-单例类"><a href="#Singleton-Classes-单例类" class="headerlink" title="Singleton Classes (单例类)"></a>Singleton Classes (单例类)</h2><h3 id="The-Mystery-of-Singleton-Methods"><a href="#The-Mystery-of-Singleton-Methods" class="headerlink" title="The Mystery of Singleton Methods"></a>The Mystery of Singleton Methods</h3><blockquote>
+<p>刚刚已经学习了单例方法, 那么这个方法在哪里保存的呢? 首先, 它不在对象中, 方法都在被存放在类中的, 但是我发现它也没有在对象所属的类中, 那么但类方法到底在哪里?</p>
+</blockquote>
+<h3 id="Singleton-Classes-Revealed"><a href="#Singleton-Classes-Revealed" class="headerlink" title="Singleton Classes Revealed"></a>Singleton Classes Revealed</h3><blockquote>
+<p>一个对象还有自己的特别的隐藏class, 叫做<code>singleton class</code>. 而对象的单例方法就被存在这里了.举个最简单的例子, <code>Object#class</code>方法就是就被定义到它的singleton class中了.<br>下面两种定义singleton method的方法是等价的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">obj = Object.new</span><br><span class="line">def obj.say_hello</span><br><span class="line">  puts &quot;hello&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>方法二:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class &lt;&lt; obj</span><br><span class="line">  def say_hello</span><br><span class="line">    puts &quot;hello&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我可以通过<code>singleton_class</code>方法来获取一个对象的singleton class:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&quot;abc&quot;.singleton_class  # =&gt; #&lt;Class:#&lt;String:0x007fb2e32f11e0&gt;&gt;</span><br><span class="line"></span><br><span class="line">等价于:</span><br><span class="line"></span><br><span class="line">class &lt;&lt; &quot;abc&quot;</span><br><span class="line">  self</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>singleton class也是class, 但是比较特殊. 除非你调用<code>Object#singleton_class</code>或者使用<code>class &lt;&lt; syntax</code>来获取这个类. 另外,  singleton classes只有一个实例, 而且不可以被继承. <strong><em>一个singleton class就是对象的单例所存储的地方</em></strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def obj.my_singleton_method; end</span><br><span class="line">singleton_class.instance_methods.grep(/my_/) # =&gt; [:my_singleton_method]</span><br></pre></td></tr></table></figure>
+<h3 id="Method-Lookup-Revisited"><a href="#Method-Lookup-Revisited" class="headerlink" title="Method Lookup Revisited"></a>Method Lookup Revisited</h3><h4 id="Singleton-Classes-and-Method-Lookup-单例类和方法的查找"><a href="#Singleton-Classes-and-Method-Lookup-单例类和方法的查找" class="headerlink" title="Singleton Classes and Method Lookup (单例类和方法的查找)"></a>Singleton Classes and Method Lookup (单例类和方法的查找)</h4><blockquote>
+<p>之前的方法查找在学习了Singleton class后就有些不准确了:<br>现在定义如下的类:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class C</span><br><span class="line">  def a_method</span><br><span class="line">    &apos;C#a_method()&apos;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class D &lt; C; end</span><br><span class="line"></span><br><span class="line">obj = D.new</span><br><span class="line"></span><br><span class="line">obj.singleton_class.superclass # =&gt; D</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>现在的方法查找过程需要增加一个一个对象的singleton class, 然后才是其所属的类:</p>
+</blockquote>
+<p><img src="http://i3.tietuku.com/c30f1a17e6aff01b.png"></p>
+<h3 id="Singleton-Classes-and-Inheritance-单例类的继承关系"><a href="#Singleton-Classes-and-Inheritance-单例类的继承关系" class="headerlink" title="Singleton Classes and Inheritance (单例类的继承关系)"></a>Singleton Classes and Inheritance (单例类的继承关系)</h3><blockquote>
+<p>还记得我说过类也是对象, 那么类方法就可以看成是类这种对象的单例方法.所以, 和对象单例方法类似地, 可以这样定义类方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class C</span><br><span class="line">  class &lt;&lt; self</span><br><span class="line">    def a_class_method</span><br><span class="line">      &apos;C.a_class_method&apos;</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>现在类的singleton class:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C.singleton_class # =&gt; #&lt;Class:C&gt;</span><br><span class="line">D.singleton_class # =&gt; #&lt;Class:D&gt;</span><br><span class="line">D.singleton_class.superclass # =&gt; #&lt;Class:C&gt;</span><br><span class="line">C.singleton_class.superclass # =&gt; #&lt;Class:Object&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>用一张图表示这种继承关系:</p>
+</blockquote>
+<p><img src="http://i2.tietuku.com/b161c0e3d108e867.png"></p>
+<blockquote>
+<p>Ruby这样组织classes, singleton classes, and superclasses 是有目的的. #D的父类是#C, 又是C的singleton class, 同样的, #C的父类是#Object. 由于这样组织, 我可以在子类中调用父类的类方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">D.a_class_method # =&gt; &quot;C.a_class_method()&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>D 现在#D查找, 发现没有再去#C查找.</p>
+</blockquote>
+<h3 id="The-Great-Unified-Theory"><a href="#The-Great-Unified-Theory" class="headerlink" title="The Great Unified Theory"></a>The Great Unified Theory</h3><blockquote>
+<p>把singleton class和class 和module放到一起, 关于 Ruby object model的总结:</p>
+</blockquote>
+<ul>
+<li>只有一种对象, 是标准的object或者是module</li>
+<li>只有一种module, 是标准的module, class, 或者是singleton class</li>
+<li>只有一种方法, 它在module中, 多数在class中</li>
+<li>class的每一个对象都有自己的真正的class, 是标准的class或者singleton class</li>
+<li>除了BasicObject的每一个class, 都只有一个祖先, 父类或者module. 也就是说只有一条继承链到达BasicObject</li>
+<li>一个对象的singleton class的父类是这个对象所属的类. 一个class的singleton class的父类是这个class的父类的singleton class.</li>
+<li>当你调用一个方法时, Ruby向右到接收者的真的class(singleton class), 然后沿着继承链向上来寻找这个方法.</li>
+</ul>
+<p>&gt;</p>
+<h3 id="Class-Methods-Syntaxes"><a href="#Class-Methods-Syntaxes" class="headerlink" title="Class Methods Syntaxes"></a>Class Methods Syntaxes</h3><blockquote>
+<p>有3中方法可以定义类方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def MyClass.a_class_method; end</span><br><span class="line"></span><br><span class="line">class MyClass</span><br><span class="line">  def self.a_class_method</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class MyClass</span><br><span class="line">  class &lt;&lt; self</span><br><span class="line">    def a_class_method; end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="Singleton-Classes-and-instance-eval"><a href="#Singleton-Classes-and-instance-eval" class="headerlink" title="Singleton Classes and instance_eval()"></a>Singleton Classes and instance_eval()</h3><blockquote>
+<p>之前说<code>instance_eval</code>改变的是<code>self</code>, <code>class_eval</code>既可以改变<code>self</code>又可以改变current class. 其实, <code>instance_eval</code> 也可以改变current class. 它改变接收者的singleton class, 我们可以用它为对象定义一个singleton 方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s1, s2 = &quot;abc&quot;, &quot;def&quot;</span><br><span class="line"></span><br><span class="line">s1.instance_eval do</span><br><span class="line">  def swoosh!; reverse; end</span><br><span class="line">end</span><br><span class="line">s1.swoosh! # =&gt; &quot;cba&quot;</span><br><span class="line"></span><br><span class="line">s2.respond_to?(:swoosh!) # =&gt; false</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>所以 <code>instance_eval</code>的含义是”我要改变self”</p>
+</blockquote>
+<h3 id="Class-Attributes"><a href="#Class-Attributes" class="headerlink" title="Class Attributes"></a>Class Attributes</h3><blockquote>
+<p>之前学过Class Macros 针对对象添加属性:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  attr_accessor :a</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>刚才说过, 其实不存在属性, 所谓属性不过是一对方法而已, 那么可以利用singleton class:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  class &lt;&lt; self</span><br><span class="line">    attr_accessor :b</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">MyClass.c = &apos;It works!&apos;</span><br><span class="line">MyClass.c # =&gt; &quot;It works!&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>下面的图可以帮助理解这个问题:</p>
+</blockquote>
+<p><img src="http://i2.tietuku.com/ea88a1ff55723a40.png"></p>
+<h2 id="Quiz-Module-Trouble"><a href="#Quiz-Module-Trouble" class="headerlink" title="Quiz: Module Trouble"></a>Quiz: Module Trouble</h2><blockquote>
+<p>类方法(singleton method)的继承:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">module MyModule</span><br><span class="line">  def self.my_method; &apos;hello&apos;; end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class MyClass</span><br><span class="line">  include MyModule</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">MyClass.my_method # NoMethodError!</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>需要让MyClass的singleton class include MyModule, 并且my_method不可以是类方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">module MyModule</span><br><span class="line">  def my_method; &apos;hello&apos;; end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class MyClass</span><br><span class="line">  class &lt;&lt; self</span><br><span class="line">    include MyModule</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="Class-Methods-and-include"><a href="#Class-Methods-and-include" class="headerlink" title="Class Methods and include()"></a>Class Methods and include()</h3><blockquote>
+<p>不仅是类方法, 对象的singleton method 也可以继承module的方法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">obj = Object.new</span><br><span class="line">class &lt;&lt; obj</span><br><span class="line">  include MyModule</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj.my_method # =&gt; &quot;hello&quot;</span><br><span class="line">obj.singleton_methods # =&gt; [:my_method]</span><br></pre></td></tr></table></figure>
+<h3 id="Object-extend"><a href="#Object-extend" class="headerlink" title="Object#extend"></a>Object#extend</h3><blockquote>
+<p><code>extend</code>方法直接将MyModule的方法扩展为扩展为自己的单例方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">module MyModule</span><br><span class="line">  def my_method; &apos;hello&apos;; end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = Object.new</span><br><span class="line">obj.extend MyModule</span><br><span class="line">obj.my_method #=&gt; &quot;hello&quot;</span><br><span class="line"></span><br><span class="line">class MyClass</span><br><span class="line">  extend MyModule</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">MyClass.my_method #=&gt; &quot;hello&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="Method-Wrappers"><a href="#Method-Wrappers" class="headerlink" title="Method Wrappers"></a>Method Wrappers</h2><blockquote>
+<p>需要解决的问题: 你有一个方法, 但是你并不想直接修改它, 因为它在库中.你想围绕这个方法添加一些功能.</p>
+</blockquote>
+<h3 id="Around-Aliases"><a href="#Around-Aliases" class="headerlink" title="Around Aliases"></a>Around Aliases</h3><blockquote>
+<p>使用<code>Module#alias_method</code>可以Ruby的方法起一个别名:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  def my_method</span><br><span class="line">    &apos;my_method&apos;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  alias_method :m, :my_method</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = MyClass.new</span><br><span class="line">obj.my_method # =&gt; &quot;my_method()&quot;</span><br><span class="line">obj.my_method # =&gt; &quot;my_method()&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>别名在Ruby中很常见, 比如<code>String#size</code>就是<code>String#length</code>的别名.所以我可以使用下面的技巧:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class String</span><br><span class="line">  alias_method :real_length, :length</span><br><span class="line"></span><br><span class="line">  def length </span><br><span class="line">    real_length &gt; 5 ? &apos;long&apos; : &apos;short&apos;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">&quot;War and Peace&quot;.length # =&gt; &quot;long&quot;</span><br><span class="line">&quot;War and Peace&quot;.real_length # =&gt; 13</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我不想扔到String 原有的功能, 所以我使用<code>alias_method</code>把它的功能转移给<code>real_length</code>方法, 然后再重新定义<code>length</code><br>写一个别名方法可以归纳为3步:</p>
+</blockquote>
+<ul>
+<li>使用<code>alias_method</code>为一个方法起别名</li>
+<li>重新定义这个方法</li>
+<li>在这个方法定义中调用老的方法(real_length)</li>
+</ul>
+<blockquote>
+<p>但是对于Aliases来说, 它是一种Monkeypatching, 它破坏了已经存在的代码, 所以从Ruby2.0开始引入了另外一种方式为已存在的方法扩展功能.</p>
+</blockquote>
+<h3 id="More-Method-Wrappers"><a href="#More-Method-Wrappers" class="headerlink" title="More Method Wrappers"></a>More Method Wrappers</h3><blockquote>
+<p>我们都知道Refinements可以弥补Monkeypatching的不足, 我可以使用它来取代Aliases, 如果在<code>refine</code>中使用<code>super</code>关键字, 它就会调用原始的方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">module StringRefinement</span><br><span class="line">  refine String do</span><br><span class="line">    def length</span><br><span class="line">      super &gt; 5 ? &apos;long&apos; : &apos;short&apos;</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">using StringRefinement</span><br><span class="line"></span><br><span class="line">puts &quot;War and Peace&quot;.length     #=&gt; long</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样写更加安全, 不会污染其他的类.<br>最后还有一种方式来包装方法—<code>Module#prepend</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">module ExplicitString</span><br><span class="line">  def length</span><br><span class="line">    super &gt; 5 ? &apos;long&apos; : &apos;short&apos;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">String.class_eval do</span><br><span class="line">  prepend ExplicitString</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">puts &quot;fdsfsfds&quot;.length   #=&gt; long</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Class-Definitions/" rel="tag">#Class-Definitions</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/26/ruby-metaprogramming-chpt4-blocks/" rel="next" title="Ruby 元编程 第四章 Blocks">
+                <i class="fa fa-chevron-left"></i> Ruby 元编程 第四章 Blocks
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/30/ruby-metaprogramming-chpt6-code-that-write-code/" rel="prev" title="Ruby 元编程 第六章 Code That Writes Code">
+                Ruby 元编程 第六章 Code That Writes Code <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Class-Definitions-Demystified-解开类定义的神秘"><span class="nav-number">1.</span> <span class="nav-text">Class Definitions Demystified(解开类定义的神秘)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Inside-Class-Definitions"><span class="nav-number">1.1.</span> <span class="nav-text">Inside Class Definitions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Current-Class"><span class="nav-number">1.2.</span> <span class="nav-text">The Current Class</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#class-eval"><span class="nav-number">1.2.1.</span> <span class="nav-text">class_eval()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Current-Class-Wrap-up"><span class="nav-number">1.3.</span> <span class="nav-text">Current Class Wrap-up</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class-Instance-Variables"><span class="nav-number">1.4.</span> <span class="nav-text">Class Instance Variables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class-Variables"><span class="nav-number">1.5.</span> <span class="nav-text">Class Variables</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Singleton-Methods-单例方法"><span class="nav-number">2.</span> <span class="nav-text">Singleton Methods (单例方法)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Introducing-Singleton-Methods"><span class="nav-number">2.1.</span> <span class="nav-text">Introducing Singleton Methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Duck-Typing"><span class="nav-number">2.2.</span> <span class="nav-text">Duck Typing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Truth-About-Class-Methods-类方法的真正含义"><span class="nav-number">2.3.</span> <span class="nav-text">The Truth About Class Methods (类方法的真正含义)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class-Macros-类宏"><span class="nav-number">2.4.</span> <span class="nav-text">Class Macros (类宏)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#The-attr-accessor-Example"><span class="nav-number">2.4.1.</span> <span class="nav-text">The attr_accessor() Example</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Class-Macros-Applied"><span class="nav-number">2.4.2.</span> <span class="nav-text">Class Macros Applied</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Singleton-Classes-单例类"><span class="nav-number">3.</span> <span class="nav-text">Singleton Classes (单例类)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Mystery-of-Singleton-Methods"><span class="nav-number">3.1.</span> <span class="nav-text">The Mystery of Singleton Methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Singleton-Classes-Revealed"><span class="nav-number">3.2.</span> <span class="nav-text">Singleton Classes Revealed</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Method-Lookup-Revisited"><span class="nav-number">3.3.</span> <span class="nav-text">Method Lookup Revisited</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Singleton-Classes-and-Method-Lookup-单例类和方法的查找"><span class="nav-number">3.3.1.</span> <span class="nav-text">Singleton Classes and Method Lookup (单例类和方法的查找)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Singleton-Classes-and-Inheritance-单例类的继承关系"><span class="nav-number">3.4.</span> <span class="nav-text">Singleton Classes and Inheritance (单例类的继承关系)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Great-Unified-Theory"><span class="nav-number">3.5.</span> <span class="nav-text">The Great Unified Theory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class-Methods-Syntaxes"><span class="nav-number">3.6.</span> <span class="nav-text">Class Methods Syntaxes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Singleton-Classes-and-instance-eval"><span class="nav-number">3.7.</span> <span class="nav-text">Singleton Classes and instance_eval()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class-Attributes"><span class="nav-number">3.8.</span> <span class="nav-text">Class Attributes</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Quiz-Module-Trouble"><span class="nav-number">4.</span> <span class="nav-text">Quiz: Module Trouble</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class-Methods-and-include"><span class="nav-number">4.1.</span> <span class="nav-text">Class Methods and include()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-extend"><span class="nav-number">4.2.</span> <span class="nav-text">Object#extend</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Method-Wrappers"><span class="nav-number">5.</span> <span class="nav-text">Method Wrappers</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Around-Aliases"><span class="nav-number">5.1.</span> <span class="nav-text">Around Aliases</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#More-Method-Wrappers"><span class="nav-number">5.2.</span> <span class="nav-text">More Method Wrappers</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

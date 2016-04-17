@@ -1,0 +1,653 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="form multi-submit," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="不要被标题所困惑, 举个例子, 比如你写完一篇博客, 在发布前, 我需要预览一下文章, 那么这个表单就有2个提交, 一个是发布, 一个是预览.
+
+
+123456&amp;lt;%= form_for(@article) do |f| %&amp;gt;  ...  &amp;lt;%= submit_tag &amp;quot;Post&amp;quot; %&amp;gt;  &amp;lt;%= submit_tag &amp;quot;Preview&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个表单中配置多个Submit">
+<meta property="og:url" content="http://yoursite.com/2015/02/21/multi-form-submit/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="不要被标题所困惑, 举个例子, 比如你写完一篇博客, 在发布前, 我需要预览一下文章, 那么这个表单就有2个提交, 一个是发布, 一个是预览.
+
+
+123456&amp;lt;%= form_for(@article) do |f| %&amp;gt;  ...  &amp;lt;%= submit_tag &amp;quot;Post&amp;quot; %&amp;gt;  &amp;lt;%= submit_tag &amp;quot;Preview&amp;">
+<meta property="og:image" content="http://i2.tietuku.com/a7ac8d496d7f8dfb.png">
+<meta property="og:image" content="http://i2.tietuku.com/808589a08f69107a.png">
+<meta property="og:image" content="http://i2.tietuku.com/7fdfdf0114d37872.png">
+<meta property="og:updated_time" content="2015-02-21T07:53:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一个表单中配置多个Submit">
+<meta name="twitter:description" content="不要被标题所困惑, 举个例子, 比如你写完一篇博客, 在发布前, 我需要预览一下文章, 那么这个表单就有2个提交, 一个是发布, 一个是预览.
+
+
+123456&amp;lt;%= form_for(@article) do |f| %&amp;gt;  ...  &amp;lt;%= submit_tag &amp;quot;Post&amp;quot; %&amp;gt;  &amp;lt;%= submit_tag &amp;quot;Preview&amp;">
+<meta name="twitter:image" content="http://i2.tietuku.com/a7ac8d496d7f8dfb.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 一个表单中配置多个Submit | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                一个表单中配置多个Submit
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-21T10:16:04+08:00" content="2015-02-21">
+              2015-02-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>不要被标题所困惑, 举个例子, 比如你写完一篇博客, 在发布前, 我需要预览一下文章, 那么这个表单就有2个提交, 一个是发布, 一个是预览.</p>
+</blockquote>
+<p><img src="http://i2.tietuku.com/a7ac8d496d7f8dfb.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= form_for(@article) do |f| %&gt;</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">  &lt;%= submit_tag &quot;Post&quot; %&gt;</span><br><span class="line">  &lt;%= submit_tag &quot;Preview&quot;, name: &quot;preview_button&quot; %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="点击Submit时的params"><a href="#点击Submit时的params" class="headerlink" title="点击Submit时的params"></a>点击Submit时的params</h2><blockquote>
+<p>我们在分别点击”Post”和”Preview”按钮以后params参数情况:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># Post</span><br><span class="line"></span><br><span class="line">Parameters:</span><br><span class="line">&#123;</span><br><span class="line">  &quot;utf8&quot;=&gt;&quot;✓&quot;, &quot;authenticity_token&quot;=&gt;&quot;5Du...&quot;,</span><br><span class="line">  &quot;article&quot; =&gt; &#123;</span><br><span class="line">      &quot;title&quot;   =&gt; &quot;&quot;,</span><br><span class="line">          &quot;content&quot; =&gt; &quot;&quot;</span><br><span class="line">            </span><br><span class="line">  &#125;,</span><br><span class="line">    &quot;commit&quot; =&gt; &quot;Post&quot;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Parameters:</span><br><span class="line">&#123;</span><br><span class="line">  &quot;utf8&quot;=&gt;&quot;✓&quot;, &quot;authenticity_token&quot;=&gt;&quot;5Du...&quot;,</span><br><span class="line">  &quot;article&quot; =&gt; &#123;</span><br><span class="line">      &quot;title&quot;   =&gt; &quot;&quot;,</span><br><span class="line">          &quot;content&quot; =&gt; &quot;&quot;</span><br><span class="line">            </span><br><span class="line">  &#125;,</span><br><span class="line">    &quot;commit&quot; =&gt; &quot;Preview&quot;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>目前来看, 这两个按钮没有什么区别, 我们需要在Controller中对其提交的内容做不同的处理.</p>
+</blockquote>
+<h2 id="设定Submit按钮的name属性"><a href="#设定Submit按钮的name属性" class="headerlink" title="设定Submit按钮的name属性"></a>设定Submit按钮的name属性</h2><blockquote>
+<p>我可以通过修改submit的name属性来改变params中的commit KEY:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= submit_tag &quot;Preview&quot;, name: &quot;preview_button&quot; %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>点击按钮之后, params中是这样的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Parameters:</span><br><span class="line">&#123;</span><br><span class="line">  &quot;utf8&quot;=&gt;&quot;✓&quot;, &quot;authenticity_token&quot;=&gt;&quot;5Du...&quot;,</span><br><span class="line">  &quot;article&quot; =&gt; &#123;</span><br><span class="line">      &quot;title&quot;   =&gt; &quot;&quot;,</span><br><span class="line">          &quot;content&quot; =&gt; &quot;&quot;</span><br><span class="line">            </span><br><span class="line">  &#125;,</span><br><span class="line">    # commit 变成了 preview_button</span><br><span class="line">    &quot;preview_button&quot; =&gt; &quot;Preview&quot;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Controller中分开处理"><a href="#Controller中分开处理" class="headerlink" title="Controller中分开处理"></a>Controller中分开处理</h2><blockquote>
+<p>由于刚刚添加<code>preview_button</code> key, 我需要在Controller中加入针对<code>preview_button</code>这个key的判断, 再做出相应的处理:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/articles_controller.rb</span><br><span class="line"></span><br><span class="line">def create</span><br><span class="line">  @article = Article.new(article_params)</span><br><span class="line"></span><br><span class="line">  # params[:preview_button] 这个key存在, 或者, article无法保存(无法通过验证等等)</span><br><span class="line">  # 再一次渲染new视图(错误回显)</span><br><span class="line">  if params[:preview_button] || !@article.save</span><br><span class="line">    render :new</span><br><span class="line">  else</span><br><span class="line">    redirect_to @article, notice: &quot;Article was successfully created.&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="视图表示"><a href="#视图表示" class="headerlink" title="视图表示"></a>视图表示</h2><blockquote>
+<p>填写完表单, 点击preview时, 需要在<code>_form.html.erb</code>中显示刚才填写的内容</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># app/views/articles/_form.html.erb</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">&lt;% if params[:preview_button] %&gt;</span><br><span class="line">  &lt;div class=&quot;preview&quot;&gt;</span><br><span class="line">    &lt;!-- 再显示一遍 --&gt;</span><br><span class="line">    &lt;div class=&quot;title&quot;&gt;</span><br><span class="line">      &lt;%= @article.title %&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&quot;content&quot;&gt;</span><br><span class="line">      &lt;%= simple_format @article.content %&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h2><blockquote>
+<p>点击<code>Preview</code>后:</p>
+</blockquote>
+<p><img src="http://i2.tietuku.com/808589a08f69107a.png" alt=""></p>
+<blockquote>
+<p>点击<code>Post</code>提交到服务器</p>
+</blockquote>
+<p><img src="http://i2.tietuku.com/7fdfdf0114d37872.png" alt=""></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="http://railscasts.com/episodes/38-multibutton-form" target="_blank" rel="external">http://railscasts.com/episodes/38-multibutton-form</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/form-multi-submit/" rel="tag">#form multi-submit</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/20/format-helper/" rel="next" title="Format Helper">
+                <i class="fa fa-chevron-left"></i> Format Helper
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/22/time-related/" rel="prev" title="Rails中时间日期等处理的总结">
+                Rails中时间日期等处理的总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#点击Submit时的params"><span class="nav-number">1.</span> <span class="nav-text">点击Submit时的params</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设定Submit按钮的name属性"><span class="nav-number">2.</span> <span class="nav-text">设定Submit按钮的name属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Controller中分开处理"><span class="nav-number">3.</span> <span class="nav-text">Controller中分开处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#视图表示"><span class="nav-number">4.</span> <span class="nav-text">视图表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#效果展示"><span class="nav-number">5.</span> <span class="nav-text">效果展示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

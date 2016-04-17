@@ -1,0 +1,716 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="bootstrap," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="创建项目
+首先创建一个Rails项目, 然后scaffold Product
+
+12345$ rails new bootstrap_test$ rails g scaffold Product name:string price:integer$ rake db:migrate
+
+访问index页面, 会看到如下图的样子:
+
+
+安装方法
+导入如下gem
+
+1234567# Gemfilegem">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails bootstrap 的安装和使用">
+<meta property="og:url" content="http://yoursite.com/2015/03/10/bootstrap-install/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="创建项目
+首先创建一个Rails项目, 然后scaffold Product
+
+12345$ rails new bootstrap_test$ rails g scaffold Product name:string price:integer$ rake db:migrate
+
+访问index页面, 会看到如下图的样子:
+
+
+安装方法
+导入如下gem
+
+1234567# Gemfilegem">
+<meta property="og:image" content="http://i2.tietuku.com/8123868c2882e49a.png">
+<meta property="og:image" content="http://i2.tietuku.com/e797078d5456ef81.png">
+<meta property="og:image" content="http://i3.tietuku.com/37588bc114ecc568.png">
+<meta property="og:image" content="http://i2.tietuku.com/7f31c0f840af014e.png">
+<meta property="og:image" content="http://i2.tietuku.com/c2cb083eafda59ce.png">
+<meta property="og:image" content="http://i2.tietuku.com/1ba31549d05f64c4.png">
+<meta property="og:updated_time" content="2015-03-10T09:40:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails bootstrap 的安装和使用">
+<meta name="twitter:description" content="创建项目
+首先创建一个Rails项目, 然后scaffold Product
+
+12345$ rails new bootstrap_test$ rails g scaffold Product name:string price:integer$ rake db:migrate
+
+访问index页面, 会看到如下图的样子:
+
+
+安装方法
+导入如下gem
+
+1234567# Gemfilegem">
+<meta name="twitter:image" content="http://i2.tietuku.com/8123868c2882e49a.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails bootstrap 的安装和使用 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails bootstrap 的安装和使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-03-10T14:17:14+08:00" content="2015-03-10">
+              2015-03-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><blockquote>
+<p>首先创建一个Rails项目, 然后scaffold Product</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ rails new bootstrap_test</span><br><span class="line"></span><br><span class="line">$ rails g scaffold Product name:string price:integer</span><br><span class="line"></span><br><span class="line">$ rake db:migrate</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>访问index页面, 会看到如下图的样子:</p>
+<p><img src="http://i2.tietuku.com/8123868c2882e49a.png"></p>
+</blockquote>
+<h2 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法"></a>安装方法</h2><blockquote>
+<p>导入如下gem</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line"></span><br><span class="line">gem &apos;therubyracer&apos; # javascript 运行时环境, 编译less时所必须的</span><br><span class="line">gem &apos;less-rails&apos;   # 使用less所需</span><br><span class="line">gem &apos;twitter-bootstrap-rails&apos;</span><br><span class="line"></span><br><span class="line">$ bundle install</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>生成bootstrap所需要的文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ rails g bootstrap:install</span><br><span class="line">  insert  app/assets/javascripts/application.js</span><br><span class="line">  create  app/assets/javascripts/bootstrap.js.coffee</span><br><span class="line">  create  app/assets/stylesheets/bootstrap_and_overrides.css.less</span><br><span class="line">  create  config/locales/en.bootstrap.yml</span><br><span class="line">  gsub  app/assets/stylesheets/application.css</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>重启服务器, 观察页面前后变化:</p>
+<p><img src="http://i2.tietuku.com/e797078d5456ef81.png"></p>
+</blockquote>
+<h2 id="定制化"><a href="#定制化" class="headerlink" title="定制化"></a>定制化</h2><h3 id="View"><a href="#View" class="headerlink" title="View"></a>View</h3><blockquote>
+<p>看看如何使用bootstrap来美化视图, bootstrap定义了一系列的class属性. 我只需要使用下面的命令就可以为视图文件强制添加这些属性</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ rails g bootstrap:themed Products</span><br><span class="line">  force  app/views/products/index.html.erb</span><br><span class="line">  force  app/views/products/new.html.erb</span><br><span class="line">  force  app/views/products/edit.html.erb</span><br><span class="line">  force  app/views/products/_form.html.erb</span><br><span class="line">  force  app/views/products/show.html.erb</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>再次观察index页面, 是不是变得美观了一下呢?</p>
+</blockquote>
+<p><img src="http://i3.tietuku.com/37588bc114ecc568.png" alt=""></p>
+<blockquote>
+<p>通过观察页面的源码不难发现, 许多元素的class属性已经成了bootstrap的所定义的</p>
+</blockquote>
+<h3 id="flash消息"><a href="#flash消息" class="headerlink" title="flash消息"></a>flash消息</h3><blockquote>
+<p>现在还存在的问题是错误消息和flash消息不能显示, 先来看flash的问题, 错误信息我打算和simple_form一起说</p>
+<p>没有显示的原因是flash回显消息部分被重新生成的视图覆盖掉了, 我在<code>application.html.erb</code>中添加flash, bootstrap提供了更好的class来显示flash <code>alert alert-success alert-error</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># app/views/layouts/application.html.erb</span><br><span class="line">...</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;% flash.each do |name, msg| %&gt;</span><br><span class="line">  &lt;div class=&quot;alert alert-&lt;%= name == &quot;notice&quot; ? &quot;success&quot; : &quot;error&quot; %&gt;&quot;&gt;</span><br><span class="line">  &lt;a class=&quot;close&quot; data-dismiss=&quot;alert&quot;&gt;×&lt;/a&gt;</span><br><span class="line">  &lt;%= msg %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;% end %&gt;</span><br><span class="line"></span><br><span class="line">  &lt;%= yield %&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>修改一条记录的效果图:</p>
+<p><img src="http://i2.tietuku.com/7f31c0f840af014e.png"></p>
+</blockquote>
+<h3 id="simple-form和bootstrap显示错误消息"><a href="#simple-form和bootstrap显示错误消息" class="headerlink" title="simple_form和bootstrap显示错误消息"></a>simple_form和bootstrap显示错误消息</h3><blockquote>
+<p>simple_form在写表单方便的确很省力, 所以这里说明如何使用simple_form和bootstrap进行验证错误的回显, 首先在model中添加验证:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># app/models/product.rb</span><br><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  validates :name,  presence: true</span><br><span class="line">  validates :price, presence: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后安装simple_form:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line"></span><br><span class="line">gem &apos;simple_form&apos;</span><br><span class="line"></span><br><span class="line">$ bundle install</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>把bootstrap集成到simple_form中:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$  rails g simple_form:install --bootstrap</span><br><span class="line">  create  config/initializers/simple_form.rb</span><br><span class="line">  create  config/initializers/simple_form_bootstrap.rb</span><br><span class="line">  exist  config/locales</span><br><span class="line">  create  config/locales/simple_form.en.yml</span><br><span class="line">  create  lib/templates/erb/scaffold/_form.html.erb</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>修改表单视图文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/_form.html.erb</span><br><span class="line">&lt;%= simple_form_for @product, :html =&gt; &#123; :class =&gt; &apos;form-horizontal&apos;  &#125; do |f| %&gt;</span><br><span class="line">  &lt;%= f.input :name %&gt;</span><br><span class="line">  &lt;%= f.input :price %&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;form-actions&quot;&gt;</span><br><span class="line">    &lt;%= f.submit nil, :class =&gt; &apos;btn btn-primary&apos; %&gt;</span><br><span class="line">    &lt;%= link_to t(&apos;.cancel&apos;, :default =&gt; t(&quot;helpers.links.cancel&quot;)),</span><br><span class="line">    products_path, :class =&gt; &apos;btn btn-default&apos; %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><img src="http://i2.tietuku.com/c2cb083eafda59ce.png"></p>
+</blockquote>
+<h3 id="添加sidebar"><a href="#添加sidebar" class="headerlink" title="添加sidebar"></a>添加sidebar</h3><blockquote>
+<p>bootstrap提供了一种”份数”的方式处理浏览器窗口改变是里面的元素变化情况, 将浏览器宽度分为12等份, 再将这12等份的一部分分给各个元素, 现在我就让<code>yield</code>占8份, sidebar占4份.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&apos;container&apos;&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;row&quot;&gt;</span><br><span class="line">    &lt;% flash.each do |name, msg| %&gt;</span><br><span class="line">      &lt;div class=&apos;alert alert-&lt;%= name == &quot;notice&quot; ? &quot;succese&quot; : &quot;error&quot; %&gt;&apos;&gt;</span><br><span class="line">        &lt;a class=&quot;close&quot; data-dismiss=&quot;alert&quot;&gt;x&lt;/a&gt;</span><br><span class="line">        &lt;%= msg %&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;% end %&gt;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&apos;col-md-8&apos;&gt;</span><br><span class="line"></span><br><span class="line">      &lt;%= yield %&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&apos;col-md-4&apos;&gt;</span><br><span class="line">      &lt;h2&gt;Side Bar&lt;/h2&gt;</span><br><span class="line">      &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/div&gt; </span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>嘿嘿, 有点丑!<br><img src="http://i2.tietuku.com/1ba31549d05f64c4.png"></p>
+</blockquote>
+<h3 id="添加NavigationBar"><a href="#添加NavigationBar" class="headerlink" title="添加NavigationBar"></a>添加NavigationBar</h3><blockquote>
+<p>新建一个partial <code>header</code> </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># app/views/layouts/_header.html.erb</span><br><span class="line">&lt;header&gt;</span><br><span class="line">  &lt;%= nav_bar fixed: :top, brand: &quot;Ninety Ten&quot; do %&gt;</span><br><span class="line">    &lt;%= menu_group do %&gt;</span><br><span class="line">      &lt;%= menu_item &quot;Home&quot;, root_path %&gt;</span><br><span class="line">      &lt;%= menu_item &quot;About Us&quot;, about_us_path %&gt;</span><br><span class="line">      &lt;%= menu_item &quot;Contact&quot;, contact_path %&gt;</span><br><span class="line">    &lt;% end %&gt;</span><br><span class="line">    &lt;% if current_user %&gt;</span><br><span class="line">      &lt;%= menu_item &quot;Log Out&quot;, log_out_path %&gt;</span><br><span class="line">    &lt;% else %&gt;</span><br><span class="line">      &lt;%= menu_group pull: :right do %&gt;</span><br><span class="line">        &lt;%= menu_item &quot;Sign Up&quot;, registration_path %&gt;</span><br><span class="line">        &lt;%= form_for @user, url: session_path(:user) do |f| -%&gt;</span><br><span class="line">          &lt;p&gt;&lt;%= f.text_field :email %&gt;&lt;/p&gt;</span><br><span class="line">          &lt;p&gt;&lt;%= f.password_field :password %&gt;&lt;/p&gt;</span><br><span class="line">          &lt;p&gt;&lt;%= f.submit &quot;Sign in&quot; %&gt;&lt;/p&gt;</span><br><span class="line">        &lt;% end -%&gt;</span><br><span class="line">      &lt;% end %&gt;</span><br><span class="line">    &lt;% end %&gt;</span><br><span class="line">  &lt;% end %&gt;</span><br><span class="line">&lt;/header&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>详情请参见: <a href="https://github.com/seyhunak/twitter-bootstrap-rails#navbar-helper" target="_blank" rel="external">https://github.com/seyhunak/twitter-bootstrap-rails#navbar-helper</a></p>
+<p><strong><em> 需要提一点: 对于IE9之前的浏览器, 添加下面一段代码 </em></strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># app/views/layouts/application.html.erb</span><br><span class="line">...</span><br><span class="line">&lt;!--[if lt IE 9]&gt;</span><br><span class="line">&lt;script src=&quot;http://html5shim.googlecode.com/svn/trunk/html5.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;![endif]--&gt;</span><br><span class="line">..l.</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/bootstrap/" rel="tag">#bootstrap</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/09/field-hidden-in-log/" rel="next" title="Rails 在日志中隐藏Parameters中一些字段">
+                <i class="fa fa-chevron-left"></i> Rails 在日志中隐藏Parameters中一些字段
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/11/google-map-in-rails/" rel="prev" title="Rails4中使用Google Map 服务">
+                Rails4中使用Google Map 服务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建项目"><span class="nav-number">1.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装方法"><span class="nav-number">2.</span> <span class="nav-text">安装方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定制化"><span class="nav-number">3.</span> <span class="nav-text">定制化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#View"><span class="nav-number">3.1.</span> <span class="nav-text">View</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flash消息"><span class="nav-number">3.2.</span> <span class="nav-text">flash消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#simple-form和bootstrap显示错误消息"><span class="nav-number">3.3.</span> <span class="nav-text">simple_form和bootstrap显示错误消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加sidebar"><span class="nav-number">3.4.</span> <span class="nav-text">添加sidebar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加NavigationBar"><span class="nav-number">3.5.</span> <span class="nav-text">添加NavigationBar</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

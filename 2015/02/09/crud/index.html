@@ -1,0 +1,675 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Rails Model CRUD," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本文主要对开发中 Active Record 的增删改查使用到的常用方法做一个总结(p.s. 这里我建议使用 rails c -s, 这是在沙盒中运行, 退出后数据库回到之前的状态^^)
+
+model 的创建和保存创建对象时直接赋值( new )
+我们可以在new 方法中直接传入一个含有键值对的 hash 来创建对象.1post = Post.new(title: &amp;apos;greetings">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails Model 增删改查常用方法总结">
+<meta property="og:url" content="http://yoursite.com/2015/02/09/crud/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要对开发中 Active Record 的增删改查使用到的常用方法做一个总结(p.s. 这里我建议使用 rails c -s, 这是在沙盒中运行, 退出后数据库回到之前的状态^^)
+
+model 的创建和保存创建对象时直接赋值( new )
+我们可以在new 方法中直接传入一个含有键值对的 hash 来创建对象.1post = Post.new(title: &amp;apos;greetings">
+<meta property="og:updated_time" content="2015-04-01T13:37:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails Model 增删改查常用方法总结">
+<meta name="twitter:description" content="本文主要对开发中 Active Record 的增删改查使用到的常用方法做一个总结(p.s. 这里我建议使用 rails c -s, 这是在沙盒中运行, 退出后数据库回到之前的状态^^)
+
+model 的创建和保存创建对象时直接赋值( new )
+我们可以在new 方法中直接传入一个含有键值对的 hash 来创建对象.1post = Post.new(title: &amp;apos;greetings">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Rails Model 增删改查常用方法总结 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails Model 增删改查常用方法总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-09T15:39:30+08:00" content="2015-02-09">
+              2015-02-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文主要对开发中 Active Record 的增删改查使用到的常用方法做一个总结(p.s. 这里我建议使用 <code>rails c -s</code>, 这是在沙盒中运行, 退出后数据库回到之前的状态^^)</p>
+</blockquote>
+<h2 id="model-的创建和保存"><a href="#model-的创建和保存" class="headerlink" title="model 的创建和保存"></a>model 的创建和保存</h2><h3 id="创建对象时直接赋值-new"><a href="#创建对象时直接赋值-new" class="headerlink" title="创建对象时直接赋值( new )"></a>创建对象时直接赋值( new )</h3><blockquote>
+<p>我们可以在new 方法中直接传入一个含有键值对的 hash 来创建对象.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post = Post.new(title: &apos;greetings&apos;, body: &quot;nihaoxxx&quot;)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="hash-赋值"><a href="#hash-赋值" class="headerlink" title="hash 赋值"></a>hash 赋值</h3><blockquote>
+<p>还可以创建一个对象, 然后为对象的<code>attributes</code>赋给一个 hash, 该 hash 含有该对象的属性和值.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">post = Post.new</span><br><span class="line">post.attributes = &#123; title: &apos;greetings&apos;, body: &quot;nihaoxxx&quot; &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="保存对象"><a href="#保存对象" class="headerlink" title="保存对象"></a>保存对象</h3><blockquote>
+<p>使用 save 方法保存对象. 保存成功会返回true, 数据库增加一条记录. 发生了验证错误会返回 false, 错误信息会被设定到<code>errors.full_messages</code> 中:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">post.save</span><br><span class="line"># =&gt; true</span><br><span class="line"></span><br><span class="line">post.save</span><br><span class="line"># =&gt; false</span><br><span class="line"></span><br><span class="line">post.errors.full_messages</span><br><span class="line"># =&gt; [&quot;Title can&apos;t be blank&quot;]</span><br></pre></td></tr></table></figure></p>
+<p>使用<code>save!</code>保持对象, 如果验证错误发生会抛出<code>ActiveRecord::RecordInvalid</code> 异常, 而不是返回 false</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">post.save!</span><br><span class="line"># =&gt; ActiveRecord::RecordInvalid: Validation failed: Title can&apos;t be blank</span><br><span class="line"></span><br><span class="line"># 错误消息还是会被保存起来</span><br><span class="line">post.errors.full_messages</span><br><span class="line"># =&gt; [&quot;Title can&apos;t be blank&quot;]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们可以传入 validate: false 参数来跳过验证, 直接保存到数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">post.save(validate: false)</span><br><span class="line">post.save!(validate: false)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="model创建保存一并完成-create"><a href="#model创建保存一并完成-create" class="headerlink" title="model创建保存一并完成(create)"></a>model创建保存一并完成(create)</h3><blockquote>
+<p>如果使用create 方法就相当于new 和 save 一起使用</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 创建保存 model</span><br><span class="line">Post.create(title: &quot;fnfdnfjfjfj&quot;, body: &quot;fnierfe&quot;)</span><br><span class="line">=&gt; #&lt;Post id: 36, title: &quot;fnfdnfjfjfj&quot;, body: &quot;fnierfe&quot;, created_at: &quot;2015-02-09 08:58:49&quot;, updated_at: &quot;2015-02-09 08:58:49&quot;&gt;</span><br><span class="line"></span><br><span class="line"># 无论是否发生验证错误, 都会返回Post对象</span><br><span class="line">Post.create(title: nil, body: nil)</span><br><span class="line">=&gt; #&lt;Post id: nil, title: nil, body: nil, created_at: nil, updated_at: nil&gt;</span><br><span class="line"></span><br><span class="line">Post.create!(title: nil, body: nil)</span><br><span class="line">=&gt; ActiveRecord::RecordInvalid: Validation failed: Title can&apos;t be blank</span><br></pre></td></tr></table></figure>
+<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><h3 id="获取所有记录-all"><a href="#获取所有记录-all" class="headerlink" title="获取所有记录(all)"></a>获取所有记录(all)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">posts = Post.all</span><br></pre></td></tr></table></figure>
+<h3 id="获取第一条-最后一条记录-first-last"><a href="#获取第一条-最后一条记录-first-last" class="headerlink" title="获取第一条/最后一条记录(first/last)"></a>获取第一条/最后一条记录(first/last)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">first_post = Post.first</span><br><span class="line">last_post = Post.last</span><br></pre></td></tr></table></figure>
+<h3 id="通过id-查找-find"><a href="#通过id-查找-find" class="headerlink" title="通过id 查找(find)"></a>通过id 查找(find)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">post = Post.find(1)</span><br><span class="line"></span><br><span class="line"># 传入数组查找的多个对象</span><br><span class="line">posts = Post.find([1, 2, 3])</span><br><span class="line"></span><br><span class="line"># 如果查询不到, 则抛异常</span><br><span class="line">ActiveRecord::RecordNotFound: Couldn&apos;t find Post with &apos;id&apos;=1</span><br></pre></td></tr></table></figure>
+<h3 id="通过其他列名查找-find-by"><a href="#通过其他列名查找-find-by" class="headerlink" title="通过其他列名查找( find_by )"></a>通过其他列名查找( find_by )</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Post.find_by(title: &quot;fdsfsdf&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="指定条件查询-where"><a href="#指定条件查询-where" class="headerlink" title="指定条件查询(where)"></a>指定条件查询(where)</h3><blockquote>
+<p>像 SQL where这样的查询, <strong><em> 小心 SQL 注入</em></strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># rails会将其传入的参数进行处理, 去掉 `,`, 空字符和换行符, 然后再赋给 `?`处</span><br><span class="line"># where 其实 内置了过滤器</span><br><span class="line">user = User.where(&quot;name = ?&quot;, &quot;test&quot;)</span><br><span class="line"></span><br><span class="line"># 为了可读性, 可以像下面这么写</span><br><span class="line">user = User.where(&quot;name = :name&quot;, name: &quot;test&quot;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>where方法也可以进行链调用(连续调用)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">user = User.where(&quot;name = :name&quot;, name: &quot;test&quot;).where(active: true)</span><br><span class="line"></span><br><span class="line"># 我们不使用链调用也是可以的, 下面的写法是等价的:</span><br><span class="line"></span><br><span class="line">user = User.where(&quot;name = :name and active: :active&quot;, name: &quot;test&quot;, active: true)</span><br></pre></td></tr></table></figure>
+<h3 id="模糊查询-like"><a href="#模糊查询-like" class="headerlink" title="模糊查询(like)"></a>模糊查询(like)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">users = User.where(&quot;email like ?&quot;, &quot;%&quot; + &quot;gmail.com&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="按-xxx-排序-order"><a href="#按-xxx-排序-order" class="headerlink" title="按 xxx 排序(order)"></a>按 xxx 排序(order)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 按 pay_type 升序, shipped_at 的降序获取</span><br><span class="line"></span><br><span class="line">orders = Order.where(name: &apos;Ruby on Rails&apos;).order(&quot;pay_type, shipped_at DESC&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="指定取出结果的数量-limit"><a href="#指定取出结果的数量-limit" class="headerlink" title="指定取出结果的数量( limit )"></a>指定取出结果的数量( limit )</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 取出最新的5个订单</span><br><span class="line"></span><br><span class="line">orders = Order.order(:created_at).limit(5)</span><br></pre></td></tr></table></figure>
+<h3 id="分组-group"><a href="#分组-group" class="headerlink" title="分组(group)"></a>分组(group)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">group_body = Post.select(&quot;title, body&quot;).group(&quot;body&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="取得指定的列的值-select"><a href="#取得指定的列的值-select" class="headerlink" title="取得指定的列的值(select)"></a>取得指定的列的值(select)</h3><blockquote>
+<p>Rails 默认是<code>select * from ...</code>进行查找的, 可是如果列中有图片这种比较大的原始数据我们就不能把所有的列都取出来了.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">videos = Video.select(&quot;title, speaker, created_at&quot;)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="表连接-joins"><a href="#表连接-joins" class="headerlink" title="表连接(joins)"></a>表连接(joins)</h3><blockquote>
+<p>使用 joins方法其实数据库是进行的内连接查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Blog.joins(:entries)</span><br><span class="line"># =&gt; SELECT blogs.* FROM blogs INNER JOIN entries ON entries.blog_id = blogs.id</span><br></pre></td></tr></table></figure></p>
+<p>我们还可以追加查询条件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">entries = Entry.joins(:blogs).where(&quot;blogs.name LIKE ?&quot;, &quot;%me%&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>甚至, joins 可以接受 SQL 语句来进行连接查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User.joins(&quot;LEFT JOIN bookmarks ON bookmarks.bookmarkable_type = &apos;Post&apos; AND bookmarks.user_id = users.id&quot;)</span><br><span class="line">=&gt; SELECT &quot;users&quot;.* FROM &quot;users&quot; LEFT JOIN bookmarks ON bookmarks.bookmarkable_type = &apos;Post&apos; AND bookmarks.user_id = users.id</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="列上统计"><a href="#列上统计" class="headerlink" title="列上统计"></a>列上统计</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">average = Order.average(:amount)</span><br><span class="line">max      = Order.maximum(:amount)</span><br><span class="line">min       = Order.minimum(:amount)</span><br><span class="line">total      = Order.sum(:amount)</span><br><span class="line">number = Order.count</span><br></pre></td></tr></table></figure>
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><h3 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h3><h4 id="覆盖原值再保存"><a href="#覆盖原值再保存" class="headerlink" title="覆盖原值再保存"></a>覆盖原值再保存</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">user.name</span><br><span class="line"># =&gt; &quot;Mike&quot;</span><br><span class="line">user.name = &quot;Daniel&quot;</span><br><span class="line">user.save</span><br></pre></td></tr></table></figure>
+<h4 id="多列更新-update"><a href="#多列更新-update" class="headerlink" title="多列更新(update)"></a>多列更新(update)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user.update(name: &quot;Daniel&quot;, email: &quot;cnfdsf@gmail.com&quot;)</span><br><span class="line"># =&gt; 成功 true 失败 false</span><br></pre></td></tr></table></figure>
+<h4 id="更新某一列-update-attribute"><a href="#更新某一列-update-attribute" class="headerlink" title="更新某一列(update_attribute)"></a>更新某一列(update_attribute)</h4><blockquote>
+<p><code>update_attribute</code> 不会执行验证, 所以需要注意:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user.update_attribute(:name, &quot;Daniel&quot;)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h4 id="reload方法"><a href="#reload方法" class="headerlink" title="reload方法"></a>reload方法</h4><blockquote>
+<p>让数据库的值覆盖掉当前对象的属性值, Unit Test 的时候使用过:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">user.email #=&gt; daniel@gmail.com</span><br><span class="line">user.email =  libai@126.com</span><br><span class="line">user.email #=&gt; libai@126.com</span><br><span class="line"></span><br><span class="line">user.reload.email</span><br><span class="line">user.email #=&gt; daniel@gmail.com</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="类方法"><a href="#类方法" class="headerlink" title="类方法"></a>类方法</h3><h4 id="update-id-attributes"><a href="#update-id-attributes" class="headerlink" title="update(id, attributes)"></a>update(id, attributes)</h4><blockquote>
+<p>指定 id( 或 id 数组 )对应的记录, 更新为 attributes(hash). <strong><em>注意: 不会被验证 </em></strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 把id 为1, 3, 5对应的记录的sale属性改为 true, discount_rate改为0.2</span><br><span class="line">Porduct.update([1, 3, 5], [&#123;sale: true&#125;, &#123;discount_rate: 0.2&#125;])</span><br></pre></td></tr></table></figure>
+<h4 id="update-all-updates"><a href="#update-all-updates" class="headerlink" title="update_all(updates)"></a>update_all(updates)</h4><blockquote>
+<p>本质就是指定SQL 的 update 的 set语句和where 语句, <strong><em>注意:不会被验证</em></strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Post.update_all(&quot;price = 1.1*price&quot;, &quot;title like &apos;shirt&apos;&quot;)</span><br></pre></td></tr></table></figure>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><h3 id="实例方法-1"><a href="#实例方法-1" class="headerlink" title="实例方法"></a>实例方法</h3><h4 id="删除记录-destroy"><a href="#删除记录-destroy" class="headerlink" title="删除记录(destroy)"></a>删除记录(destroy)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user.destroy # 从数据库中删除</span><br></pre></td></tr></table></figure>
+<h3 id="类方法-1"><a href="#类方法-1" class="headerlink" title="类方法"></a>类方法</h3><h4 id="删除全部记录-delete-all"><a href="#删除全部记录-delete-all" class="headerlink" title="删除全部记录(delete_all)"></a>删除全部记录(delete_all)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User.delete_all</span><br><span class="line">#=&gt; 10 (返回删除的记录数)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails-Model-CRUD/" rel="tag">#Rails Model CRUD</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/09/request-head/" rel="next" title="Rails 中request header 和 response header的获取">
+                <i class="fa fa-chevron-left"></i> Rails 中request header 和 response header的获取
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/09/one-to-many/" rel="prev" title="Rails 中实现model的一对多关系映射">
+                Rails 中实现model的一对多关系映射 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#model-的创建和保存"><span class="nav-number">1.</span> <span class="nav-text">model 的创建和保存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建对象时直接赋值-new"><span class="nav-number">1.1.</span> <span class="nav-text">创建对象时直接赋值( new )</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hash-赋值"><span class="nav-number">1.2.</span> <span class="nav-text">hash 赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保存对象"><span class="nav-number">1.3.</span> <span class="nav-text">保存对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#model创建保存一并完成-create"><span class="nav-number">1.4.</span> <span class="nav-text">model创建保存一并完成(create)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询"><span class="nav-number">2.</span> <span class="nav-text">查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取所有记录-all"><span class="nav-number">2.1.</span> <span class="nav-text">获取所有记录(all)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取第一条-最后一条记录-first-last"><span class="nav-number">2.2.</span> <span class="nav-text">获取第一条/最后一条记录(first/last)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过id-查找-find"><span class="nav-number">2.3.</span> <span class="nav-text">通过id 查找(find)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过其他列名查找-find-by"><span class="nav-number">2.4.</span> <span class="nav-text">通过其他列名查找( find_by )</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定条件查询-where"><span class="nav-number">2.5.</span> <span class="nav-text">指定条件查询(where)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模糊查询-like"><span class="nav-number">2.6.</span> <span class="nav-text">模糊查询(like)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#按-xxx-排序-order"><span class="nav-number">2.7.</span> <span class="nav-text">按 xxx 排序(order)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定取出结果的数量-limit"><span class="nav-number">2.8.</span> <span class="nav-text">指定取出结果的数量( limit )</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分组-group"><span class="nav-number">2.9.</span> <span class="nav-text">分组(group)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取得指定的列的值-select"><span class="nav-number">2.10.</span> <span class="nav-text">取得指定的列的值(select)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表连接-joins"><span class="nav-number">2.11.</span> <span class="nav-text">表连接(joins)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列上统计"><span class="nav-number">2.12.</span> <span class="nav-text">列上统计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新"><span class="nav-number">3.</span> <span class="nav-text">更新</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例方法"><span class="nav-number">3.1.</span> <span class="nav-text">实例方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#覆盖原值再保存"><span class="nav-number">3.1.1.</span> <span class="nav-text">覆盖原值再保存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多列更新-update"><span class="nav-number">3.1.2.</span> <span class="nav-text">多列更新(update)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新某一列-update-attribute"><span class="nav-number">3.1.3.</span> <span class="nav-text">更新某一列(update_attribute)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reload方法"><span class="nav-number">3.1.4.</span> <span class="nav-text">reload方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类方法"><span class="nav-number">3.2.</span> <span class="nav-text">类方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#update-id-attributes"><span class="nav-number">3.2.1.</span> <span class="nav-text">update(id, attributes)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#update-all-updates"><span class="nav-number">3.2.2.</span> <span class="nav-text">update_all(updates)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除"><span class="nav-number">4.</span> <span class="nav-text">删除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例方法-1"><span class="nav-number">4.1.</span> <span class="nav-text">实例方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#删除记录-destroy"><span class="nav-number">4.1.1.</span> <span class="nav-text">删除记录(destroy)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类方法-1"><span class="nav-number">4.2.</span> <span class="nav-text">类方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#删除全部记录-delete-all"><span class="nav-number">4.2.1.</span> <span class="nav-text">删除全部记录(delete_all)</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

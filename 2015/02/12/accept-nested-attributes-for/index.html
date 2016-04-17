@@ -1,0 +1,686 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="嵌套属性 accepts_nested_attributes_for field_for fields_for reject_if," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在Rails中, 我们可以通过使用accepts_nested_attributes_for简单地将一对多的model通过表单一起提交. 比如说: 某人有多个地址(家庭地址, 公司地址等等) 这种一对多的关系. 我想通过一个表达提交用户的同时提交若干个地址.
+
+准备工作
+生成项目:12rails new accepts_nested_attributes_for_testcd accepts_n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在表单中提交相关实体">
+<meta property="og:url" content="http://yoursite.com/2015/02/12/accept-nested-attributes-for/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在Rails中, 我们可以通过使用accepts_nested_attributes_for简单地将一对多的model通过表单一起提交. 比如说: 某人有多个地址(家庭地址, 公司地址等等) 这种一对多的关系. 我想通过一个表达提交用户的同时提交若干个地址.
+
+准备工作
+生成项目:12rails new accepts_nested_attributes_for_testcd accepts_n">
+<meta property="og:image" content="http://i2.tietuku.com/63b34f8f063814c8.png">
+<meta property="og:image" content="http://i2.tietuku.com/d13fc866f9f8b7dc.png">
+<meta property="og:image" content="http://i2.tietuku.com/63f5e698387ae183.png">
+<meta property="og:image" content="http://i2.tietuku.com/651115caa7f68117.png">
+<meta property="og:image" content="http://i2.tietuku.com/79bc3f2175ed7052.png">
+<meta property="og:image" content="http://i2.tietuku.com/f5618fac5bba5664.png">
+<meta property="og:updated_time" content="2015-05-22T08:09:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在表单中提交相关实体">
+<meta name="twitter:description" content="在Rails中, 我们可以通过使用accepts_nested_attributes_for简单地将一对多的model通过表单一起提交. 比如说: 某人有多个地址(家庭地址, 公司地址等等) 这种一对多的关系. 我想通过一个表达提交用户的同时提交若干个地址.
+
+准备工作
+生成项目:12rails new accepts_nested_attributes_for_testcd accepts_n">
+<meta name="twitter:image" content="http://i2.tietuku.com/63b34f8f063814c8.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 在表单中提交相关实体 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'uSvyVbAJs-5jfXFawgQ3','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                在表单中提交相关实体
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2015-02-12T08:18:53+08:00" content="2015-02-12">
+              2015-02-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>在Rails中, 我们可以通过使用<code>accepts_nested_attributes_for</code>简单地将一对多的model通过表单一起提交. 比如说: 某人有多个地址(家庭地址, 公司地址等等) 这种一对多的关系. 我想通过一个表达提交用户的同时提交若干个地址.</p>
+</blockquote>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><blockquote>
+<p>生成项目:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails new accepts_nested_attributes_for_test</span><br><span class="line">cd accepts_nested_attributes_for_test</span><br></pre></td></tr></table></figure></p>
+<p>使用scaffold生成user:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rails g scaffold User username age:integer</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>生成Address model<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rails g model Address zipcode city street tel user_id:integer</span><br></pre></td></tr></table></figure></p>
+<p>移植</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>添加关联关系, user 对 address 是一对多的关系:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># app/models/user.rb</span><br><span class="line"></span><br><span class="line">class User &lt; ActiveRecord::Base</span><br><span class="line">  has_many :addresses</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/address.rb</span><br><span class="line"></span><br><span class="line">class Address &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :user</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="实现嵌套表单"><a href="#实现嵌套表单" class="headerlink" title="实现嵌套表单"></a>实现嵌套表单</h2><blockquote>
+<p>ActiveRecord提供了accepts_nested_attributes_for 方法来处理嵌套表单, 我们把这个方法加入到user model以后, 在user中就会自动添加一个方法<code>addresses_attributes=</code>, 由此, 我们可以对Address进行添加,修改和删除了.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># app/models/user.rb</span><br><span class="line"></span><br><span class="line">class User &lt; ActiveRecord::Base</span><br><span class="line">  has_many :addresses</span><br><span class="line">  accepts_nested_attributes_for :addresses</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/address.rb</span><br><span class="line"></span><br><span class="line">class Address &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :user</span><br><span class="line">  # 不可以对user_id进行验证, 否则会无法存入数据库, 因为params中并没有user_id</span><br><span class="line">  validates :user_id, presence: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>接下来处理表单, 使用<code>fields_for</code> 把输入的参数嵌入到请求参数中.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">¦ &lt;%= f.label :username %&gt;&lt;br&gt;</span><br><span class="line">¦ &lt;%= f.text_field :username %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">¦ &lt;%= f.label :age %&gt;&lt;br&gt;</span><br><span class="line">¦ &lt;%= f.number_field :age %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">¦ &lt;%= f.label :addresses, &quot;Address&quot; %&gt;</span><br><span class="line">¦ &lt;%= f.fields_for :addresses do |addresses_form| %&gt;</span><br><span class="line">¦ ¦ &lt;%= addresses_form.label :zipcode, &quot;zipcode&quot; %&gt;</span><br><span class="line">¦ ¦ &lt;%= addresses_form.text_field :zipcode %&gt; &lt;br/&gt;</span><br><span class="line"></span><br><span class="line">¦ ¦ &lt;%= addresses_form.label :city, &quot;city&quot; %&gt;</span><br><span class="line">¦ ¦ &lt;%= addresses_form.text_field :city %&gt; &lt;br/&gt;</span><br><span class="line"></span><br><span class="line">¦ ¦ &lt;%= addresses_form.label :street, &quot;street&quot; %&gt;</span><br><span class="line">¦ ¦ &lt;%= addresses_form.text_field :street %&gt; &lt;br/&gt;</span><br><span class="line"></span><br><span class="line">¦ ¦ &lt;%= addresses_form.label :tel, &quot;Telephone Number&quot; %&gt;</span><br><span class="line">¦ ¦ &lt;%= addresses_form.text_field :tel %&gt; &lt;br/&gt;</span><br><span class="line">¦ &lt;% end %&gt;</span><br><span class="line"></span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;actions&quot;&gt;</span><br><span class="line">¦ &lt;%= f.submit %&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>接下来, 在User的Controller中的new action中中准备好供表单使用的数据. 新建一个与用户相关联的Address对象, 作为<code>fields_for</code>的参数.<br>还需要将address属性加入到StrongParameters的允许列表中. 写法是view中的<code>fields_for</code>方法的参数(addresses) 与<code>_attributes</code>拼接而成. 也就是<code>addresses_attributes</code>, 其内部属性使用数组表示.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/users_controller.rb</span><br><span class="line"></span><br><span class="line">def new</span><br><span class="line">  @user = User.new</span><br><span class="line">  @user.addresses.build</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Strong Parameters</span><br><span class="line"></span><br><span class="line">def user_params</span><br><span class="line">  params.require(:user).permit(</span><br><span class="line">    :username,</span><br><span class="line">    :age,</span><br><span class="line">    addresses_attributes: [:id, :zipcode, :city, :street, :tel]</span><br><span class="line">  )</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如下图新建用户:<br><img src="http://i2.tietuku.com/63b34f8f063814c8.png" alt=""></p>
+<p>点击提交后, 产生的参数和执行的sql语句:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Processing by UsersController#create as HTML</span><br><span class="line">  Parameters: &#123;&quot;utf8&quot;=&gt;&quot;✓&quot;, &quot;authenticity_token&quot;=&gt;&quot;gAoS9H1E0orttTcXOte5voqnEhwY/QROIA3noJLp84o=&quot;, &quot;user&quot;=&gt;&#123;&quot;username&quot;=&gt;&quot;daniel&quot;, &quot;age&quot;=&gt;&quot;22&quot;, &quot;addresses_attributes&quot;=&gt;&#123;&quot;0&quot;=&gt;&#123;&quot;zipcode&quot;=&gt;&quot;100101&quot;, &quot;city&quot;=&gt;&quot;北京&quot;, &quot;street&quot;=&gt;&quot;北辰西路1号院5号&quot;, &quot;tel&quot;=&gt;&quot;1223423&quot;&#125;&#125;&#125;, &quot;commit&quot;=&gt;&quot;Create User&quot;&#125;</span><br><span class="line">     (0.1ms)  begin transaction</span><br><span class="line">       SQL (13.0ms)  INSERT INTO &quot;users&quot; (&quot;age&quot;, &quot;created_at&quot;, &quot;updated_at&quot;, &quot;username&quot;) VALUES (?, ?, ?, ?)  [[&quot;age&quot;, 22], [&quot;created_at&quot;, &quot;2015-02-12 05:51:59.128755&quot;], [&quot;updated_at&quot;, &quot;2015-02-12 05:51:59.128755&quot;], [&quot;username&quot;, &quot;daniel&quot;]]</span><br><span class="line">         SQL (0.1ms)  INSERT INTO &quot;addresses&quot; (&quot;city&quot;, &quot;created_at&quot;, &quot;street&quot;, &quot;tel&quot;, &quot;updated_at&quot;, &quot;user_id&quot;, &quot;zipcode&quot;) VALUES (?, ?, ?, ?, ?, ?, ?)  [[&quot;city&quot;, &quot;北京&quot;], [&quot;created_at&quot;, &quot;2015-02-12 05:51:59.184579&quot;], [&quot;street&quot;, &quot;北辰西路1号院5号&quot;], [&quot;tel&quot;, &quot;1223423&quot;], [&quot;updated_at&quot;, &quot;2015-02-12 05:51:59.184579&quot;], [&quot;user_id&quot;, 1], [&quot;zipcode&quot;, &quot;100101&quot;]]</span><br></pre></td></tr></table></figure></p>
+<p><code>accepts_nested_attributes_for</code>和<code>fields_for</code>可以逆向生成user和address, 访问编辑页面,可以发现表单中的数据可以自动填充回来:</p>
+</blockquote>
+<p><img src="http://i2.tietuku.com/d13fc866f9f8b7dc.png" alt=""></p>
+<h2 id="删除nested-model"><a href="#删除nested-model" class="headerlink" title="删除nested model"></a>删除nested model</h2><blockquote>
+<p><code>accepts_nested_attributes_for</code>方法还可以简单地删除User相关的address model. 下面就在编辑用户的页面添加一个CheckBox来加入删除地址的功能</p>
+<p>首先, 在user model中加入<code>allow_destroy: true</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class User &lt; ActiveRecord::Base</span><br><span class="line">  has_many :addresses</span><br><span class="line">  accepts_nested_attributes_for :addresses, allow_destroy: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>接下来在表单view中加入删除checkbox. 表单中check_box方法的参数 <code>:_destroy</code> 当单选框被点击时, 其值会被设置为1, 然后”_destroy” =&gt; “1”会被封装到params中, <code>accepts_nested_attributes_for</code>会根据_destroy的值决定是否删除address对象. 大概就是这个意思, 不对之处请多指正.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># app/views/users/_form.html.erb</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">¦ &lt;%= f.label :addresses, &quot;Address&quot; %&gt; &lt;br/&gt;</span><br><span class="line">¦ &lt;%= f.fields_for :addresses do |addresses_form| %&gt;</span><br><span class="line">¦ ¦ &lt;%= addresses_form.label :zipcode, &quot;zipcode&quot; %&gt;</span><br><span class="line">¦ ¦ &lt;%= addresses_form.text_field :zipcode %&gt; &lt;br/&gt;</span><br><span class="line"></span><br><span class="line">¦ ¦ &lt;%= addresses_form.label :city, &quot;city&quot; %&gt;</span><br><span class="line">¦ ¦ &lt;%= addresses_form.text_field :city %&gt; &lt;br/&gt;</span><br><span class="line"></span><br><span class="line">¦ ¦ &lt;%= addresses_form.label :street, &quot;street&quot; %&gt;</span><br><span class="line">¦ ¦ &lt;%= addresses_form.text_field :street %&gt; &lt;br/&gt;</span><br><span class="line"></span><br><span class="line">¦ ¦ &lt;%= addresses_form.label :tel, &quot;Telephone Number&quot; %&gt;</span><br><span class="line">¦ ¦ &lt;%= addresses_form.text_field :tel %&gt; &lt;br/&gt;</span><br><span class="line">¦ ¦ &lt;% if @user.persisted? %&gt;</span><br><span class="line">¦ ¦ ¦ &lt;%= addresses_form.check_box :_destroy %&gt;</span><br><span class="line">¦ ¦ ¦ &lt;%= addresses_form.label :_destroy, &quot;DELETE&quot; %&gt; &lt;br/&gt;</span><br><span class="line">¦ ¦ &lt;% end %&gt;</span><br><span class="line">¦ &lt;% end %&gt;</span><br><span class="line"></span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>最后, 还要在StrongParameters中设置_destroy</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/users_controller.rb</span><br><span class="line"></span><br><span class="line">private</span><br><span class="line"></span><br><span class="line">def user_params</span><br><span class="line">  params.require(:user).permit(</span><br><span class="line">  :username,</span><br><span class="line">  :age,</span><br><span class="line">  addresses_attributes: [:id, :zipcode, :city, :street, :tel, :_destroy]</span><br><span class="line"></span><br><span class="line">  )</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>删除:<br><img src="http://i2.tietuku.com/63f5e698387ae183.png" alt=""><br>删除后:<br><img src="http://i2.tietuku.com/651115caa7f68117.png" alt=""></p>
+</blockquote>
+<h2 id="相关Model的验证"><a href="#相关Model的验证" class="headerlink" title="相关Model的验证"></a>相关Model的验证</h2><blockquote>
+<p>下面就添加验证:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">validates :zipcode, presence: true</span><br><span class="line">validates :city, presence: true</span><br><span class="line">validates :street, presence: true</span><br><span class="line">validates :tel, presence: true</span><br></pre></td></tr></table></figure></p>
+<p>如果我们不填写这几项, 页面会是这样的.<br><img src="http://i2.tietuku.com/79bc3f2175ed7052.png" alt=""></p>
+<p>那么如果某人不想提交地址, 他连用户都无法创建, 这不符合逻辑, 这时候就需要<code>reject_if</code>了选项了, 它会更具条件决定是否执行验证方法. 比如下面的例子:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果不输入邮编, 就不会执行Address Model中的验证</span></span><br><span class="line">accepts_nested_attributes_for <span class="symbol">:address</span>, <span class="symbol">allow_destroy:</span> <span class="literal">true</span>, <span class="symbol">reject_if:</span> proc &#123; <span class="params">|attributes|</span> attributes[<span class="string">'zipcode'</span>].blank? &#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么我们可以这样修改user model</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app/models/user.rb</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> &lt; ActiveRecord::Base</span></span><br><span class="line">  has_many <span class="symbol">:addresses</span></span><br><span class="line">  <span class="comment"># 如果地址全都不填写, 就不会执行验证.</span></span><br><span class="line">  accepts_nested_attributes_for <span class="symbol">:addresses</span>, <span class="symbol">allow_destroy:</span> <span class="literal">true</span>, <span class="symbol">reject_if:</span> <span class="symbol">:all_blank</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># user 还会继续验证</span></span><br><span class="line">  validates <span class="symbol">:username</span>, <span class="symbol">presence:</span> <span class="literal">true</span></span><br><span class="line">  validates <span class="symbol">:age</span>, <span class="symbol">presence:</span> <span class="literal">true</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>下面是address 栏位中什么都不写的视图:<br><img src="http://i2.tietuku.com/f5618fac5bba5664.png" alt=""></p>
+</blockquote>
+<h2 id="添加或者删除项目"><a href="#添加或者删除项目" class="headerlink" title="添加或者删除项目"></a>添加或者删除项目</h2><blockquote>
+<p>用户可能会需要多个地址, 有时候也需要删除地址, 这时候就需要使用Ajax了.</p>
+<p>首先需要让jQuery和turbolink共存, 使用<code>jquery-turbolinks</code> gem.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;gem &apos;jquery-turbolinks&apos;&quot; &gt;&gt; Gemfile</span><br><span class="line">bundle install</span><br><span class="line"></span><br><span class="line"># app/assets/javascripts/application.js</span><br><span class="line">...</span><br><span class="line">//= require jquery</span><br><span class="line">//= require jquery.turbolinks</span><br><span class="line">//= require jquery_ujs</span><br></pre></td></tr></table></figure></p>
+<p>将address 相关的自动抽取成单独的局部视图</p>
+</blockquote>
+<figure class="highlight erb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;fieldset&gt;</span><br><span class="line">&lt;%=<span class="ruby"> f.label <span class="symbol">:zipcode</span>, <span class="string">"zipcode"</span> </span>%&gt;</span><br><span class="line">&lt;%=<span class="ruby"> f.text_field <span class="symbol">:zipcode</span> </span>%&gt; &lt;br/&gt;</span><br><span class="line"></span><br><span class="line">&lt;%=<span class="ruby"> f.label <span class="symbol">:city</span>, <span class="string">"city"</span> </span>%&gt;</span><br><span class="line">&lt;%=<span class="ruby"> f.text_field <span class="symbol">:city</span> </span>%&gt; &lt;br/&gt;</span><br><span class="line"></span><br><span class="line">&lt;%=<span class="ruby"> f.label <span class="symbol">:street</span>, <span class="string">"street"</span> </span>%&gt;</span><br><span class="line">&lt;%=<span class="ruby"> f.text_field <span class="symbol">:street</span> </span>%&gt; &lt;br/&gt;</span><br><span class="line"></span><br><span class="line">&lt;%=<span class="ruby"> f.label <span class="symbol">:tel</span>, <span class="string">"Telephone Number"</span> </span>%&gt;</span><br><span class="line">&lt;%=<span class="ruby"> f.text_field <span class="symbol">:tel</span> </span>%&gt; &lt;br/&gt;</span><br><span class="line">&lt;%=<span class="ruby"> f.hidden_field <span class="symbol">:_destroy</span> </span>%&gt;</span><br><span class="line">&lt;%=<span class="ruby"> link_to <span class="string">"DELETE"</span>, <span class="string">"#"</span>, <span class="class"><span class="keyword">class</span>: "<span class="title">remove_field</span>" </span></span>%&gt;</span><br><span class="line">&lt;/fieldset&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>调用上面的局部视图, 然后创建一个添加的超链接, 注意这里使用了自定义的helper<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># app/views/users/_form.html.erb</span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :addresses, &quot;住所&quot; %&gt;&lt;br /&gt;</span><br><span class="line">&lt;%= f.fields_for :addresses do |builder| %&gt;</span><br><span class="line">&lt;%= render &quot;address_fields&quot;, f: builder %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line">&lt;%= link_to_add_fields &quot;住所追加&quot;, f, :addresses %&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>实现helper <code>link_to_add_fields</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># app/helpers/application_helper.rb</span><br><span class="line">module ApplicationHelper</span><br><span class="line">  def link_to_add_fields(name, f, association)</span><br><span class="line">    new_object = f.object.send(association).klass.new</span><br><span class="line">    id = new_object.object_id</span><br><span class="line">    # 拼接</span><br><span class="line">    fields = f.fields_for(association, new_object, child_index: id) do |builder|</span><br><span class="line">      render(association.to_s.singularize + &quot;_fields&quot;, f: builder)</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    link_to(name, &apos;#&apos;, class: &quot;add_fields&quot;, data: &#123;id: id, fields: fields.gsub(&quot;\n&quot;, &quot;&quot;)&#125;)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>最后使用CoffeeScript来完成Ajax部分, 添加和删除功能:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># app/assets/javascripts/user.js.coffee</span><br><span class="line">$ -&gt;</span><br><span class="line">  $(&apos;form&apos;).on &apos;click&apos;, &apos;.remove_fields&apos;, (event) -&gt;</span><br><span class="line">  $(this).prev(&apos;input[type=hidden]&apos;).val(&apos;1&apos;)</span><br><span class="line">  $(this).closest(&apos;fieldset&apos;).hide()</span><br><span class="line">  event.preventDefault()</span><br><span class="line"></span><br><span class="line">  $(&apos;form&apos;).on &apos;click&apos;, &apos;.add_fields&apos;, (event) -&gt;</span><br><span class="line">  time = new Date().getTime()</span><br><span class="line">  regexp = new RegExp($(this).data(&apos;id&apos;), &apos;g&apos;)</span><br><span class="line">  $(this).before($(this).data(&apos;fields&apos;).replace(regexp, time))</span><br><span class="line">  event.preventDefault()</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/嵌套属性-accepts-nested-attributes-for-field-for-fields-for-reject-if/" rel="tag">#嵌套属性 accepts_nested_attributes_for field_for fields_for reject_if</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/11/polymorphic/" rel="next" title="Rails 实现多态(polymorphic) 关系">
+                <i class="fa fa-chevron-left"></i> Rails 实现多态(polymorphic) 关系
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/13/validation/" rel="prev" title="对Model校验">
+                对Model校验 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现嵌套表单"><span class="nav-number">2.</span> <span class="nav-text">实现嵌套表单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除nested-model"><span class="nav-number">3.</span> <span class="nav-text">删除nested model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关Model的验证"><span class="nav-number">4.</span> <span class="nav-text">相关Model的验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加或者删除项目"><span class="nav-number">5.</span> <span class="nav-text">添加或者删除项目</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
