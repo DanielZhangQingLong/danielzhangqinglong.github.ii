@@ -306,6 +306,13 @@ before_action会在action 执行前被执行, 我们来看看如何使用:123456
 
           
             
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/02/09/action-filter/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/09/action-filter/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -406,6 +413,10 @@ before_action会在action 执行前被执行, 我们来看看如何使用:123456
 
           
   <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/02/09/action-filter/"
+           data-title="Rails action的过滤器" data-url="http://yoursite.com/2015/02/09/action-filter/">
+      </div>
     
   </div>
 
@@ -616,9 +627,28 @@ before_action会在action 执行前被执行, 我们来看看如何使用:123456
 
   
 
+  
+    
+  
 
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"danielhexo"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
 
   
+    
+  
+
+
 
 
 
