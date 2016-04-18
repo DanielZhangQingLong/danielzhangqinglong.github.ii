@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -95,13 +95,13 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Muse',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
     duoshuo: {
       userId: 0,
-      author: 'Author'
+      author: '博主'
     }
   };
 </script>
@@ -109,7 +109,7 @@
   <title> Hexo </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -166,7 +166,7 @@
             
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
-            Startseite
+            首页
           </a>
         </li>
       
@@ -176,7 +176,7 @@
             
               <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
-            Archiv
+            归档
           </a>
         </li>
       
@@ -186,7 +186,7 @@
             
               <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
-            Tags
+            标签
           </a>
         </li>
       
@@ -199,7 +199,7 @@
             
               <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
             
-            Suche
+            搜索
           </a>
         </li>
       
@@ -259,176 +259,6 @@
             
               
                 
-                <a class="post-title-link" href="/2015/04/04/grape-with-rails/" itemprop="url">
-                  Rails使用grape生成REST API(一)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
-            <time itemprop="dateCreated" datetime="2015-04-04T23:03:34+08:00" content="2015-04-04">
-              2015-04-04
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">in</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Rails/" itemprop="url" rel="index">
-                    <span itemprop="name">Rails</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="安装gem"><a href="#安装gem" class="headerlink" title="安装gem"></a>安装gem</h2><blockquote>
-<p>新建一个Rails项目, 添加<code>grape</code>gem</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line">gem &apos;grape&apos;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><code>bundle install</code></p>
-</blockquote>
-<h2 id="生成model"><a href="#生成model" class="headerlink" title="生成model"></a>生成model</h2><blockquote>
-<p>生成zip(邮编)model</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rails g model zip zip_code:string  address:string</span><br><span class="line">  invoke  active_record</span><br><span class="line">  create  db/migrate/#&#123;yyyymmddssssss&#125;_create_zips.rb</span><br><span class="line">  create  app/models/zip.rb</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>准备初始化数据:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html</span><br><span class="line"></span><br><span class="line">one:</span><br><span class="line">  zip_code: 10011</span><br><span class="line">  address: 北京市朝阳区</span><br><span class="line"></span><br><span class="line">two:</span><br><span class="line">  zip_code: 10050</span><br><span class="line">  address: 双鸭山林业局</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>导入数据库:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rake fixture:load</span><br></pre></td></tr></table></figure>
-<h2 id="实现API部分"><a href="#实现API部分" class="headerlink" title="实现API部分"></a>实现API部分</h2><blockquote>
-<p>接下来就使用grape实现API部分, 新建文件<code>app/api/zip_api.rb</code>, 具体代码如下:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Zip &lt; Grape::API</span><br><span class="line">  format :json</span><br><span class="line">  get &quot;zip/:zip_code&quot; do</span><br><span class="line">    zip = Zip.where(zip_code: params[:zip_code]).first</span><br><span class="line">    if zip</span><br><span class="line">      zip.to_json</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>以上相当于不使用grape在Rails这样写:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># routes.rb</span><br><span class="line">get &quot;zip/:zip_code&quot; =&gt; &quot;zip#show&quot;, format: false</span><br><span class="line"></span><br><span class="line"># controller</span><br><span class="line"></span><br><span class="line">class ZipsController &lt; ApplicationController</span><br><span class="line">  def show</span><br><span class="line">    zip = Zip.where(zip_code: params[:zip_code]).first</span><br><span class="line">    if zip</span><br><span class="line">      json = zip.to_json</span><br><span class="line">    end</span><br><span class="line">    render text: json</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>这里涉及到了2个方法:</p>
-</blockquote>
-<ul>
-<li><code>format(format_to_response)</code> 指定API的响应格式, 可以指定xml, json, txt等格式</li>
-<li><code>get(paths=[&#39;/&#39;], options={}, &amp;block)</code> : 表示处理客户端的GET请求(post, put, delete等)<ul>
-<li><code>paths=[&#39;/&#39;]</code> 表示与请求对应的url, 数组可以指定多个url</li>
-<li><code>[options]</code> 指定和paths匹配的条件</li>
-<li><code>[block]</code> 具体逻辑代码</li>
-</ul>
-</li>
-<li><code>params</code> 从中获取请求参数</li>
-</ul>
-<h2 id="部署到Rails中-让Rails加载这部分代码"><a href="#部署到Rails中-让Rails加载这部分代码" class="headerlink" title="部署到Rails中(让Rails加载这部分代码)"></a>部署到Rails中(让Rails加载这部分代码)</h2><blockquote>
-<p>在Rails应用启动时加载这部分代码:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># config/application.rb</span><br><span class="line">config.paths.add File.join(&quot;app&quot;, &quot;api&quot;), glob: File.join(&quot;**&quot;, &quot;*.rb&quot;)</span><br><span class="line">config.autoload_paths += Dir[Rails.root.join(&quot;app&quot;, &quot;api&quot;, &quot;*&quot;)]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>添加到route中:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># config/routes.rb</span><br><span class="line">mount ZipAPI =&gt; &quot;/&quot;</span><br></pre></td></tr></table></figure>
-<h2 id="浏览器访问"><a href="#浏览器访问" class="headerlink" title="浏览器访问"></a>浏览器访问</h2><blockquote>
-<p>做完上面的工作之后, 启动rails项目, 访问<a href="http://localhost:3000/" target="_blank" rel="external">http://localhost:3000/</a> , 打开浏览器的console, 使用XMLHttpRequest访问API :</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var xhr = new XMLHttpRequest; </span><br><span class="line">xhr.open(&quot;get&quot;, &quot;http://localhost:3000/zip/10050&quot;); </span><br><span class="line">xhr.addEventListener(&quot;load&quot;, function()&#123;</span><br><span class="line">　console.log(this.responseText); </span><br><span class="line">&#125;);</span><br><span class="line">xhr.send();</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># =&gt; </span><br><span class="line">&quot;&#123;\&quot;id\&quot;:298486374,\&quot;zip_code\&quot;:\&quot;10050\&quot;,\&quot;address\&quot;:\&quot;双鸭山林业局\&quot;,\&quot;created_at\&quot;:\&quot;2015-04-04T11:53:57.000Z\&quot;,\&quot;updated_at\&quot;:\&quot;2015-04-04T11:53:57.000Z\&quot;&#125;&quot;</span><br></pre></td></tr></table></figure>
-<p><img src="http://i2.tietuku.com/34f96188495b8106.png"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
-<p>我参照<a href="https://github.com/intridea/grape" target="_blank" rel="external">grape文档</a>做了些简化修改, 实现了简单的API请求, 下一篇文章将更加详细介绍一下Grape的使用, 比如添加或者删除功能的实现方法, 并改进现在的代码.</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2015/04/04/sidekiq/" itemprop="url">
                   Rails使用sidekiq进行异步任务处理
                 </a>
@@ -442,7 +272,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-04-04T08:34:50+08:00" content="2015-04-04">
               2015-04-04
             </time>
@@ -454,7 +284,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -611,7 +441,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-04-03T13:48:33+08:00" content="2015-04-03">
               2015-04-03
             </time>
@@ -623,7 +453,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -774,7 +604,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-04-01T11:30:53+08:00" content="2015-04-01">
               2015-04-01
             </time>
@@ -786,7 +616,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -938,7 +768,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-31T19:33:43+08:00" content="2015-03-31">
               2015-03-31
             </time>
@@ -950,7 +780,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1078,7 +908,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-31T09:27:29+08:00" content="2015-03-31">
               2015-03-31
             </time>
@@ -1090,7 +920,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1223,7 +1053,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-30T13:32:07+08:00" content="2015-03-30">
               2015-03-30
             </time>
@@ -1235,7 +1065,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Ruby/" itemprop="url" rel="index">
@@ -1368,7 +1198,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-29T08:31:02+08:00" content="2015-03-29">
               2015-03-29
             </time>
@@ -1380,7 +1210,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Ruby/" itemprop="url" rel="index">
@@ -1692,7 +1522,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-26T10:53:25+08:00" content="2015-03-26">
               2015-03-26
             </time>
@@ -1704,7 +1534,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Ruby/" itemprop="url" rel="index">
@@ -2033,7 +1863,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-24T16:33:43+08:00" content="2015-03-24">
               2015-03-24
             </time>
@@ -2045,7 +1875,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Ruby/" itemprop="url" rel="index">
@@ -2359,6 +2189,437 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/22/ruby-metaprogramming-chpt2/" itemprop="url">
+                  Ruby 元编程 第二章 对象模型
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-22T12:01:35+08:00" content="2015-03-22">
+              2015-03-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ruby/" itemprop="url" rel="index">
+                    <span itemprop="name">Ruby</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Ruby语言中到处是对象这个东西还包含一种编程语言的其他结构, 如<code>class</code>, <code>module</code>和<code>instance variable</code>. 元编程操作的就是这些东西.</p>
+<p>首先需要清楚一个概念: 系统中的所有这些结构被称作是<code>object model</code>. 要是弄清楚了<code>object model</code>你就会找到很多问题的答案, 比如, 某个方法是来自于哪个类? 当我include一个module时发生了什么?<br>object model 就是ruby的核心, 掌握了它就掌握了ruby中很强大的技术, 同时也可以帮你避免很多陷阱.</p>
+</blockquote>
+<h2 id="Open-Classes-打开类"><a href="#Open-Classes-打开类" class="headerlink" title="Open Classes (打开类)"></a>Open Classes (打开类)</h2><blockquote>
+<p>在解释<code>Open Classes</code> 之前, 先看一个例子, 下面的方法的作用是去掉字符串所有的符号和空白:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># object_model/alphanumeric.rb</span><br><span class="line">def to_alphanumeric(s) </span><br><span class="line">  s.gsub(/[^\w\s]/, &apos;&apos;)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但是这个方法并不十分面向对象, 为什么不可以把这个方法给String类呢? 其实Ruby的设计者早就为我们想好了, Ruby允许你打开这个类, 为其添加方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class String</span><br><span class="line">  def to_alphanumeric</span><br><span class="line">    s.gsub(/[^\w\s]/, &apos;&apos;)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样我就可以这样直接调用: <code>&quot;some_str&quot;.to_alphanumeric</code></p>
+</blockquote>
+<h3 id="Inside-Class-Definitions-类定义的内部"><a href="#Inside-Class-Definitions-类定义的内部" class="headerlink" title="Inside Class Definitions (类定义的内部)"></a>Inside Class Definitions (类定义的内部)</h3><blockquote>
+<p>在Ruby中定义class的代码和其他代码是没有区别的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">3.times do</span><br><span class="line">  class C</span><br><span class="line">    puts &quot;Hello&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># =&gt;</span><br><span class="line">Hello</span><br><span class="line">Hello</span><br><span class="line">Hello</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Ruby在类中执行代码, 和在别的地方无异, 是不是定义了3次<code>class C</code>呢? 其实不是, 可以通过下面的小例子来鉴别:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class D</span><br><span class="line">  def x; &apos;x&apos;; end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class D</span><br><span class="line">  def y; &apos;y&apos;; end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = D.new</span><br><span class="line"></span><br><span class="line">obj.x # =&gt; &quot;x&quot;</span><br><span class="line">obj.y # =&gt; &quot;y&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>第一次正常定义<code>class D</code>, 因为这时候并没有定义<code>class D</code>, 而第二次Ruby发现<code>class D</code>已经被定义, 就会打开这个已经存在的D, 在里面定义一个y方法.<br>从某种意义上来讲, Ruby中的<code>class</code>关键字更像是一个域操作符而非类声明.<br>你甚至于可以打开Ruby标准库中的类比如<code>String</code>, <code>Array</code>. 来看看实际中, 这种技巧是如何使用的吧:</p>
+</blockquote>
+<h4 id="The-Money-Example"><a href="#The-Money-Example" class="headerlink" title="The Money Example"></a>The Money Example</h4><blockquote>
+<p>下面的例子介绍了如何把把一个<code>money</code>gem的方法扩展到Ruby的标准库<code>Numeric</code>中.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">require &quot;money&quot;</span><br><span class="line"></span><br><span class="line">class Numeric</span><br><span class="line">  def to_money(currency = nil)</span><br><span class="line">    Money.from_numeric(self, currency || Money.default_currency)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h4 id="The-Problem-with-Open-Classes-Open-Classes可能出现的问题"><a href="#The-Problem-with-Open-Classes-Open-Classes可能出现的问题" class="headerlink" title="The Problem with Open Classes (Open Classes可能出现的问题)"></a>The Problem with Open Classes (Open Classes可能出现的问题)</h4><blockquote>
+<p>需要注意: 我们新添加的方法, 如果如果要是与类中的方法同名, 那么新方法就会覆盖掉原来的方法, 所以, 要么确信自己的方法需要兼容原来的方法, 要么就另外起一个方法名.</p>
+</blockquote>
+<h5 id="查看实例方法集合"><a href="#查看实例方法集合" class="headerlink" title="查看实例方法集合"></a>查看实例方法集合</h5><blockquote>
+<p>在扩展一个class之前需要查看类的实例所有方法集合, 从而决定如何为方法命名避免冲突, 这里有个技巧, 比如要查看数组的实例是否有<code>replace</code>方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[].methods.grep /^re/ # =&gt; [:reverse_each, :reverse, ..., :replace, ...]</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line">Array.instance_methods.grep /^re/ # =&gt; [:reverse_each, :reverse, ..., :replace, ...]</span><br></pre></td></tr></table></figure>
+<h2 id="Inside-the-Object-Model-Object-Model的内部"><a href="#Inside-the-Object-Model-Object-Model的内部" class="headerlink" title="Inside the Object Model (Object Model的内部)"></a>Inside the Object Model (Object Model的内部)</h2><blockquote>
+<p>在Object Model中可以可以了解到<code>objects</code>, <code>classes</code> <code>constants</code>的原理. 除了<code>Open Classes</code>, 还有更多的东西有待于研究.</p>
+</blockquote>
+<h3 id="What’s-in-an-Object"><a href="#What’s-in-an-Object" class="headerlink" title="What’s in an Object"></a>What’s in an Object</h3><blockquote>
+<p>看下面的代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class MyClass </span><br><span class="line">  def my_method</span><br><span class="line">    @v = 1</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = MyClass.new</span><br><span class="line"></span><br><span class="line">obj.class</span><br><span class="line"># =&gt; MyClass</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>打开Ruby的解释器, 看看<code>obj</code>这个对象内部, 研究一下到底里面有什么:</p>
+</blockquote>
+<h4 id="Instance-Variables-实例变量"><a href="#Instance-Variables-实例变量" class="headerlink" title="Instance Variables (实例变量)"></a>Instance Variables (实例变量)</h4><blockquote>
+<p>我可以通过<code>Object#instance_variables</code>方法来获取这些实例变量:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">obj.my_method </span><br><span class="line">obj.instance_variables # =&gt; [:@v]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意在获取实例变量<code>[:@v]</code>之前, 对象<code>obj</code>首先调用了<code>my_method</code>, 这不同于Java等其他静态语言, Ruby中一个对象的类和它的实例变量直接是没有连接的, 只有在为实例变量赋值时, 对象才有这个变量, 你可以把实例变量的名字和值想象成hash的key和value. 如果没有调用<code>my_method</code>方法, 那么obj将永远不会有<code>@v</code>这个实例变量.</p>
+</blockquote>
+<h4 id="Methods-方法"><a href="#Methods-方法" class="headerlink" title="Methods (方法)"></a>Methods (方法)</h4><blockquote>
+<p>对象除了有实力变量以外还有方法. 可以使用<code>Object#methods</code>获取这些方法. 大多数的对象都会从父类<code>Object</code>继承一些方法. 所以这些方法的集合会有很多方法, 可以使用上一节的例子中的<code>grep</code>方法来过滤掉不想要的.<br>如果”劈开”Ruby的解释器观察<code>obj</code>你会发现这个对象没有真正的持有所有这些方法. 它包含一个实例变量<code>@v</code>和一个类的引用. 但是没有方法, 那么方法去了哪里?</p>
+<p>看这张示意图:<br><img src="http://i3.tietuku.com/1b1dc3bde3454359.png"></p>
+<p>实力变量存储于对象内部, 而方法则在类的内部:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String.instance_methods == &quot;abc&quot;.methods # =&gt; true </span><br><span class="line">String.methods == &quot;abc&quot;.methods # =&gt; false</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于类来说 <code>methods</code>和<code>instance_methods</code>是两码事.</p>
+</blockquote>
+<h3 id="The-Truth-About-Classes"><a href="#The-Truth-About-Classes" class="headerlink" title="The Truth About Classes"></a>The Truth About Classes</h3><blockquote>
+<p>classes什么都不是, 但是objects却很重要. 因为class本身就是object, 适用于object的也适用于class. class和object一样, 有它自己的class:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;hellw&quot;.class # =&gt; String</span><br><span class="line">String.class # =&gt; Class</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其他语言如Java中, Class的实例仅仅是一个class的只读描述, 而在Ruby中, 你可以在程序运行时来修改这些描述. 比如之前的Open Classes<br>像其他对象一样, Class的对象class也是有方法的. object的<code>methods</code> 也是其class的<code>instance_methods</code> :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># The &quot;false&quot; argument here means: ignore inherited methods</span><br><span class="line">Class.instance_methods(false) # =&gt; [:allocate, :new, :superclass]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>allocate</code>方法是在我们<code>new</code>对象的时候被Class对象来调用用以分配一块内存.<br>另外, <code>superclass</code>方法可以获取某个Class对象(如: Array, String)的父类:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Array.superclass # =&gt; Object</span><br><span class="line">Object.superclass # =&gt; BasicObject</span><br><span class="line">BasicObject.superclass # =&gt; nil</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>可以看出继承关系是: Array &lt; Object &lt; BasicObject, BasicObject是Ruby继承树的根.</p>
+</blockquote>
+<h4 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h4><blockquote>
+<p>来看看Class的父类是什么:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class.superclass # =&gt; Module</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>是Module, 同理, 每个class也是一个module, 严格来讲, <code>class</code>是<code>module</code> 在加上3个方法(new, allocate, and superclass). 允许你创建对象, 或者把类放进分类树中.<br>可见, class和module太像了, 那么怎么准确的使用它们呢? </p>
+<ul>
+<li>module用于组织代码结构, 你可以把一段代码包含进另外一段的时候使用module</li>
+<li>当你要继承或者实例化的时候使用class, 因为它有这几个额外的方法.</li>
+</ul>
+</blockquote>
+<h4 id="Putting-It-All-Together"><a href="#Putting-It-All-Together" class="headerlink" title="Putting It All Together"></a>Putting It All Together</h4><blockquote>
+<p>看这段代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyClass; end</span><br><span class="line">obj1 = MyClass.new</span><br><span class="line">obj2 = MyClass.new</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><img src="http://i3.tietuku.com/bf32a0d194bd8cac.png"></p>
+<p>这张图反映了上述继承关系, Class和通常对象相处的十分融洽.<br>我还可以使用一个变量引用一个类:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">my_class = MyClass</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这行代码的含义是<code>MyClass</code>和<code>my_class</code>都指向了<code>Class</code>的同一个实例, 唯一的不同是<code>my_class</code>是一个变量而<code>MyClass</code>是一个常量. 也就是说: <strong><em> class仅仅是object, class name仅仅是常量</em></strong></p>
+</blockquote>
+<h4 id="Constants-常量"><a href="#Constants-常量" class="headerlink" title="Constants (常量)"></a>Constants (常量)</h4><blockquote>
+<p>任何一个以大写字母开头, 包括类名和module名在内都可以被叫做常量(constants).<br>module把里面的class或者module以类似于文件系统的树状结构组织起来的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">module MyModule</span><br><span class="line">  MyConstant = &apos;Outer constant&apos;</span><br><span class="line"></span><br><span class="line">  class MyClass</span><br><span class="line">    MyConstant = &apos;Inner constant&apos;</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>MyModule的MyConstant和MyClass的MyConstant是不同的, 它们属于不同的scope:<br><img src="http://i3.tietuku.com/bfab05bdfdede2c6.png"></p>
+</blockquote>
+<h5 id="The-Paths-of-Constants-常量的获取路径"><a href="#The-Paths-of-Constants-常量的获取路径" class="headerlink" title="The Paths of Constants 常量的获取路径"></a>The Paths of Constants 常量的获取路径</h5><blockquote>
+<p>别忘记一点, module中的类其实也是常量. 刚刚说过, 常量像是嵌套的目录和文件, 那么一定有一种方法来定位这些路径和文件. Ruby使用双冒号来定位它们, 可以将其理解为每一个<code>::</code>相当于文件系统的<code>/</code>(Linux).</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">module M</span><br><span class="line">  class C</span><br><span class="line">    X = &apos;a constant&apos;</span><br><span class="line">  end</span><br><span class="line">  C::X # =&gt; &quot;a constant&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">M::C::X # =&gt; &quot;a constant&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果在一个很深的目录, 可以使用以<code>::</code>开头的形式获取根路径的绝对路径:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Y = &apos;a root-level constant&apos;</span><br><span class="line"></span><br><span class="line">module M</span><br><span class="line">  Y = &apos;a const in M&apos;</span><br><span class="line">  puts Y # =&gt; &quot;a constant in M&quot;</span><br><span class="line">  puts ::Y # =&gt;  &apos;a root-level constant&apos;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Module 类还提供了实例方法和类方法来获取常量, 有点让人困惑的是都叫做<code>constants</code>. 实例方法<code>Module#constants</code>在当前scope中返回所有的常量, 类似于文件系统的<code>ls</code>命令. 类方法<code>Module.constants</code>返回程序中所有的top-level的常量, 注意包含类名:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">M.constants # =&gt; [:C, :Y]</span><br><span class="line">Module.constants.include? :Object # =&gt; true</span><br><span class="line">Module.constants.include? :Module # =&gt; true</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class MyD</span><br><span class="line">  class MyC</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">Module.constants.include? :MyD #=&gt; true</span><br><span class="line">Module.constants.include? :MyC #=&gt; false</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>Module.nesting</code>获取当前的路径:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">module M</span><br><span class="line">  class C</span><br><span class="line">    module M2 </span><br><span class="line">      Module.nesting # =&gt; [M::C::M2, M::C, M]</span><br><span class="line">    end </span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h5 id="The-Rake-Example"><a href="#The-Rake-Example" class="headerlink" title="The Rake Example"></a>The Rake Example</h5><blockquote>
+<p>不管module也好, class也好, 它们声明的都是常量, 在最早的Rake中, 直接就使用了class来声明Task 和 FileTask, 这样就很容易发生命名冲突,  后来就在外面套了一层module:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">module Rake</span><br><span class="line">  class Task</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样就避免了发生冲突, 如果想要使用Task类需要这样定位<code>Rake::Task</code>, 像<code>Rake</code>这样的module, 存在的意义仅仅是常量的容器, 就把它称作命名空间(Namespace).<br>但是这样就出现了一个问题, 一些程序员的机器还在使用旧的版本的<code>rake</code>, 没有Rake这个命名空间, 所以Rake的作者给出的解决方案是提供命令行选项<code>classic-namespace</code>来加载一个ruby的源文件, 这个源文件吧新的更安全的常量名称赋给旧的不安全的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># gems/rake-0.9.2.2/lib/rake/classic_namespace.rb</span><br><span class="line">Task = Rake::Task</span><br><span class="line">FileTask = Rake::FileTask </span><br><span class="line">FileCreationTask = Rake::FileCreationTask # ...</span><br></pre></td></tr></table></figure>
+<h3 id="Objects-and-Classes-Wrap-up-对象和类的小结"><a href="#Objects-and-Classes-Wrap-up-对象和类的小结" class="headerlink" title="Objects and Classes Wrap-up (对象和类的小结)"></a>Objects and Classes Wrap-up (对象和类的小结)</h3><blockquote>
+<p>什么是object? 它就是一堆实例变量, 加上一个到class的链接. object的方法并不在object中, 而是在object的class中, 而在class中这些方法又被叫做instance 方法.<br>什么是class? 它是object(Class的实例), 加上一列实例方法和一个到父类的链接. <code>Class</code>是<code>Module</code>的子类, 所以<code>class</code>也是<code>module</code><br>和其他的object一样, <code>class</code>也有它自己的方法, 比如说<code>new</code>, 像其他object一样, <code>class</code>也要通过引用来访问, 这个引用就是class的名字, 它是一个常量(constant)</p>
+</blockquote>
+<h4 id="Loading-and-Requiring"><a href="#Loading-and-Requiring" class="headerlink" title="Loading and Requiring"></a>Loading and Requiring</h4><h5 id="load方法"><a href="#load方法" class="headerlink" title="load方法"></a>load方法</h5><blockquote>
+<p>如果要加载<code>motd.rb</code>这个文件你可能会这样写:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">load(&apos;motd.rb&apos;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样会引起一个问题, 加入<code>motd.rb</code>这样文件中存在class和variable, 变量在文件加载完毕后会消失, 但是文机制的类名(常量, 目录)可能会污染程序的结构. 那么添加一个参数<code>true</code>就会避免这种情况:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">load(&apos;motd.rb&apos;, true)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Ruby会创建一个匿名的module来包裹<code>motd.rb</code>定义的所有常量, 起到命名空间的作用, 执行完后再删除这个module. </p>
+</blockquote>
+<h5 id="require-方法"><a href="#require-方法" class="headerlink" title="require 方法"></a>require 方法</h5><blockquote>
+<p>require和load很相似, 但是, 它们的目的不同, <code>load</code>是用来导入执行的代码, 而<code>require</code>用来引入库.</p>
+</blockquote>
+<h2 id="What-Happens-When-You-Call-a-Method-当你调用一个方法时-发生了什么"><a href="#What-Happens-When-You-Call-a-Method-当你调用一个方法时-发生了什么" class="headerlink" title="What Happens When You Call a Method? (当你调用一个方法时, 发生了什么?)"></a>What Happens When You Call a Method? (当你调用一个方法时, 发生了什么?)</h2><blockquote>
+<p>当你在调用一个方法的时候, Ruby做了两件事情:</p>
+</blockquote>
+<ul>
+<li>它找到方法, 这个过程被叫做方法查找(method lookup)</li>
+<li>它执行方法, Ruby需要调用自己<code>self.</code></li>
+</ul>
+<blockquote>
+<p>这两个步骤在面向对象的语言中是必须要做的. 首先来看看方法查找(method lookup)</p>
+</blockquote>
+<h3 id="Method-Lookup-方法查找"><a href="#Method-Lookup-方法查找" class="headerlink" title="Method Lookup (方法查找)"></a>Method Lookup (方法查找)</h3><blockquote>
+<p>当你在一个对象上调用方法时, Ruby会窥视该对象查找调用的方法.<br>我们先来弄清楚2个概念: <code>receiver</code>和<code>ancestors chain</code>: 即接收者和祖先调用链:</p>
+<p>receiver 就是你所调用方法的对象, 比如<code>my_string.reverse()</code>, <code>my_string</code>就是receiver.<br><code>ancestors chain</code>就是 <code>receiver&#39;s Class -&gt; 父类 -&gt; 前者的父类 -&gt; ... -&gt; 直到Ruby的基类BasicObject</code>,这种继承关系就是了.</p>
+<p>那么现在就可以解释这个过程了: 一个方法在被调用时, Ruby会首先在当前类中查找有没有这个方法, 没有找父类, 以此类推, 直到找到位置, 如果已经查找到了<code>BasicObject</code>仍不见这个方法, 那么Ruby就会抛异常:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NoMethodError: undefined method ...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们可以通过<code>ancestors</code> 来获取所有的祖先类:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySubclass.ancestors # =&gt; [MySubclass, MyClass, Object, Kernel, BasicObject]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但是请注意这个Kernel在调用链中是做什么的呢?</p>
+</blockquote>
+<h4 id="Modules-and-Lookup"><a href="#Modules-and-Lookup" class="headerlink" title="Modules and Lookup"></a>Modules and Lookup</h4><blockquote>
+<p>我们发现在Object和BasicObject之间被插进去了Kernel 这个module, 首先要说明一点调用链是包含module的, 不仅仅指的是class.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">module M1</span><br><span class="line">  def my_method</span><br><span class="line">    &apos;M1#my_method()&apos;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class C</span><br><span class="line">  include M1</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class D &lt; C; end</span><br><span class="line"></span><br><span class="line">D.ancestors # =&gt; [D, C, M1, Object, Kernel, BasicObject]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>include</code> 方法是把mudule M1插入了方法调用链中, 它的特点是插入该类在调用链的后面位置, M1是C的祖先.<br>从Ruby2.0以后, 加入一个新的方法<code>prepend</code>, 它和<code>include</code>恰好相反, 其特点是插入该类在调用链的前面:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class C2</span><br><span class="line">  prepend M2</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class D2 &lt; C2; end</span><br><span class="line"></span><br><span class="line">D2.ancestors # =&gt; [D2, M2, C2, Object, Kernel, BasicObject]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>下面的图反映了<code>include</code>和<code>prepend</code>的不同之处:</p>
+<p><img src="http://i2.tietuku.com/40d72a7fbea95b59.png"></p>
+</blockquote>
+<h4 id="Multiple-Inclusions"><a href="#Multiple-Inclusions" class="headerlink" title="Multiple Inclusions"></a>Multiple Inclusions</h4><blockquote>
+<p>这里我觉得书上貌似有些小问题, 我对于这种多次包含关系是针对的是以哪个module为准, 这个module指的是所定义的那个module :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">module M1; end</span><br><span class="line"></span><br><span class="line">module M2 </span><br><span class="line">  include M1</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">module M3</span><br><span class="line">  prepend M1</span><br><span class="line">  include M2</span><br><span class="line">end</span><br><span class="line">M1.ancestors # =&gt; [M1]</span><br><span class="line">M2.ancestors # =&gt; [M2, M1]</span><br><span class="line">M3.ancestors # =&gt; [M1, M3, M2]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>并不像书上说的谁覆盖掉谁那样.</p>
+</blockquote>
+<h4 id="The-Kernel"><a href="#The-Kernel" class="headerlink" title="The Kernel"></a>The Kernel</h4><blockquote>
+<p>这个Kernel到底是做什么的, 为什么要放在Object 和 BasicObject之间呢? 下面就研究一下:<br>Ruby有一些方法比如<code>print</code>, <code>puts</code>你可以在任意地方使用, 好像每个对象都有<code>print</code>方法, 事实上像<code>print</code>这样方法就是这个<code>Kernel</code>的私有的实例方法(private instance method). </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Kernel.private_instance_methods.grep(/^pr/) # =&gt; [:printf, :print, :proc]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>而Kernel又包含了Object, Kernel就在几乎所有对象的调用链中了, 所以你可以在任意地方使用<code>print</code>方法, 仿佛<code>print</code>是关键字, 但事实上它是方法, 很酷!<br>你甚至可以利用该机制, 结合前面学习的<code>Open Classes</code>, 打开Kernel, 添加方法, 给所有对象使用. 比如说我们使用的一些gem就这么做了, 看接下来的例子:</p>
+</blockquote>
+<h5 id="The-Awesome-Print-Example"><a href="#The-Awesome-Print-Example" class="headerlink" title="The Awesome Print Example"></a>The Awesome Print Example</h5><blockquote>
+<p><code>awesome_print</code> gem 可以打印出带有缩进(indentation)的Ruby对象, 比如:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">require &quot;awesome_print&quot;</span><br><span class="line">local_time = &#123;:city =&gt; &quot;Rome&quot;, :now =&gt; Time.now &#125;</span><br><span class="line">ap local_time, :indent =&gt; 2</span><br><span class="line"></span><br><span class="line"># =&gt;</span><br><span class="line">&#123;</span><br><span class="line">  :city =&gt; &quot;Rome&quot;,</span><br><span class="line">  :now =&gt; 2013-11-30 12:51:03 +0100</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>ap</code>就是awesome_print gem提供的, 可以在任意地方使用, 原因就是它打开了Kernel, 添加了方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># gems/awesome_print-1.1.0/lib/awesome_print/core_ext/kernel.rb</span><br><span class="line">module Kernel</span><br><span class="line">  def ap(abject, options = &#123;&#125;)</span><br><span class="line">    ...</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="Method-Execution-方法执行"><a href="#Method-Execution-方法执行" class="headerlink" title="Method Execution(方法执行)"></a>Method Execution(方法执行)</h2><blockquote>
+<p>现在找到了方法, 那么就看看第二件事, 执行方法. 试想一下你是Ruby的解释器, 某个调用<code>my_method</code>这个方法, 你马上向右然后在继承关系链上向上查找该方法, 假设<code>my_method</code>方法是这样定义的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def my_method</span><br><span class="line">  temp = @x + 1</span><br><span class="line">  my_other_method(temp)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p> 要执行这个方法, 首先要弄清楚下面的2个问题: </p>
+</blockquote>
+<ul>
+<li>实例变量属于什么对象?</li>
+<li><code>my_other_method</code>应该在什么对象上调用?<blockquote>
+<p>答案都是<code>receiver</code>.</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="The-self-Keyword"><a href="#The-self-Keyword" class="headerlink" title="The self Keyword"></a>The self Keyword</h3><blockquote>
+<p>当前被执行的代码所在的Ruby对象, 也就是当前对象(current object), 使用<code>self</code>关键字表示.<br>在给定时间内只有一个对象可以充当<code>self</code>的角色, 没有什么对象可以一直地充当这个角色. 当你在调用执行方法时, <code>receiver</code>就是self. 从这一刻起, 所有的实例变量就是<code>self</code>的实例变量, 所有的没有指定接收者的方法就是在<code>self</code>上调用的方法. 只要你的代码在某个对象上调用方法, 那么这个方法就变成了<code>self</code>.<br>下面的例子巧妙地解释了<code>self</code>:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  def testing_self</span><br><span class="line">    @var = 10     # An instance variable of self</span><br><span class="line">    my_method()   # Same as self.my_method()</span><br><span class="line">    self</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def my_method</span><br><span class="line">    @var = @var + 1</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">obj = MyClass.new</span><br><span class="line">obj.testing_self  # =&gt; #&lt;MyClass:0x007f93ab08a728 @var=11&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>testing_self</code>方法一旦被调用, 接收者obj变为<code>self</code>. 进而<code>@var</code>就是<code>obj</code>的实例变量, <code>my_method</code>方法也在<code>obj</code>对象上调用. 当<code>my_method</code>被执行的时候, <code>obj</code>还是<code>self</code>, 所以, <code>@var</code>还是<code>obj</code>的实例变量. 最后<code>testing_self</code>返回<code>self</code></p>
+<p>如果想要成为Ruby大师, 就应该时刻搞清楚哪个对象扮演<code>self</code>的角色. 大多数情况下很简单, 只需要弄清楚哪个对象是刚才方法的接收者. 但是需要知道下面的知识点:</p>
+</blockquote>
+<h4 id="The-Top-Level"><a href="#The-Top-Level" class="headerlink" title="The Top Level"></a>The Top Level</h4><blockquote>
+<p>我们知道每当在一个对象上调用方法时, 该对象就变成了<code>self</code>. 但是如果没有调用任何方法的话谁是<code>self</code>, 我在irb上做了这样的实验:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># irb</span><br><span class="line">self      #=&gt; main</span><br><span class="line">self.class # =&gt; Object</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当开始运行一段Ruby程序的时候, Ruby解释器会创建一个叫做main的对象, 我们的需要就运行其中. 这个对象有时候被称为<code>top-level context</code>(顶级上下文).因为这个对象是你程序调用栈的最上层.<br>注意: 这个main和Java和C中的main方法没有任何关系.</p>
+</blockquote>
+<h4 id="Class-Definitions-and-self"><a href="#Class-Definitions-and-self" class="headerlink" title="Class Definitions and self"></a>Class Definitions and self</h4><blockquote>
+<p>在class或者module定义中, <code>self</code>就是class和module本身:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  self #=&gt; MyClass</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>想想类方法的定义…</p>
+</blockquote>
+<h4 id="What-private-Really-Means"><a href="#What-private-Really-Means" class="headerlink" title="What private Really Means"></a>What private Really Means</h4><blockquote>
+<p>现在学习了<code>self</code>, 就应该对Ruby的private关键字有新的认识了. Private方法遵循一个原则: 你不能使用一个明确的接收者来调用private 方法. 也就是说你每次调用private 方法的时候, 它一定有一个隐含的接收者<code>self</code>.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class C</span><br><span class="line">  def public_method</span><br><span class="line">    self.private_method</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  private</span><br><span class="line"></span><br><span class="line">  def private_method; end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">C.new.public_method</span><br><span class="line"># =&gt; NoMethodError: private method ‘private_method’ called [...]</span><br></pre></td></tr></table></figure></p>
+<p>如果去掉<code>self</code>程序就会通过.<br>这个牵强的例子说明了私有方法的两个必要条件:</p>
+<ul>
+<li>当接收者不是你自己时, 必须要明确指定接收者</li>
+<li>私有方法需要在隐含接收者上被调用</li>
+</ul>
+<p>想想之前提到的<code>puts</code>和<code>print</code>, 它们是Module <code>Kernel</code>的私有方法, 我们使用这些方法是从来没有明确指定接收者.</p>
+<p>总而言之, 调用私有方法是永远不要指定接收者, 还有, 我们可以调用父类的私有方法.</p>
+</blockquote>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><blockquote>
+<p>到目前为止, 方法的执行可以总结为几句话: 你调用方法时, Ruby以<code>向右一步, 一直向上</code>的原则来查找方法, 然后把方法接收者作为self执行方法. 有一些特殊情况, 比如<code>include module</code>, 而且有一个意外情况!(Refinements)</p>
+</blockquote>
+<h3 id="Refinements-改进"><a href="#Refinements-改进" class="headerlink" title="Refinements(改进)"></a>Refinements(改进)</h3><blockquote>
+<p>我们在<code>Open Classes</code>时, 打开String 添加过一个方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># object_model/alphanumeric.rb</span><br><span class="line"></span><br><span class="line">class String</span><br><span class="line">  def to_alphanumeric</span><br><span class="line">    self.gsub(/[^\w\s]/, &apos;&apos;)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这么修改是全局的, 也就是说每个String都会发生变化.还说过如果方法名和原来的一样, 就会覆盖掉之前的方法, 这一节的知识就是为了解决这个问题.<br>Ruby2.0开始引入了Refinement, 它把我们要修改的类约束在了一个范围内:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># object_model/refinements_in_module.rb</span><br><span class="line">module StringExtensions</span><br><span class="line">  refine String do</span><br><span class="line">    def to_alphanumeric</span><br><span class="line">      self.gsub(/[^\w\s]/, &apos;&apos;)</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>调用时需要使用<code>using</code>指定这个范围:</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">using StringExtensions</span><br><span class="line"></span><br><span class="line"><span class="string">"my *1st* refinement!"</span>.to_alphanumeric <span class="comment"># =&gt; "my 1st refinement"</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>从Ruby2.1开始, 可以在module的定义中使用<code>using</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">require_relative &apos;../test/assertions&apos;</span><br><span class="line"></span><br><span class="line">module StringExtensions</span><br><span class="line">  refine String do</span><br><span class="line">    def reverse</span><br><span class="line">      &quot;esrever&quot;</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">module StringStuff</span><br><span class="line">  using StringExtensions</span><br><span class="line">  &quot;my_string&quot;.reverse    # =&gt; &quot;esrever&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">&quot;my_string&quot;.reverse      # =&gt; &quot;gnirts_ym&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>可见, Refinements和Monkeypatches很接近, 但是不是全局的. 它只在两个地方是激活的, <code>refine</code>方法的block中, 还有调用<code>using</code>后面的代码.<br>Refinements和Monkeypatches的作用是一样的, 定义新方法, 改进已经存在的方法, include或者prepend modules. 他就像是给源代码打了一个补丁.<br>另一方面, Refinements不是全局的, 不会影响你程序剩余的部分.</p>
+</blockquote>
+<h5 id="Refinement-Gotchas-需要注意"><a href="#Refinement-Gotchas-需要注意" class="headerlink" title="Refinement Gotchas (需要注意)"></a>Refinement Gotchas (需要注意)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class MyClass</span><br><span class="line">  def my_method</span><br><span class="line">    &quot;original my_method()&quot;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def another_method</span><br><span class="line">    my_method</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">module MyClassRefinement</span><br><span class="line">  refine MyClass do</span><br><span class="line">    def my_method</span><br><span class="line">      &quot;refined my_method()&quot;</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">using MyClassRefinement</span><br><span class="line">puts MyClass.new.my_method # =&gt; refined my_method()</span><br><span class="line">puts MyClass.new.another_method  # =&gt; original my_method()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里是一个特别的地方, <code>another_method</code>方法调用了<code>my_method</code>, 虽然也是在 using 后面, 它返回的还是原来方法的结果.</p>
+</blockquote>
+<h2 id="Quiz-Tangle-of-Modules-modules-混在一起"><a href="#Quiz-Tangle-of-Modules-modules-混在一起" class="headerlink" title="Quiz: Tangle of Modules (modules 混在一起)"></a>Quiz: Tangle of Modules (modules 混在一起)</h2><blockquote>
+<p>有这样一个例子:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">module Printable</span><br><span class="line">  def print</span><br><span class="line">    </span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def prepare_cover</span><br><span class="line">    </span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">module Document</span><br><span class="line">  def print_to_screen</span><br><span class="line">    prepare_cover</span><br><span class="line">    format_for_screen</span><br><span class="line">    print</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def format_for_screen</span><br><span class="line">    </span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def print</span><br><span class="line">    </span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class Book</span><br><span class="line">  include Document</span><br><span class="line">  include Printable</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">b = Book.new</span><br><span class="line">b.print_to_screen</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>请问: <code>print_to_screen</code>中的<code>print</code> 来自于哪个module? 是<code>Printable</code>还是<code>Document</code>还是<code>Kernel</code>?<br>答案是: Printable.<br>既然是在Book的对象b上调用的方法, 那么就看看Book的祖先类的调用链.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Book.ancestors # =&gt; [Book, Printable, Document, Object, Kernel, BasicObject]</span><br></pre></td></tr></table></figure></p>
+<p>由于Book中先执行<code>include Document</code>, 然后<code>include Printable</code>, 所以Printable被加到了Book的右侧, Document次之. 当你调用<code>b.print_to_screen</code>方法时, 对象的引用<code>b</code>被看作为<code>self</code>, 然后查找方法就开始了, Ruby发现<code>print_to_screen</code>在<code>Document</code>中, <code>print_to_screen</code>方法中还调用了别的方法, 包括<code>print</code>, 而且现在还没有指定接收者, 那么接收者还是<code>b</code>, 方法lookup还好从<code>Book</code>开始, 所以<code>print</code>当然是从<code>Printable</code>找到的了, 因为<code>Printable</code>在调用链上离<code>Book</code>最近.<br>如果现在希望使用Document的<code>print</code>方法, 应该在Book中先<code>include Printable</code>在<code>include Document</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Book</span><br><span class="line">  include Printable</span><br><span class="line">  include Document</span><br><span class="line">  ancestors # =&gt; [Book, Document, Printable, Object, Kernel, BasicObject]  </span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="Wrap-Up-总结"><a href="#Wrap-Up-总结" class="headerlink" title="Wrap-Up(总结)"></a>Wrap-Up(总结)</h2><blockquote>
+<p>这个列表总结了第二章的所有内容:</p>
+</blockquote>
+<ul>
+<li><p>对象是由一堆实例变量和一个class的链接组成的(引用)</p>
+</li>
+<li><p>对象的方法存于对象的类中</p>
+</li>
+<li><p>class 本身是<code>Class</code>的对象, class的名称仅仅是个常量</p>
+</li>
+<li><p>Class是Module的子类, module可以理解为方法的包(集合). class可以被实例化, 或者组织到继承关系中</p>
+</li>
+<li><p>Constants被组织成了类似于文件系统的树状结构, module或者类的名字是文件系统的目录, 普通的Constants则是文件.</p>
+</li>
+<li><p>每一个class都有一个祖先链, 从该class开始, 到<code>BasicObject</code>结束.</p>
+</li>
+<li><p>当你在一个对象身上调用方法的时候, Ruby先向右找到接收者(对象)所属的类, 然后一直验证祖先链向上查找这个方法. 直到在链子上找到方法为止.</p>
+</li>
+<li><p>当你在一个class中include一个module时,这个module会被插到该class的祖先链该class的正上方位置.<code>prepend</code>方法是插到正下方.</p>
+</li>
+<li><p>当你调用方法时, 接收者充当<code>self</code>的角色</p>
+</li>
+<li><p>当你定义module(或class)时, module充当<code>self</code>的角色</p>
+</li>
+<li><p>实例变量一直被作为<code>self</code>的实例变量</p>
+</li>
+<li><p>任何没有明确指定接收者的方法都会被认为是<code>self</code>的方法.</p>
+</li>
+<li><p>Refinements 像是class上的代码补丁, 它覆盖了普通的方法查找(lookup). 另外, Refinement仅仅在程序的限制区域内生效, 这个区域是<code>using XXX</code>到文件结尾或者module的定义结尾.</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -2396,16 +2657,16 @@
       <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/default_avatar.jpg"
-               alt="John Doe" />
-          <p class="site-author-name" itemprop="name">John Doe</p>
+               src="/images/avatar.png"
+               alt="Daniel Zhang" />
+          <p class="site-author-name" itemprop="name">Daniel Zhang</p>
           <p class="site-description motion-element" itemprop="description"></p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">106</span>
-              <span class="site-state-item-name">Artikel</span>
+              <span class="site-state-item-count">105</span>
+              <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
@@ -2413,7 +2674,7 @@
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">14</span>
-                <span class="site-state-item-name">Kategorien</span>
+                <span class="site-state-item-name">分类</span>
               
             </div>
           
@@ -2422,7 +2683,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags">
                 <span class="site-state-item-count">104</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-name">标签</span>
               </a>
             </div>
           
@@ -2462,17 +2723,17 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">Daniel Zhang</span>
 </div>
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
-  Theme -
+  主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Pisces
   </a>
 </div>
 
@@ -2537,6 +2798,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
 
   
 

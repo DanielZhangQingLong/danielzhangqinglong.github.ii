@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -95,13 +95,13 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Muse',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
     duoshuo: {
       userId: 0,
-      author: 'Author'
+      author: '博主'
     }
   };
 </script>
@@ -109,7 +109,7 @@
   <title> Hexo </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -166,7 +166,7 @@
             
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
-            Startseite
+            首页
           </a>
         </li>
       
@@ -176,7 +176,7 @@
             
               <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
-            Archiv
+            归档
           </a>
         </li>
       
@@ -186,7 +186,7 @@
             
               <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
-            Tags
+            标签
           </a>
         </li>
       
@@ -199,7 +199,7 @@
             
               <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
             
-            Suche
+            搜索
           </a>
         </li>
       
@@ -259,157 +259,6 @@
             
               
                 
-                <a class="post-title-link" href="/2015/03/11/google-map-in-rails/" itemprop="url">
-                  Rails4中使用Google Map 服务
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
-            <time itemprop="dateCreated" datetime="2015-03-11T17:25:34+08:00" content="2015-03-11">
-              2015-03-11
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">in</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Rails/" itemprop="url" rel="index">
-                    <span itemprop="name">Rails</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>从项目中抽取模型, 来简单介绍一下Rails中使用Google Map服务的方法.</p>
-</blockquote>
-<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><blockquote>
-<p>创建并添加所需的gem</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ rails new google_map &amp;&amp; cd google_map</span><br><span class="line"></span><br><span class="line"># Gemfile</span><br><span class="line"></span><br><span class="line">gem &apos;gmaps4rails&apos;</span><br><span class="line">gem &apos;geocoder&apos;</span><br><span class="line"></span><br><span class="line">&amp; bundle install</span><br></pre></td></tr></table></figure>
-<h2 id="准备Model"><a href="#准备Model" class="headerlink" title="准备Model"></a>准备Model</h2><blockquote>
-<p>Scaffold一个User, latitude和longitude分别表示纬度和经度, 有了这两个属性, 就可以定位了.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ rails g scaffold user title:string description:string address:string latitude:float longitude:float</span><br><span class="line"></span><br><span class="line">$ rake db:migrate</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>然后, 修改<code>user.rb</code>:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># app/models/user.rb</span><br><span class="line"></span><br><span class="line">class User &lt; ActiveRecord::Base</span><br><span class="line">  geocoded_by :address</span><br><span class="line">  after_validation :geocode</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<h2 id="添加javascript代码"><a href="#添加javascript代码" class="headerlink" title="添加javascript代码"></a>添加javascript代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># app/views/layouts/application.html.erb</span><br><span class="line">...</span><br><span class="line">&lt;script src=&quot;//maps.google.com/maps/api/js?v=3.13&amp;amp;sensor=false&amp;amp;libraries=geometry&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&apos;//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js&apos; type=&apos;text/javascript&apos;&gt;&lt;/script&gt;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>把这段<a href="http://underscorejs.org/underscore-min.js" target="_blank" rel="external">代码拷贝</a> <code>vendor/assts/javascripts/underscore.js</code>中.<br>然后, 引入在<code>assets/javascripts/application.js</code>中引入js库:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># assets/javascripts/application.js</span><br><span class="line">...</span><br><span class="line">//= require underscore</span><br><span class="line">//= require gmaps/google</span><br></pre></td></tr></table></figure>
-<h2 id="准备地图的视图页面"><a href="#准备地图的视图页面" class="headerlink" title="准备地图的视图页面"></a>准备地图的视图页面</h2><blockquote>
-<p>创建Controller和对应的页面, 来显示Google地图</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rails g controller map index</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>接着在视图中调用Google Map:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># views/map/index.html.erb</span><br><span class="line"></span><br><span class="line">  &lt;div style=&apos;width: 800px;&apos;&gt;</span><br><span class="line">    &lt;div id=&quot;map&quot; style=&apos;width: 800px; height: 400px;&apos;&gt;&lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">    handler = Gmaps.build(&apos;Google&apos;);</span><br><span class="line">    handler.buildMap(&#123; provider: &#123;&#125;, internal: &#123;id: &apos;map&apos;&#125; &#125;, function()&#123;</span><br><span class="line">    markers = handler.addMarkers(&lt;%=raw @hash.to_json %&gt;);</span><br><span class="line">    handler.bounds.extendWith(markers);</span><br><span class="line">    handler.fitMapToBounds();</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">  &lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>编辑Controller index action, 从User中获取经度和纬度信息, 设置Google Map参数:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class MapController &lt; ApplicationController</span><br><span class="line">  def index</span><br><span class="line">    @users = User.all</span><br><span class="line">    @hash = Gmaps4rails.build_markers(@users) do |user, marker|</span><br><span class="line">      marker.lat user.latitude</span><br><span class="line">      marker.lng user.longitude</span><br><span class="line">      marker.infowindow user.description</span><br><span class="line">      marker.json(&#123;title: user.title&#125;)</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<h2 id="设置经纬度-观察是否正确显示位置"><a href="#设置经纬度-观察是否正确显示位置" class="headerlink" title="设置经纬度, 观察是否正确显示位置"></a>设置经纬度, 观察是否正确显示位置</h2><blockquote>
-<p>创建一个用户, 设置其经纬度, 该定位点是北京, 然后访问localhost:3000/map/index, 观察到显示正确位置, 呵呵, 八九不离十吧.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User.create(latitude: 39.8960407788, longitude: 116.4042663574)</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><img src="http://i2.tietuku.com/192c665e48da578e.png"></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2015/03/10/bootstrap-install/" itemprop="url">
                   Rails bootstrap 的安装和使用
                 </a>
@@ -423,7 +272,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-10T14:17:14+08:00" content="2015-03-10">
               2015-03-10
             </time>
@@ -435,7 +284,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -610,7 +459,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-09T17:59:28+08:00" content="2015-03-09">
               2015-03-09
             </time>
@@ -705,6 +554,121 @@
             
               
                 
+                <a class="post-title-link" href="/2015/03/09/kaminari-scroll/" itemprop="url">
+                  Rails 分页Gem (Infinite Scroll 无限卷轴效果)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-09T14:35:02+08:00" content="2015-03-09">
+              2015-03-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p><a href="https://github.com/amatsuda/kaminari/wiki/How-To:-Create-Infinite-Scrolling-with-jQuery" target="_blank" rel="external">https://github.com/amatsuda/kaminari/wiki/How-To:-Create-Infinite-Scrolling-with-jQuery</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/03/09/will-paginate/" itemprop="url">
                   Rails 分页Gem (will_paginate)
                 </a>
@@ -718,7 +682,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-09T14:35:02+08:00" content="2015-03-09">
               2015-03-09
             </time>
@@ -730,7 +694,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Ruby-Gems/" itemprop="url" rel="index">
@@ -841,121 +805,6 @@
             
               
                 
-                <a class="post-title-link" href="/2015/03/09/kaminari-scroll/" itemprop="url">
-                  Rails 分页Gem (Infinite Scroll 无限卷轴效果)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
-            <time itemprop="dateCreated" datetime="2015-03-09T14:35:02+08:00" content="2015-03-09">
-              2015-03-09
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">in</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Rails/" itemprop="url" rel="index">
-                    <span itemprop="name">Rails</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p><a href="https://github.com/amatsuda/kaminari/wiki/How-To:-Create-Infinite-Scrolling-with-jQuery" target="_blank" rel="external">https://github.com/amatsuda/kaminari/wiki/How-To:-Create-Infinite-Scrolling-with-jQuery</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2015/03/09/kaminari/" itemprop="url">
                   Rails 分页Gem (kaminari)
                 </a>
@@ -969,7 +818,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-09T12:26:18+08:00" content="2015-03-09">
               2015-03-09
             </time>
@@ -981,7 +830,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1131,7 +980,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-08T13:43:07+08:00" content="2015-03-08">
               2015-03-08
             </time>
@@ -1143,7 +992,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1375,7 +1224,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-08T13:43:07+08:00" content="2015-03-08">
               2015-03-08
             </time>
@@ -1387,7 +1236,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1548,7 +1397,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-07T14:10:21+08:00" content="2015-03-07">
               2015-03-07
             </time>
@@ -1560,7 +1409,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Ruby-Gems/" itemprop="url" rel="index">
@@ -1776,7 +1625,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-07T12:43:34+08:00" content="2015-03-07">
               2015-03-07
             </time>
@@ -1788,7 +1637,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1866,6 +1715,248 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/06/slim-view2/" itemprop="url">
+                  Rails中使用slim模板文件入门介绍(二)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-06T19:57:34+08:00" content="2015-03-06">
+              2015-03-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>本文对slim进行深入讲解</p>
+</blockquote>
+<h2 id="Mac下安装slim"><a href="#Mac下安装slim" class="headerlink" title="Mac下安装slim"></a>Mac下安装slim</h2><blockquote>
+<p>我们可以在Mac中安装slim, 不再局限于rails应用中使用slim.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem install slim</span><br></pre></td></tr></table></figure>
+<h2 id="把slim文件转换成html"><a href="#把slim文件转换成html" class="headerlink" title="把slim文件转换成html"></a>把slim文件转换成html</h2><blockquote>
+<p>现有一个<code>test.slim</code>文件:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">doctype html</span><br><span class="line">html</span><br><span class="line">  head</span><br><span class="line">    title test.slim</span><br><span class="line">  body</span><br><span class="line">    h1 Slim Sample</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>可以通过下面的命令转化为html文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ slimrb test.slim test.html</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># test.html</span><br><span class="line">&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;test.slim&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Slim Sample&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>转换完的文件没有换行, 如果需要转换成带有换行格式的html需要加上-p</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ slimrb -p  test.slim test.html</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># test.html</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;title&gt;test.slim&lt;/title&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;h1&gt;</span><br><span class="line">      Slim Sample</span><br><span class="line">    &lt;/h1&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="基本表示方法"><a href="#基本表示方法" class="headerlink" title="基本表示方法"></a>基本表示方法</h2><blockquote>
+<p>slim的写法非常简单, 只需要除去html的<code>&lt;, &gt;, /&gt;</code>和闭合标签, 需要注意缩进的问题</p>
+<p>slim:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p aaa</span><br><span class="line">&lt;p&gt;bbb&lt;/p&gt;</span><br></pre></td></tr></table></figure></p>
+<p>会被转成:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;</span><br><span class="line">  aaa</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;p&gt;bbb&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="处理文本"><a href="#处理文本" class="headerlink" title="处理文本"></a>处理文本</h2><blockquote>
+<p>Slim文件中<code>|</code>后面的内容都会被转换成非html文本, 比如需要产生下面的HTML代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;</span><br><span class="line">aaa</span><br><span class="line">&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>slim的写法有如下几种:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p aaa</span><br></pre></td></tr></table></figure>
+<p>&gt;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p</span><br><span class="line">  | aaa</span><br></pre></td></tr></table></figure>
+<p>&gt;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p</span><br><span class="line">  |</span><br><span class="line">    aaa</span><br></pre></td></tr></table></figure>
+<h2 id="嵌套"><a href="#嵌套" class="headerlink" title="嵌套"></a>嵌套</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">div</span><br><span class="line">  | aaaa</span><br><span class="line">  p</span><br><span class="line">    span</span><br><span class="line">      | foo</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">  aaaa</span><br><span class="line">  &lt;p&gt;</span><br><span class="line">  &lt;span&gt;foo&lt;/span&gt;</span><br><span class="line">  &lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="控制标签前后的空格"><a href="#控制标签前后的空格" class="headerlink" title="控制标签前后的空格"></a>控制标签前后的空格</h2><blockquote>
+<p>在标签后面使用<code>&gt;``&lt;``&lt;&gt;</code>分别表示在HTML前, 后, 前后, 添加空格</p>
+<p><code>&gt;</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a&gt; href=&quot;url&quot; Link1</span><br><span class="line">a&gt; href=&quot;url&quot; Link2</span><br></pre></td></tr></table></figure></p>
+<p>html:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;url1&quot;&gt;Link1&lt;/a&gt; &lt;a href=&quot;url2&quot;&gt;Link2&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p><code>&lt;</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a&lt; href=&quot;url&quot; Link1</span><br><span class="line">a&lt; href=&quot;url&quot; Link2</span><br></pre></td></tr></table></figure></p>
+<p>html:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;url&quot;&gt;Link1&lt;/a&gt; &lt;a href=&quot;url&quot;&gt;Link2&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>&lt;&gt;</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a&lt;&gt; href=&quot;url&quot; Link1</span><br><span class="line">a&lt;&gt; href=&quot;url&quot; Link2</span><br></pre></td></tr></table></figure></p>
+<p>html:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;url&quot;&gt;Link1&lt;/a&gt;  &lt;a href=&quot;url&quot;&gt;Link2&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><blockquote>
+<p>对于src, href, name, title这些属性来说,我可以将其括在<code>[]</code>,<code>{}</code>, <code>()</code>中:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a href=&quot;foo/abc.html&quot; title=&quot;abc_def&quot;</span><br><span class="line">  | hello</span><br><span class="line"></span><br><span class="line">a(href=&quot;foo/abc.html&quot; title=&quot;abc_def&quot;)</span><br><span class="line">  | hello</span><br><span class="line"></span><br><span class="line">a(href=&quot;foo/abc.html&quot; </span><br><span class="line">title=&quot;abc_def&quot;)</span><br><span class="line">  | hello</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>三者均生成:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;foo/abc.html&quot; title=&quot;abc_def&quot;&gt;hello&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="id和class"><a href="#id和class" class="headerlink" title="id和class"></a>id和class</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">div#aaa abc</span><br><span class="line">#bbb abc</span><br><span class="line">p.ccc abc </span><br><span class="line">p class=&quot;ddd&quot; abc</span><br><span class="line">p(class=&quot;eee&quot;) abc</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;aaa&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div id=&quot;bbb&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;p class=&quot;ccc&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;p class=&quot;ddd&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;p class=&quot;eee&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><h3 id="HTML注释"><a href="#HTML注释" class="headerlink" title="HTML注释"></a>HTML注释</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/!</span><br><span class="line">  This is comment</span><br><span class="line"></span><br><span class="line">/! This is also comment</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--This is comment--&gt;&lt;!--This is also comment--&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="IE条件注释"><a href="#IE条件注释" class="headerlink" title="IE条件注释"></a>IE条件注释</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/[if lt IE9]</span><br><span class="line">  script src=&quot;html5.js&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--[if lt IE9]&gt;</span><br><span class="line">&lt;script src=&quot;html5.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;![endif]--&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Slim专属注释"><a href="#Slim专属注释" class="headerlink" title="Slim专属注释"></a>Slim专属注释</h3><blockquote>
+<p>不会被解析成html代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/ Only in Slim</span><br></pre></td></tr></table></figure>
+<h2 id="DOCTYPE"><a href="#DOCTYPE" class="headerlink" title="DOCTYPE"></a>DOCTYPE</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">doctype html </span><br><span class="line">doctype 5</span><br><span class="line">doctype 1.1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.1//EN&quot; &quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd&quot;&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="textarea"><a href="#textarea" class="headerlink" title="textarea"></a>textarea</h2><blockquote>
+<p>textarea中的文字可以随便换行</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">textarea </span><br><span class="line">  | abc </span><br><span class="line">    def</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;textarea&gt;abc</span><br><span class="line">def&lt;/textarea&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="escape和换行"><a href="#escape和换行" class="headerlink" title="escape和换行"></a>escape和换行</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pre</span><br><span class="line">  code</span><br><span class="line">    - str = &quot;&lt;div&gt;test1&lt;/div&gt;\n\</span><br><span class="line">      &lt;div&gt;test2&lt;/div&gt;&quot;</span><br><span class="line">    = str</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;test1&amp;lt;/div&amp;gt;</span><br><span class="line">&amp;lt;div&amp;gt;test2&amp;lt;/div&amp;gt;&lt;/code&gt;&lt;/pre&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong><em> 注意: 这里str变量中含有换行 </em></strong></p>
+</blockquote>
+<h2 id="使用变量"><a href="#使用变量" class="headerlink" title="使用变量"></a>使用变量</h2><blockquote>
+<p><code>-</code>后面的表示ruby代码, <code>=</code>表示escape html代码输出, <code>==</code>表示原样输出, <code>#{...}</code>表示变量的值</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- foo = &apos;baz&apos;</span><br><span class="line">div title=&quot;foo&quot; class=&quot;abc#&#123;foo&#125;&quot;</span><br><span class="line">  | class为abcbaz</span><br><span class="line">  = foo</span><br><span class="line"></span><br><span class="line">pre</span><br><span class="line">  code</span><br><span class="line">    - hello = &quot;&lt;div&gt;hh&lt;/div&gt;&quot;</span><br><span class="line">    = hello</span><br><span class="line">    == hello</span><br></pre></td></tr></table></figure>
+<h2 id="if-else"><a href="#if-else" class="headerlink" title="if else"></a>if else</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- foo = &apos;baz&apos;</span><br><span class="line">div title=&quot;foo&quot; class=&quot;abc#&#123;foo&#125;&quot;</span><br><span class="line">  | class为abcbaz</span><br><span class="line">  = foo</span><br><span class="line"></span><br><span class="line">pre</span><br><span class="line">  code</span><br><span class="line">    - hello = &quot;&lt;div&gt;hh&lt;/div&gt;&quot;</span><br><span class="line">    = hello</span><br><span class="line">    == hello</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;strong&gt;test1&lt;/strong&gt;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="switch-case-when"><a href="#switch-case-when" class="headerlink" title="switch case when"></a>switch case when</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">div</span><br><span class="line">  - b = 33</span><br><span class="line">  - case b</span><br><span class="line">  - when 22</span><br><span class="line">    = &quot;NOT&quot;</span><br><span class="line"></span><br><span class="line">  - when 33</span><br><span class="line">    = &quot;YEs&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;YEs&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="collection-each"><a href="#collection-each" class="headerlink" title="collection each"></a>collection each</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (3..7).each do |i|</span><br><span class="line">  p id=&quot;ee_#&#123;i&#125;&quot; test#&#123;i + 10&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;p id=&quot;ee_3&quot;&gt;test13&lt;/p&gt;&lt;p id=&quot;ee_4&quot;&gt;test14&lt;/p&gt;&lt;p id=&quot;ee_5&quot;&gt;test15&lt;/p&gt;&lt;p id=&quot;ee_6&quot;&gt;test16&lt;/p&gt;&lt;p id=&quot;ee_7&quot;&gt;test17&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="使用sass"><a href="#使用sass" class="headerlink" title="使用sass"></a>使用sass</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sass:</span><br><span class="line">  $wid: 300px</span><br><span class="line">  $col: red</span><br><span class="line">  div#ggg</span><br><span class="line">    width: $wid</span><br><span class="line">    height: $wid/3</span><br><span class="line">    color: $col</span><br><span class="line">    text-align: justify</span><br><span class="line">    span.ddd</span><br><span class="line">      display: block</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>html:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line">div#ggg &#123;</span><br><span class="line">    width: 300px;</span><br><span class="line">        height: 100px;</span><br><span class="line">            color: red;</span><br><span class="line">                text-align: justify;</span><br><span class="line">                  </span><br><span class="line">&#125;</span><br><span class="line">div#ggg span.ddd &#123;</span><br><span class="line">    display: block;</span><br><span class="line">      </span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong><em> 其他类型的资源文件</em></strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">JavaScript: javascript:</span><br><span class="line">Ruby: ruby:</span><br><span class="line">CSS: css:</span><br><span class="line">SCSS: scss:</span><br><span class="line">Less: less:</span><br><span class="line">CoffeeScript: coffee:</span><br></pre></td></tr></table></figure>
+<h2 id="包含外部文件"><a href="#包含外部文件" class="headerlink" title="包含外部文件"></a>包含外部文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">== Slim::Engine.new(File.read(&apos;header.slim&apos;)).render</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -1903,16 +1994,16 @@
       <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/default_avatar.jpg"
-               alt="John Doe" />
-          <p class="site-author-name" itemprop="name">John Doe</p>
+               src="/images/avatar.png"
+               alt="Daniel Zhang" />
+          <p class="site-author-name" itemprop="name">Daniel Zhang</p>
           <p class="site-description motion-element" itemprop="description"></p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">106</span>
-              <span class="site-state-item-name">Artikel</span>
+              <span class="site-state-item-count">105</span>
+              <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
@@ -1920,7 +2011,7 @@
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">14</span>
-                <span class="site-state-item-name">Kategorien</span>
+                <span class="site-state-item-name">分类</span>
               
             </div>
           
@@ -1929,7 +2020,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags">
                 <span class="site-state-item-count">104</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-name">标签</span>
               </a>
             </div>
           
@@ -1969,17 +2060,17 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">Daniel Zhang</span>
 </div>
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
-  Theme -
+  主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Pisces
   </a>
 </div>
 
@@ -2044,6 +2135,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
 
   
 

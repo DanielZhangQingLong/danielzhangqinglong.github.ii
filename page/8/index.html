@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -95,13 +95,13 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Muse',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
     duoshuo: {
       userId: 0,
-      author: 'Author'
+      author: '博主'
     }
   };
 </script>
@@ -109,7 +109,7 @@
   <title> Hexo </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -166,7 +166,7 @@
             
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
-            Startseite
+            首页
           </a>
         </li>
       
@@ -176,7 +176,7 @@
             
               <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
-            Archiv
+            归档
           </a>
         </li>
       
@@ -186,7 +186,7 @@
             
               <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
-            Tags
+            标签
           </a>
         </li>
       
@@ -199,7 +199,7 @@
             
               <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
             
-            Suche
+            搜索
           </a>
         </li>
       
@@ -259,158 +259,6 @@
             
               
                 
-                <a class="post-title-link" href="/2015/02/11/polymorphic/" itemprop="url">
-                  Rails 实现多态(polymorphic) 关系
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
-            <time itemprop="dateCreated" datetime="2015-02-11T17:29:53+08:00" content="2015-02-11">
-              2015-02-11
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">in</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Rails/" itemprop="url" rel="index">
-                    <span itemprop="name">Rails</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>如果在 model 中使用has_many的 <code>as</code> 选项和belongs_to 的<code>polymorphic</code> 选项, 可以很简单地实现数据库的多态关系.</p>
-</blockquote>
-<h2 id="何谓多态"><a href="#何谓多态" class="headerlink" title="何谓多态"></a>何谓多态</h2><p><img src="http://i2.tietuku.com/ba11da08a8701338.png" alt=""></p>
-<blockquote>
-<p>看这个 ER 图, Article和Event都可以有多个Comment. 也就是说, Comment 即属于Article, 又属于Event, comments 表即被article引用又被event 引用. 这种关系就是多态.</p>
-</blockquote>
-<h2 id="生成Polymorphic-类型的表"><a href="#生成Polymorphic-类型的表" class="headerlink" title="生成Polymorphic 类型的表"></a>生成Polymorphic 类型的表</h2><blockquote>
-<p>首先, 生成Event model 和表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rails g model event name:string content:text</span><br></pre></td></tr></table></figure></p>
-<p>然后, 生成Article model 和表</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rails g model article title:string body:text</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>最后, 生成 Comment model 和表.<br><strong><em> 非常重要: 需要加入两个列, 一个是引用外键id, 一个是引用的外部 model 的类型</em></strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rails g model comment content:text commentable_id:integer commentable_type:string</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>并且需要添加索引:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># db/migrate/yyyymmddhhMMss_create_comments.rb</span><br><span class="line"></span><br><span class="line">class CreateComments &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    create_table :comments do |t|</span><br><span class="line">    t.text :content</span><br><span class="line">    t.integer :commentable_id</span><br><span class="line">    t.string :commentable_type</span><br><span class="line"></span><br><span class="line">    t.timestamps</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  add_index :comments, [:commentable_id, :commentable_type]</span><br><span class="line"></span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
-<p>最后移植:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<h2 id="向-model-中加入has-many-和-belongs-to-实现关联关系"><a href="#向-model-中加入has-many-和-belongs-to-实现关联关系" class="headerlink" title="向 model 中加入has_many 和 belongs_to 实现关联关系"></a>向 model 中加入has_many 和 belongs_to 实现关联关系</h2><blockquote>
-<p>在Comment 加上 belongs_to 方法, 并且需要注意参数应该是其对应的表的外键xxx_id 的 xxx, polymorphic 选项为 true<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># app/models/comment.rb</span><br><span class="line">class Comment &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :commentable, polymorphic: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
-<p>在Event 和 Article这一边加入 has_many 和 as option</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># app/models/event.rb</span><br><span class="line">class Event &lt; ActiveRecord::Base</span><br><span class="line">  has_many :comments, as: :commentable</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/article.rb</span><br><span class="line">class Article &lt; ActiveRecord::Base</span><br><span class="line">  has_many :comments, as: :commentable</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>设定完毕.</p>
-</blockquote>
-<h2 id="可以使用的方法"><a href="#可以使用的方法" class="headerlink" title="可以使用的方法"></a>可以使用的方法</h2><blockquote>
-<p>通过多态设定的comment 在被创建之后会自动设定<code>commentable_id</code> 和 <code>commentable_type</code>.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">event = Event.create name: &quot;event1&quot;</span><br><span class="line">event_comment = event.comments.create content: &quot;This event is awesome!&quot;</span><br><span class="line">event_comment</span><br><span class="line"># =&gt; &lt;Comment id: 1, content: &quot;This event is awesome!&quot;, commentable_id: 1, commentable_type: &quot;Event&quot;, created_at: ...&gt;</span><br><span class="line"></span><br><span class="line">article = Article.create title: &quot;article1&quot;</span><br><span class="line">article_comment = article.comments.create content: &quot;This article is great!&quot;</span><br><span class="line">article_comment</span><br><span class="line"># =&gt; &lt;Comment id: 2, content: &quot;This article is great!&quot;, commentable_id: 1, commentable_type: &quot;Article&quot;, created_at: ...&gt;</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<h2 id="CommentController-的实现"><a href="#CommentController-的实现" class="headerlink" title="CommentController 的实现"></a>CommentController 的实现</h2><blockquote>
-<p>接下来就看看我们在提交一条评论时, 这条评论是如何关联到相关对象上, 你在查看某个对象时, 相关的评论又是如何被查询出来的:</p>
-<p>首先在路由中配置好访问的 url.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># config/routes.rb</span><br><span class="line"></span><br><span class="line">resources :articles do</span><br><span class="line">  resources :comments</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">resources :events do</span><br><span class="line">  resources :comments</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
-<p><code>load_commentable</code> 方法中, 从 URL 中判断请求的是Article的评论还是Event的评论.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">class CommentController &lt; ApplicationController</span><br><span class="line">  before_action :load_comments</span><br><span class="line"></span><br><span class="line">  def index</span><br><span class="line">    @comments = @commentable.comments</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def new</span><br><span class="line">    @comment = @commentable.comments.new</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def create</span><br><span class="line">    @commnet = @commentable.comments.new(comment_params)</span><br><span class="line">    if @comment.save</span><br><span class="line">      redirect_to @commentable, notice: &quot;评论成功&quot;</span><br><span class="line">    elsif</span><br><span class="line">      render :new</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">  private</span><br><span class="line"></span><br><span class="line">    def load_comments</span><br><span class="line">      # ex: /events/:id/comments</span><br><span class="line">      # ex: /articles/:id/comments</span><br><span class="line">      resource, id = request.fullpath.split(&apos;/&apos;)[1, 2]</span><br><span class="line">      @commentable = resource.singularize.classify.constantize.find(id)</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    def comment_params</span><br><span class="line">      params.require(:comment).permit(:content)</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
-<p>实际上Polimorphic很好理解, 就是一个表(A)与多个表(Bs)发生映射多对一的映射关系(Bs对A), 这时候就不能只拿id作为外键了, 既然要处理与多个表的映射关系, 还需要使用其他这些表的类型,也就是commentable_type, 结合刚才的例子, 我们可以拿到是某个对象的所有comment就是因为这个type.</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2015/02/10/sti/" itemprop="url">
                   Rails实现单一表继承STI(Single Table Inheritance)
                 </a>
@@ -424,7 +272,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-10T18:50:44+08:00" content="2015-02-10">
               2015-02-10
             </time>
@@ -436,7 +284,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -603,7 +451,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-10T16:32:42+08:00" content="2015-02-10">
               2015-02-10
             </time>
@@ -615,7 +463,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -732,7 +580,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-10T13:16:34+08:00" content="2015-02-10">
               2015-02-10
             </time>
@@ -744,7 +592,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -896,7 +744,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-09T21:19:58+08:00" content="2015-02-09">
               2015-02-09
             </time>
@@ -908,7 +756,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1065,7 +913,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-09T15:39:30+08:00" content="2015-02-09">
               2015-02-09
             </time>
@@ -1077,7 +925,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1242,7 +1090,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-09T14:54:55+08:00" content="2015-02-09">
               2015-02-09
             </time>
@@ -1254,7 +1102,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1368,7 +1216,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-09T12:54:12+08:00" content="2015-02-09">
               2015-02-09
             </time>
@@ -1380,7 +1228,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1503,7 +1351,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-09T10:51:03+08:00" content="2015-02-09">
               2015-02-09
             </time>
@@ -1515,7 +1363,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1628,7 +1476,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-09T08:18:21+08:00" content="2015-02-09">
               2015-02-09
             </time>
@@ -1640,7 +1488,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1723,6 +1571,138 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/02/08/rails-strong-parameters/" itemprop="url">
+                  Rails Strong Parameters
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-02-08T20:27:54+08:00" content="2015-02-08">
+              2015-02-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Rails4开始, 在获取表单的值时加入了params 方法和 StrongParameters 机制.</p>
+</blockquote>
+<h2 id="Rails-params-方法"><a href="#Rails-params-方法" class="headerlink" title="Rails params 方法"></a>Rails params 方法</h2><blockquote>
+<p>比如我们现在有一个对象 product, 它有 name 属性, 为了像下面这种形式对参数进行约定, 在 controller 的内部, 使用<code>params</code> 方法取出被嵌套在 hash 里面的值.</p>
+<ul>
+<li>像product[name] 这样,  对于 name 属性来说[]里面不是空的, 会被当做嵌套的 hash来取值.</li>
+<li>像product[category_ids][] 这样, 对于 name 属性来说是<code>[复数][]</code>, 会被当做数组来取值.</li>
+</ul>
+<p>拿下面的例子来说吧, 这是个商品新建的输入表单<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action=&quot;/products&quot; method=&quot;post&quot;&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div style=&quot;display:none&quot;&gt;</span><br><span class="line">    &lt;input name=&quot;utf8&quot; type=&quot;hidden&quot; value=&quot;✓&quot;&gt;</span><br><span class="line">    &lt;input name=&quot;authenticity_token&quot; type=&quot;hidden&quot; value=&quot;gpATAhefgIhzK7cuGsWVuKGZCE4gJeEbrMv+a/wOJ+I=&quot;&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">    &lt;label for=&quot;product_name&quot;&gt;Name&lt;/label&gt;&lt;br&gt;</span><br><span class="line">    &lt;input id=&quot;product_name&quot; name=&quot;product[name]&quot; type=&quot;text&quot;&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">    &lt;label for=&quot;product_description&quot;&gt;Description&lt;/label&gt;&lt;br&gt;</span><br><span class="line">    &lt;textarea id=&quot;product_description&quot; name=&quot;product[description]&quot;&gt;&lt;/textarea&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">    &lt;label for=&quot;product_price&quot;&gt;Price&lt;/label&gt;&lt;br&gt;</span><br><span class="line">    &lt;input id=&quot;product_price&quot; name=&quot;product[price]&quot; type=&quot;number&quot;&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">    &lt;label for=&quot;product_category&quot;&gt;Category&lt;/label&gt;&lt;br&gt;</span><br><span class="line">    &lt;input id=&quot;product_category_idx_1&quot; name=&quot;product[category_ids][]&quot; type=&quot;checkbox&quot; value=&quot;1&quot;&gt; CATA1</span><br><span class="line">    &lt;input id=&quot;product_category_idx_2&quot; name=&quot;product[category_ids][]&quot; type=&quot;checkbox&quot; value=&quot;2&quot;&gt; CATA2</span><br><span class="line">    &lt;input id=&quot;product_category_idx_3&quot; name=&quot;product[category_ids][]&quot; type=&quot;checkbox&quot; value=&quot;3&quot;&gt; CATA3</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;actions&quot;&gt;</span><br><span class="line">    &lt;input name=&quot;commit&quot; type=&quot;submit&quot; value=&quot;Create Product&quot;&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这时, params 方法返回下面的值:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">params</span><br><span class="line">#=&gt; &#123;</span><br><span class="line">#     &quot;utf8&quot;=&gt;&quot;✓&quot;,</span><br><span class="line">#     &quot;authenticity_token&quot;=&gt;&quot;gpATAhefgIhzK7cuGsWVuKGZCE4gJeEbrMv+a/wOJ+I=&quot;,</span><br><span class="line">#     &quot;product&quot; =&gt; &#123;</span><br><span class="line">#         &quot;name&quot;=&gt;&quot;XBOX&quot;,</span><br><span class="line">#         &quot;description&quot;=&gt;&quot;A great console from microsoft&quot;,</span><br><span class="line">#         &quot;price&quot;=&gt;&quot;100&quot;</span><br><span class="line">#         &quot;category_ids&quot; =&gt; [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;]</span><br><span class="line">#     </span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">#     &quot;commit&quot;=&gt;&quot;Create Product&quot;,</span><br><span class="line">#     &quot;action&quot;=&gt;&quot;create&quot;,</span><br><span class="line">#     &quot;controller&quot;=&gt;&quot;products&quot;</span><br><span class="line">#   </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="StrongParameters"><a href="#StrongParameters" class="headerlink" title="StrongParameters"></a>StrongParameters</h2><blockquote>
+<p>当 hash接收到了输入的参数, model很可能直接调用 <code>new</code> <code>update</code> 方法直接传入这些参数的值, 添加到数据库.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">params # =&gt; &#123; &quot;name&quot; =&gt; &quot;daniel&quot;, &quot;email&quot; =&gt; &quot;taro@test.com&quot;, password&quot; =&gt; &quot;password&quot;&#125;</span><br><span class="line"></span><br><span class="line">User.create(params)</span><br></pre></td></tr></table></figure></p>
+<p>但是这会引发安全问题, 如果一些邪恶用户在parameter 中加入一些不可以被更新的属性, 比如添加管理员权限:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">params # =&gt; &#123; &quot;name&quot; =&gt; &quot;daniel&quot;, &quot;email&quot; =&gt; &quot;taro@test.com&quot;, password&quot; =&gt; &quot;password&quot;, &quot;admin&quot; =&gt; &quot;true&quot;  &#125;</span><br><span class="line"></span><br><span class="line">User.create(params) # 该用户有管理员权限, 很危险.</span><br></pre></td></tr></table></figure></p>
+<p>在 Rails3中是这样处理的, 在 model 中加入attr_accessiable 方法, 明确指出可以被更新的属性:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#rails3</span><br><span class="line"></span><br><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  attr_accessiable :name, :email, :password</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>但是这种默认许可更新的做法还是不好的, rails4做了改变, 默认是不可以更新的, 若想更新需要对该属性进行许可. 这就是StrongParameter的机制, 在 controller 中明确 params中可以被更新的属性.</p>
+<p>使用require和 permit方法对 params内部的属性进行许可更新设置</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">def create</span><br><span class="line">@product = Product.new(product_params)</span><br><span class="line"></span><br><span class="line">if @product.save</span><br><span class="line">redirect_to @product, notice: &apos;Product was successfully created.&apos;</span><br><span class="line">else</span><br><span class="line">render :new</span><br><span class="line">end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">private</span><br><span class="line"># StrongParameter</span><br><span class="line"># product的name, description, price 被允许修改</span><br><span class="line">#</span><br><span class="line"># params的内容</span><br><span class="line"># =&gt; &#123;</span><br><span class="line">#      &quot;utf8&quot;=&gt;&quot;✓&quot;,</span><br><span class="line">#      &quot;authenticity_token&quot; =&gt; &quot;gpATAhefgIhzK7cuGsWVuKGZCE4gJeEbrMv+a/wOJ+I=&quot;,</span><br><span class="line">#      &quot;product&quot;=&gt;</span><br><span class="line">#         &#123; &quot;name&quot;=&gt;&quot;111&quot;,</span><br><span class="line">#           &quot;description&quot;=&gt;&quot;22&quot;,</span><br><span class="line">#           &quot;price&quot;=&gt;&quot;100&quot;,</span><br><span class="line">#           &quot;category_ids&quot;=&gt;[&quot;1&quot;, &quot;2&quot;]</span><br><span class="line">#         &#125;,</span><br><span class="line">#      &quot;commit&quot;=&gt;&quot;Create Product&quot;,</span><br><span class="line">#      &quot;action&quot;=&gt;&quot;create&quot;,</span><br><span class="line">#      &quot;controller&quot;=&gt;&quot;products&quot;</span><br><span class="line">#     </span><br><span class="line">&#125;</span><br><span class="line">#</span><br><span class="line"># 返回值</span><br><span class="line"># =&gt; &#123;&quot;name&quot;=&gt;&quot;Xbox&quot;, &quot;description&quot;=&gt;&quot;good console&quot;, &quot;price&quot;=&gt;&quot;100&quot;&#125;</span><br><span class="line">def product_params</span><br><span class="line">params.require(:product).permit(:name, :description, :price)</span><br><span class="line"></span><br><span class="line"># 也可以对数组进行许可</span><br><span class="line"># params.require(:product)</span><br><span class="line">#       .permit(:name, :description, :price, :category_ids =&gt; [])</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -1760,16 +1740,16 @@
       <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/default_avatar.jpg"
-               alt="John Doe" />
-          <p class="site-author-name" itemprop="name">John Doe</p>
+               src="/images/avatar.png"
+               alt="Daniel Zhang" />
+          <p class="site-author-name" itemprop="name">Daniel Zhang</p>
           <p class="site-description motion-element" itemprop="description"></p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">106</span>
-              <span class="site-state-item-name">Artikel</span>
+              <span class="site-state-item-count">105</span>
+              <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
@@ -1777,7 +1757,7 @@
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">14</span>
-                <span class="site-state-item-name">Kategorien</span>
+                <span class="site-state-item-name">分类</span>
               
             </div>
           
@@ -1786,7 +1766,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags">
                 <span class="site-state-item-count">104</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-name">标签</span>
               </a>
             </div>
           
@@ -1826,17 +1806,17 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">Daniel Zhang</span>
 </div>
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
-  Theme -
+  主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Pisces
   </a>
 </div>
 
@@ -1901,6 +1881,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
 
   
 

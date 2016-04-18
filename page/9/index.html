@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -95,13 +95,13 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Muse',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
     duoshuo: {
       userId: 0,
-      author: 'Author'
+      author: '博主'
     }
   };
 </script>
@@ -109,7 +109,7 @@
   <title> Hexo </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -166,7 +166,7 @@
             
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
-            Startseite
+            首页
           </a>
         </li>
       
@@ -176,7 +176,7 @@
             
               <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
-            Archiv
+            归档
           </a>
         </li>
       
@@ -186,7 +186,7 @@
             
               <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
-            Tags
+            标签
           </a>
         </li>
       
@@ -199,7 +199,7 @@
             
               <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
             
-            Suche
+            搜索
           </a>
         </li>
       
@@ -259,138 +259,6 @@
             
               
                 
-                <a class="post-title-link" href="/2015/02/08/rails-strong-parameters/" itemprop="url">
-                  Rails Strong Parameters
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
-            <time itemprop="dateCreated" datetime="2015-02-08T20:27:54+08:00" content="2015-02-08">
-              2015-02-08
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">in</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Rails/" itemprop="url" rel="index">
-                    <span itemprop="name">Rails</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>Rails4开始, 在获取表单的值时加入了params 方法和 StrongParameters 机制.</p>
-</blockquote>
-<h2 id="Rails-params-方法"><a href="#Rails-params-方法" class="headerlink" title="Rails params 方法"></a>Rails params 方法</h2><blockquote>
-<p>比如我们现在有一个对象 product, 它有 name 属性, 为了像下面这种形式对参数进行约定, 在 controller 的内部, 使用<code>params</code> 方法取出被嵌套在 hash 里面的值.</p>
-<ul>
-<li>像product[name] 这样,  对于 name 属性来说[]里面不是空的, 会被当做嵌套的 hash来取值.</li>
-<li>像product[category_ids][] 这样, 对于 name 属性来说是<code>[复数][]</code>, 会被当做数组来取值.</li>
-</ul>
-<p>拿下面的例子来说吧, 这是个商品新建的输入表单<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action=&quot;/products&quot; method=&quot;post&quot;&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div style=&quot;display:none&quot;&gt;</span><br><span class="line">    &lt;input name=&quot;utf8&quot; type=&quot;hidden&quot; value=&quot;✓&quot;&gt;</span><br><span class="line">    &lt;input name=&quot;authenticity_token&quot; type=&quot;hidden&quot; value=&quot;gpATAhefgIhzK7cuGsWVuKGZCE4gJeEbrMv+a/wOJ+I=&quot;&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">    &lt;label for=&quot;product_name&quot;&gt;Name&lt;/label&gt;&lt;br&gt;</span><br><span class="line">    &lt;input id=&quot;product_name&quot; name=&quot;product[name]&quot; type=&quot;text&quot;&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">    &lt;label for=&quot;product_description&quot;&gt;Description&lt;/label&gt;&lt;br&gt;</span><br><span class="line">    &lt;textarea id=&quot;product_description&quot; name=&quot;product[description]&quot;&gt;&lt;/textarea&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">    &lt;label for=&quot;product_price&quot;&gt;Price&lt;/label&gt;&lt;br&gt;</span><br><span class="line">    &lt;input id=&quot;product_price&quot; name=&quot;product[price]&quot; type=&quot;number&quot;&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">    &lt;label for=&quot;product_category&quot;&gt;Category&lt;/label&gt;&lt;br&gt;</span><br><span class="line">    &lt;input id=&quot;product_category_idx_1&quot; name=&quot;product[category_ids][]&quot; type=&quot;checkbox&quot; value=&quot;1&quot;&gt; CATA1</span><br><span class="line">    &lt;input id=&quot;product_category_idx_2&quot; name=&quot;product[category_ids][]&quot; type=&quot;checkbox&quot; value=&quot;2&quot;&gt; CATA2</span><br><span class="line">    &lt;input id=&quot;product_category_idx_3&quot; name=&quot;product[category_ids][]&quot; type=&quot;checkbox&quot; value=&quot;3&quot;&gt; CATA3</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;actions&quot;&gt;</span><br><span class="line">    &lt;input name=&quot;commit&quot; type=&quot;submit&quot; value=&quot;Create Product&quot;&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure></p>
-<p>这时, params 方法返回下面的值:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">params</span><br><span class="line">#=&gt; &#123;</span><br><span class="line">#     &quot;utf8&quot;=&gt;&quot;✓&quot;,</span><br><span class="line">#     &quot;authenticity_token&quot;=&gt;&quot;gpATAhefgIhzK7cuGsWVuKGZCE4gJeEbrMv+a/wOJ+I=&quot;,</span><br><span class="line">#     &quot;product&quot; =&gt; &#123;</span><br><span class="line">#         &quot;name&quot;=&gt;&quot;XBOX&quot;,</span><br><span class="line">#         &quot;description&quot;=&gt;&quot;A great console from microsoft&quot;,</span><br><span class="line">#         &quot;price&quot;=&gt;&quot;100&quot;</span><br><span class="line">#         &quot;category_ids&quot; =&gt; [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;]</span><br><span class="line">#     </span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">#     &quot;commit&quot;=&gt;&quot;Create Product&quot;,</span><br><span class="line">#     &quot;action&quot;=&gt;&quot;create&quot;,</span><br><span class="line">#     &quot;controller&quot;=&gt;&quot;products&quot;</span><br><span class="line">#   </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<h2 id="StrongParameters"><a href="#StrongParameters" class="headerlink" title="StrongParameters"></a>StrongParameters</h2><blockquote>
-<p>当 hash接收到了输入的参数, model很可能直接调用 <code>new</code> <code>update</code> 方法直接传入这些参数的值, 添加到数据库.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">params # =&gt; &#123; &quot;name&quot; =&gt; &quot;daniel&quot;, &quot;email&quot; =&gt; &quot;taro@test.com&quot;, password&quot; =&gt; &quot;password&quot;&#125;</span><br><span class="line"></span><br><span class="line">User.create(params)</span><br></pre></td></tr></table></figure></p>
-<p>但是这会引发安全问题, 如果一些邪恶用户在parameter 中加入一些不可以被更新的属性, 比如添加管理员权限:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">params # =&gt; &#123; &quot;name&quot; =&gt; &quot;daniel&quot;, &quot;email&quot; =&gt; &quot;taro@test.com&quot;, password&quot; =&gt; &quot;password&quot;, &quot;admin&quot; =&gt; &quot;true&quot;  &#125;</span><br><span class="line"></span><br><span class="line">User.create(params) # 该用户有管理员权限, 很危险.</span><br></pre></td></tr></table></figure></p>
-<p>在 Rails3中是这样处理的, 在 model 中加入attr_accessiable 方法, 明确指出可以被更新的属性:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#rails3</span><br><span class="line"></span><br><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  attr_accessiable :name, :email, :password</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
-<p>但是这种默认许可更新的做法还是不好的, rails4做了改变, 默认是不可以更新的, 若想更新需要对该属性进行许可. 这就是StrongParameter的机制, 在 controller 中明确 params中可以被更新的属性.</p>
-<p>使用require和 permit方法对 params内部的属性进行许可更新设置</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">def create</span><br><span class="line">@product = Product.new(product_params)</span><br><span class="line"></span><br><span class="line">if @product.save</span><br><span class="line">redirect_to @product, notice: &apos;Product was successfully created.&apos;</span><br><span class="line">else</span><br><span class="line">render :new</span><br><span class="line">end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">private</span><br><span class="line"># StrongParameter</span><br><span class="line"># product的name, description, price 被允许修改</span><br><span class="line">#</span><br><span class="line"># params的内容</span><br><span class="line"># =&gt; &#123;</span><br><span class="line">#      &quot;utf8&quot;=&gt;&quot;✓&quot;,</span><br><span class="line">#      &quot;authenticity_token&quot; =&gt; &quot;gpATAhefgIhzK7cuGsWVuKGZCE4gJeEbrMv+a/wOJ+I=&quot;,</span><br><span class="line">#      &quot;product&quot;=&gt;</span><br><span class="line">#         &#123; &quot;name&quot;=&gt;&quot;111&quot;,</span><br><span class="line">#           &quot;description&quot;=&gt;&quot;22&quot;,</span><br><span class="line">#           &quot;price&quot;=&gt;&quot;100&quot;,</span><br><span class="line">#           &quot;category_ids&quot;=&gt;[&quot;1&quot;, &quot;2&quot;]</span><br><span class="line">#         &#125;,</span><br><span class="line">#      &quot;commit&quot;=&gt;&quot;Create Product&quot;,</span><br><span class="line">#      &quot;action&quot;=&gt;&quot;create&quot;,</span><br><span class="line">#      &quot;controller&quot;=&gt;&quot;products&quot;</span><br><span class="line">#     </span><br><span class="line">&#125;</span><br><span class="line">#</span><br><span class="line"># 返回值</span><br><span class="line"># =&gt; &#123;&quot;name&quot;=&gt;&quot;Xbox&quot;, &quot;description&quot;=&gt;&quot;good console&quot;, &quot;price&quot;=&gt;&quot;100&quot;&#125;</span><br><span class="line">def product_params</span><br><span class="line">params.require(:product).permit(:name, :description, :price)</span><br><span class="line"></span><br><span class="line"># 也可以对数组进行许可</span><br><span class="line"># params.require(:product)</span><br><span class="line">#       .permit(:name, :description, :price, :category_ids =&gt; [])</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2015/02/08/rails-redirect/" itemprop="url">
                   Rails 重定向(redirect_to)
                 </a>
@@ -404,7 +272,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-08T15:30:15+08:00" content="2015-02-08">
               2015-02-08
             </time>
@@ -416,7 +284,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -541,7 +409,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-08T12:20:17+08:00" content="2015-02-08">
               2015-02-08
             </time>
@@ -553,7 +421,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -675,7 +543,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-07T13:45:25+08:00" content="2015-02-07">
               2015-02-07
             </time>
@@ -687,7 +555,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -903,7 +771,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-06T21:22:43+08:00" content="2015-02-06">
               2015-02-06
             </time>
@@ -915,7 +783,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1035,7 +903,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-06T18:16:12+08:00" content="2015-02-06">
               2015-02-06
             </time>
@@ -1047,7 +915,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1240,7 +1108,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-06T15:24:33+08:00" content="2015-02-06">
               2015-02-06
             </time>
@@ -1252,7 +1120,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1353,7 +1221,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-06T14:28:03+08:00" content="2015-02-06">
               2015-02-06
             </time>
@@ -1365,7 +1233,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1476,7 +1344,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-06T07:53:17+08:00" content="2015-02-06">
               2015-02-06
             </time>
@@ -1488,7 +1356,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1655,7 +1523,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-02-05T20:50:37+08:00" content="2015-02-05">
               2015-02-05
             </time>
@@ -1667,7 +1535,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1778,6 +1646,170 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/02/04/devise-customize/" itemprop="url">
+                  Devise 定制
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-02-04T19:25:56+08:00" content="2015-02-04">
+              2015-02-04
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="使用-Devise进行访问限制"><a href="#使用-Devise进行访问限制" class="headerlink" title="使用 Devise进行访问限制"></a>使用 Devise进行访问限制</h2><blockquote>
+<p>上一节我创建一个show action 和视图, 由于现在没有加任何限制(过滤: 我记得以前弄 java 的 ssh 时这么叫),  直接就可以访问<code>http://localhost:3000/home/show</code> . 如果我想要让用户访问该资源前必须先登录, 我就要给在 controller 这样做.</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeController</span> &lt; ApplicationController</span></span><br><span class="line"></span><br><span class="line">  before_action <span class="symbol">:authenticate_user!</span>, <span class="symbol">only:</span> <span class="symbol">:show</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">index</span></span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">show</span></span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>再次访问资源, 会看到这样的结果:<br><img src="http://i2.tietuku.com/e1fd0f34f671cdc5.png" alt=""></p>
+</blockquote>
+<h2 id="Devise-的-View定制"><a href="#Devise-的-View定制" class="headerlink" title="Devise 的 View定制"></a>Devise 的 View定制</h2><blockquote>
+<p>现在出现一个问题, 我刚刚登录注册填写的表单, 但是这些文件在哪? 实际上, 这些 views 都被打包进入了gem 中, 如果想用编辑这些 view 文件, 需要运行这条命令, 然后你就会在<code>app/views/devise</code> 目录下看到这些文件.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">rails g devise:views</span><br><span class="line">invoke  Devise::Generators::SharedViewsGenerator</span><br><span class="line">create    app/views/devise/shared</span><br><span class="line">create    app/views/devise/shared/_links.html.erb</span><br><span class="line">invoke  form_for</span><br><span class="line">create    app/views/devise/confirmations</span><br><span class="line">create    app/views/devise/confirmations/new.html.erb</span><br><span class="line">create    app/views/devise/passwords</span><br><span class="line">create    app/views/devise/passwords/edit.html.erb</span><br><span class="line">create    app/views/devise/passwords/new.html.erb</span><br><span class="line">create    app/views/devise/registrations</span><br><span class="line">create    app/views/devise/registrations/edit.html.erb</span><br><span class="line">create    app/views/devise/registrations/new.html.erb</span><br><span class="line">create    app/views/devise/sessions</span><br><span class="line">create    app/views/devise/sessions/new.html.erb</span><br><span class="line">create    app/views/devise/unlocks</span><br><span class="line">create    app/views/devise/unlocks/new.html.erb</span><br><span class="line">invoke  erb</span><br><span class="line">create    app/views/devise/mailer</span><br><span class="line">create    app/views/devise/mailer/confirmation_instructions.html.erb</span><br><span class="line">create    app/views/devise/mailer/reset_password_instructions.html.erb</span><br><span class="line">create    app/views/devise/mailer/unlock_instructions.html.erb</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>那么我来修改一下页面, 看看是否有变化, 注意我把一些英文改成了汉字:</p>
+<p><img src="http://i2.tietuku.com/5e719ffdcbab1129.png" alt=""></p>
+</blockquote>
+<h2 id="使用-devise进行国际化输出"><a href="#使用-devise进行国际化输出" class="headerlink" title="使用 devise进行国际化输出"></a>使用 devise进行国际化输出</h2><blockquote>
+<p>刚才的也是个办法, 但这毕竟是硬编码, 如果想在 controller和 Model 中输出中文也这样做就不好了吧~ 还记得我们刚刚初始化 devise 的时候 生成了<code>config/locales/devise.en.yml</code> 文件, 简体中文对应的文件应该是<code>zh-CN.yml</code> 和devise 生成的对应文件<code>devise.zh-CN.yml</code>, 我们直接复制 <code>devise.en.yml 和 en.yml</code> 文件即可.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp config/locales/en.yml config/locales/zh-CN.yml</span><br><span class="line"></span><br><span class="line">cp config/locales/devise.en.yml config/locales/devise.zh-CN.yml</span><br></pre></td></tr></table></figure></p>
+<p>然后我们翻译yml 的 key 对应的 value 成中文.<br>我们还需要将Rails 中的默认语言设置为中文:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># config/application.rb</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Application</span> &lt; Rails::Application</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="comment"># config.i18n.default_locale = :de</span></span><br><span class="line">  config.i18n.default_locale = <span class="symbol">:<span class="string">'zh_CN'</span></span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>记得重启服务器, 这是一些 flash 信息就变成中文了:<br><img src="http://i2.tietuku.com/c7e5fb315b057065.png" alt=""></p>
+</blockquote>
+<h2 id="Devise-设定-root页"><a href="#Devise-设定-root页" class="headerlink" title="Devise 设定 root页"></a>Devise 设定 root页</h2><blockquote>
+<p>我们可以使用下面的方法将主页设置为登录.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">devise_scope :user do</span><br><span class="line">  root to: &apos;devise/sessions#new&apos;</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>运行 rake routes:</p>
+</blockquote>
+<p><img src="http://i2.tietuku.com/d5096f79a95d8be4.png" alt=""></p>
+<h2 id="Devise-routes-URL-定制化"><a href="#Devise-routes-URL-定制化" class="headerlink" title="Devise routes URL 定制化"></a>Devise routes URL 定制化</h2><blockquote>
+<p>上图中, 我们看到如果需要登录, 就要在 浏览器中写入 <code>/users/sign_in</code> 如果我想换一种写法, 比如 <code>login</code> 该怎么做? </p>
+<p>Devise 已经替我们想好这一点了:<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># config/routes.rb</span></span><br><span class="line"></span><br><span class="line">devise_for <span class="symbol">:users</span>, <span class="symbol">path_names:</span> &#123; <span class="symbol">sign_in:</span> <span class="string">'login'</span>, <span class="symbol">sign_out:</span> <span class="string">'logout'</span>  &#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p><img src="http://i2.tietuku.com/28e4116470ac8dae.png" alt=""></p>
+<h2 id="向-User中添加username"><a href="#向-User中添加username" class="headerlink" title="向 User中添加username"></a>向 User中添加username</h2><blockquote>
+<p>刚才使用邮箱来进行登录, 如何使用username 和 password 的组合来进行登录?</p>
+</blockquote>
+<ul>
+<li><p>首先, 想表中添加 username, 以及索引</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">rails g migration add_username_to_users username:string</span><br><span class="line"></span><br><span class="line"># xxxadd_username_to_users.rb</span><br><span class="line"></span><br><span class="line">class AddUsernameToUsers &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    add_column :users, :username, :string</span><br><span class="line">    add_index :users, :username, unique: true</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后 <code>rake db:migrate</code></p>
+</li>
+<li><p>在config/initializers/devise.rb 中, 做如下修改:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.authentication_keys = [ :username  ]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 User Model 中加入验证:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class User &lt; ActiveRecord::Base</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">  validates :username, presence: true, uniqueness: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在相关 view 中加入 username 字段, 这里就不贴代码了.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># app/views/devise/sessions/new.html.erb</span><br><span class="line"># app/views/devise/registrations/new.html.erb</span><br><span class="line"># app/views/devise/registrations/edit.html.erb</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用 Rails 的同学, 注意 Strong Parameters 的问题, 既然我向User 中添加了 username 字段, 是不是在 permit 中添加该字段就可以呢? 不是的, 由于我在 devise.rb 中设定了<code>config.authentication_keys = [ :username  ]</code>, <code>username</code> 会被加入到 permit 中, 而这时 email就需要加入 permit中了:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># application_controller.rb</span><br><span class="line"></span><br><span class="line">devise_parameter_sanitizer.for(:sign_up) &lt;&lt; :email</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>关于 strong parameter 我说的简略, 以后我会专门写一篇文章 </p>
+</blockquote>
+</li>
+</ul>
+<h2 id="devise-的test-helper"><a href="#devise-的test-helper" class="headerlink" title="devise 的test helper"></a>devise 的test helper</h2><blockquote>
+<p>devise 也为测试提供了支持:</p>
+</blockquote>
+<h3 id="默认测试框架"><a href="#默认测试框架" class="headerlink" title="默认测试框架"></a>默认测试框架</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># test/test_helper.rb </span><br><span class="line">class ActiveSupport::TestCase</span><br><span class="line">  ...</span><br><span class="line">  include Devise::TestHelpers</span><br><span class="line">  ...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="Rspec-的设置"><a href="#Rspec-的设置" class="headerlink" title="Rspec 的设置"></a>Rspec 的设置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># spec/spec_helper.rb </span><br><span class="line">RSpec.configure do |config|</span><br><span class="line">  ...</span><br><span class="line">  config.include Devise::TestHelpers, type: :controller</span><br><span class="line">  ...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们可以在 controller 中使用下面的方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sign_in :user, @user   # sign_in(scope, resource)</span><br><span class="line">sign_in @user          # sign_in(resource)</span><br><span class="line"></span><br><span class="line">sign_out :user         # sign_out(scope)</span><br><span class="line">sign_out @user         # sign_out(resource)</span><br></pre></td></tr></table></figure></p>
+<p>以下两点需要牢记于心:</p>
+</blockquote>
+<ul>
+<li>这些帮助方法在由Capybara 或者 Webrat 驱动的集成测试中是无效的. 也就是说, 只可以用于功能测试. 所以还是要老老实实的填写表单或者明确地在session 设置user.</li>
+</ul>
+<ul>
+<li>如果你要测试Devise内部的 controller或者继承自 Devise 的 controller, 你需要告诉 Devise request 之前需要匹配哪个 mapping. 这是很有必要的, 因为Devise是从 router 获得信息的, 但是功能测试不会通过 router, 需要明确规定. 比如, 你测试user scope, 只需简单设置:  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@request.env[&apos;devise.mapping&apos;] = Devise.mappings[:user]</span><br><span class="line">get :new</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -1815,16 +1847,16 @@
       <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/default_avatar.jpg"
-               alt="John Doe" />
-          <p class="site-author-name" itemprop="name">John Doe</p>
+               src="/images/avatar.png"
+               alt="Daniel Zhang" />
+          <p class="site-author-name" itemprop="name">Daniel Zhang</p>
           <p class="site-description motion-element" itemprop="description"></p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">106</span>
-              <span class="site-state-item-name">Artikel</span>
+              <span class="site-state-item-count">105</span>
+              <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
@@ -1832,7 +1864,7 @@
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">14</span>
-                <span class="site-state-item-name">Kategorien</span>
+                <span class="site-state-item-name">分类</span>
               
             </div>
           
@@ -1841,7 +1873,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags">
                 <span class="site-state-item-count">104</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-name">标签</span>
               </a>
             </div>
           
@@ -1881,17 +1913,17 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">Daniel Zhang</span>
 </div>
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
-  Theme -
+  主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Pisces
   </a>
 </div>
 
@@ -1956,6 +1988,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
 
   
 

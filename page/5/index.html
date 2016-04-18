@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -95,13 +95,13 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Muse',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
     duoshuo: {
       userId: 0,
-      author: 'Author'
+      author: '博主'
     }
   };
 </script>
@@ -109,7 +109,7 @@
   <title> Hexo </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -166,7 +166,7 @@
             
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
-            Startseite
+            首页
           </a>
         </li>
       
@@ -176,7 +176,7 @@
             
               <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
             
-            Archiv
+            归档
           </a>
         </li>
       
@@ -186,7 +186,7 @@
             
               <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
             
-            Tags
+            标签
           </a>
         </li>
       
@@ -199,7 +199,7 @@
             
               <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
             
-            Suche
+            搜索
           </a>
         </li>
       
@@ -259,248 +259,6 @@
             
               
                 
-                <a class="post-title-link" href="/2015/03/06/slim-view2/" itemprop="url">
-                  Rails中使用slim模板文件入门介绍(二)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
-            <time itemprop="dateCreated" datetime="2015-03-06T19:57:34+08:00" content="2015-03-06">
-              2015-03-06
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">in</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Rails/" itemprop="url" rel="index">
-                    <span itemprop="name">Rails</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>本文对slim进行深入讲解</p>
-</blockquote>
-<h2 id="Mac下安装slim"><a href="#Mac下安装slim" class="headerlink" title="Mac下安装slim"></a>Mac下安装slim</h2><blockquote>
-<p>我们可以在Mac中安装slim, 不再局限于rails应用中使用slim.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem install slim</span><br></pre></td></tr></table></figure>
-<h2 id="把slim文件转换成html"><a href="#把slim文件转换成html" class="headerlink" title="把slim文件转换成html"></a>把slim文件转换成html</h2><blockquote>
-<p>现有一个<code>test.slim</code>文件:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">doctype html</span><br><span class="line">html</span><br><span class="line">  head</span><br><span class="line">    title test.slim</span><br><span class="line">  body</span><br><span class="line">    h1 Slim Sample</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>可以通过下面的命令转化为html文件</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ slimrb test.slim test.html</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># test.html</span><br><span class="line">&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;test.slim&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Slim Sample&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>转换完的文件没有换行, 如果需要转换成带有换行格式的html需要加上-p</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ slimrb -p  test.slim test.html</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># test.html</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;title&gt;test.slim&lt;/title&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;h1&gt;</span><br><span class="line">      Slim Sample</span><br><span class="line">    &lt;/h1&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="基本表示方法"><a href="#基本表示方法" class="headerlink" title="基本表示方法"></a>基本表示方法</h2><blockquote>
-<p>slim的写法非常简单, 只需要除去html的<code>&lt;, &gt;, /&gt;</code>和闭合标签, 需要注意缩进的问题</p>
-<p>slim:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p aaa</span><br><span class="line">&lt;p&gt;bbb&lt;/p&gt;</span><br></pre></td></tr></table></figure></p>
-<p>会被转成:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;</span><br><span class="line">  aaa</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;p&gt;bbb&lt;/p&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="处理文本"><a href="#处理文本" class="headerlink" title="处理文本"></a>处理文本</h2><blockquote>
-<p>Slim文件中<code>|</code>后面的内容都会被转换成非html文本, 比如需要产生下面的HTML代码:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;</span><br><span class="line">aaa</span><br><span class="line">&lt;/p&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>slim的写法有如下几种:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p aaa</span><br></pre></td></tr></table></figure>
-<p>&gt;</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p</span><br><span class="line">  | aaa</span><br></pre></td></tr></table></figure>
-<p>&gt;</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p</span><br><span class="line">  |</span><br><span class="line">    aaa</span><br></pre></td></tr></table></figure>
-<h2 id="嵌套"><a href="#嵌套" class="headerlink" title="嵌套"></a>嵌套</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">div</span><br><span class="line">  | aaaa</span><br><span class="line">  p</span><br><span class="line">    span</span><br><span class="line">      | foo</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">  aaaa</span><br><span class="line">  &lt;p&gt;</span><br><span class="line">  &lt;span&gt;foo&lt;/span&gt;</span><br><span class="line">  &lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="控制标签前后的空格"><a href="#控制标签前后的空格" class="headerlink" title="控制标签前后的空格"></a>控制标签前后的空格</h2><blockquote>
-<p>在标签后面使用<code>&gt;``&lt;``&lt;&gt;</code>分别表示在HTML前, 后, 前后, 添加空格</p>
-<p><code>&gt;</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a&gt; href=&quot;url&quot; Link1</span><br><span class="line">a&gt; href=&quot;url&quot; Link2</span><br></pre></td></tr></table></figure></p>
-<p>html:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;url1&quot;&gt;Link1&lt;/a&gt; &lt;a href=&quot;url2&quot;&gt;Link2&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
-<p><code>&lt;</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a&lt; href=&quot;url&quot; Link1</span><br><span class="line">a&lt; href=&quot;url&quot; Link2</span><br></pre></td></tr></table></figure></p>
-<p>html:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;url&quot;&gt;Link1&lt;/a&gt; &lt;a href=&quot;url&quot;&gt;Link2&lt;/a&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><code>&lt;&gt;</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a&lt;&gt; href=&quot;url&quot; Link1</span><br><span class="line">a&lt;&gt; href=&quot;url&quot; Link2</span><br></pre></td></tr></table></figure></p>
-<p>html:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;url&quot;&gt;Link1&lt;/a&gt;  &lt;a href=&quot;url&quot;&gt;Link2&lt;/a&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><blockquote>
-<p>对于src, href, name, title这些属性来说,我可以将其括在<code>[]</code>,<code>{}</code>, <code>()</code>中:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a href=&quot;foo/abc.html&quot; title=&quot;abc_def&quot;</span><br><span class="line">  | hello</span><br><span class="line"></span><br><span class="line">a(href=&quot;foo/abc.html&quot; title=&quot;abc_def&quot;)</span><br><span class="line">  | hello</span><br><span class="line"></span><br><span class="line">a(href=&quot;foo/abc.html&quot; </span><br><span class="line">title=&quot;abc_def&quot;)</span><br><span class="line">  | hello</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>三者均生成:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;foo/abc.html&quot; title=&quot;abc_def&quot;&gt;hello&lt;/a&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="id和class"><a href="#id和class" class="headerlink" title="id和class"></a>id和class</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">div#aaa abc</span><br><span class="line">#bbb abc</span><br><span class="line">p.ccc abc </span><br><span class="line">p class=&quot;ddd&quot; abc</span><br><span class="line">p(class=&quot;eee&quot;) abc</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>html:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;aaa&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div id=&quot;bbb&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;p class=&quot;ccc&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;p class=&quot;ddd&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;p class=&quot;eee&quot;&gt;</span><br><span class="line">abc</span><br><span class="line">&lt;/p&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><h3 id="HTML注释"><a href="#HTML注释" class="headerlink" title="HTML注释"></a>HTML注释</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/!</span><br><span class="line">  This is comment</span><br><span class="line"></span><br><span class="line">/! This is also comment</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>html</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--This is comment--&gt;&lt;!--This is also comment--&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="IE条件注释"><a href="#IE条件注释" class="headerlink" title="IE条件注释"></a>IE条件注释</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/[if lt IE9]</span><br><span class="line">  script src=&quot;html5.js&quot;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>html</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--[if lt IE9]&gt;</span><br><span class="line">&lt;script src=&quot;html5.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;![endif]--&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="Slim专属注释"><a href="#Slim专属注释" class="headerlink" title="Slim专属注释"></a>Slim专属注释</h3><blockquote>
-<p>不会被解析成html代码:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/ Only in Slim</span><br></pre></td></tr></table></figure>
-<h2 id="DOCTYPE"><a href="#DOCTYPE" class="headerlink" title="DOCTYPE"></a>DOCTYPE</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">doctype html </span><br><span class="line">doctype 5</span><br><span class="line">doctype 1.1</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>html</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.1//EN&quot; &quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd&quot;&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="textarea"><a href="#textarea" class="headerlink" title="textarea"></a>textarea</h2><blockquote>
-<p>textarea中的文字可以随便换行</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">textarea </span><br><span class="line">  | abc </span><br><span class="line">    def</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>html:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;textarea&gt;abc</span><br><span class="line">def&lt;/textarea&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="escape和换行"><a href="#escape和换行" class="headerlink" title="escape和换行"></a>escape和换行</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pre</span><br><span class="line">  code</span><br><span class="line">    - str = &quot;&lt;div&gt;test1&lt;/div&gt;\n\</span><br><span class="line">      &lt;div&gt;test2&lt;/div&gt;&quot;</span><br><span class="line">    = str</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>html</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;pre&gt;&lt;code&gt;&amp;lt;div&amp;gt;test1&amp;lt;/div&amp;gt;</span><br><span class="line">&amp;lt;div&amp;gt;test2&amp;lt;/div&amp;gt;&lt;/code&gt;&lt;/pre&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong><em> 注意: 这里str变量中含有换行 </em></strong></p>
-</blockquote>
-<h2 id="使用变量"><a href="#使用变量" class="headerlink" title="使用变量"></a>使用变量</h2><blockquote>
-<p><code>-</code>后面的表示ruby代码, <code>=</code>表示escape html代码输出, <code>==</code>表示原样输出, <code>#{...}</code>表示变量的值</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- foo = &apos;baz&apos;</span><br><span class="line">div title=&quot;foo&quot; class=&quot;abc#&#123;foo&#125;&quot;</span><br><span class="line">  | class为abcbaz</span><br><span class="line">  = foo</span><br><span class="line"></span><br><span class="line">pre</span><br><span class="line">  code</span><br><span class="line">    - hello = &quot;&lt;div&gt;hh&lt;/div&gt;&quot;</span><br><span class="line">    = hello</span><br><span class="line">    == hello</span><br></pre></td></tr></table></figure>
-<h2 id="if-else"><a href="#if-else" class="headerlink" title="if else"></a>if else</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- foo = &apos;baz&apos;</span><br><span class="line">div title=&quot;foo&quot; class=&quot;abc#&#123;foo&#125;&quot;</span><br><span class="line">  | class为abcbaz</span><br><span class="line">  = foo</span><br><span class="line"></span><br><span class="line">pre</span><br><span class="line">  code</span><br><span class="line">    - hello = &quot;&lt;div&gt;hh&lt;/div&gt;&quot;</span><br><span class="line">    = hello</span><br><span class="line">    == hello</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>html:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;strong&gt;test1&lt;/strong&gt;</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<h2 id="switch-case-when"><a href="#switch-case-when" class="headerlink" title="switch case when"></a>switch case when</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">div</span><br><span class="line">  - b = 33</span><br><span class="line">  - case b</span><br><span class="line">  - when 22</span><br><span class="line">    = &quot;NOT&quot;</span><br><span class="line"></span><br><span class="line">  - when 33</span><br><span class="line">    = &quot;YEs&quot;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>html</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;YEs&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="collection-each"><a href="#collection-each" class="headerlink" title="collection each"></a>collection each</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (3..7).each do |i|</span><br><span class="line">  p id=&quot;ee_#&#123;i&#125;&quot; test#&#123;i + 10&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>html:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;p id=&quot;ee_3&quot;&gt;test13&lt;/p&gt;&lt;p id=&quot;ee_4&quot;&gt;test14&lt;/p&gt;&lt;p id=&quot;ee_5&quot;&gt;test15&lt;/p&gt;&lt;p id=&quot;ee_6&quot;&gt;test16&lt;/p&gt;&lt;p id=&quot;ee_7&quot;&gt;test17&lt;/p&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="使用sass"><a href="#使用sass" class="headerlink" title="使用sass"></a>使用sass</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sass:</span><br><span class="line">  $wid: 300px</span><br><span class="line">  $col: red</span><br><span class="line">  div#ggg</span><br><span class="line">    width: $wid</span><br><span class="line">    height: $wid/3</span><br><span class="line">    color: $col</span><br><span class="line">    text-align: justify</span><br><span class="line">    span.ddd</span><br><span class="line">      display: block</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>html:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line">div#ggg &#123;</span><br><span class="line">    width: 300px;</span><br><span class="line">        height: 100px;</span><br><span class="line">            color: red;</span><br><span class="line">                text-align: justify;</span><br><span class="line">                  </span><br><span class="line">&#125;</span><br><span class="line">div#ggg span.ddd &#123;</span><br><span class="line">    display: block;</span><br><span class="line">      </span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong><em> 其他类型的资源文件</em></strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">JavaScript: javascript:</span><br><span class="line">Ruby: ruby:</span><br><span class="line">CSS: css:</span><br><span class="line">SCSS: scss:</span><br><span class="line">Less: less:</span><br><span class="line">CoffeeScript: coffee:</span><br></pre></td></tr></table></figure>
-<h2 id="包含外部文件"><a href="#包含外部文件" class="headerlink" title="包含外部文件"></a>包含外部文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">== Slim::Engine.new(File.read(&apos;header.slim&apos;)).render</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2015/03/06/slim-view/" itemprop="url">
                   Rails中使用slim模板文件入门介绍(一)
                 </a>
@@ -514,7 +272,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-06T16:00:58+08:00" content="2015-03-06">
               2015-03-06
             </time>
@@ -526,7 +284,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -667,7 +425,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-06T08:53:31+08:00" content="2015-03-06">
               2015-03-06
             </time>
@@ -679,7 +437,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -864,7 +622,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-05T20:50:33+08:00" content="2015-03-05">
               2015-03-05
             </time>
@@ -876,7 +634,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1004,7 +762,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-05T15:27:12+08:00" content="2015-03-05">
               2015-03-05
             </time>
@@ -1016,7 +774,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1160,7 +918,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-05T14:02:13+08:00" content="2015-03-05">
               2015-03-05
             </time>
@@ -1172,7 +930,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1298,7 +1056,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-05T12:21:03+08:00" content="2015-03-05">
               2015-03-05
             </time>
@@ -1310,7 +1068,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1436,7 +1194,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-05T09:16:01+08:00" content="2015-03-05">
               2015-03-05
             </time>
@@ -1448,7 +1206,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1606,7 +1364,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-04T21:09:31+08:00" content="2015-03-04">
               2015-03-04
             </time>
@@ -1618,7 +1376,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1757,7 +1515,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <span class="post-meta-item-text">发表于</span>
             <time itemprop="dateCreated" datetime="2015-03-03T19:21:03+08:00" content="2015-03-03">
               2015-03-03
             </time>
@@ -1769,7 +1527,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/Rails/" itemprop="url" rel="index">
@@ -1900,6 +1658,188 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/03/rspec-capybara/" itemprop="url">
+                  RSpec, Capybara, FactoryGirl的使用方法介绍
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-03T08:05:33+08:00" content="2015-03-03">
+              2015-03-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>在阅读本文前你需要对RSpec有一个基本的了解, 本文会对 Model, Controller, Feature 等测试写法进行总结.</p>
+</blockquote>
+<h2 id="环境及gem版本"><a href="#环境及gem版本" class="headerlink" title="环境及gem版本"></a>环境及gem版本</h2><ul>
+<li>Mac OS X 10</li>
+<li>Ruby 2.1</li>
+<li>Rails 4.1</li>
+<li>rspec-rails 3.1.0</li>
+<li>shoulda-matchers 2.6.2</li>
+<li>factory_girl_rails 4.4.1</li>
+<li>capybara 2.4.1</li>
+<li>capybara-webkit 1.3.0</li>
+<li>database_cleaner 1.3.0</li>
+</ul>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><blockquote>
+<p>新建一个rails项目, 在Gemfile中添加以下gem:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">group :development, :test do</span><br><span class="line"></span><br><span class="line">  # Debug相关gem</span><br><span class="line">  gem &apos;pry-rails&apos;</span><br><span class="line">  gem &apos;pry-doc&apos;</span><br><span class="line">  gem &apos;pry-byebug&apos;</span><br><span class="line">  gem &apos;pry-stack_explorer&apos;</span><br><span class="line"></span><br><span class="line">  # RSpec所需Gem</span><br><span class="line">  gem &apos;rspec-rails&apos;</span><br><span class="line">  gem &apos;shoulda-matchers&apos;</span><br><span class="line">  gem &apos;factory_girl_rails&apos;</span><br><span class="line"></span><br><span class="line">  # 模拟用户行为</span><br><span class="line">  gem &apos;capybara&apos;</span><br><span class="line">end</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>安装gem, 然后生成rspec的配置文件:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">bundle install</span><br><span class="line"></span><br><span class="line">rails g rspec:install</span><br><span class="line"># 生成</span><br><span class="line">create  .rspec</span><br><span class="line">create  spec</span><br><span class="line">create  spec/spec_helper.rb</span><br><span class="line">create  spec/rails_helper.rb</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>添加设定:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># spec/rails_helper.rb</span><br><span class="line">...</span><br><span class="line"># Add additional requires below this line. Rails is not loaded until this point!</span><br><span class="line">require &apos;capybara/rails&apos;</span><br><span class="line">require &apos;capybara/rspec&apos;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">RSpec.configure do |config|</span><br><span class="line">  # 添加FactoryGirl语法</span><br><span class="line">  # 比如: FactoryGirl.create(:post) =&gt; create(:post)</span><br><span class="line">  config.include FactoryGirl::Syntax::Methods</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="Model的测试"><a href="#Model的测试" class="headerlink" title="Model的测试"></a>Model的测试</h2><h3 id="生成针对post-Model的测试"><a href="#生成针对post-Model的测试" class="headerlink" title="生成针对post Model的测试"></a>生成针对post Model的测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ rails g rspec:model post</span><br><span class="line"></span><br><span class="line">  create  spec/models/post_spec.rb</span><br><span class="line">  invoke  factory_girl</span><br><span class="line">  create    spec/factories/posts.rb</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当然, 由于我已经做了配置, 直接生成post Model也会生成相应的测试文件.</p>
+</blockquote>
+<h3 id="写测试"><a href="#写测试" class="headerlink" title="写测试"></a>写测试</h3><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># spec/models/post_spec.rb</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'rails_helper'</span></span><br><span class="line"></span><br><span class="line">RSpec.describe Post, <span class="symbol">type:</span> <span class="symbol">:model</span> <span class="keyword">do</span></span><br><span class="line">  describe <span class="string">"#title"</span> <span class="keyword">do</span></span><br><span class="line">    it &#123; is_expected.to validate_presence_of(<span class="symbol">:title</span>)  &#125;</span><br><span class="line">    it &#123; is_expected.to validate_uniqueness_of(<span class="symbol">:title</span>)  &#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  describe <span class="string">"#content"</span> <span class="keyword">do</span></span><br><span class="line">    it &#123; is_expected.to validate_presence_of(<span class="symbol">:content</span>)  &#125;</span><br><span class="line">    it &#123; is_expected.to validate_length_of(<span class="symbol">:content</span>)  &#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h3 id="测试失败-生成post-Model并添加相应的验证"><a href="#测试失败-生成post-Model并添加相应的验证" class="headerlink" title="测试失败, 生成post Model并添加相应的验证"></a>测试失败, 生成post Model并添加相应的验证</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ rails g model post title content:text</span><br><span class="line">$ rake db:migrate</span><br><span class="line"></span><br><span class="line"># app/models/post.rb</span><br><span class="line">class Post &lt; ActiveRecord::Base</span><br><span class="line">  validates :title, presence: true, uniqueness: true</span><br><span class="line">  validates :content, presence: true, length: &#123; maximum: 500  &#125;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="Controller的测试"><a href="#Controller的测试" class="headerlink" title="Controller的测试"></a>Controller的测试</h2><h3 id="相关知识点"><a href="#相关知识点" class="headerlink" title="相关知识点"></a>相关知识点</h3><h4 id="响应状态"><a href="#响应状态" class="headerlink" title="响应状态"></a>响应状态</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">expect(response).to be_success</span><br><span class="line">expect(response[&apos;Content-Type&apos;]).to =~ %r^text/html!</span><br></pre></td></tr></table></figure>
+<h4 id="assigns-方法"><a href="#assigns-方法" class="headerlink" title="assigns()方法"></a><code>assigns()</code>方法</h4><blockquote>
+<p><code>assigns</code>声明实例变量(@), 共享给视图</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expect(assigns(:entries)).to == Entry.all</span><br></pre></td></tr></table></figure>
+<h4 id="模拟渲染视图和重定向"><a href="#模拟渲染视图和重定向" class="headerlink" title="模拟渲染视图和重定向"></a>模拟渲染视图和重定向</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">expect(response).to render_template(&apos;index&apos;)</span><br><span class="line">expect(response).to redirect_to(entries_url)</span><br></pre></td></tr></table></figure>
+<h3 id="生成Controller测试文件"><a href="#生成Controller测试文件" class="headerlink" title="生成Controller测试文件"></a>生成Controller测试文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rails g rspec:controller posts</span><br><span class="line">  create  spec/controllers/posts_controller_spec.rb</span><br></pre></td></tr></table></figure>
+<h3 id="写测试代码"><a href="#写测试代码" class="headerlink" title="写测试代码"></a>写测试代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"># spec/controllers/posts_controller_spec.rb</span><br><span class="line">require &apos;rails_helper&apos;</span><br><span class="line"></span><br><span class="line">RSpec.describe PostsController, :type =&gt; :controller do</span><br><span class="line"></span><br><span class="line">  def valid_attributes</span><br><span class="line">    &#123; title: &quot;title&quot;, content: &quot;content&quot;  &#125;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def invalid_attributes</span><br><span class="line">    &#123; title: &quot;&quot;, content: &quot;&quot;  &#125;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  describe &quot;POST create&quot; do</span><br><span class="line">    describe &quot;with valid params&quot; do</span><br><span class="line">      it &quot;creates a new Post&quot; do</span><br><span class="line">        expect &#123;</span><br><span class="line">          post :create, &#123;:post =&gt; valid_attributes&#125;</span><br><span class="line"></span><br><span class="line">        &#125;.to change(Post, :count).by(1)</span><br><span class="line">      end</span><br><span class="line"></span><br><span class="line">      it &quot;assigns a newly created post as @post&quot; do</span><br><span class="line">        post :create, &#123;:post =&gt; valid_attributes&#125;</span><br><span class="line">        expect(assigns(:post)).to be_a(Post)</span><br><span class="line">        expect(assigns(:post)).to be_persisted</span><br><span class="line">      end</span><br><span class="line"></span><br><span class="line">      it &quot;redirects to the created post&quot; do</span><br><span class="line">        post :create, &#123;:post =&gt; valid_attributes&#125;</span><br><span class="line">        expect(response).to redirect_to(Post.last)</span><br><span class="line">      end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">    describe &quot;with invalid params&quot; do</span><br><span class="line">      it &quot;assigns a newly created but unsaved post as @post&quot; do</span><br><span class="line">        post :create, &#123;:post =&gt; invalid_attributes&#125;</span><br><span class="line">        expect(assigns(:post)).to be_a_new(Post)</span><br><span class="line">      end</span><br><span class="line"></span><br><span class="line">      it &quot;re-renders the &apos;new&apos; template&quot; do</span><br><span class="line">        post :create, &#123;:post =&gt; invalid_attributes&#125;</span><br><span class="line">        expect(response).to render_template(&quot;new&quot;)</span><br><span class="line">      end</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="完成Controller代码"><a href="#完成Controller代码" class="headerlink" title="完成Controller代码"></a>完成Controller代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># app/controllers/posts_controller.rb</span><br><span class="line"></span><br><span class="line"># POST /posts</span><br><span class="line"># POST /posts.json</span><br><span class="line">def create</span><br><span class="line">@post = Post.new(post_params)</span><br><span class="line"></span><br><span class="line">respond_to do |format|</span><br><span class="line">    if @post.save</span><br><span class="line">      format.html &#123; redirect_to @post, notice: &apos;Post was successfully created.&apos;  &#125;</span><br><span class="line">      format.json &#123; render :show, status: :created, location: @post  &#125;</span><br><span class="line">    else</span><br><span class="line">      format.html &#123; render :new  &#125;</span><br><span class="line">      format.json &#123; render json: @post.errors, status: :unprocessable_entity  &#125;</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="Helper的测试"><a href="#Helper的测试" class="headerlink" title="Helper的测试"></a>Helper的测试</h2><h3 id="生成helper-spec"><a href="#生成helper-spec" class="headerlink" title="生成helper_spec"></a>生成helper_spec</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails g rspec:helper application</span><br><span class="line">  create  spec/helpers/application_helper_spec.rb</span><br></pre></td></tr></table></figure>
+<h3 id="编写测试-实现helper代码"><a href="#编写测试-实现helper代码" class="headerlink" title="编写测试, 实现helper代码"></a>编写测试, 实现helper代码</h3><blockquote>
+<p><strong><em> 注意<code>helper</code>对象包含了ApplicationHelper </em></strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"># spec/helpers/application_helper_spec.rb</span><br><span class="line">RSpec.describe ApplicationHelper, type: :helper do</span><br><span class="line">  describe &quot;active_if_current&quot; do</span><br><span class="line">    subject &#123; helper.active_if_current(&quot;/any_path&quot;)  &#125;</span><br><span class="line"></span><br><span class="line">    context &quot;current page path equals to &apos;/any_path&apos;&quot; do</span><br><span class="line">      it do</span><br><span class="line">        allow(helper).to receive(:current_page?).and_return(true)</span><br><span class="line">        expect(subject).to eq &apos;active&apos;</span><br><span class="line">      end</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    context &quot;current page path does not equal to &apos;/any_path&apos;&quot; do</span><br><span class="line">      it do</span><br><span class="line">        allow(helper).to receive(:current_page?).and_return(false)</span><br><span class="line">        expect(subject).to be_nil</span><br><span class="line">      end</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/helpers/application_helper.rb</span><br><span class="line">module ApplicationHelper</span><br><span class="line">  def active_if_current(path)</span><br><span class="line">    &apos;active&apos; if current_page?(path)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="Features的测试"><a href="#Features的测试" class="headerlink" title="Features的测试"></a>Features的测试</h2><blockquote>
+<p>Features测试将route, Controller, View, Model结合在一起进行测试, 比如: 用户创建了一个新的post.</p>
+</blockquote>
+<h3 id="生成Feature-Spec"><a href="#生成Feature-Spec" class="headerlink" title="生成Feature Spec"></a>生成Feature Spec</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails g rspec:feature posts</span><br><span class="line">   create  spec/features/posts_spec.rb</span><br></pre></td></tr></table></figure>
+<h3 id="写feature-spec"><a href="#写feature-spec" class="headerlink" title="写feature spec"></a>写feature spec</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">require &apos;rails_helper&apos;</span><br><span class="line"></span><br><span class="line">RSpec.feature &quot;Posts&quot;, type: :feature do</span><br><span class="line">  describe &quot;Create a Post&quot; do</span><br><span class="line">    before do</span><br><span class="line">    visit posts_path</span><br><span class="line">    click_link &quot;New Post&quot;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  it &quot;gets to new post page&quot; do</span><br><span class="line">    expect(page.current_path).to eq new_post_path</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  it &quot;creates new post&quot; do</span><br><span class="line">    # Fill in the form</span><br><span class="line">    fill_in &quot;Title&quot;, with: &quot;Title1&quot;</span><br><span class="line">    fill_in &quot;Content&quot;, with: &quot;Content1&quot;</span><br><span class="line">    click_button &quot;Create Post&quot;</span><br><span class="line"></span><br><span class="line">    expect(page).to have_content &quot;Post was successfully created.&quot;</span><br><span class="line">    expect(page).to have_content &quot;Title1&quot;</span><br><span class="line">    expect(page).to have_content &quot;Content1&quot;</span><br><span class="line"></span><br><span class="line">    # Make sure data is stored into db.</span><br><span class="line">    post = Post.last</span><br><span class="line">    expect(post.title).to eq &quot;Title1&quot;</span><br><span class="line">    expect(post.content).to eq &quot;Content1&quot;</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="JavaScript测试"><a href="#JavaScript测试" class="headerlink" title="JavaScript测试"></a>JavaScript测试</h2><blockquote>
+<p>简单介绍一下javascript的测试.<br>需要添加测试js测试驱动 Capybara-Webkit 到Gemfile中. 还需要添加用于清理数据库的gem Database Cleaner</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line">group :test do</span><br><span class="line">  gem &apos;capybara-webkit&apos;</span><br><span class="line">  gem &apos;database_cleaner&apos;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后<code>$ bundle install</code>, 如果出现错误:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    /Users/daniel/.rvm/rubies/ruby-2.2.0/bin/ruby -r ./siteconf20150303-33956-1xk6nvy.rb extconf.rb</span><br><span class="line">    sh: qmake: command not found</span><br><span class="line">    *** extconf.rb failed ***</span><br><span class="line">    Could not create Makefile due to some reason, probably lack of necessary</span><br><span class="line">    libraries and/or headers.  Check the mkmf.log file for more details.  You may</span><br><span class="line">    need configuration options.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>那么很有可能是没有安装qt</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">如果你使用Mac, 那么:</span><br><span class="line">brew install qt</span><br><span class="line">如果使用Ubuntu Linux, 那么</span><br><span class="line">sudo apt-get install qt4-dev-tools libqt4-dev libqt4-core libqt4-gui</span><br><span class="line"></span><br><span class="line">其他情况请Google</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>也可参加这篇文章 <a href="https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit" target="_blank" rel="external">https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit</a></p>
+<p>接下来修改设置文件, 添加DatabaseCleaner的相关设定</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">RSpec.configure do |config|</span><br><span class="line">  ...</span><br><span class="line">    </span><br><span class="line">  # DatabaseCleaner设定</span><br><span class="line">  # suite: 以RSpec的一个命令作为单位</span><br><span class="line">  # all: 一个RSpec测试文件作为单位</span><br><span class="line">  # each: 一个测试用例(it)作为一个单位</span><br><span class="line">  config.before(:suite) do</span><br><span class="line">    DatabaseCleaner.clean_with :truncation # 测试开始时(执行一个测试命令时)清空数据库</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  # js除外的其他测试使用transaction策略清除数据</span><br><span class="line">  config.before(:each) do</span><br><span class="line">    DatabaseCleaner.strategy = :transaction</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  # js测试时使用truncation策略清空数据</span><br><span class="line">  config.before(:each, js: true) do</span><br><span class="line">    DatabaseCleaner.strategy = truncation</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  # 开启transaction策略</span><br><span class="line">  config.before(:each) do</span><br><span class="line">    DatabaseCleaner.start</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  # 测试完了使用transaction策略清理数据库(我根据的是before/after的参数判断何种策略的)</span><br><span class="line">  config.after(:each) do</span><br><span class="line">    DatabaseCleaner.clean</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  # 每个测试文件执行完后使用truncation策略清理数据</span><br><span class="line">  config.after(:all) do</span><br><span class="line">    DatabaseCleaner.clean_with :truncation </span><br><span class="line">  end</span><br><span class="line">  ...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在测试文件中添加<code>js: true</code>就会使用javascript 驱动来测试</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">describe &quot;JS TEST&quot;, js: true do</span><br><span class="line">  # js test</span><br><span class="line">  ...</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">it &quot;JS TEST&quot;, js: true do</span><br><span class="line">  # js test case</span><br><span class="line">  ...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -1937,16 +1877,16 @@
       <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/default_avatar.jpg"
-               alt="John Doe" />
-          <p class="site-author-name" itemprop="name">John Doe</p>
+               src="/images/avatar.png"
+               alt="Daniel Zhang" />
+          <p class="site-author-name" itemprop="name">Daniel Zhang</p>
           <p class="site-description motion-element" itemprop="description"></p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">106</span>
-              <span class="site-state-item-name">Artikel</span>
+              <span class="site-state-item-count">105</span>
+              <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
@@ -1954,7 +1894,7 @@
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">14</span>
-                <span class="site-state-item-name">Kategorien</span>
+                <span class="site-state-item-name">分类</span>
               
             </div>
           
@@ -1963,7 +1903,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags">
                 <span class="site-state-item-count">104</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-name">标签</span>
               </a>
             </div>
           
@@ -2003,17 +1943,17 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">Daniel Zhang</span>
 </div>
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
-  Theme -
+  主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Pisces
   </a>
 </div>
 
@@ -2078,6 +2018,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
 
   
 
