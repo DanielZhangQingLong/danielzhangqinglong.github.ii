@@ -259,200 +259,6 @@
             
               
                 
-                <a class="post-title-link" href="/2015/03/10/bootstrap-install/" itemprop="url">
-                  Rails bootstrap 的安装和使用
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-03-10T14:17:14+08:00" content="2015-03-10">
-              2015-03-10
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Rails/" itemprop="url" rel="index">
-                    <span itemprop="name">Rails</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/03/10/bootstrap-install/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/10/bootstrap-install/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><blockquote>
-<p>首先创建一个Rails项目, 然后scaffold Product</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ rails new bootstrap_test</span><br><span class="line"></span><br><span class="line">$ rails g scaffold Product name:string price:integer</span><br><span class="line"></span><br><span class="line">$ rake db:migrate</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>访问index页面, 会看到如下图的样子:</p>
-<p><img src="http://i2.tietuku.com/8123868c2882e49a.png"></p>
-</blockquote>
-<h2 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法"></a>安装方法</h2><blockquote>
-<p>导入如下gem</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line"></span><br><span class="line">gem &apos;therubyracer&apos; # javascript 运行时环境, 编译less时所必须的</span><br><span class="line">gem &apos;less-rails&apos;   # 使用less所需</span><br><span class="line">gem &apos;twitter-bootstrap-rails&apos;</span><br><span class="line"></span><br><span class="line">$ bundle install</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>生成bootstrap所需要的文件</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ rails g bootstrap:install</span><br><span class="line">  insert  app/assets/javascripts/application.js</span><br><span class="line">  create  app/assets/javascripts/bootstrap.js.coffee</span><br><span class="line">  create  app/assets/stylesheets/bootstrap_and_overrides.css.less</span><br><span class="line">  create  config/locales/en.bootstrap.yml</span><br><span class="line">  gsub  app/assets/stylesheets/application.css</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>重启服务器, 观察页面前后变化:</p>
-<p><img src="http://i2.tietuku.com/e797078d5456ef81.png"></p>
-</blockquote>
-<h2 id="定制化"><a href="#定制化" class="headerlink" title="定制化"></a>定制化</h2><h3 id="View"><a href="#View" class="headerlink" title="View"></a>View</h3><blockquote>
-<p>看看如何使用bootstrap来美化视图, bootstrap定义了一系列的class属性. 我只需要使用下面的命令就可以为视图文件强制添加这些属性</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ rails g bootstrap:themed Products</span><br><span class="line">  force  app/views/products/index.html.erb</span><br><span class="line">  force  app/views/products/new.html.erb</span><br><span class="line">  force  app/views/products/edit.html.erb</span><br><span class="line">  force  app/views/products/_form.html.erb</span><br><span class="line">  force  app/views/products/show.html.erb</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>再次观察index页面, 是不是变得美观了一下呢?</p>
-</blockquote>
-<p><img src="http://i3.tietuku.com/37588bc114ecc568.png" alt=""></p>
-<blockquote>
-<p>通过观察页面的源码不难发现, 许多元素的class属性已经成了bootstrap的所定义的</p>
-</blockquote>
-<h3 id="flash消息"><a href="#flash消息" class="headerlink" title="flash消息"></a>flash消息</h3><blockquote>
-<p>现在还存在的问题是错误消息和flash消息不能显示, 先来看flash的问题, 错误信息我打算和simple_form一起说</p>
-<p>没有显示的原因是flash回显消息部分被重新生成的视图覆盖掉了, 我在<code>application.html.erb</code>中添加flash, bootstrap提供了更好的class来显示flash <code>alert alert-success alert-error</code></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># app/views/layouts/application.html.erb</span><br><span class="line">...</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;% flash.each do |name, msg| %&gt;</span><br><span class="line">  &lt;div class=&quot;alert alert-&lt;%= name == &quot;notice&quot; ? &quot;success&quot; : &quot;error&quot; %&gt;&quot;&gt;</span><br><span class="line">  &lt;a class=&quot;close&quot; data-dismiss=&quot;alert&quot;&gt;×&lt;/a&gt;</span><br><span class="line">  &lt;%= msg %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;% end %&gt;</span><br><span class="line"></span><br><span class="line">  &lt;%= yield %&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>修改一条记录的效果图:</p>
-<p><img src="http://i2.tietuku.com/7f31c0f840af014e.png"></p>
-</blockquote>
-<h3 id="simple-form和bootstrap显示错误消息"><a href="#simple-form和bootstrap显示错误消息" class="headerlink" title="simple_form和bootstrap显示错误消息"></a>simple_form和bootstrap显示错误消息</h3><blockquote>
-<p>simple_form在写表单方便的确很省力, 所以这里说明如何使用simple_form和bootstrap进行验证错误的回显, 首先在model中添加验证:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># app/models/product.rb</span><br><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  validates :name,  presence: true</span><br><span class="line">  validates :price, presence: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>然后安装simple_form:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line"></span><br><span class="line">gem &apos;simple_form&apos;</span><br><span class="line"></span><br><span class="line">$ bundle install</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>把bootstrap集成到simple_form中:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$  rails g simple_form:install --bootstrap</span><br><span class="line">  create  config/initializers/simple_form.rb</span><br><span class="line">  create  config/initializers/simple_form_bootstrap.rb</span><br><span class="line">  exist  config/locales</span><br><span class="line">  create  config/locales/simple_form.en.yml</span><br><span class="line">  create  lib/templates/erb/scaffold/_form.html.erb</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>修改表单视图文件</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/_form.html.erb</span><br><span class="line">&lt;%= simple_form_for @product, :html =&gt; &#123; :class =&gt; &apos;form-horizontal&apos;  &#125; do |f| %&gt;</span><br><span class="line">  &lt;%= f.input :name %&gt;</span><br><span class="line">  &lt;%= f.input :price %&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;form-actions&quot;&gt;</span><br><span class="line">    &lt;%= f.submit nil, :class =&gt; &apos;btn btn-primary&apos; %&gt;</span><br><span class="line">    &lt;%= link_to t(&apos;.cancel&apos;, :default =&gt; t(&quot;helpers.links.cancel&quot;)),</span><br><span class="line">    products_path, :class =&gt; &apos;btn btn-default&apos; %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><img src="http://i2.tietuku.com/c2cb083eafda59ce.png"></p>
-</blockquote>
-<h3 id="添加sidebar"><a href="#添加sidebar" class="headerlink" title="添加sidebar"></a>添加sidebar</h3><blockquote>
-<p>bootstrap提供了一种”份数”的方式处理浏览器窗口改变是里面的元素变化情况, 将浏览器宽度分为12等份, 再将这12等份的一部分分给各个元素, 现在我就让<code>yield</code>占8份, sidebar占4份.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&apos;container&apos;&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;row&quot;&gt;</span><br><span class="line">    &lt;% flash.each do |name, msg| %&gt;</span><br><span class="line">      &lt;div class=&apos;alert alert-&lt;%= name == &quot;notice&quot; ? &quot;succese&quot; : &quot;error&quot; %&gt;&apos;&gt;</span><br><span class="line">        &lt;a class=&quot;close&quot; data-dismiss=&quot;alert&quot;&gt;x&lt;/a&gt;</span><br><span class="line">        &lt;%= msg %&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;% end %&gt;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&apos;col-md-8&apos;&gt;</span><br><span class="line"></span><br><span class="line">      &lt;%= yield %&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&apos;col-md-4&apos;&gt;</span><br><span class="line">      &lt;h2&gt;Side Bar&lt;/h2&gt;</span><br><span class="line">      &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/div&gt; </span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>嘿嘿, 有点丑!<br><img src="http://i2.tietuku.com/1ba31549d05f64c4.png"></p>
-</blockquote>
-<h3 id="添加NavigationBar"><a href="#添加NavigationBar" class="headerlink" title="添加NavigationBar"></a>添加NavigationBar</h3><blockquote>
-<p>新建一个partial <code>header</code> </p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># app/views/layouts/_header.html.erb</span><br><span class="line">&lt;header&gt;</span><br><span class="line">  &lt;%= nav_bar fixed: :top, brand: &quot;Ninety Ten&quot; do %&gt;</span><br><span class="line">    &lt;%= menu_group do %&gt;</span><br><span class="line">      &lt;%= menu_item &quot;Home&quot;, root_path %&gt;</span><br><span class="line">      &lt;%= menu_item &quot;About Us&quot;, about_us_path %&gt;</span><br><span class="line">      &lt;%= menu_item &quot;Contact&quot;, contact_path %&gt;</span><br><span class="line">    &lt;% end %&gt;</span><br><span class="line">    &lt;% if current_user %&gt;</span><br><span class="line">      &lt;%= menu_item &quot;Log Out&quot;, log_out_path %&gt;</span><br><span class="line">    &lt;% else %&gt;</span><br><span class="line">      &lt;%= menu_group pull: :right do %&gt;</span><br><span class="line">        &lt;%= menu_item &quot;Sign Up&quot;, registration_path %&gt;</span><br><span class="line">        &lt;%= form_for @user, url: session_path(:user) do |f| -%&gt;</span><br><span class="line">          &lt;p&gt;&lt;%= f.text_field :email %&gt;&lt;/p&gt;</span><br><span class="line">          &lt;p&gt;&lt;%= f.password_field :password %&gt;&lt;/p&gt;</span><br><span class="line">          &lt;p&gt;&lt;%= f.submit &quot;Sign in&quot; %&gt;&lt;/p&gt;</span><br><span class="line">        &lt;% end -%&gt;</span><br><span class="line">      &lt;% end %&gt;</span><br><span class="line">    &lt;% end %&gt;</span><br><span class="line">  &lt;% end %&gt;</span><br><span class="line">&lt;/header&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>详情请参见: <a href="https://github.com/seyhunak/twitter-bootstrap-rails#navbar-helper" target="_blank" rel="external">https://github.com/seyhunak/twitter-bootstrap-rails#navbar-helper</a></p>
-<p><strong><em> 需要提一点: 对于IE9之前的浏览器, 添加下面一段代码 </em></strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># app/views/layouts/application.html.erb</span><br><span class="line">...</span><br><span class="line">&lt;!--[if lt IE 9]&gt;</span><br><span class="line">&lt;script src=&quot;http://html5shim.googlecode.com/svn/trunk/html5.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;![endif]--&gt;</span><br><span class="line">..l.</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2015/03/09/field-hidden-in-log/" itemprop="url">
                   Rails 在日志中隐藏Parameters中一些字段
                 </a>
@@ -518,6 +324,128 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Parameters: &#123;&quot;utf8&quot;=&gt;&quot;✓&quot;, &quot;authenticity_token&quot;=&gt;&quot;IV2rjQ4ta9xPMTvvAMNOhp6XtgfIhh2nj7UpD8ZjHpQ=&quot;, &quot;user&quot;=&gt;&#123;&quot;email&quot;=&gt;&quot;test@test.com&quot;, &quot;password&quot;=&gt;&quot;[FILTERED]&quot;, &quot;credit_card_number&quot;=&gt;&quot;[FILTERED]&quot;&#125;, &quot;commit&quot;=&gt;&quot;Create User&quot;&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>但是在<code>development</code>没必要这样做, 因为这样修改了, debug会比较困难</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/09/kaminari-scroll/" itemprop="url">
+                  Rails 分页Gem (Infinite Scroll 无限卷轴效果)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-09T14:35:02+08:00" content="2015-03-09">
+              2015-03-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/03/09/kaminari-scroll/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/09/kaminari-scroll/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p><a href="https://github.com/amatsuda/kaminari/wiki/How-To:-Create-Infinite-Scrolling-with-jQuery" target="_blank" rel="external">https://github.com/amatsuda/kaminari/wiki/How-To:-Create-Infinite-Scrolling-with-jQuery</a></p>
 </blockquote>
 
           
@@ -662,128 +590,6 @@
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WillPaginate.per_page = 10</span><br></pre></td></tr></table></figure>
 <h2 id="I18N"><a href="#I18N" class="headerlink" title="I18N"></a>I18N</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">en:</span><br><span class="line">  will_paginate:</span><br><span class="line">    previous_label: &quot;&amp;#8592; Previous&quot;</span><br><span class="line">    next_label: &quot;Next &amp;#8594;&quot;</span><br><span class="line">    page_gap: &quot;&amp;hellip;&quot;</span><br><span class="line"></span><br><span class="line">  page_entries_info:</span><br><span class="line">    single_page:</span><br><span class="line">      zero:  &quot;No %&#123;model&#125; found&quot;</span><br><span class="line">      one:   &quot;Displaying 1 %&#123;model&#125;&quot;</span><br><span class="line">      other: &quot;Displaying all %&#123;count&#125; %&#123;model&#125;&quot;</span><br><span class="line">    single_page_html:</span><br><span class="line">      zero:  &quot;No %&#123;model&#125; found&quot;</span><br><span class="line">      one:   &quot;Displaying &lt;b&gt;1&lt;/b&gt; %&#123;model&#125;&quot;</span><br><span class="line">      other: &quot;Displaying &lt;b&gt;all&amp;nbsp;%&#123;count&#125;&lt;/b&gt; %&#123;model&#125;&quot;</span><br><span class="line"></span><br><span class="line">    multi_page: &quot;Displaying %&#123;model&#125; %&#123;from&#125; - %&#123;to&#125; of %&#123;count&#125; in total&quot;</span><br><span class="line">    multi_page_html: &quot;Displaying %&#123;model&#125; &lt;b&gt;%&#123;from&#125;&amp;nbsp;-&amp;nbsp;%&#123;to&#125;&lt;/b&gt; of &lt;b&gt;%&#123;count&#125;&lt;/b&gt; in total&quot;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/03/09/kaminari-scroll/" itemprop="url">
-                  Rails 分页Gem (Infinite Scroll 无限卷轴效果)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-03-09T14:35:02+08:00" content="2015-03-09">
-              2015-03-09
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Rails/" itemprop="url" rel="index">
-                    <span itemprop="name">Rails</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/03/09/kaminari-scroll/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/09/kaminari-scroll/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p><a href="https://github.com/amatsuda/kaminari/wiki/How-To:-Create-Infinite-Scrolling-with-jQuery" target="_blank" rel="external">https://github.com/amatsuda/kaminari/wiki/How-To:-Create-Infinite-Scrolling-with-jQuery</a></p>
-</blockquote>
 
           
         
@@ -2027,6 +1833,166 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/06/slim-view/" itemprop="url">
+                  Rails中使用slim模板文件入门介绍(一)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-06T16:00:58+08:00" content="2015-03-06">
+              2015-03-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/03/06/slim-view/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/06/slim-view/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h3><blockquote>
+<p>使用slim代替erb作为模板语言会节省很多代码, 而且看起来更加整洁, 那么来对比一下application模板文件使用erb和slim变化:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># app/views/layouts/application.html.erb</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;title&gt;CreateTestApi&lt;/title&gt;</span><br><span class="line">  &lt;%= stylesheet_link_tag    &apos;application&apos;, media: &apos;all&apos;, &apos;data-turbolinks-track&apos; =&gt; true %&gt;</span><br><span class="line">  &lt;%= javascript_include_tag &apos;application&apos;, &apos;data-turbolinks-track&apos; =&gt; true %&gt;</span><br><span class="line">  &lt;%= csrf_meta_tags %&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= yield %&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>slim:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># app/views/layouts/application.html.slim</span><br><span class="line"></span><br><span class="line">DOCTYPE</span><br><span class="line"></span><br><span class="line">html</span><br><span class="line">  head</span><br><span class="line">    title SlimTest</span><br><span class="line">    = stylesheet_link_tag &apos;application&apos;, media: &apos;all&apos;, &apos;data-turbolinks-track&apos; =&gt; true</span><br><span class="line">    = javascript_include_tag &apos;application&apos;, &apos;data-turbolinks-track&apos; =&gt; true</span><br><span class="line">    = csrf_meta_tags</span><br><span class="line"></span><br><span class="line">body</span><br><span class="line">  header#header</span><br><span class="line">    h1.title.logo SlimTest</span><br><span class="line">  == yield</span><br></pre></td></tr></table></figure>
+<h3 id="记忆方法"><a href="#记忆方法" class="headerlink" title="记忆方法"></a>记忆方法</h3><blockquote>
+<p>从上面代码的对比中可以看出:</p>
+</blockquote>
+<ul>
+<li>删除了所有的<code>&lt;、&gt;、&lt;%、%&gt;</code>标签以及闭合标签</li>
+<li><code>each if</code>这样的ruby关键字在前面添加横线<code>-</code>, 同时, <code>end</code>被删除掉</li>
+<li><code>&lt;%= ... &gt;</code> ruby插入表达式代码标签被等号<code>代替</code>, <code>yield</code>和<code>render</code>变为<code>==</code></li>
+<li>class属性和id属性使用<code>p.fields</code>和<code>p.#contents</code>替换掉, 如果是div标签就省略div直接使用属性, 如<code>#contents</code></li>
+<li>关于注释:<ul>
+<li><code>/ 转换成HTML后不被显示</code></li>
+<li><code>/! 转换成HTML后被显示</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="Rails中引入slim"><a href="#Rails中引入slim" class="headerlink" title="Rails中引入slim"></a>Rails中引入slim</h2><h3 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h3><blockquote>
+<p>像往常一样, 快速创建项目, 这里我略写:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ rails new slim_test</span><br><span class="line">$ cd slim_test</span><br><span class="line">$ rails g scaffold Product name:string description:text price:integer discontinued:boolean</span><br><span class="line">$ rake db:migrate</span><br></pre></td></tr></table></figure>
+<h3 id="安装slim"><a href="#安装slim" class="headerlink" title="安装slim"></a>安装slim</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Gemfile</span><br><span class="line">gem &apos;slim-rails&apos; # 注意应该是所有环境下都安装</span><br><span class="line"></span><br><span class="line">$ bundle install</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>从此以后, 使用命令行生成的视图文件都是<code>xx.html.slim</code>格式的了, 而且还需要将现有的erb格式的视图文件替换为slim格式文件</p>
+</blockquote>
+<h2 id="erb替换为slim"><a href="#erb替换为slim" class="headerlink" title="erb替换为slim"></a>erb替换为slim</h2><blockquote>
+<p>接下来, 按照上面的规律联系一下替换这些视图文件</p>
+</blockquote>
+<h3 id="index-html-slim"><a href="#index-html-slim" class="headerlink" title="index.html.slim"></a>index.html.slim</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">DOCTYPE</span><br><span class="line"></span><br><span class="line">html</span><br><span class="line">  head</span><br><span class="line">    title SlimTest</span><br><span class="line">    = stylesheet_link_tag &apos;application&apos;, media: &apos;all&apos;, &apos;data-turbolinks-track&apos; =&gt; true</span><br><span class="line">    = javascript_include_tag &apos;application&apos;, &apos;data-turbolinks-track&apos; =&gt; true</span><br><span class="line">    = csrf_meta_tags</span><br><span class="line"></span><br><span class="line">body</span><br><span class="line">  header#header</span><br><span class="line">    h1.title.logo SlimTest</span><br><span class="line">  == yield</span><br></pre></td></tr></table></figure>
+<h3 id="new-html-slim"><a href="#new-html-slim" class="headerlink" title="new.html.slim"></a>new.html.slim</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">h1 New Product</span><br><span class="line">== render &apos;form&apos;</span><br><span class="line">= link_to &apos;Back&apos;, products_path</span><br></pre></td></tr></table></figure>
+<h3 id="edit-html-slim"><a href="#edit-html-slim" class="headerlink" title="edit.html.slim"></a>edit.html.slim</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">h1 Editing Product</span><br><span class="line">== render &apos;form&apos;</span><br><span class="line">= link_to &apos;Show&apos;, @product </span><br><span class="line">&apos;|</span><br><span class="line">= link_to &apos;Back&apos;, products_path</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意: 如果需要在页面输出字符串 需要在字符串前面加上<code>&#39;</code></p>
+</blockquote>
+<h3 id="form-html-erb"><a href="#form-html-erb" class="headerlink" title="form.html.erb"></a>form.html.erb</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">= form_for(@product) do |f|</span><br><span class="line">  - if @product.errors.any?</span><br><span class="line">    #error_explanation</span><br><span class="line">      h2 = &quot;#&#123;pluralize(@product.errors.count, &quot;error&quot;)&#125; prohibited this product from being saved:&quot;</span><br><span class="line">      ul</span><br><span class="line">        - @product.errors.full_messages.each do|message|</span><br><span class="line">          li = message</span><br><span class="line"></span><br><span class="line">  .filed</span><br><span class="line">    = f.label :name</span><br><span class="line">    = f.text_field :name</span><br><span class="line">  .field</span><br><span class="line">    = f.label :description</span><br><span class="line">    = f.text_area :description</span><br><span class="line">  .field</span><br><span class="line">    = f.label :price</span><br><span class="line">    = f.number_field :price</span><br><span class="line">  .filed</span><br><span class="line">    = f.label :discontinued</span><br><span class="line">    = f.check_box :discontinued</span><br><span class="line">  .actions</span><br><span class="line">    = f.submit</span><br></pre></td></tr></table></figure>
+<h3 id="show-html-erb"><a href="#show-html-erb" class="headerlink" title="show.html.erb"></a>show.html.erb</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">p#notice = notice</span><br><span class="line"></span><br><span class="line">p</span><br><span class="line">  strong Name:</span><br><span class="line">  = @product.name</span><br><span class="line"></span><br><span class="line">p</span><br><span class="line">  strong Description:</span><br><span class="line">  = @product.description</span><br><span class="line"></span><br><span class="line">p</span><br><span class="line">  strong Price:</span><br><span class="line">  = @product.price</span><br><span class="line"></span><br><span class="line">p</span><br><span class="line">  strong Discontinued:</span><br><span class="line">  = @product.discontinued</span><br><span class="line"></span><br><span class="line">= link_to &apos;Edit&apos;, edit_product_path(@product)</span><br><span class="line">&apos;|</span><br><span class="line">= link_to &apos;Back&apos;, products_path</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -2072,7 +2038,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">105</span>
+              <span class="site-state-item-count">104</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

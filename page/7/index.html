@@ -259,257 +259,6 @@
             
               
                 
-                <a class="post-title-link" href="/2015/02/17/view-helper/" itemprop="url">
-                  Rails中View Helper总结
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-02-17T09:25:20+08:00" content="2015-02-17">
-              2015-02-17
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Rails/" itemprop="url" rel="index">
-                    <span itemprop="name">Rails</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/02/17/view-helper/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/17/view-helper/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>View Helper提供了form, select, check_box等等一系列的页面元素, 这篇文章进行总结</p>
-</blockquote>
-<h2 id="超链接-link-to"><a href="#超链接-link-to" class="headerlink" title="超链接(link_to)"></a>超链接(link_to)</h2><h3 id="基本使用方法"><a href="#基本使用方法" class="headerlink" title="基本使用方法"></a>基本使用方法</h3><blockquote>
-<p><code>link_to</code>会生成 a 标签</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">link_to(name = nil, options = nil, html_options = nil, &amp;block)</span><br></pre></td></tr></table></figure>
-<h4 id="可以指定的options"><a href="#可以指定的options" class="headerlink" title="可以指定的options"></a>可以指定的options</h4><ul>
-<li><code>method:</code> 指定<code>:get</code>, ‘:post’, <code>:patch</code>, <code>:delete</code> 代表生成的链接发给服务器的请求使用GET, POST 等HTTP方法.</li>
-<li><code>remote: true</code> 像server发送Ajax请求(默认值是false)</li>
-<li><code>data: { confirm: &quot;Are you sure to delete?&quot; }</code> 弹出确认对话框</li>
-</ul>
-<h4 id="link-to经常使用的方法"><a href="#link-to经常使用的方法" class="headerlink" title="link_to经常使用的方法"></a><code>link_to</code>经常使用的方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># HTML属性指定(class)</span><br><span class="line">link_to &quot;Profile&quot;, profile_path(@profile), class: &quot;btn btn-large&quot;, id: &quot;profile#&#123;@profile.id&#125;&quot;</span><br><span class="line">#=&gt; &lt;a class=&quot;btn btn-large&quot; href=&quot;/profiles/1&quot; id=&quot;profiles1&quot;&gt;Profile&lt;/a&gt;</span><br><span class="line"></span><br><span class="line"># 添加查询(?=xxx)</span><br><span class="line">link_to &quot;Profile&quot;, profile_path(@profile, q: &quot;list&quot;)</span><br><span class="line">#=&gt; &lt;a href=&quot;/profiles/1?q=list&quot;&gt;Profile&lt;/a&gt;</span><br><span class="line"></span><br><span class="line"># 指定格式</span><br><span class="line">link_to &quot;Profile&quot;, profile_path(@profile, format: &apos;csv&apos;)</span><br><span class="line"></span><br><span class="line"># 使用block环绕一些元素 </span><br><span class="line"># 这样更加灵活地将链接内容显示在页面</span><br><span class="line">link_to @profile do</span><br><span class="line">  &lt;strong&gt;&lt;%= @profile.name&gt;&lt;/strong&gt; -- &lt;span&gt;Check it out!&lt;/span&gt;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># =&gt;  &lt;a href=&quot;/profiles/1&quot;&gt;</span><br><span class="line">        &lt;strong&gt;Daniel&lt;/strong&gt; -- &lt;span&gt;Check it out!&lt;/span&gt;</span><br><span class="line">      &lt;/a&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="link-to-if更加条件显示链接"><a href="#link-to-if更加条件显示链接" class="headerlink" title="link_to_if更加条件显示链接"></a><code>link_to_if</code>更加条件显示链接</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">link_to_if(current_user.admin?, &quot;管理员&quot;, admin_path)</span><br></pre></td></tr></table></figure>
-<h2 id="img-tag"><a href="#img-tag" class="headerlink" title="img_tag"></a>img_tag</h2><p>###基本使用方法</p>
-<blockquote>
-<p>生成img 标签, 也就是需要在页面显示图片时使用:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">image_tag(source, options=&#123;&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="Options"><a href="#Options" class="headerlink" title="Options"></a>Options</h3><ul>
-<li><p><code>source</code> 表示图片文件的具体位置, 可以使用绝对路径和相对路径, 如果你直接指定文件名, 那么rails会默认去assets/images中寻找该图片文件.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例: &lt;%= image_tag &apos;picture.png&apos; %&gt;</span><br><span class="line">#=&gt; &lt;img src=&quot;/images/picture.png&quot; alt=&quot;Picture&quot;&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code>alt</code> 加入无法显示图片, alt的文本内容会显示出来.</p>
-</li>
-<li><code>size</code> 指定图片的长度和高度.</li>
-</ul>
-<blockquote>
-<p>还可以指定html的id属性class属性等等</p>
-</blockquote>
-<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= image_tag &apos;http://i2.tietuku.com/09b177fc2e10b2dd.png&apos;, alt: &quot;Picture&quot; %&gt;</span><br><span class="line"># =&gt; &lt;img alt=&quot;Picture&quot; src=&quot;http://i2.tietuku.com/09b177fc2e10b2dd.png&quot;&gt;</span><br><span class="line"></span><br><span class="line">image_tag(&quot;picture.png&quot;, size: &quot;50x40&quot;, alt: &quot;Home Image&quot;)</span><br><span class="line"># =&gt; &lt;img src=&quot;/images/picture.png&quot; width=&quot;50&quot; height=&quot;40&quot; alt=&quot;Home Image&quot; /&gt;</span><br><span class="line"></span><br><span class="line">image_tag(&quot;/gallery/picture.png&quot;, size: &quot;200&quot;)</span><br><span class="line"># =&gt; &lt;img src=&quot;/gallery/picture.png&quot; width=&quot;200&quot; height=&quot;200&quot; alt=&quot;Picture&quot; /&gt;</span><br><span class="line"></span><br><span class="line">image_tag(&quot;picture.png&quot;, class: &quot;menu_img&quot;)</span><br><span class="line"># =&gt; &lt;img alt=&quot;Picture&quot; class=&quot;main_img&quot; src=&quot;/images/picture.png&quot; /&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="FORM-form-for-form-tag"><a href="#FORM-form-for-form-tag" class="headerlink" title="FORM - form_for form_tag"></a>FORM - <code>form_for</code> <code>form_tag</code></h2><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><ul>
-<li><code>form_for</code> : 我们在创建或者更新Model时, 需要生成依附于这样的Model的表单, 这时使用<code>form_for</code>, 由于表单依附于Model实体, 当发生验证错误时候, 我们可以将错误消息和错误的具体位置在页面表示出来</li>
-<li><code>form_tag</code> : 只是单纯地输出表单, 比如我们可以要搜索, 需要提交表单给一个Controller的某个action.不依附于Model, 所以也就进行validation.(可以先这么理解, 我以后写一篇文章介绍两者区别), 其block内部需要使用<code>label_tag</code>这样的xxx_tag方法来生成表单元素<br>&gt;</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">form_for(record, options = &#123;&#125; &amp;block)</span><br><span class="line">form_tag(url_for_options = &#123;&#125;&lt; options = &#123;&#125;, &amp;block)</span><br></pre></td></tr></table></figure>
-<h3 id="Option"><a href="#Option" class="headerlink" title="Option"></a>Option</h3><ul>
-<li><code>url</code> 指提交到的那个url, 对于<code>form_for</code>, 由于Model会自动生成URL, 所以此项不是必须的; 对于<code>form_tag</code>来说, 是必须指定的, 当然, 也可以通过<code>controller</code>, <code>action</code>间接指定url.</li>
-<li><code>method</code> 指定HTTP方法, 类似于<code>link_to</code></li>
-<li><code>remote</code> Ajax相关, 设置true后, 会通过Ajax来submit.</li>
-<li><code>html</code> 指定form的HTML属性, <code>class</code>, <code>role</code>等<blockquote>
-</blockquote>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= form_for @user, remote: true, :html =&gt; &#123; :class =&gt; &quot;form-horizontal&quot;, :role =&gt; &quot;form&quot;  &#125; do |f| %&gt;</span><br><span class="line"></span><br><span class="line">  # 指定user的属性</span><br><span class="line">  &lt;%= f.text_field :name %&gt;</span><br><span class="line">  &lt;%= f.number_field :age %&gt;</span><br><span class="line"></span><br><span class="line">  &lt;%= f.submit %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>如果需要嵌套Model:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># config/routes.rb</span><br><span class="line"># resources :users do</span><br><span class="line">    resources :comments</span><br><span class="line"># end</span><br><span class="line"></span><br><span class="line"># 需要给form_for 方法传入数组</span><br><span class="line"></span><br><span class="line">&lt;%= form_for [@users, @comments] do |f| %&gt;</span><br><span class="line">  &lt;%= f.text_field :content %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><code>form_tag</code> :</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= form_tag(:action =&gt; &quot;create&quot;) do%&gt;</span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">  &lt;%= label_tag &apos;title&apos; %&gt;</span><br><span class="line">  &lt;%= text_field_tag &apos;title&apos; %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">  &lt;%= label_tag &apos;content&apos; %&gt;</span><br><span class="line">  &lt;%= text_field_tag &apos;content&apos; %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;actions&quot;&gt;</span><br><span class="line">  &lt;%= submit_tag &quot;作成&quot; %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="嵌套其他Model的表单fields-for"><a href="#嵌套其他Model的表单fields-for" class="headerlink" title="嵌套其他Model的表单fields_for"></a>嵌套其他Model的表单<code>fields_for</code></h2><blockquote>
-<p>如果在Model中使用<code>has_one``has_many</code>去关联其他的Model, 那么在页面表单中就需要使用<code>fields_for</code>来关联这些来自于其他Model的字段, 下面例子说明了在表单中如何把Address的字段嵌入User.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= form_for @user do |f| %&gt;</span><br><span class="line">  &lt;%= f.fields_for :address do |address_fields| %&gt;</span><br><span class="line">    Street: &lt;%= address_fields.text_field :street %&gt;</span><br><span class="line">    Zip Code: &lt;%= address_fields.text_field :zip_code %&gt;</span><br><span class="line">  &lt;% end %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line"></span><br><span class="line"># 在 app/models/user.rb中:</span><br><span class="line"></span><br><span class="line">class User &lt; ActiveRecord::Base</span><br><span class="line">  has_many :addresses</span><br><span class="line">  accepts_nested_attributes_for :addresses</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<h2 id="生成label的方法-label和label-tag"><a href="#生成label的方法-label和label-tag" class="headerlink" title="生成label的方法 label和label_tag"></a>生成label的方法 <code>label</code>和<code>label_tag</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.label(:name, &quot;名字&quot;) %&gt;</span><br><span class="line">#=&gt; &lt;label for=&quot;user_name&quot;&gt;名字&lt;/label&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= label_for(:user, &quot;名字&quot;) %&gt;</span><br><span class="line">#=&gt; &lt;label for=&quot;user&quot;&gt;姓名&lt;/label&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="文本框-text-field和text-field-tag"><a href="#文本框-text-field和text-field-tag" class="headerlink" title="文本框- text_field和text_field_tag"></a>文本框- <code>text_field</code>和<code>text_field_tag</code></h2><blockquote>
-<p>在页面上生成文本输入框, <code>&lt;input type=&quot;text&quot;&gt;</code></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.text_field :name %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;text&quot; name=&quot;user[name]&quot; id=&quot;user_name&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= text_field_tag &quot;user[name]&quot;, &quot;值&quot; %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;text&quot; name=&quot;user[name]&quot; id=&quot;user_name&quot; value=&quot;值&quot;&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="Option-1"><a href="#Option-1" class="headerlink" title="Option"></a>Option</h3><ul>
-<li><code>:disabled</code> : true代表文本框变灰不可以输入</li>
-<li><code>:size</code> 设定文本框的长度</li>
-<li><code>:maxlength</code> 可以输入的最多字数</li>
-<li><code>:placeholder</code> 页面被加载后自动出现在输入框中的文字, 用户输入时会消失</li>
-<li>其他一些html的属性</li>
-</ul>
-<h3 id="一些其他类型的输入框"><a href="#一些其他类型的输入框" class="headerlink" title="一些其他类型的输入框"></a>一些其他类型的输入框</h3><ul>
-<li><code>email_field / email_field_tag</code></li>
-<li><code>password_field / password_field_tag</code></li>
-<li><code>search_field / search_field_tag</code></li>
-<li><code>number_field / number_field_tag</code></li>
-</ul>
-<h3 id="输入日期时间-date-field-time-field-datetime-field"><a href="#输入日期时间-date-field-time-field-datetime-field" class="headerlink" title="输入日期时间- date_field/time_field/datetime_field"></a>输入日期时间- <code>date_field/time_field/datetime_field</code></h3><blockquote>
-<p>效果如下:<br><img src="http://i2.tietuku.com/f2f5d504930df9cf.png" alt=""></p>
-</blockquote>
-<h3 id="选择日期时间-date-select-time-select-datetime-select"><a href="#选择日期时间-date-select-time-select-datetime-select" class="headerlink" title="选择日期时间 - date_select / time_select / datetime_select"></a>选择日期时间 - <code>date_select / time_select / datetime_select</code></h3><p><img src="http://i2.tietuku.com/884bd4cc71002787.png" alt=""></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.time_select :updated_at %&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>对应的HTML:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type=&quot;hidden&quot; id=&quot;profile_updated_at_1i&quot; name=&quot;profile[updated_at(1i)]&quot; value=&quot;2015&quot; /&gt;</span><br><span class="line">&lt;input type=&quot;hidden&quot; id=&quot;profile_updated_at_2i&quot; name=&quot;profile[updated_at(2i)]&quot; value=&quot;2&quot; /&gt;</span><br><span class="line">&lt;input type=&quot;hidden&quot; id=&quot;profile_updated_at_3i&quot; name=&quot;profile[updated_at(3i)]&quot; value=&quot;17&quot; /&gt;</span><br><span class="line">&lt;select id=&quot;profile_updated_at_4i&quot; name=&quot;profile[updated_at(4i)]&quot;&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>submit后, 封装在params中:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Parameters: &#123;&quot;utf8&quot;=&gt;&quot;✓&quot;,</span><br><span class="line">&quot;authenticity_token&quot;=&gt;&quot;WJhATdPc1LEzIpL9r1KG15uYp9TGKdZHV0oYFNjz8jHHDuyn4uuV4do0/7EumsNwHHzuUzt/5Ip5eXpzivxywg==&quot;,</span><br><span class="line">&quot;profile&quot;=&gt;&#123;&quot;updated_at(1i)&quot;=&gt;&quot;2015&quot;, &quot;updated_at(2i)&quot;=&gt;&quot;2&quot;, &quot;updated_at(3i)&quot;=&gt;&quot;17&quot;, &quot;updated_at(4i)&quot;=&gt;&quot;06&quot;, &quot;updated_at(5i)&quot;=&gt;&quot;53&quot;&#125;,</span><br><span class="line">&quot;commit&quot;=&gt;&quot;Create Profile&quot;&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注意, 虽然在页面上没有选择年月日, 但是不难看出在HTML源码和params中都有看到年月日一并在发送给了server.如果我指定<code>ignore_date: true</code>, 那么年月日就不会发送给server. 如果没有年月日就会发生异常, 所以, 必须有<code>date_select</code>在表单中.<br><code>date_select</code>和<code>date_time_select</code>道理相同, 我就不一一说明了</p>
-</blockquote>
-<h2 id="文件上传-file-field-file-field-tag"><a href="#文件上传-file-field-file-field-tag" class="headerlink" title="文件上传- file_field/file_field_tag"></a>文件上传- <code>file_field/file_field_tag</code></h2><p><img src="http://i2.tietuku.com/f2d00300cacb6914.png" alt=""></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> # 对于form_tag提交的表单, 需要设置multipart: true, form_for则不需要</span><br><span class="line">&lt;%= form_tag &apos;/upload&apos;, multipart: true do %&gt;</span><br><span class="line">  &lt;label for=&quot;file&quot;&gt;File to Upload&lt;/label&gt; &lt;%= file_field_tag &quot;file&quot; %&gt;</span><br><span class="line">    &lt;%= submit_tag %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="text-area-text-area-tag"><a href="#text-area-text-area-tag" class="headerlink" title="text_area / text_area_tag"></a><code>text_area / text_area_tag</code></h2><blockquote>
-<p>该标签对应的Model的属性类型是text</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= text_area_tag &quot;post[content]&quot;, &quot;很长的文章&quot;, size: &quot;200x200&quot; %&gt;</span><br><span class="line">#=&gt; &lt;textarea name=&quot;post[content]&quot; id=&quot;post_content&quot; cols=&quot;200&quot; rows=&quot;200&quot;&gt;很长的文章&lt;/textarea&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="下拉列表-select-select-tag-collection-select"><a href="#下拉列表-select-select-tag-collection-select" class="headerlink" title="下拉列表 select / select_tag / collection_select"></a>下拉列表 <code>select / select_tag / collection_select</code></h2><blockquote>
-<p>一下三种方法产生的页面效果是一样的:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.select :prefecture_id, Prefecture.all.map &#123; |p| [p.name, p.id]  &#125; %&gt;</span><br><span class="line">&lt;%= select_tag &quot;address[prefeture_id]&quot;, options_from_collection_for_select(Prefecture.all, :id, :name) %&gt;</span><br><span class="line">&lt;%= f.collection_select :prefecture_id, Prefecture.all, :id, :name %&gt;</span><br><span class="line"></span><br><span class="line"># =&gt;</span><br><span class="line"># &lt;select name=&quot;address[prefecture_id]&quot; id=&quot;address_prefecture_id&quot;&gt;</span><br><span class="line">#   &lt;option value=&quot;1&quot;&gt;北京&lt;/option&gt;</span><br><span class="line">#   &lt;option value=&quot;2&quot;&gt;上海&lt;/option&gt;</span><br><span class="line">#   &lt;option value=&quot;3&quot;&gt;哈尔滨&lt;/option&gt;</span><br><span class="line"># &lt;/select&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="check-box-check-box-tag-collection-check-boxes"><a href="#check-box-check-box-tag-collection-check-boxes" class="headerlink" title="check_box / check_box_tag / collection_check_boxes"></a><code>check_box / check_box_tag / collection_check_boxes</code></h2><h3 id="一个check-box"><a href="#一个check-box" class="headerlink" title="一个check_box"></a>一个check_box</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.label :remember_me, &quot;REMEMBER_ME&quot; %&gt;</span><br><span class="line">&lt;%= f.check_box :remember_me %&gt;</span><br><span class="line"></span><br><span class="line"># =&gt; </span><br><span class="line"># &lt;label for=&quot;profile_remember_me&quot;&gt;REMEMBER_ME&lt;/label&gt;</span><br><span class="line"># &lt;input type=&quot;checkbox&quot; value=&quot;1&quot; name=&quot;profile[remember_me]&quot; id=&quot;profile_remember_me&quot;&gt;</span><br><span class="line">    </span><br><span class="line"># OR</span><br><span class="line"></span><br><span class="line">&lt;%= check_box_tag &quot;profile[remember_me]&quot;%&gt;</span><br><span class="line">&lt;%= label_tag &quot;profile[remember_me]&quot;, &quot;记住我&quot; %&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="多个-check-box"><a href="#多个-check-box" class="headerlink" title="多个 check_box"></a>多个 check_box</h3><blockquote>
-<p>Category和Product 有多对多的关系</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;% Category.all.each do |category| %&gt;</span><br><span class="line">  &lt;%= check_box_tag &quot;product[category_ids][]&quot;, category.id, @product.categories.include?(category), id: &quot;product_category_ids_#&#123;category.id&#125;&quot; %&gt;</span><br><span class="line">    &lt;%= label_tag &quot;product[category_ids][#&#123;category.id&#125;]&quot;, category.name %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line"></span><br><span class="line">#=&gt; </span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;product[category_ids][]&quot; id=&quot;product_category_ids_1&quot; value=&quot;1&quot; checked=&quot;checked&quot; /&gt;</span><br><span class="line">&lt;label for=&quot;Category_0&quot;&gt;Category#0&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;product[category_ids][]&quot; id=&quot;product_category_ids_2&quot; value=&quot;2&quot; checked=&quot;checked&quot; /&gt;</span><br><span class="line">&lt;label for=&quot;Category_1&quot;&gt;Category#1&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;product[category_ids][]&quot; id=&quot;product_category_ids_3&quot; value=&quot;3&quot; checked=&quot;checked&quot; /&gt;</span><br><span class="line">&lt;label for=&quot;Category_2&quot;&gt;Category#2&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;product[category_ids][]&quot; id=&quot;product_category_ids_4&quot; value=&quot;4&quot; /&gt;</span><br><span class="line">&lt;label for=&quot;Category_3&quot;&gt;Category#3&lt;/label&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>然后我们分析一下提交后params集合的参数情况</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">params</span><br><span class="line"># 选择0个box</span><br><span class="line">&quot;product&quot;=&gt;&#123;&quot;name&quot;=&gt;&quot;&quot;&#125;</span><br><span class="line"># 选择2个</span><br><span class="line">&quot;product&quot;=&gt;&#123;&quot;name&quot;=&gt;&quot;&quot;, category_ids&quot;=&gt;[&quot;1&quot;, &quot;2&quot;]&#125;&quot;&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>还需要注意StrongParameters:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def product_params</span><br><span class="line">  # 注意category_ids: []</span><br><span class="line">  params.require(:product).permit(:name, category_ids: [])</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Parameter和SQL语句</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Parameters: &#123;&quot;utf8&quot;=&gt;&quot;✓&quot;, &quot;authenticity_token&quot;=&gt;&quot;cGk3YzhN3JGSROg+MKdVFj8hois/WQck5mwop/0j2oTv/5uJCXqdwXtShXKxbxCxuMXrrMIPNenIX0rAryxadw==&quot;, &quot;product&quot;=&gt;&#123;&quot;name&quot;=&gt;&quot;iMac&quot;, &quot;category_ids&quot;=&gt;[&quot;1&quot;, &quot;2&quot;]&#125;, &quot;commit&quot;=&gt;&quot;Create Product&quot;&#125;</span><br><span class="line">  Category Load (0.2ms)  SELECT &quot;categories&quot;.* FROM &quot;categories&quot; WHERE &quot;categories&quot;.&quot;id&quot; IN (1, 2)</span><br><span class="line">  (0.0ms)  begin transaction</span><br><span class="line">  SQL (0.2ms)  INSERT INTO &quot;products&quot; (&quot;name&quot;, &quot;created_at&quot;, &quot;updated_at&quot;) VALUES (?, ?, ?)  [[&quot;name&quot;, &quot;iMac&quot;], [&quot;created_at&quot;, &quot;2015-02-17 10:05:04.921510&quot;], [&quot;updated_at&quot;, &quot;2015-02-17 10:05:04.921510&quot;]]</span><br><span class="line">  SQL (0.1ms)  INSERT INTO &quot;categories_products&quot; (&quot;category_id&quot;, &quot;product_id&quot;) VALUES (?, ?)  [[&quot;category_id&quot;, 1], [&quot;product_id&quot;, 2]]</span><br><span class="line">  SQL (0.0ms)  INSERT INTO &quot;categories_products&quot; (&quot;category_id&quot;, &quot;product_id&quot;) VALUES (?, ?)  [[&quot;category_id&quot;, 2], [&quot;product_id&quot;, 2]]</span><br><span class="line">(0.6ms)  commit transaction</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>rails还提供了更为简单的方法:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.collection_check_boxes :category_ids, Category.all, :id, :name %&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="radio-button-radio-button-tag"><a href="#radio-button-radio-button-tag" class="headerlink" title="radio_button, radio_button_tag"></a><code>radio_button, radio_button_tag</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">%= f.label :rate %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 1 %&gt; &lt;%= f.label :rate_1, 1 %&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 2 %&gt; &lt;%= f.label :rate_2, 2 %&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 3 %&gt; &lt;%= f.label :rate_3, 3 %&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 4 %&gt; &lt;%= f.label :rate_4, 4 %&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 5 %&gt; &lt;%= f.label :rate_5, 5 %&gt;</span><br><span class="line"># =&gt;</span><br><span class="line">&lt;label for=&quot;product_rate&quot;&gt;Rate&lt;/label&gt;&lt;br&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;1&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_1&quot;&gt; &lt;label for=&quot;product_rate_1&quot;&gt;1&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;2&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_2&quot;&gt; &lt;label for=&quot;product_rate_2&quot;&gt;2&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;3&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_3&quot;&gt; &lt;label for=&quot;product_rate_3&quot;&gt;3&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;4&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_4&quot;&gt; &lt;label for=&quot;product_rate_4&quot;&gt;4&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;5&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_5&quot;&gt; &lt;label for=&quot;product_rate_5&quot;&gt;5&lt;/label&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>同样也有<code>collection_xx</code>版本的方法</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.collection_radio_buttons :maker_id, Maker.all, :id, :name %&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="hidden-field-hidden-field-tag"><a href="#hidden-field-hidden-field-tag" class="headerlink" title="hidden_field / hidden_field_tag"></a>hidden_field / hidden_field_tag</h2><blockquote>
-<p>不显示在页面上, 有些信息没有必要给用户看到</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;%= f.hidden_field :lock_version %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;hidden&quot; name=&quot;product[lock_version]&quot; id=&quot;product_lock_version&quot; value=&quot;1&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= hidden_field_tag &quot;product[lock_version]&quot;, @product.lock_version %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;hidden&quot; name=&quot;product[lock_version]&quot; id=&quot;product_lock_version&quot; value=&quot;1&quot;&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="submit-submit-tag"><a href="#submit-submit-tag" class="headerlink" title="submit / submit_tag"></a>submit / submit_tag</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.submit &quot;注册&quot; %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;submit&quot; name=&quot;commit&quot; value=&quot;注册&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= submit_tag &quot;Search&quot; %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;submit&quot; name=&quot;commit&quot; value=&quot;Search&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2015/02/16/form-for/" itemprop="url">
                   关于form_for
                 </a>
@@ -1839,7 +1588,7 @@
 <p>首先需要让jQuery和turbolink共存, 使用<code>jquery-turbolinks</code> gem.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;gem &apos;jquery-turbolinks&apos;&quot; &gt;&gt; Gemfile</span><br><span class="line">bundle install</span><br><span class="line"></span><br><span class="line"># app/assets/javascripts/application.js</span><br><span class="line">...</span><br><span class="line">//= require jquery</span><br><span class="line">//= require jquery.turbolinks</span><br><span class="line">//= require jquery_ujs</span><br></pre></td></tr></table></figure></p>
 <p>将address 相关的自动抽取成单独的局部视图</p>
 </blockquote>
-<figure class="highlight erb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">fieldset</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%=</span></span></span><span class="ruby"> f.label <span class="symbol">:zipcode</span>, <span class="string">"zipcode"</span> </span><span class="xml"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%=</span></span></span><span class="ruby"> f.text_field <span class="symbol">:zipcode</span> </span><span class="xml"><span class="tag">%&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">%=</span></span></span><span class="ruby"> f.label <span class="symbol">:city</span>, <span class="string">"city"</span> </span><span class="xml"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%=</span></span></span><span class="ruby"> f.text_field <span class="symbol">:city</span> </span><span class="xml"><span class="tag">%&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">%=</span></span></span><span class="ruby"> f.label <span class="symbol">:street</span>, <span class="string">"street"</span> </span><span class="xml"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%=</span></span></span><span class="ruby"> f.text_field <span class="symbol">:street</span> </span><span class="xml"><span class="tag">%&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">%=</span></span></span><span class="ruby"> f.label <span class="symbol">:tel</span>, <span class="string">"Telephone Number"</span> </span><span class="xml"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%=</span></span></span><span class="ruby"> f.text_field <span class="symbol">:tel</span> </span><span class="xml"><span class="tag">%&gt;</span> <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%=</span></span></span><span class="ruby"> f.hidden_field <span class="symbol">:_destroy</span> </span><span class="xml"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%=</span></span></span><span class="ruby"> link_to <span class="string">"DELETE"</span>, <span class="string">"#"</span>, <span class="class"><span class="keyword">class</span>: "<span class="title">remove_field</span>" </span></span><span class="xml"><span class="tag">%&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">fieldset</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight erb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;fieldset&gt;</span><br><span class="line">&lt;%=<span class="ruby"> f.label <span class="symbol">:zipcode</span>, <span class="string">"zipcode"</span> </span>%&gt;</span><br><span class="line">&lt;%=<span class="ruby"> f.text_field <span class="symbol">:zipcode</span> </span>%&gt; &lt;br/&gt;</span><br><span class="line"></span><br><span class="line">&lt;%=<span class="ruby"> f.label <span class="symbol">:city</span>, <span class="string">"city"</span> </span>%&gt;</span><br><span class="line">&lt;%=<span class="ruby"> f.text_field <span class="symbol">:city</span> </span>%&gt; &lt;br/&gt;</span><br><span class="line"></span><br><span class="line">&lt;%=<span class="ruby"> f.label <span class="symbol">:street</span>, <span class="string">"street"</span> </span>%&gt;</span><br><span class="line">&lt;%=<span class="ruby"> f.text_field <span class="symbol">:street</span> </span>%&gt; &lt;br/&gt;</span><br><span class="line"></span><br><span class="line">&lt;%=<span class="ruby"> f.label <span class="symbol">:tel</span>, <span class="string">"Telephone Number"</span> </span>%&gt;</span><br><span class="line">&lt;%=<span class="ruby"> f.text_field <span class="symbol">:tel</span> </span>%&gt; &lt;br/&gt;</span><br><span class="line">&lt;%=<span class="ruby"> f.hidden_field <span class="symbol">:_destroy</span> </span>%&gt;</span><br><span class="line">&lt;%=<span class="ruby"> link_to <span class="string">"DELETE"</span>, <span class="string">"#"</span>, <span class="class"><span class="keyword">class</span>: "<span class="title">remove_field</span>" </span></span>%&gt;</span><br><span class="line">&lt;/fieldset&gt;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>调用上面的局部视图, 然后创建一个添加的超链接, 注意这里使用了自定义的helper<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># app/views/users/_form.html.erb</span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :addresses, &quot;住所&quot; %&gt;&lt;br /&gt;</span><br><span class="line">&lt;%= f.fields_for :addresses do |builder| %&gt;</span><br><span class="line">&lt;%= render &quot;address_fields&quot;, f: builder %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line">&lt;%= link_to_add_fields &quot;住所追加&quot;, f, :addresses %&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
 <p>实现helper <code>link_to_add_fields</code></p>
@@ -2035,6 +1784,192 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/02/10/sti/" itemprop="url">
+                  Rails实现单一表继承STI(Single Table Inheritance)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-02-10T18:50:44+08:00" content="2015-02-10">
+              2015-02-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/02/10/sti/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/10/sti/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>现在有一个需求, Book 和Computer 是Product 的子类, Book 和 Computer有一部分列相同, 一部分不同, 如下面2个示意图, 我们让3个 model 共用一个表 products. Rails 这边来看, 好像我们已经创建了 books 表和computers 表, 从而处理好Book对象和Computer 对象.<br><img src="http://i2.tietuku.com/1fe41c4fd78847e2.png" alt=""><br><img src="http://i2.tietuku.com/61db191e5f8490ba.png" alt=""></p>
+<p>type 字段代表的是”Book” 还是”Computer”, 所以:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Product.all # =&gt; 从 products 中获取含有 Book和 Computer model的全部记录</span><br><span class="line">Computer.all # =&gt; 从 products 中只获取type 是&quot;Computer&quot;的记录</span><br><span class="line">Book.all # =&gt; 从 products 中只获取 type 是&quot;Book&quot; 的记录</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样的好处是:</p>
+<ul>
+<li>透明化处理了Computer 和 Book, 无需分别建立表</li>
+<li>可以单独处理Book 或 Computer</li>
+</ul>
+</blockquote>
+<h2 id="创建新的项目"><a href="#创建新的项目" class="headerlink" title="创建新的项目"></a>创建新的项目</h2><blockquote>
+<p>首先我们先新建一个Rails项目</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails new sti_test</span><br><span class="line">cd sti_test</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用generator 生成Product, Maker, Cpu, Author, 然后migrate.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rails g scaffold Product name price:integer maker_id:integer cpu_id:integer author_id:integer</span><br><span class="line"></span><br><span class="line">rails g model maker name</span><br><span class="line">rails g model cpu name</span><br><span class="line">rails g model author name</span><br><span class="line"></span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>初始化数据</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># db/seeds.rb</span><br><span class="line"></span><br><span class="line">Init Data</span><br><span class="line"></span><br><span class="line">%w(Pentium Core Xeno).each &#123; |name| Cpu.create! name: name  &#125;</span><br><span class="line">%w(Lenovo HP Apple).each &#123; |name| Maker.create! name: name  &#125;</span><br><span class="line">%w(Daniel Lucy Nigo).each &#123; |name| Author.create! name: name  &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>向各个 model 中加入关联关系和验证.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># app/models/cpu.rb</span><br><span class="line">class Cpu &lt; ActiveRecord::Base</span><br><span class="line">  has_many :products</span><br><span class="line">  validates :name, presence: true</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># app/models/maker.rb</span><br><span class="line">class Maker &lt; ActiveRecord::Base</span><br><span class="line">  has_many :products</span><br><span class="line">  validates :name, presence: true</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># app/models/author.rb</span><br><span class="line">class Author &lt; ActiveRecord::Base</span><br><span class="line">  has_many :products</span><br><span class="line">  validates :name, presence: true</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># app/models/product.rb</span><br><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :cpu</span><br><span class="line">  belongs_to :maker</span><br><span class="line">  belongs_to :author</span><br><span class="line"></span><br><span class="line">  validates :name,  presence: true</span><br><span class="line">  validates :price, presence: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="实现-STI"><a href="#实现-STI" class="headerlink" title="实现 STI"></a>实现 STI</h2><blockquote>
+<p>首先, 在products中加入<code>type</code> 字段, 很重要, 这是 rails 的约定.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rails g migration add_type_to_products type:string</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>获取Book 和Computer 对象时, rails 会搜索<code>type</code> 字段, 所以我们使用<code>type</code> 作为索引(提高效率)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class AddTypeToProducts &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    add_column :products, :type, :string</span><br><span class="line">    add_index :products, :type</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 移植(应用到数据库. p.s. 到底该如何翻译才贴切?)</span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure></p>
+<p>为 type 添加存在性验证<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Product &lt; ActiveRecord::Base</span><br><span class="line">  belongs_to :maker</span><br><span class="line">  belongs_to :cpu</span><br><span class="line">  belongs_to :author</span><br><span class="line"></span><br><span class="line">  validates :name, presence: true</span><br><span class="line">  validates :price, presence: true</span><br><span class="line">  validates :type, presence: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>接着, 新建<code>Product</code> 的两个子类 model <code>Computer</code> 和 <code>Book</code>, 并加入验证:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># app/models/computer.rb</span><br><span class="line"></span><br><span class="line">class Computer &lt; Product</span><br><span class="line">  validates :maker_id, presence: true</span><br><span class="line">  validates :cpu_id, presence: true</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># app/models/book.rb</span><br><span class="line"></span><br><span class="line">class Book &lt; Product</span><br><span class="line">  validates :author_id, presence: true</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>我们在 console 中做实验看看是否实现了 STI :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 设定`type` 为&quot;Computer&quot;, Product 会自动创建 Computer 的对象</span><br><span class="line"></span><br><span class="line">Product.new(type: &quot;Computer&quot;)</span><br><span class="line"># =&gt; &lt;Computer id: nil, name: nil, price: nil, type: &quot;Computer&quot;, maker_id: nil, cpu_id: nil, author_id: nil, created_at: nil, updated_at: nil&gt;</span><br><span class="line"></span><br><span class="line"># 设定`type` 为&quot;Book&quot;, Product 会自动创建Book 对象</span><br><span class="line">Product.new(type: &quot;Book&quot;)</span><br><span class="line"># =&gt; &lt;Book id: nil, name: nil, price: nil, type: &quot;Book&quot;, maker_id: nil, cpu_id: nil, author_id: nil, created_at: nil, updated_at: nil&gt;</span><br><span class="line"></span><br><span class="line"># 设定`type` 为&quot;&quot;, 会生成Product对象(本身) (p.s. nil, false, [], &#123;&#125;等都可以创建 Product对象)</span><br><span class="line"># =&gt; &lt;Product id: nil, name: nil, price: nil, type: &quot;&quot;, maker_id: nil, cpu_id: nil, author_id: nil, created_at: nil, updated_at: nil&gt;</span><br><span class="line"></span><br><span class="line"># 如果设定`type` 为一个非 Product( 或子类 )的类型, 就会发生异常</span><br><span class="line">Product.new type: &quot;hello&quot;</span><br><span class="line"># =&gt; ActiveRecord::SubclassNotFound: Invalid single-table inheritance type: hello is not a subclass of Product</span><br></pre></td></tr></table></figure>
+<h2 id="相应的控制器-视图和路由"><a href="#相应的控制器-视图和路由" class="headerlink" title="相应的控制器, 视图和路由"></a>相应的控制器, 视图和路由</h2><blockquote>
+<p>首先, 调整一下视图. 我们先从index视图着手, 由于一开始我们使用 scaffold 生成了Product, 生成了一些没有用的属性.比如 外键 id.我们需要删除这些属性, 将<code>name</code>, <code>type</code>添加进去.</p>
+<p><code>try</code> 方法是个好东西, 如果接收者(maker, cpu, author) 为 nil, 它会返回nil, 而不是抛异常.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/index.html.erb</span><br><span class="line"></span><br><span class="line">&lt;h1&gt;Listing products&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;table&gt;</span><br><span class="line">&lt;thead&gt;</span><br><span class="line">&lt;tr&gt;</span><br><span class="line">&lt;th&gt;Name&lt;/th&gt;</span><br><span class="line">&lt;th&gt;Price&lt;/th&gt;</span><br><span class="line">&lt;!-- 已修改 --&gt;</span><br><span class="line">&lt;th&gt;Type&lt;/th&gt;</span><br><span class="line">&lt;!-- 修改结束 --&gt;</span><br><span class="line">&lt;th&gt;Maker&lt;/th&gt;</span><br><span class="line">&lt;th&gt;Cpu&lt;/th&gt;</span><br><span class="line">&lt;th&gt;Author&lt;/th&gt;</span><br><span class="line">&lt;th colspan=&quot;3&quot;&gt;&lt;/th&gt;</span><br><span class="line">&lt;/tr&gt;</span><br><span class="line">&lt;/thead&gt;</span><br><span class="line"></span><br><span class="line">&lt;tbody&gt;</span><br><span class="line">&lt;% @products.each do |product| %&gt;</span><br><span class="line">&lt;tr&gt;</span><br><span class="line">&lt;td&gt;&lt;%= product.name %&gt;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;&lt;%= product.price %&gt;&lt;/td&gt;</span><br><span class="line">&lt;!--  已修改 --&gt;</span><br><span class="line">&lt;td&gt;&lt;%= product.type %&gt;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;&lt;%= product.maker.try(:name) %&gt;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;&lt;%= product.cpu.try(:name) %&gt;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;&lt;%= product.author.try(:name) %&gt;&lt;/td&gt;</span><br><span class="line">&lt;!-- 修改结束 --&gt;</span><br><span class="line"></span><br><span class="line">&lt;td&gt;&lt;%= link_to &apos;Show&apos;, product %&gt;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;&lt;%= link_to &apos;Edit&apos;, edit_product_path(product) %&gt;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;&lt;%= link_to &apos;Destroy&apos;, product, method: :delete, data: &#123; confirm: &apos;Are you sure?&apos;  &#125; %&gt;&lt;/td&gt;</span><br><span class="line">&lt;/tr&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line">&lt;/tbody&gt;</span><br><span class="line">&lt;/table&gt;</span><br><span class="line"></span><br><span class="line">&lt;br&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= link_to &apos;New Product&apos;, new_product_path %&gt;</span><br></pre></td></tr></table></figure></p>
+<p>show 页面去掉id, 添加 name</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/show.html.erb</span><br><span class="line"></span><br><span class="line">&lt;p id=&quot;notice&quot;&gt;&lt;%= notice %&gt;&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Name:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.name %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Price:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.price %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 已修改 --&gt;</span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Type:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.type %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Maker:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.maker.try(:name) %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Cpu:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.cpu.try(:name) %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;</span><br><span class="line">&lt;strong&gt;Author:&lt;/strong&gt;</span><br><span class="line">&lt;%= @product.author.try(:name) %&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;!--  修改结束 --&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= link_to &apos;Edit&apos;, edit_product_path(@product) %&gt; |</span><br><span class="line">&lt;%= link_to &apos;Back&apos;, products_path %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后, 修改新建和编辑页面的表单,  把Maker, CPU, Author的text field 变成 select box.<br>而且, 需要把 form_for方法中加入 <code>as: :product</code>. 这是因为: <code>@product</code> 可能是 Book 对象也可能是Computer, 那么name属性的值就可能是book[nane], 或者computer[name], 控制器的StrongParameters的方法就不会认识这样的名字, 因为它指认识product[name], <code>as: :product</code> 设置之后起到了统一名称的作用.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"># app/views/products/_form.html.erb</span><br><span class="line"></span><br><span class="line">&lt;!--  已修改 --&gt;</span><br><span class="line">&lt;%= form_for(@product, as: :product) do |f| %&gt;</span><br><span class="line">&lt;% if @product.errors.any? %&gt;</span><br><span class="line">&lt;div id=&quot;error_explanation&quot;&gt;</span><br><span class="line">&lt;h2&gt;&lt;%= pluralize(@product.errors.count, &quot;error&quot;) %&gt; prohibited this product from being saved:&lt;/h2&gt;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">&lt;% @product.errors.full_messages.each do |message| %&gt;</span><br><span class="line">&lt;li&gt;&lt;%= message %&gt;&lt;/li&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line">&lt;/ul&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :name %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.text_field :name %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :price %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.number_field :price %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;!--  已修改 --&gt;</span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :type %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.select :type, [&quot;Computer&quot;, &quot;Book&quot;].map &#123; |t| [t, t]  &#125;, include_blank: true %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :maker_id, &quot;Maker(only for computer)&quot; %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.select :maker_id, Maker.all.map &#123; |m| [m.name, m.id]  &#125;, include_blank: true %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :cpu_id, &quot;CPU(only for Computer)&quot; %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.select :cpu_id, Cpu.all.map &#123; |c| [c.name, c.id]  &#125;, include_blank: true %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;%= f.label :author_id, &quot;Author only for author&quot; %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.select :author_id, Author.all.map &#123; |a| [a.name, a.id]  &#125;, include_blank: true %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;!--  修改完毕 --&gt;</span><br><span class="line">&lt;div class=&quot;actions&quot;&gt;</span><br><span class="line">&lt;%= f.submit %&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>由于添加了<code>type</code> 所以需要把该字段加入到controller 中的StrongParameters 方法中.</p>
+<p>最后设定路由, 当用户访问books_path 和computer_path时, 将其交由products controller 处理.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Rails.application.routes.draw do</span><br><span class="line">resources :products</span><br><span class="line"></span><br><span class="line">resources :books,     controller: :products</span><br><span class="line">resources :computers, controller: :products</span><br><span class="line"></span><br><span class="line">root &quot;products#index&quot;</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>我们看一下效果:<br><img src="http://i2.tietuku.com/f4623f154e98115f.png" alt=""><br><img src="http://i2.tietuku.com/65de7595adc2b341.png" alt=""></p>
+<p>如果还有一些属性相似的物品, 我们也可以通过这种办法来添加, 只需要继承 <code>Product</code>即可, 比如衣服, 文具, 体育器材等等. 但是, 如果差异比较大的对象我们是否继续用这种办法还是新建表和 model(不继承Product) 就需要慎重考虑了.</p>
+</blockquote>
+<h2 id="对-model-单独处理-同名虚属性"><a href="#对-model-单独处理-同名虚属性" class="headerlink" title="对 model 单独处理(同名虚属性)"></a>对 model 单独处理(同名虚属性)</h2><blockquote>
+<p>到现在已经很好了, 不过我想让 name 这一列显示的更具各自的特点, 对书来说我想让其显示出来的是”书名 written by author#name”, 对于computer 来说我想让其显示”name /cpu.name/maker.name”.</p>
+<p>想要达到这个目的我需要在两个子类(Book &amp; Computer)中分别定义一个同名方法, 然后按照需求实现该方法, 在 view 上用该方法代替<code>name</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># app/models/book.rb</span><br><span class="line"></span><br><span class="line">class Book &lt; Product</span><br><span class="line">validates :author_id, presence: true</span><br><span class="line"></span><br><span class="line">def full_name</span><br><span class="line">&quot;#&#123;name&#125; written by #&#123;author.name&#125;&quot;</span><br><span class="line">end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># app/models/coumputer.rb</span><br><span class="line"></span><br><span class="line">class Computer &lt; Product</span><br><span class="line">validates :cpu_id,   presence: true</span><br><span class="line">validates :maker_id, presence: true</span><br><span class="line"></span><br><span class="line">def full_name</span><br><span class="line">&quot;#&#123;name&#125;(#&#123;cpu.name&#125;/#&#123;maker.name&#125;)&quot;</span><br><span class="line">end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># 在 index.html.erb 中把 &lt;td&gt;&lt;%= product.name %&gt;&lt;/td&gt; 替换为</span><br><span class="line">&lt;td&gt;&lt;%= product.full_name %&gt;&lt;/td&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>效果如下<br><img src="http://i2.tietuku.com/e8c4654e9aba8f85.png" alt=""></p>
+</blockquote>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="不需要STI"><a href="#不需要STI" class="headerlink" title="不需要STI"></a>不需要STI</h3><blockquote>
+<p>如果model中恰好有一个<code>type</code> 属性, 但是并不希望使用单表继承, 可以使用下面的方法禁用:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 在model中 </span><br><span class="line">self.inheritance_column = nil</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -2080,7 +2015,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">105</span>
+              <span class="site-state-item-count">104</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

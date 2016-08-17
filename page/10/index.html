@@ -259,204 +259,6 @@
             
               
                 
-                <a class="post-title-link" href="/2015/02/04/using-devise-in-rails/" itemprop="url">
-                  使用devise gem为Rails提供验证
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-02-04T12:57:45+08:00" content="2015-02-04">
-              2015-02-04
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Ruby-Gems/" itemprop="url" rel="index">
-                    <span itemprop="name">Ruby Gems</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/02/04/using-devise-in-rails/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/04/using-devise-in-rails/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>上一个项目中, 我发现老外的登录验证等都是自己写, 我不解就问, 老外告诉我, 其实他们的登录验证非常复杂, 如果使用 devise 很多东西都会被限制住. 而且他还告诉我, 对于新手来说, 最好是先写一些实现, 等到理解背后的原理以后再去走捷径.</p>
-<p>不过现在我觉得我已经不用再继续制造车轮了, 该用一下别人的车轮了, 谨以此文总结记录一下如何在 Rails 中使用 devise 进行验证.</p>
-</blockquote>
-<h2 id="安装与设定"><a href="#安装与设定" class="headerlink" title="安装与设定"></a>安装与设定</h2><blockquote>
-<p>在项目的Gemfile 中加入 <code>gem &#39;devise&#39;</code>, 然后执行 <code>bundle install</code></p>
-<p>然后我们为 Rails 设定 devise 相关联的配置文件, 运行:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">$ rails g devise:install</span><br><span class="line">  create config/initializers/devise.rb</span><br><span class="line">  create config/locales/devise.en.yml</span><br><span class="line"></span><br><span class="line">  Some setup you must do manually if you haven&apos;t yet:</span><br><span class="line"></span><br><span class="line">  1. Ensure you have defined default url options in your environments files. Here</span><br><span class="line">  is an example of default_url_options appropriate for a development environment</span><br><span class="line">  in config/environments/development.rb:</span><br><span class="line"></span><br><span class="line">  config.action_mailer.default_url_options = &#123; host: &apos;localhost&apos;, port: 3000  &#125;</span><br><span class="line"></span><br><span class="line">  In production, :host should be set to the actual host of your application.</span><br><span class="line"></span><br><span class="line">  2. Ensure you have defined root_url to *something* in your config/routes.rb.</span><br><span class="line">  For example:</span><br><span class="line"></span><br><span class="line">  root to: &quot;home#index&quot;</span><br><span class="line"></span><br><span class="line">  3. Ensure you have flash messages in app/views/layouts/application.html.erb.</span><br><span class="line">  For example:</span><br><span class="line"></span><br><span class="line">  &lt;p class=&quot;notice&quot;&gt;&lt;%= notice %&gt;&lt;/p&gt;</span><br><span class="line">  &lt;p class=&quot;alert&quot;&gt;&lt;%= alert %&gt;&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">  4. If you are deploying on Heroku with Rails 3.2 only, you may want to set:</span><br><span class="line"></span><br><span class="line">  config.assets.initialize_on_precompile = false</span><br><span class="line"></span><br><span class="line">  On config/application.rb forcing your application to not access the DB</span><br><span class="line">  or load models when precompiling your assets.</span><br><span class="line"></span><br><span class="line">  5. You can copy Devise views (for customization) to your app by running:</span><br><span class="line"></span><br><span class="line">  rails g devise:views</span><br><span class="line"></span><br><span class="line">  ===============================================================================</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>这时 devise 会让我设定5项内容. 我们依次来做.</p>
-</blockquote>
-<ul>
-<li><p>指定邮件发送的机器的 ip.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># config/environments/development.rb</span><br><span class="line">config.action_mailer.default_url_options = &#123; host: &apos;localhost:3000&apos; &#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>确保routes.rb中定义了 root_url<br>  由于退出一个重定向到 root, 所以 root 需要一并设定.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># config/routes.rb</span><br><span class="line"></span><br><span class="line">root to: &quot;home#index&quot;</span><br></pre></td></tr></table></figure>
-<p>  root_url 已经设定, 但是对应的Controller 和 View 还没有创建, 所以需要创建.<br>  “home#index” 创建后, root_url 就可以访问了.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rails g controller Home index show</span><br></pre></td></tr></table></figure>
-<p>  home#show 创建后, 接下来文章着重介绍 Devise定制访问限制的使用.</p>
-</li>
-<li><p>确保在 application.html.erb 中定义了 flash 消息.<br>  用户登录成功后或者密码错误, 我们需要使用 Flash 给用户返回友好信息, 我们在 application 模板中加入该信息.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;p class=&quot;notice&quot;&gt;&lt;%= notice %&gt;&lt;/p&gt;</span><br><span class="line">&lt;p class=&quot;alert&quot;&gt;&lt;%= alert %&gt;&lt;/p&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>如果你只使用 rails 3.2 部署, 还需要设置一下内容:</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.assets.initialize_on_precompile = false</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>你可以使用 devise 提供的视图</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rails g devise:views</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<blockquote>
-<p>到此为止, 我们已经设定完了.</p>
-</blockquote>
-<h2 id="使用devise生成Model"><a href="#使用devise生成Model" class="headerlink" title="使用devise生成Model"></a>使用devise生成Model</h2><blockquote>
-<p>我们开始使用 devise 写一个小例子吧. 我们来生成一个叫做 <code>User</code> 的Model.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ rails g devise User</span><br><span class="line"></span><br><span class="line">invoke  active_record</span><br><span class="line">create    db/migrate/20150204073457_devise_create_users.rb</span><br><span class="line">create    app/models/user.rb</span><br><span class="line">invoke    test_unit</span><br><span class="line">create      test/models/user_test.rb</span><br><span class="line">create      test/fixtures/users.yml</span><br><span class="line">insert    app/models/user.rb</span><br><span class="line">route   devise_for :users</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>我们来看看user.rb 和 其对应的 migration 文件中看看.</p>
-<p>首先在 user.rb 中, 一些module 是被注释掉的.如果你想开启一些功能就需要去掉其注释.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class User &lt; ActiveRecord::Base</span><br><span class="line">  # Include default devise modules. Others available are:</span><br><span class="line">  # :confirmable, :lockable, :timeoutable and :omniauthable</span><br><span class="line">  devise :database_authenticatable, :registerable,</span><br><span class="line">  ¦ ¦ ¦ ¦:recoverable, :rememberable, :trackable, :validatable</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>然后再看看这个migration文件, xxx_devise_create_users.rb. 注意看注释部分, 并且结合 user.rb, 比如: <code>Database authenticatable</code> <code>Rememberable</code> 是不是和 user.rb 对应的呢!<br>再比如: 我们在 user.rb 中注释掉了<code>confirmable</code>, 那么在该 migration 中也相应地去掉了这些字段. 也就是程序员没有设定Model 的这些性质, 那么移植文件就不会增加相应字段. 并且, <code>confirmation_token</code> 的add_index 方法也被去掉了.</p>
-</blockquote>
-<p><strong><em> 如果有空闲时间, 一定要读读这些优秀 gem 的源码, 肯定会对自己很有帮助</em></strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">class DeviseCreateUsers &lt; ActiveRecord::Migration</span><br><span class="line">  def change</span><br><span class="line">    create_table(:users) do |t|</span><br><span class="line">      ## Database authenticatable</span><br><span class="line">      t.string :email,              null: false, default: &quot;&quot;</span><br><span class="line">      t.string :encrypted_password, null: false, default: &quot;&quot;</span><br><span class="line"></span><br><span class="line">      ## Recoverable</span><br><span class="line">      t.string   :reset_password_token</span><br><span class="line">      t.datetime :reset_password_sent_at</span><br><span class="line"></span><br><span class="line">      ## Rememberable</span><br><span class="line">      t.datetime :remember_created_at</span><br><span class="line"></span><br><span class="line">      ## Trackable</span><br><span class="line">      t.integer  :sign_in_count, default: 0, null: false</span><br><span class="line">      t.datetime :current_sign_in_at</span><br><span class="line">      t.datetime :last_sign_in_at</span><br><span class="line">      t.string   :current_sign_in_ip</span><br><span class="line">      t.string   :last_sign_in_ip</span><br><span class="line"></span><br><span class="line">      ## Confirmable</span><br><span class="line">      # t.string   :confirmation_token</span><br><span class="line">      # t.datetime :confirmed_at</span><br><span class="line">      # t.datetime :confirmation_sent_at</span><br><span class="line">      # t.string   :unconfirmed_email # Only if using reconfirmable</span><br><span class="line"></span><br><span class="line">      ## Lockable</span><br><span class="line">      # t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts</span><br><span class="line">      # t.string   :unlock_token # Only if unlock strategy is :email or :both</span><br><span class="line">      # t.datetime :locked_at</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      t.timestamps</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    add_index :users, :email,                unique: true</span><br><span class="line">    add_index :users, :reset_password_token, unique: true</span><br><span class="line">    # add_index :users, :confirmation_token,   unique: true</span><br><span class="line">    # add_index :users, :unlock_token,         unique: true</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>我们先 migrate.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rake db:migrate</span><br></pre></td></tr></table></figure></p>
-<p>然后我们写页面的代码</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;header&gt;</span><br><span class="line">    &lt;nav&gt;</span><br><span class="line">      &lt;!-- user_signed_in? 判断用户是否已经登录 --&gt;</span><br><span class="line">      &lt;!-- current_user 返回当前已登录的用户--&gt;</span><br><span class="line">      &lt;!-- *_path 使用 User 对象组合而成的, 都是 devise 提供的helper --&gt;</span><br><span class="line">      &lt;% if user_signed_in? %&gt;</span><br><span class="line">        Logged in as &lt;strong&gt;&lt;%= current_user.email %&gt;&lt;/strong&gt;</span><br><span class="line">        &lt;%= link_to &apos;Edit Profile&apos;, edit_user_registration_path %&gt; |</span><br><span class="line">        &lt;%= link_to &apos;Sign Out&apos;, destroy_user_session_path, method: :delete %&gt;</span><br><span class="line">      &lt;% else  %&gt;</span><br><span class="line">        &lt;%= link_to &apos;Sign up&apos;, new_user_registration_path %&gt; |</span><br><span class="line">        &lt;%= link_to &apos;Sign in&apos;, new_user_session_path %&gt;</span><br><span class="line">      &lt;% end %&gt;</span><br><span class="line">    &lt;/nav&gt;</span><br><span class="line">  &lt;/header&gt;</span><br><span class="line"></span><br><span class="line">  &lt;div class=&quot;notice&quot;&gt;&lt;%= notice %&gt;&lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;alert&quot;&gt;&lt;%= alert %&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= yield %&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>我偷个懒, 就不传图片了.</p>
-</blockquote>
-<h2 id="devise-的10个-module"><a href="#devise-的10个-module" class="headerlink" title="devise 的10个 module"></a>devise 的10个 module</h2><blockquote>
-<p>下面解释一下user.rb 中这10个 module 到底都有什么作用</p>
-</blockquote>
-<ul>
-<li>Database Authenticatable<br>  为了登录过程中用户认证, 密码经过加密后保存到数据库, 最基本的.</li>
-<li>Omniauthable<br>  开放性验证, 比如想用 Facebook Twitter 等账号登录时需要打开.</li>
-<li>Confirmable<br>  新用户注册后会通过邮件发送确认链接, 如果不设置该项, 用户注册马上就会登录.</li>
-<li>Recoverabl<br>  提供用户忘记密码重置功能.</li>
-<li>Registerable<br>  处理用户注册, 同时也允许编辑删除账户.</li>
-<li>Rememberable<br>  管理生成和清除记住用户的 token, 从 cookie 中.</li>
-<li>Trackable<br>  将用户的登录次数和时间保存到数据库中</li>
-<li>Timeoutable<br>  让一段时间内没有活动的 session 失效</li>
-<li>Lockable<br>  错误登录一定次数后锁住账号, 可以通过email 或者一段时间后解锁.</li>
-</ul>
-<h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><ul>
-<li><p><code>before_action :authenticate_user!</code> 不登录无法访问</p>
-</li>
-<li><p><code>user_signed_in?</code></p>
-</li>
-<li><p><code>current_user</code></p>
-</li>
-</ul>
-<h2 id="特别鸣谢"><a href="#特别鸣谢" class="headerlink" title="特别鸣谢"></a>特别鸣谢</h2><p><a href="https://github.com/plataformatec/devise" target="_blank" rel="external">plataformatec/devise · GitHub</a></p>
-
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2015/02/03/install-postgresSQL-osx/" itemprop="url">
                   OSX 下安装PostgresSQL
                 </a>
@@ -1859,6 +1661,203 @@ flush privileges;</code></p>
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/01/24/postgresql-with-rails/" itemprop="url">
+                  Postgresql with Rails on OSX
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-01-24T12:50:41+08:00" content="2015-01-24">
+              2015-01-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Postgresql/" itemprop="url" rel="index">
+                    <span itemprop="name">Postgresql</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/01/24/postgresql-with-rails/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/24/postgresql-with-rails/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>一直都对Postgresql不理解, 今天在YouTube上找了一个视频, 学习了一下, 原视频地址<a href="https://www.youtube.com/watch?v=pf5jPUJAeU4" target="_blank" rel="external">https://www.youtube.com/watch?v=pf5jPUJAeU4</a></p>
+</blockquote>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><blockquote>
+<p>使用Homebrew 安装:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install postgres</span><br></pre></td></tr></table></figure>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><blockquote>
+<p>等安装完成之后, 我们来初始化数据库:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ initdb /usr/local/var/postgres</span><br></pre></td></tr></table></figure>
+<h2 id="使用lunchy-简单地开关数据库"><a href="#使用lunchy-简单地开关数据库" class="headerlink" title="使用lunchy 简单地开关数据库"></a>使用lunchy 简单地开关数据库</h2><blockquote>
+<p>安装完成之后, 你会看到postgres启动关闭服务相关的帮助信息:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postgres -D /usr/local/var/postgres</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但是比较麻烦, 能不能像在Linux下service命令简单地开关服务呢? OSX下可以使用lunchy实现类似的效果, 我们来安装并配置它.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gem install lunchy</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>新建自动启动代理目录:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p ~/Library/LaunchAgents</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>把postgres的plist拷贝到该目录中:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/local/Cellar/postgresql/9.4.1/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>以后, 我们就可以简单地使用lunchy来启动, 关闭 postgres服务了:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ lunchy start postgres</span><br><span class="line">$ lunchy stop postgres</span><br></pre></td></tr></table></figure>
+<h2 id="创建数据库用户-角色-和-数据库实例"><a href="#创建数据库用户-角色-和-数据库实例" class="headerlink" title="创建数据库用户(角色) 和 数据库实例"></a>创建数据库用户(角色) 和 数据库实例</h2><blockquote>
+<p>事实上, postgres有一个默认的用户就是当前Mac OSX的用户, 该用户是一个超级用户, 拥有下面的权限:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List of roles</span><br><span class="line"> Role name |                   Attributes                   | Member of</span><br><span class="line"> -----------+------------------------------------------------+-----------</span><br><span class="line">  daniel    | Superuser, Create role, Create DB, Replication | &#123;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>从安全的角度考虑, 我们可以创建一个新的普通用户, 只赋予其必要的权限:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ createuser -d -r -l user1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>-d</code> 表示允许该用户创建数据库, <code>-r</code> 表示可以创建新的用户(角色), <code>-l</code> 表示允许登录, 具体帮助请查阅帮助文档<code>man createuser</code></p>
+<p>这时候如果查看数据库用户, 发现多了一个user1的用户以及它的相关的权限:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List of roles</span><br><span class="line"> Role name |                   Attributes                   | Member of</span><br><span class="line"> -----------+------------------------------------------------+-----------</span><br><span class="line">  daniel    | Superuser, Create role, Create DB, Replication | &#123;&#125;</span><br><span class="line">   user1     | Create role, Create DB                         | &#123;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其实这里面用户和角色是等价的, 可能说成角色更准确一些.<br>这里在多提一个内容: 原视频中是采用命令行创建数据库的, 包括相应的编码, 以及所属角色. 使用的命令时<code>createdb</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">createdb -Ouser1 -Eutf8 emptyapp_development</span><br><span class="line">createdb -Ouser1 -Eutf8 emptyapp_test</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后可以访问数据库:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ psql -U user1 emptyapp_development</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样做固然可以, 但是如果要和Rails集成, 那么直接配置Rails中<code>config/database.yml</code>就可以了, 然后rake命令什么都帮你做完了, 下面就介绍一下具体方法:</p>
+</blockquote>
+<h2 id="Postgres-和-Rails-集成"><a href="#Postgres-和-Rails-集成" class="headerlink" title="Postgres 和 Rails 集成"></a>Postgres 和 Rails 集成</h2><blockquote>
+<p>首先需要安装<code>pg</code> gem :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem install pg -- --with-pg-config=/usr/local/bin/pg_config</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后创建一个默认数据库为Postgres的数据库:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rails new emptyapp --database=postgresql</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后我们scaffold 一个Post:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$  rails g scaffold Post title author body:text</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后修改<code>config/database.yml</code>, 添加数据库信息:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">default: &amp;default</span><br><span class="line">  adapter: postgresql</span><br><span class="line">  encoding: unicode</span><br><span class="line">  pool: 5</span><br><span class="line">  username: user1</span><br><span class="line">  password:</span><br><span class="line"></span><br><span class="line">development:</span><br><span class="line">  &lt;&lt;: *default</span><br><span class="line">  database: emptyapp_development1</span><br><span class="line"></span><br><span class="line">test:</span><br><span class="line">  &lt;&lt;: *default</span><br><span class="line">  database: emptyapp_test1</span><br><span class="line"></span><br><span class="line">production:</span><br><span class="line">  &lt;&lt;: *default</span><br><span class="line">  database: emptyapp_production</span><br><span class="line">  username: emptyapp</span><br><span class="line">  password: &lt;%= ENV[&apos;EMPTYAPP_DATABASE_PASSWORD&apos;] %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后使用rake创建数据库, 并migrate</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rake db:create</span><br><span class="line">rake db:migrate</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后启动服务器, 插几条数据, 再查看一下数据库, 测试一下</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -1904,7 +1903,7 @@ flush privileges;</code></p>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">105</span>
+              <span class="site-state-item-count">104</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

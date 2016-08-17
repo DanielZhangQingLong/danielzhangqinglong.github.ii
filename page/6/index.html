@@ -259,265 +259,6 @@
             
               
                 
-                <a class="post-title-link" href="/2015/03/02/rails-test-samples/" itemprop="url">
-                  在实际开发中使用RSpec和Cucumber进行TDD/BDD测试
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-03-02T12:25:54+08:00" content="2015-03-02">
-              2015-03-02
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Rails/" itemprop="url" rel="index">
-                    <span itemprop="name">Rails</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/03/02/rails-test-samples/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/02/rails-test-samples/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="搭建开发环境"><a href="#搭建开发环境" class="headerlink" title="搭建开发环境"></a>搭建开发环境</h2><blockquote>
-<p>请参见我的上一篇文章: <a href="/2015/03/02/rails-test-install/">在Rails中使用Cucumber和RSpec搭建BDD/TDD测试环境</a>.</p>
-</blockquote>
-<h2 id="Cucumber-和-RSpec的区别"><a href="#Cucumber-和-RSpec的区别" class="headerlink" title="Cucumber 和 RSpec的区别"></a>Cucumber 和 RSpec的区别</h2><h3 id="Cucumber的特点"><a href="#Cucumber的特点" class="headerlink" title="Cucumber的特点"></a>Cucumber的特点</h3><blockquote>
-<p>由于使用了更自然的语言来描述, 所以阅读代码时更容易理解. 更加适合整体测试.</p>
-</blockquote>
-<h3 id="RSpec的特点"><a href="#RSpec的特点" class="headerlink" title="RSpec的特点"></a>RSpec的特点</h3><blockquote>
-<p>读起来像英语一样, 适合测试View, Controller, Model这些单独的组件.</p>
-</blockquote>
-<h2 id="结合RSpec和Cucumber"><a href="#结合RSpec和Cucumber" class="headerlink" title="结合RSpec和Cucumber"></a>结合RSpec和Cucumber</h2><blockquote>
-<p>不能看出, Cucumber读起来简单但是写起来麻烦, 而RSpec恰恰相反, 所以可以将二者结合进行测试. 具体来讲:</p>
-</blockquote>
-<ul>
-<li>单元测试(View, Controller, Model各个各个组件的测试)使用RSpec</li>
-<li>结合测试(将View, Controller, Model结合, 页面之间跳转这样的测试)使用Cucumber</li>
-<li>整体测试(页面跳转后是否会达到预期效果这样的测试)使用Cucumber</li>
-</ul>
-<h2 id="测试流程"><a href="#测试流程" class="headerlink" title="测试流程"></a>测试流程</h2><h3 id="生成User-story"><a href="#生成User-story" class="headerlink" title="生成User story"></a>生成User story</h3><blockquote>
-<p>为了便于说明问题, 我目的的创建一个对于User进行增删改查的Rails应用, 我先来描述一下我想要的效果:</p>
-</blockquote>
-<ul>
-<li>在User 列表页面, 有以下可以跳转到的页面:<ul>
-<li>新建和编辑User的页面</li>
-<li>列出用户详细信息的页面</li>
-</ul>
-</li>
-<li>有如下功能:<ul>
-<li>管理员可以查看展示所有用户的信息</li>
-<li>管理员可以新建, 编辑和删除用户</li>
-<li>管理员可以查看某一用户的详细信息</li>
-</ul>
-</li>
-</ul>
-<h3 id="使用cucumber生成scenario-场景"><a href="#使用cucumber生成scenario-场景" class="headerlink" title="使用cucumber生成scenario(场景)"></a>使用cucumber生成scenario(场景)</h3><blockquote>
-<p>接下来描述”管理员可以查看展示所有用户的信息”这个场景.<br>Cucumber规定, 在features/目录下创建<code>.feature</code>文件(feature file), 在文件中使用自然语言来定义scenario ; 然后, 在<code>features/step_definitions</code>目录下定义<code>.rb</code>文件用于将自然语言和实际的代码匹配.</p>
-</blockquote>
-<h3 id="feature-file的语法"><a href="#feature-file的语法" class="headerlink" title="feature file的语法"></a>feature file的语法</h3><blockquote>
-<p>首先看看feature file如果定义, 可以选择除了英语之外的其他语言, 不过我还是会使用英语, 如果使用其他语言需要在文件开头写上 <code># language cn</code>.<br>一个feature 文件中可以定义多个scenario, scenario中必须有”Given”, “When”和”Then”, 分别表示前提, 如果 和 那么. 看下面的例子:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Feature: [描述功能]</span><br><span class="line">  [可以随便写, 也可以不写]</span><br><span class="line"></span><br><span class="line">  # 注释</span><br><span class="line">  Scenario: [一个前提的情况下]</span><br><span class="line">    Given [描述前提]</span><br><span class="line">    When [描述一个动作(action)]</span><br><span class="line">    Then [描述结果]</span><br><span class="line"></span><br><span class="line">  Scenario: [两个前提条件情况]</span><br><span class="line">    Given [前提描述]</span><br><span class="line">    And [另一个前提]</span><br><span class="line">    When [一个action]</span><br><span class="line">    And [另一个action]</span><br><span class="line">    Then [结果]</span><br><span class="line"></span><br><span class="line">  Scenario Outline: [需要输入的情况]</span><br><span class="line">    Given [前提]</span><br><span class="line">    When 输入&lt;input&gt;</span><br><span class="line">    Then 显示&lt;result&gt;</span><br><span class="line">  Example:</span><br><span class="line">    | input | result |</span><br><span class="line">    |     0 |     0  |</span><br><span class="line">    |     1 |     1  |</span><br><span class="line">    |     2 |     10 |</span><br><span class="line">    |     3 |    100 |</span><br></pre></td></tr></table></figure>
-<h3 id="生成feature-file"><a href="#生成feature-file" class="headerlink" title="生成feature file"></a>生成feature file</h3><blockquote>
-<p>创建User story的feature file</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">$ vim feature/user_index.feature</span><br><span class="line"></span><br><span class="line">Feature: Listing all users&apos; info for admin</span><br><span class="line"></span><br><span class="line">  Scenario Outline: List all users</span><br><span class="line">    Given There are &lt;user_number&gt; users in the db</span><br><span class="line">    When the index page is displayed</span><br><span class="line">    Then I should see &lt;user_number&gt; users</span><br><span class="line">    Examples:</span><br><span class="line">      | user_number |</span><br><span class="line">      | 0 |</span><br><span class="line">      | 1 |</span><br><span class="line"></span><br><span class="line"># 执行测试返回结果:</span><br><span class="line">➜  test_rspec_cucumber_rails  cucumber features/user_index.feature</span><br><span class="line">Using the default profile...</span><br><span class="line">Feature: Listing all users&apos; info for admin</span><br><span class="line"></span><br><span class="line">Scenario Outline: List all users                # features/user_index.feature:3</span><br><span class="line">Given There are &lt;user_number&gt; users in the db # features/user_index.feature:4</span><br><span class="line">When the index page is displayed              # features/user_index.feature:5</span><br><span class="line">Then I should see &lt;user_number&gt; users         # features/user_index.feature:6</span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line">| user_number |</span><br><span class="line">| 0           |</span><br><span class="line">Undefined step: &quot;There are 0 users in the db&quot; (Cucumber::Undefined)</span><br><span class="line">features/user_index.feature:4:in `Given There are &lt;user_number&gt; users in the db&apos;</span><br><span class="line">| 1           |</span><br><span class="line">Undefined step: &quot;There are 1 users in the db&quot; (Cucumber::Undefined)</span><br><span class="line">features/user_index.feature:4:in `Given There are &lt;user_number&gt; users in the db&apos;</span><br><span class="line"></span><br><span class="line">2 scenarios (2 undefined)</span><br><span class="line">6 steps (6 undefined)</span><br><span class="line">0m0.055s</span><br><span class="line"></span><br><span class="line">You can implement step definitions for undefined steps with these snippets:</span><br><span class="line"></span><br><span class="line">Given(/^There are (\d+) users in the db$/) do |arg1|</span><br><span class="line">pending # express the regexp above with the code you wish you had</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">When(/^the index page is displayed$/) do</span><br><span class="line">pending # express the regexp above with the code you wish you had</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">Then(/^I should see (\d+) users$/) do |arg1|</span><br><span class="line">pending # express the regexp above with the code you wish you had</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<h3 id="实现step定义"><a href="#实现step定义" class="headerlink" title="实现step定义"></a>实现step定义</h3><blockquote>
-<p>其实上面的错误信息已经提示如何实现step文件.我们需要让自然语言和代码进行匹配时, 相比于方法的设计我们考虑更多的是实际问题, 这样更加利于理解.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># user_steps.rb</span><br><span class="line"></span><br><span class="line">Given(/^There are (\d+) users in the db$/) do |num|</span><br><span class="line">  num.to_i.times do |i|</span><br><span class="line">    User.create(name: &quot;User#&#123;i&#125;&quot;, email: &quot;user#&#123;i&#125;@example.com&quot;)</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">When(/^the index page is displayed$/) do</span><br><span class="line">  visit users_path # 跳转到index页面, visit方法来自于Capybara</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">Then(/^I should see (\d+) users$/) do |num|</span><br><span class="line">  # 判断所期待的内容是否存在</span><br><span class="line">  num.to_i.times do |i|</span><br><span class="line">    expect(page).to have_content(&quot;user#&#123;i&#125;@example.com&quot;)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<h3 id="再次测试"><a href="#再次测试" class="headerlink" title="再次测试"></a>再次测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">test_rspec_cucumber_rails  cucumber features/user_index.feature</span><br><span class="line">Using the default profile...</span><br><span class="line">Feature: Listing all users&apos; info for admin</span><br><span class="line"></span><br><span class="line">Scenario Outline: List all users                # features/user_index.feature:3</span><br><span class="line">Given There are &lt;user_number&gt; users in the db # features/step_definitions/users_steps.rb:1</span><br><span class="line">When the index page is displayed              # features/step_definitions/users_steps.rb:7</span><br><span class="line">Then I should see &lt;user_number&gt; users         # features/step_definitions/users_steps.rb:11</span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line">| user_number |</span><br><span class="line">| 0           |</span><br><span class="line">undefined local variable or method `users_path&apos; for #&lt;Cucumber::Rails::World:0x007fc3100576b8&gt; (NameError)</span><br><span class="line">./features/step_definitions/users_steps.rb:8:in `/^the index page is displayed$/&apos;</span><br><span class="line">features/user_index.feature:5:in `When the index page is displayed&apos;</span><br><span class="line">| 1           |</span><br><span class="line">uninitialized constant User (NameError)</span><br><span class="line">./features/step_definitions/users_steps.rb:3:in `block (2 levels) in &lt;top (required)&gt;&apos;</span><br><span class="line">./features/step_definitions/users_steps.rb:2:in `times&apos;</span><br><span class="line">./features/step_definitions/users_steps.rb:2:in `/^There are (\d+) users in the db$/&apos;</span><br><span class="line">features/user_index.feature:4:in `Given There are &lt;user_number&gt; users in the db&apos;</span><br><span class="line"></span><br><span class="line">Failing Scenarios:</span><br><span class="line">cucumber features/user_index.feature:3 # Scenario: List all users</span><br><span class="line">cucumber features/user_index.feature:3 # Scenario: List all users</span><br><span class="line"></span><br><span class="line">2 scenarios (2 failed)</span><br><span class="line">6 steps (2 failed, 3 skipped, 1 passed)</span><br><span class="line">0m0.025s`</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>users_path 没有定义, 接下来使用RSpec来实现MVC各个单元测试和开发</p>
-</blockquote>
-<h2 id="使用RSpec实现单元测试"><a href="#使用RSpec实现单元测试" class="headerlink" title="使用RSpec实现单元测试"></a>使用RSpec实现单元测试</h2><h3 id="Rspec的基本语法"><a href="#Rspec的基本语法" class="headerlink" title="Rspec的基本语法"></a>Rspec的基本语法</h3><blockquote>
-<p>首先介绍一下RSpec的相关知识:</p>
-</blockquote>
-<ul>
-<li>文件名: xxx_spec.rb 表示是rspec的测试文件</li>
-<li>describe: 对于测试用例的描述.</li>
-<li>context: describe分情况讨论的描述.</li>
-<li>subject: 设置it所指代的对象</li>
-<li>it / specify : 测试的对象</li>
-<li>expect : 需要在it block中使用</li>
-<li>异常: raise_error(RuntimeError, ‘msg…’)</li>
-</ul>
-<blockquote>
-<p>基本形式:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">describe &quot;Array&quot; do</span><br><span class="line">  before &#123; @arr = Array.new &#125;</span><br><span class="line"></span><br><span class="line">  it &quot;should be empty&quot; do</span><br><span class="line">    expect(:arr).to be_empty</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<h3 id="Controller的测试"><a href="#Controller的测试" class="headerlink" title="Controller的测试"></a>Controller的测试</h3><blockquote>
-<p>由于我已经安装了RSpec, 所以我在创建Controller的时候会自动创建相应的rspec测试文件:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rails g controller Users </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>测试文件:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">require &apos;rails_helper&apos;</span><br><span class="line"></span><br><span class="line">RSpec.describe UsersController, type: :controller do</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  describe &quot;GET #index&quot; do</span><br><span class="line"></span><br><span class="line">    # Test responsing HTTP 200 status code</span><br><span class="line">    it &quot;should respond successfully with an HTTP 200 status code&quot; do</span><br><span class="line">      get :index</span><br><span class="line">      expect(response).to be_success</span><br><span class="line">      expect(response).to have_http_status(200)</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    # Test Rendering index template</span><br><span class="line">    it &quot;should render index template&quot; do</span><br><span class="line">      get :index</span><br><span class="line">      expect(response).to render_template(&quot;index&quot;)</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    # Test loading all users into @users</span><br><span class="line">    it &quot;should load all users into @users&quot; do</span><br><span class="line">      user1 = User.create!(name: &quot;test user1&quot;, email: &quot;user1@example.com&quot;)</span><br><span class="line">      user2 = User.create!(name: &quot;test user2&quot;, email: &quot;user2@example.com&quot;)</span><br><span class="line">      get :index</span><br><span class="line"></span><br><span class="line">      expect(assigns(:users)).to match_array([user1, user2])</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>运行测试</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">$ rspec --color --format doc spec/</span><br><span class="line"></span><br><span class="line">UsersController</span><br><span class="line">GET #index</span><br><span class="line">responds successfully with an HTTP 200 status code (FAILED - 1)</span><br><span class="line">renders the index template (FAILED - 2)</span><br><span class="line">loads all of the users into @users (FAILED - 3)</span><br><span class="line"></span><br><span class="line">Failures:</span><br><span class="line"></span><br><span class="line">1) UsersController GET #index responds successfully with an HTTP 200 status code</span><br><span class="line">Failure/Error: get :index</span><br><span class="line">ActionController::UrlGenerationError:</span><br><span class="line">No route matches &#123;:action=&gt;&quot;index&quot;, :controller=&gt;&quot;users&quot;&#125;</span><br><span class="line"># ./spec/controllers/users_controller_spec.rb:11:in `block (3 levels) in &lt;top (required)&gt;&apos;</span><br><span class="line"></span><br><span class="line">2) UsersController GET #index renders the index template</span><br><span class="line">Failure/Error: get :index</span><br><span class="line">ActionController::UrlGenerationError:</span><br><span class="line">No route matches &#123;:action=&gt;&quot;index&quot;, :controller=&gt;&quot;users&quot;&#125;</span><br><span class="line"># ./spec/controllers/users_controller_spec.rb:18:in `block (3 levels) in &lt;top (required)&gt;&apos;</span><br><span class="line"></span><br><span class="line">3) UsersController GET #index loads all of the users into @users</span><br><span class="line">Failure/Error: user1 = User.create!(name: &quot;test user1&quot;, email: &quot;user1@example.com&quot;)</span><br><span class="line">NameError:</span><br><span class="line">uninitialized constant User</span><br><span class="line"># ./spec/controllers/users_controller_spec.rb:24:in `block (3 levels) in &lt;top (required)&gt;&apos;</span><br><span class="line"></span><br><span class="line">Finished in 0.00799 seconds (files took 1.93 seconds to load)</span><br><span class="line">3 examples, 3 failures</span><br><span class="line"></span><br><span class="line">Failed examples:</span><br><span class="line"></span><br><span class="line">rspec ./spec/controllers/users_controller_spec.rb:10 # UsersController GET #index responds successfully with an HTTP 200 status code</span><br><span class="line">rspec ./spec/controllers/users_controller_spec.rb:17 # UsersController GET #index renders the index template</span><br><span class="line">rspec ./spec/controllers/users_controller_spec.rb:23 # UsersController GET #index loads all of the users into @usersZ</span><br></pre></td></tr></table></figure>
-<h3 id="RSpec设置options"><a href="#RSpec设置options" class="headerlink" title="RSpec设置options"></a>RSpec设置options</h3><blockquote>
-<p>顺便说一句, 如果觉得每次都指定<code>--color</code>和<code>--format doc</code>麻烦, 那么可以修改<code>.rspec</code>文件, 添加默认option</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ vim .rspec</span><br><span class="line">--color</span><br><span class="line">--format doc</span><br></pre></td></tr></table></figure>
-<h3 id="添加Routing"><a href="#添加Routing" class="headerlink" title="添加Routing"></a>添加Routing</h3><blockquote>
-<p>从刚刚的结果看以判断, 首先需要添加routing:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># config/route.rb</span><br><span class="line"></span><br><span class="line">Rails.application.routes.draw do</span><br><span class="line">  get &apos;users&apos; =&gt; &apos;users#index&apos;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<h3 id="实现UsersController"><a href="#实现UsersController" class="headerlink" title="实现UsersController"></a>实现UsersController</h3><blockquote>
-<p>执行<code>rspec</code>, 这回返回的错误信息是<code>The action &#39;index&#39; could not be found for UsersController</code>, 所以我需要在<code>UsersController</code>中实现index方法, 在index方法中, 我需要从数据库中取出所有的user赋给实例变量@users, 进而可以在index.html.erb中显示这些用户.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class UsersController &lt; ApplicationController</span><br><span class="line"></span><br><span class="line">  def index</span><br><span class="line">    @users = User.all</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<h3 id="创建User-model"><a href="#创建User-model" class="headerlink" title="创建User model"></a>创建User model</h3><blockquote>
-<p>继续执行测试, 这时发生的错误是 <code>uninitialized constant UsersController::User</code>, 所以我应该创建User Model了.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ rails g model User name:string email:string</span><br><span class="line">  invoke  active_record</span><br><span class="line">  create    db/migrate/20150302123110_create_users.rb</span><br><span class="line">  create    app/models/user.rb</span><br><span class="line">  invoke    rspec</span><br><span class="line">  create      spec/models/user_spec.rb</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>然后, 我来实现User的测试代码</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># spec/models/user_spec.rb</span><br><span class="line"></span><br><span class="line">require &apos;rails_helper&apos;</span><br><span class="line"></span><br><span class="line">RSpec.describe User, type: :model do</span><br><span class="line">  # before()在测试执行前执行</span><br><span class="line">  before &#123; @user = User.new(name: &quot;test user&quot;, email: &quot;user@example.com&quot;)  &#125;</span><br><span class="line"></span><br><span class="line">  # it = @user</span><br><span class="line">  subject &#123; @user  &#125;</span><br><span class="line"></span><br><span class="line">  # respond_to 测试的是对象能否调用某个方法</span><br><span class="line">  # 在本例中, 测试的是@user.email 和 @user.name是否可以成功调用</span><br><span class="line">  it &#123; should respond_to :name  &#125;</span><br><span class="line">  it &#123; should respond_to :email  &#125;</span><br><span class="line"></span><br><span class="line">  # be_valid测试数据是否可以正确调用</span><br><span class="line">  it &#123; should be_valid  &#125;</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>执行 migrate, <code>$ rake db:migrate</code></p>
-<p>然后, 单独测试model</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ rspec spec/models/user_spec.rb</span><br><span class="line">  User</span><br><span class="line">  should respond to #name</span><br><span class="line">  should respond to #email</span><br><span class="line">  should be valid</span><br><span class="line"></span><br><span class="line">  Finished in 0.00976 seconds (files took 1.97 seconds to load)</span><br><span class="line">  3 examples, 0 failures</span><br></pre></td></tr></table></figure>
-<h3 id="实现视图"><a href="#实现视图" class="headerlink" title="实现视图"></a>实现视图</h3><blockquote>
-<p>这时候再执行 Controller的测试:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ rspec spec/controllers/users_controller_spec.rb</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">Failures:</span><br><span class="line"></span><br><span class="line">1) UsersController GET #index responds successfully with an HTTP 200 status code</span><br><span class="line">Failure/Error: get :index</span><br><span class="line">ActionView::MissingTemplate:</span><br><span class="line">Missing template users/index, application/index with ...</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>我来创建<code>index.html.erb</code>并实现其代码.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;List Users&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">  &lt;% @users.each do |user| %&gt;</span><br><span class="line">    &lt;li&gt;</span><br><span class="line">      &lt;%= user.name %&gt;</span><br><span class="line">      &lt;%= user.email %&gt;</span><br><span class="line">    &lt;/li&gt;</span><br><span class="line">  &lt;% end %&gt;</span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="启动server-观察页面"><a href="#启动server-观察页面" class="headerlink" title="启动server, 观察页面"></a>启动server, 观察页面</h3><blockquote>
-<p>执行所有测试<code>rspec spec/</code>, 全都通过:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ rspec spec/</span><br><span class="line"></span><br><span class="line">  UsersController</span><br><span class="line">  GET #index</span><br><span class="line">  should respond successfully with an HTTP 200 status code</span><br><span class="line">  should render index template</span><br><span class="line">  should load all users into @users</span><br><span class="line"></span><br><span class="line">  User</span><br><span class="line">  should respond to #name</span><br><span class="line">  should respond to #email</span><br><span class="line">  should be valid</span><br><span class="line"></span><br><span class="line">  Finished in 0.03626 seconds (files took 1.41 seconds to load)</span><br><span class="line">  6 examples, 0 failures</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>然后我通过rails console新建一条数据</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ rails console</span><br><span class="line"></span><br><span class="line">001:0&gt; User.create(name: &quot;test user&quot;, email: &quot;user@example.com&quot;)</span><br><span class="line">002:0&gt; User.all.count #=&gt; 1</span><br><span class="line">003:0&gt; exit</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>效果图:</p>
-</blockquote>
-<p><img src="http://i3.tietuku.com/024da538e47035a4.png" alt=""></p>
-<h2 id="通过Cucumber测试"><a href="#通过Cucumber测试" class="headerlink" title="通过Cucumber测试"></a>通过Cucumber测试</h2><blockquote>
-<p>这时cucumber的测试也可以通过了</p>
-</blockquote>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$  cucumber features/user_index.feature</span><br><span class="line">Using the default profile...</span><br><span class="line"><span class="symbol">Feature:</span> Listing all users<span class="string">' info for admin</span><br><span class="line"></span><br><span class="line">Scenario Outline: List all users                # features/user_index.feature:3</span><br><span class="line">Given There are &lt;user_number&gt; users in the db # features/step_definitions/users_steps.rb:1</span><br><span class="line">When the index page is displayed              # features/step_definitions/users_steps.rb:7</span><br><span class="line">Then I should see &lt;user_number&gt; users         # features/step_definitions/users_steps.rb:11</span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line">| user_number |</span><br><span class="line">| 0           |</span><br><span class="line">| 1           |</span><br><span class="line"></span><br><span class="line">2 scenarios (2 passed)</span><br><span class="line">6 steps (6 passed)</span><br><span class="line">0m0.982s</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>重构代码, 可以将公共的视图代码抽取到局部视图(app/views/users/_user.html.erb)中:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># app/views/users/index.html.erb</span><br><span class="line">&lt;h1&gt;List Users&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">  &lt;% @users.each do |user| %&gt;</span><br><span class="line">    &lt;%= render @users %&gt;</span><br><span class="line">  &lt;% end %&gt;</span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># app/views/users/_user.html.erb</span><br><span class="line"></span><br><span class="line">&lt;li&gt;</span><br><span class="line">  &lt;%= user.name&gt; %&gt;</span><br><span class="line">  &lt;%= user.email %&gt;</span><br><span class="line">&lt;/li&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>重构之后再分别进行cucumber和rspec的测试, 保证通过.</p>
-</blockquote>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
-<p>通过以上的例子不难发现, cucumber着重于整体的页面测试, 而RSpec着重于MVC这三个组件这样的细节测试.<br>具体的步骤, 先使用cucumber生成一个失败的测试, 因为没有MVC这三个组件, 我必须要通过RSpec来实现各个细节, 最后在RSpec开始测试到View时, 需要考虑让Cucumber测试也可以通过.</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2015/03/02/rails-test-install/" itemprop="url">
                   在Rails中使用Cucumber和RSpec搭建BDD/TDD测试环境
                 </a>
@@ -1798,6 +1539,257 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/02/17/view-helper/" itemprop="url">
+                  Rails中View Helper总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-02-17T09:25:20+08:00" content="2015-02-17">
+              2015-02-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Rails/" itemprop="url" rel="index">
+                    <span itemprop="name">Rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/02/17/view-helper/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/17/view-helper/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>View Helper提供了form, select, check_box等等一系列的页面元素, 这篇文章进行总结</p>
+</blockquote>
+<h2 id="超链接-link-to"><a href="#超链接-link-to" class="headerlink" title="超链接(link_to)"></a>超链接(link_to)</h2><h3 id="基本使用方法"><a href="#基本使用方法" class="headerlink" title="基本使用方法"></a>基本使用方法</h3><blockquote>
+<p><code>link_to</code>会生成 a 标签</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">link_to(name = nil, options = nil, html_options = nil, &amp;block)</span><br></pre></td></tr></table></figure>
+<h4 id="可以指定的options"><a href="#可以指定的options" class="headerlink" title="可以指定的options"></a>可以指定的options</h4><ul>
+<li><code>method:</code> 指定<code>:get</code>, ‘:post’, <code>:patch</code>, <code>:delete</code> 代表生成的链接发给服务器的请求使用GET, POST 等HTTP方法.</li>
+<li><code>remote: true</code> 像server发送Ajax请求(默认值是false)</li>
+<li><code>data: { confirm: &quot;Are you sure to delete?&quot; }</code> 弹出确认对话框</li>
+</ul>
+<h4 id="link-to经常使用的方法"><a href="#link-to经常使用的方法" class="headerlink" title="link_to经常使用的方法"></a><code>link_to</code>经常使用的方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># HTML属性指定(class)</span><br><span class="line">link_to &quot;Profile&quot;, profile_path(@profile), class: &quot;btn btn-large&quot;, id: &quot;profile#&#123;@profile.id&#125;&quot;</span><br><span class="line">#=&gt; &lt;a class=&quot;btn btn-large&quot; href=&quot;/profiles/1&quot; id=&quot;profiles1&quot;&gt;Profile&lt;/a&gt;</span><br><span class="line"></span><br><span class="line"># 添加查询(?=xxx)</span><br><span class="line">link_to &quot;Profile&quot;, profile_path(@profile, q: &quot;list&quot;)</span><br><span class="line">#=&gt; &lt;a href=&quot;/profiles/1?q=list&quot;&gt;Profile&lt;/a&gt;</span><br><span class="line"></span><br><span class="line"># 指定格式</span><br><span class="line">link_to &quot;Profile&quot;, profile_path(@profile, format: &apos;csv&apos;)</span><br><span class="line"></span><br><span class="line"># 使用block环绕一些元素 </span><br><span class="line"># 这样更加灵活地将链接内容显示在页面</span><br><span class="line">link_to @profile do</span><br><span class="line">  &lt;strong&gt;&lt;%= @profile.name&gt;&lt;/strong&gt; -- &lt;span&gt;Check it out!&lt;/span&gt;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"># =&gt;  &lt;a href=&quot;/profiles/1&quot;&gt;</span><br><span class="line">        &lt;strong&gt;Daniel&lt;/strong&gt; -- &lt;span&gt;Check it out!&lt;/span&gt;</span><br><span class="line">      &lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="link-to-if更加条件显示链接"><a href="#link-to-if更加条件显示链接" class="headerlink" title="link_to_if更加条件显示链接"></a><code>link_to_if</code>更加条件显示链接</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">link_to_if(current_user.admin?, &quot;管理员&quot;, admin_path)</span><br></pre></td></tr></table></figure>
+<h2 id="img-tag"><a href="#img-tag" class="headerlink" title="img_tag"></a>img_tag</h2><p>###基本使用方法</p>
+<blockquote>
+<p>生成img 标签, 也就是需要在页面显示图片时使用:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">image_tag(source, options=&#123;&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="Options"><a href="#Options" class="headerlink" title="Options"></a>Options</h3><ul>
+<li><p><code>source</code> 表示图片文件的具体位置, 可以使用绝对路径和相对路径, 如果你直接指定文件名, 那么rails会默认去assets/images中寻找该图片文件.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例: &lt;%= image_tag &apos;picture.png&apos; %&gt;</span><br><span class="line">#=&gt; &lt;img src=&quot;/images/picture.png&quot; alt=&quot;Picture&quot;&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>alt</code> 加入无法显示图片, alt的文本内容会显示出来.</p>
+</li>
+<li><code>size</code> 指定图片的长度和高度.</li>
+</ul>
+<blockquote>
+<p>还可以指定html的id属性class属性等等</p>
+</blockquote>
+<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= image_tag &apos;http://i2.tietuku.com/09b177fc2e10b2dd.png&apos;, alt: &quot;Picture&quot; %&gt;</span><br><span class="line"># =&gt; &lt;img alt=&quot;Picture&quot; src=&quot;http://i2.tietuku.com/09b177fc2e10b2dd.png&quot;&gt;</span><br><span class="line"></span><br><span class="line">image_tag(&quot;picture.png&quot;, size: &quot;50x40&quot;, alt: &quot;Home Image&quot;)</span><br><span class="line"># =&gt; &lt;img src=&quot;/images/picture.png&quot; width=&quot;50&quot; height=&quot;40&quot; alt=&quot;Home Image&quot; /&gt;</span><br><span class="line"></span><br><span class="line">image_tag(&quot;/gallery/picture.png&quot;, size: &quot;200&quot;)</span><br><span class="line"># =&gt; &lt;img src=&quot;/gallery/picture.png&quot; width=&quot;200&quot; height=&quot;200&quot; alt=&quot;Picture&quot; /&gt;</span><br><span class="line"></span><br><span class="line">image_tag(&quot;picture.png&quot;, class: &quot;menu_img&quot;)</span><br><span class="line"># =&gt; &lt;img alt=&quot;Picture&quot; class=&quot;main_img&quot; src=&quot;/images/picture.png&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="FORM-form-for-form-tag"><a href="#FORM-form-for-form-tag" class="headerlink" title="FORM - form_for form_tag"></a>FORM - <code>form_for</code> <code>form_tag</code></h2><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><ul>
+<li><code>form_for</code> : 我们在创建或者更新Model时, 需要生成依附于这样的Model的表单, 这时使用<code>form_for</code>, 由于表单依附于Model实体, 当发生验证错误时候, 我们可以将错误消息和错误的具体位置在页面表示出来</li>
+<li><code>form_tag</code> : 只是单纯地输出表单, 比如我们可以要搜索, 需要提交表单给一个Controller的某个action.不依附于Model, 所以也就进行validation.(可以先这么理解, 我以后写一篇文章介绍两者区别), 其block内部需要使用<code>label_tag</code>这样的xxx_tag方法来生成表单元素<br>&gt;</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">form_for(record, options = &#123;&#125; &amp;block)</span><br><span class="line">form_tag(url_for_options = &#123;&#125;&lt; options = &#123;&#125;, &amp;block)</span><br></pre></td></tr></table></figure>
+<h3 id="Option"><a href="#Option" class="headerlink" title="Option"></a>Option</h3><ul>
+<li><code>url</code> 指提交到的那个url, 对于<code>form_for</code>, 由于Model会自动生成URL, 所以此项不是必须的; 对于<code>form_tag</code>来说, 是必须指定的, 当然, 也可以通过<code>controller</code>, <code>action</code>间接指定url.</li>
+<li><code>method</code> 指定HTTP方法, 类似于<code>link_to</code></li>
+<li><code>remote</code> Ajax相关, 设置true后, 会通过Ajax来submit.</li>
+<li><code>html</code> 指定form的HTML属性, <code>class</code>, <code>role</code>等<blockquote>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= form_for @user, remote: true, :html =&gt; &#123; :class =&gt; &quot;form-horizontal&quot;, :role =&gt; &quot;form&quot;  &#125; do |f| %&gt;</span><br><span class="line"></span><br><span class="line">  # 指定user的属性</span><br><span class="line">  &lt;%= f.text_field :name %&gt;</span><br><span class="line">  &lt;%= f.number_field :age %&gt;</span><br><span class="line"></span><br><span class="line">  &lt;%= f.submit %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果需要嵌套Model:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># config/routes.rb</span><br><span class="line"># resources :users do</span><br><span class="line">    resources :comments</span><br><span class="line"># end</span><br><span class="line"></span><br><span class="line"># 需要给form_for 方法传入数组</span><br><span class="line"></span><br><span class="line">&lt;%= form_for [@users, @comments] do |f| %&gt;</span><br><span class="line">  &lt;%= f.text_field :content %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>form_tag</code> :</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= form_tag(:action =&gt; &quot;create&quot;) do%&gt;</span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">  &lt;%= label_tag &apos;title&apos; %&gt;</span><br><span class="line">  &lt;%= text_field_tag &apos;title&apos; %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;field&quot;&gt;</span><br><span class="line">  &lt;%= label_tag &apos;content&apos; %&gt;</span><br><span class="line">  &lt;%= text_field_tag &apos;content&apos; %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;actions&quot;&gt;</span><br><span class="line">  &lt;%= submit_tag &quot;作成&quot; %&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="嵌套其他Model的表单fields-for"><a href="#嵌套其他Model的表单fields-for" class="headerlink" title="嵌套其他Model的表单fields_for"></a>嵌套其他Model的表单<code>fields_for</code></h2><blockquote>
+<p>如果在Model中使用<code>has_one``has_many</code>去关联其他的Model, 那么在页面表单中就需要使用<code>fields_for</code>来关联这些来自于其他Model的字段, 下面例子说明了在表单中如何把Address的字段嵌入User.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= form_for @user do |f| %&gt;</span><br><span class="line">  &lt;%= f.fields_for :address do |address_fields| %&gt;</span><br><span class="line">    Street: &lt;%= address_fields.text_field :street %&gt;</span><br><span class="line">    Zip Code: &lt;%= address_fields.text_field :zip_code %&gt;</span><br><span class="line">  &lt;% end %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line"></span><br><span class="line"># 在 app/models/user.rb中:</span><br><span class="line"></span><br><span class="line">class User &lt; ActiveRecord::Base</span><br><span class="line">  has_many :addresses</span><br><span class="line">  accepts_nested_attributes_for :addresses</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="生成label的方法-label和label-tag"><a href="#生成label的方法-label和label-tag" class="headerlink" title="生成label的方法 label和label_tag"></a>生成label的方法 <code>label</code>和<code>label_tag</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.label(:name, &quot;名字&quot;) %&gt;</span><br><span class="line">#=&gt; &lt;label for=&quot;user_name&quot;&gt;名字&lt;/label&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= label_for(:user, &quot;名字&quot;) %&gt;</span><br><span class="line">#=&gt; &lt;label for=&quot;user&quot;&gt;姓名&lt;/label&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="文本框-text-field和text-field-tag"><a href="#文本框-text-field和text-field-tag" class="headerlink" title="文本框- text_field和text_field_tag"></a>文本框- <code>text_field</code>和<code>text_field_tag</code></h2><blockquote>
+<p>在页面上生成文本输入框, <code>&lt;input type=&quot;text&quot;&gt;</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.text_field :name %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;text&quot; name=&quot;user[name]&quot; id=&quot;user_name&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= text_field_tag &quot;user[name]&quot;, &quot;值&quot; %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;text&quot; name=&quot;user[name]&quot; id=&quot;user_name&quot; value=&quot;值&quot;&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Option-1"><a href="#Option-1" class="headerlink" title="Option"></a>Option</h3><ul>
+<li><code>:disabled</code> : true代表文本框变灰不可以输入</li>
+<li><code>:size</code> 设定文本框的长度</li>
+<li><code>:maxlength</code> 可以输入的最多字数</li>
+<li><code>:placeholder</code> 页面被加载后自动出现在输入框中的文字, 用户输入时会消失</li>
+<li>其他一些html的属性</li>
+</ul>
+<h3 id="一些其他类型的输入框"><a href="#一些其他类型的输入框" class="headerlink" title="一些其他类型的输入框"></a>一些其他类型的输入框</h3><ul>
+<li><code>email_field / email_field_tag</code></li>
+<li><code>password_field / password_field_tag</code></li>
+<li><code>search_field / search_field_tag</code></li>
+<li><code>number_field / number_field_tag</code></li>
+</ul>
+<h3 id="输入日期时间-date-field-time-field-datetime-field"><a href="#输入日期时间-date-field-time-field-datetime-field" class="headerlink" title="输入日期时间- date_field/time_field/datetime_field"></a>输入日期时间- <code>date_field/time_field/datetime_field</code></h3><blockquote>
+<p>效果如下:<br><img src="http://i2.tietuku.com/f2f5d504930df9cf.png" alt=""></p>
+</blockquote>
+<h3 id="选择日期时间-date-select-time-select-datetime-select"><a href="#选择日期时间-date-select-time-select-datetime-select" class="headerlink" title="选择日期时间 - date_select / time_select / datetime_select"></a>选择日期时间 - <code>date_select / time_select / datetime_select</code></h3><p><img src="http://i2.tietuku.com/884bd4cc71002787.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.time_select :updated_at %&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对应的HTML:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type=&quot;hidden&quot; id=&quot;profile_updated_at_1i&quot; name=&quot;profile[updated_at(1i)]&quot; value=&quot;2015&quot; /&gt;</span><br><span class="line">&lt;input type=&quot;hidden&quot; id=&quot;profile_updated_at_2i&quot; name=&quot;profile[updated_at(2i)]&quot; value=&quot;2&quot; /&gt;</span><br><span class="line">&lt;input type=&quot;hidden&quot; id=&quot;profile_updated_at_3i&quot; name=&quot;profile[updated_at(3i)]&quot; value=&quot;17&quot; /&gt;</span><br><span class="line">&lt;select id=&quot;profile_updated_at_4i&quot; name=&quot;profile[updated_at(4i)]&quot;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>submit后, 封装在params中:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Parameters: &#123;&quot;utf8&quot;=&gt;&quot;✓&quot;,</span><br><span class="line">&quot;authenticity_token&quot;=&gt;&quot;WJhATdPc1LEzIpL9r1KG15uYp9TGKdZHV0oYFNjz8jHHDuyn4uuV4do0/7EumsNwHHzuUzt/5Ip5eXpzivxywg==&quot;,</span><br><span class="line">&quot;profile&quot;=&gt;&#123;&quot;updated_at(1i)&quot;=&gt;&quot;2015&quot;, &quot;updated_at(2i)&quot;=&gt;&quot;2&quot;, &quot;updated_at(3i)&quot;=&gt;&quot;17&quot;, &quot;updated_at(4i)&quot;=&gt;&quot;06&quot;, &quot;updated_at(5i)&quot;=&gt;&quot;53&quot;&#125;,</span><br><span class="line">&quot;commit&quot;=&gt;&quot;Create Profile&quot;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意, 虽然在页面上没有选择年月日, 但是不难看出在HTML源码和params中都有看到年月日一并在发送给了server.如果我指定<code>ignore_date: true</code>, 那么年月日就不会发送给server. 如果没有年月日就会发生异常, 所以, 必须有<code>date_select</code>在表单中.<br><code>date_select</code>和<code>date_time_select</code>道理相同, 我就不一一说明了</p>
+</blockquote>
+<h2 id="文件上传-file-field-file-field-tag"><a href="#文件上传-file-field-file-field-tag" class="headerlink" title="文件上传- file_field/file_field_tag"></a>文件上传- <code>file_field/file_field_tag</code></h2><p><img src="http://i2.tietuku.com/f2d00300cacb6914.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> # 对于form_tag提交的表单, 需要设置multipart: true, form_for则不需要</span><br><span class="line">&lt;%= form_tag &apos;/upload&apos;, multipart: true do %&gt;</span><br><span class="line">  &lt;label for=&quot;file&quot;&gt;File to Upload&lt;/label&gt; &lt;%= file_field_tag &quot;file&quot; %&gt;</span><br><span class="line">    &lt;%= submit_tag %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="text-area-text-area-tag"><a href="#text-area-text-area-tag" class="headerlink" title="text_area / text_area_tag"></a><code>text_area / text_area_tag</code></h2><blockquote>
+<p>该标签对应的Model的属性类型是text</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= text_area_tag &quot;post[content]&quot;, &quot;很长的文章&quot;, size: &quot;200x200&quot; %&gt;</span><br><span class="line">#=&gt; &lt;textarea name=&quot;post[content]&quot; id=&quot;post_content&quot; cols=&quot;200&quot; rows=&quot;200&quot;&gt;很长的文章&lt;/textarea&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="下拉列表-select-select-tag-collection-select"><a href="#下拉列表-select-select-tag-collection-select" class="headerlink" title="下拉列表 select / select_tag / collection_select"></a>下拉列表 <code>select / select_tag / collection_select</code></h2><blockquote>
+<p>一下三种方法产生的页面效果是一样的:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.select :prefecture_id, Prefecture.all.map &#123; |p| [p.name, p.id]  &#125; %&gt;</span><br><span class="line">&lt;%= select_tag &quot;address[prefeture_id]&quot;, options_from_collection_for_select(Prefecture.all, :id, :name) %&gt;</span><br><span class="line">&lt;%= f.collection_select :prefecture_id, Prefecture.all, :id, :name %&gt;</span><br><span class="line"></span><br><span class="line"># =&gt;</span><br><span class="line"># &lt;select name=&quot;address[prefecture_id]&quot; id=&quot;address_prefecture_id&quot;&gt;</span><br><span class="line">#   &lt;option value=&quot;1&quot;&gt;北京&lt;/option&gt;</span><br><span class="line">#   &lt;option value=&quot;2&quot;&gt;上海&lt;/option&gt;</span><br><span class="line">#   &lt;option value=&quot;3&quot;&gt;哈尔滨&lt;/option&gt;</span><br><span class="line"># &lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="check-box-check-box-tag-collection-check-boxes"><a href="#check-box-check-box-tag-collection-check-boxes" class="headerlink" title="check_box / check_box_tag / collection_check_boxes"></a><code>check_box / check_box_tag / collection_check_boxes</code></h2><h3 id="一个check-box"><a href="#一个check-box" class="headerlink" title="一个check_box"></a>一个check_box</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.label :remember_me, &quot;REMEMBER_ME&quot; %&gt;</span><br><span class="line">&lt;%= f.check_box :remember_me %&gt;</span><br><span class="line"></span><br><span class="line"># =&gt; </span><br><span class="line"># &lt;label for=&quot;profile_remember_me&quot;&gt;REMEMBER_ME&lt;/label&gt;</span><br><span class="line"># &lt;input type=&quot;checkbox&quot; value=&quot;1&quot; name=&quot;profile[remember_me]&quot; id=&quot;profile_remember_me&quot;&gt;</span><br><span class="line">    </span><br><span class="line"># OR</span><br><span class="line"></span><br><span class="line">&lt;%= check_box_tag &quot;profile[remember_me]&quot;%&gt;</span><br><span class="line">&lt;%= label_tag &quot;profile[remember_me]&quot;, &quot;记住我&quot; %&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="多个-check-box"><a href="#多个-check-box" class="headerlink" title="多个 check_box"></a>多个 check_box</h3><blockquote>
+<p>Category和Product 有多对多的关系</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;% Category.all.each do |category| %&gt;</span><br><span class="line">  &lt;%= check_box_tag &quot;product[category_ids][]&quot;, category.id, @product.categories.include?(category), id: &quot;product_category_ids_#&#123;category.id&#125;&quot; %&gt;</span><br><span class="line">    &lt;%= label_tag &quot;product[category_ids][#&#123;category.id&#125;]&quot;, category.name %&gt;</span><br><span class="line">&lt;% end %&gt;</span><br><span class="line"></span><br><span class="line">#=&gt; </span><br><span class="line">&lt;div class=&quot;field&quot;&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;product[category_ids][]&quot; id=&quot;product_category_ids_1&quot; value=&quot;1&quot; checked=&quot;checked&quot; /&gt;</span><br><span class="line">&lt;label for=&quot;Category_0&quot;&gt;Category#0&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;product[category_ids][]&quot; id=&quot;product_category_ids_2&quot; value=&quot;2&quot; checked=&quot;checked&quot; /&gt;</span><br><span class="line">&lt;label for=&quot;Category_1&quot;&gt;Category#1&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;product[category_ids][]&quot; id=&quot;product_category_ids_3&quot; value=&quot;3&quot; checked=&quot;checked&quot; /&gt;</span><br><span class="line">&lt;label for=&quot;Category_2&quot;&gt;Category#2&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;product[category_ids][]&quot; id=&quot;product_category_ids_4&quot; value=&quot;4&quot; /&gt;</span><br><span class="line">&lt;label for=&quot;Category_3&quot;&gt;Category#3&lt;/label&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后我们分析一下提交后params集合的参数情况</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">params</span><br><span class="line"># 选择0个box</span><br><span class="line">&quot;product&quot;=&gt;&#123;&quot;name&quot;=&gt;&quot;&quot;&#125;</span><br><span class="line"># 选择2个</span><br><span class="line">&quot;product&quot;=&gt;&#123;&quot;name&quot;=&gt;&quot;&quot;, category_ids&quot;=&gt;[&quot;1&quot;, &quot;2&quot;]&#125;&quot;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>还需要注意StrongParameters:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def product_params</span><br><span class="line">  # 注意category_ids: []</span><br><span class="line">  params.require(:product).permit(:name, category_ids: [])</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Parameter和SQL语句</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Parameters: &#123;&quot;utf8&quot;=&gt;&quot;✓&quot;, &quot;authenticity_token&quot;=&gt;&quot;cGk3YzhN3JGSROg+MKdVFj8hois/WQck5mwop/0j2oTv/5uJCXqdwXtShXKxbxCxuMXrrMIPNenIX0rAryxadw==&quot;, &quot;product&quot;=&gt;&#123;&quot;name&quot;=&gt;&quot;iMac&quot;, &quot;category_ids&quot;=&gt;[&quot;1&quot;, &quot;2&quot;]&#125;, &quot;commit&quot;=&gt;&quot;Create Product&quot;&#125;</span><br><span class="line">  Category Load (0.2ms)  SELECT &quot;categories&quot;.* FROM &quot;categories&quot; WHERE &quot;categories&quot;.&quot;id&quot; IN (1, 2)</span><br><span class="line">  (0.0ms)  begin transaction</span><br><span class="line">  SQL (0.2ms)  INSERT INTO &quot;products&quot; (&quot;name&quot;, &quot;created_at&quot;, &quot;updated_at&quot;) VALUES (?, ?, ?)  [[&quot;name&quot;, &quot;iMac&quot;], [&quot;created_at&quot;, &quot;2015-02-17 10:05:04.921510&quot;], [&quot;updated_at&quot;, &quot;2015-02-17 10:05:04.921510&quot;]]</span><br><span class="line">  SQL (0.1ms)  INSERT INTO &quot;categories_products&quot; (&quot;category_id&quot;, &quot;product_id&quot;) VALUES (?, ?)  [[&quot;category_id&quot;, 1], [&quot;product_id&quot;, 2]]</span><br><span class="line">  SQL (0.0ms)  INSERT INTO &quot;categories_products&quot; (&quot;category_id&quot;, &quot;product_id&quot;) VALUES (?, ?)  [[&quot;category_id&quot;, 2], [&quot;product_id&quot;, 2]]</span><br><span class="line">(0.6ms)  commit transaction</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>rails还提供了更为简单的方法:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.collection_check_boxes :category_ids, Category.all, :id, :name %&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="radio-button-radio-button-tag"><a href="#radio-button-radio-button-tag" class="headerlink" title="radio_button, radio_button_tag"></a><code>radio_button, radio_button_tag</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">%= f.label :rate %&gt;&lt;br&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 1 %&gt; &lt;%= f.label :rate_1, 1 %&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 2 %&gt; &lt;%= f.label :rate_2, 2 %&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 3 %&gt; &lt;%= f.label :rate_3, 3 %&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 4 %&gt; &lt;%= f.label :rate_4, 4 %&gt;</span><br><span class="line">&lt;%= f.radio_button :rate, 5 %&gt; &lt;%= f.label :rate_5, 5 %&gt;</span><br><span class="line"># =&gt;</span><br><span class="line">&lt;label for=&quot;product_rate&quot;&gt;Rate&lt;/label&gt;&lt;br&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;1&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_1&quot;&gt; &lt;label for=&quot;product_rate_1&quot;&gt;1&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;2&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_2&quot;&gt; &lt;label for=&quot;product_rate_2&quot;&gt;2&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;3&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_3&quot;&gt; &lt;label for=&quot;product_rate_3&quot;&gt;3&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;4&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_4&quot;&gt; &lt;label for=&quot;product_rate_4&quot;&gt;4&lt;/label&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; value=&quot;5&quot; name=&quot;product[rate]&quot; id=&quot;product_rate_5&quot;&gt; &lt;label for=&quot;product_rate_5&quot;&gt;5&lt;/label&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>同样也有<code>collection_xx</code>版本的方法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.collection_radio_buttons :maker_id, Maker.all, :id, :name %&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="hidden-field-hidden-field-tag"><a href="#hidden-field-hidden-field-tag" class="headerlink" title="hidden_field / hidden_field_tag"></a>hidden_field / hidden_field_tag</h2><blockquote>
+<p>不显示在页面上, 有些信息没有必要给用户看到</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;%= f.hidden_field :lock_version %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;hidden&quot; name=&quot;product[lock_version]&quot; id=&quot;product_lock_version&quot; value=&quot;1&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= hidden_field_tag &quot;product[lock_version]&quot;, @product.lock_version %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;hidden&quot; name=&quot;product[lock_version]&quot; id=&quot;product_lock_version&quot; value=&quot;1&quot;&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="submit-submit-tag"><a href="#submit-submit-tag" class="headerlink" title="submit / submit_tag"></a>submit / submit_tag</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= f.submit &quot;注册&quot; %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;submit&quot; name=&quot;commit&quot; value=&quot;注册&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;%= submit_tag &quot;Search&quot; %&gt;</span><br><span class="line">#=&gt; &lt;input type=&quot;submit&quot; name=&quot;commit&quot; value=&quot;Search&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -1843,7 +1835,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">105</span>
+              <span class="site-state-item-count">104</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
